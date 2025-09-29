@@ -1,0 +1,607 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+body {
+    display: block;
+    min-height: 100vh;
+    width: 100vw;
+    overflow-y: auto;
+}
+
+.logo-container {
+    text-align: center;
+    padding: 0px;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.logo {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    margin-top: 1000px;
+    
+}
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            left: -270px;
+            top: 0;
+            height: 100vh;
+            z-index: 2000;
+            transition: left 0.3s;   /* ลดเวลา transition */
+            box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+            width: 250px;
+            background: rgb(254, 179, 104);
+            color: #fff;
+            padding: 30px 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            overflow: hidden;        /* ป้องกันภาพฉีก */
+        }
+        .sidebar input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .sidebar .nav-btn {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background: #fff;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sidebar .nav-btn:hover {
+            background: #ffe0b2;
+        }
+        /* Main content styles */
+        .main-content {
+            margin-left: 0 !important;
+            flex: unset;
+            display: flex;
+            flex-direction: column;
+            min-height: unset;
+            height: auto;
+            overflow: unset;
+            padding-bottom: 32px;
+            box-sizing: border-box;
+            margin-top: 120px; /* เพิ่มบรรทัดนี้ เพื่อดันเนื้อหาออกจาก navbar */
+        }
+        /* Navbar styles */
+        .navbar {
+            width: 100vw;         /* หรือ 100% */
+            left: 0;
+            top: 0;
+            background: rgb(244, 224, 125);
+            color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            height: 120px;
+            position: fixed;
+            z-index: 3000;
+            
+        }
+        .navbar-form {
+           
+            gap: 30px;
+            margin: 0 0 0px 75px;
+            background-color: rgb(71, 208, 64);
+            border-radius: 5px;
+            
+        }
+
+        .navbar-text {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 4px;
+            color: #000000;
+            font-size: 31px;
+            margin-right: 10px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .navbar-form input[type="text"] {
+            padding: 7px;
+            border: none;
+            border-radius: 4px;
+            height: 50px;
+            background-color: #77e146;
+        }
+        .logout-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            height: 50px;
+        }
+        
+
+        .dropdown-content {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 10px;
+    margin-top: -10px;
+    z-index: 1;
+    position: relative;
+}
+.dropdown-item {
+    padding: 8px;
+    border: none;
+    background: #fff;
+    color: #333;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.dropdown-item:hover {
+    background: #ffe0b2;
+}
+
+/* ปรับ dropdown hover ให้ถูกต้อง */
+.dropdown-hover {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dropdown-hover .dropdown-btn {
+    width: 100%;
+}
+.dropdown-hover:hover .dropdown-content,
+.dropdown-hover:focus-within .dropdown-content {
+    display: flex;
+}
+.dropdown-btn:focus + .dropdown-content,
+.dropdown-btn.active + .dropdown-content {
+    display: flex;
+}
+/* Optional: show dropdown on click */  
+.sidebar .dropdown-btn {
+    position: relative;
+    align-items: center;
+
+}
+.sidebar .dropdown-content {
+    position: relative;
+
+}
+.sidebar .dropdown-btn + .dropdown-content {
+    display: none;
+    position: relative;
+    justify-content: space-between;
+}
+
+.sidebar .dropdown-btn:hover + .dropdown-content,
+.sidebar .dropdown-content:hover {
+    display: flex;
+}
+.dropdown-icon {
+    margin-left: 8px;
+    font-size: 18px;
+    vertical-align: middle;
+
+}
+/* Hamburger styles */
+.hamburger {
+    display: flex !important;
+    position: fixed;
+    top: 130px;
+    left: 24px;
+    z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+}
+.hamburger span {
+    display: block;
+    width: 28px;
+    height: 4px;
+    background: #050505;
+    border-radius: 2px;
+    margin: 3px 0;
+    transition: 0.4s;
+    margin-left: auto;
+    margin-right: auto;
+}
+.hamburger:hover span {
+    background: #ffa144;
+    width: 36px;
+    transition: 0.4s;
+}
+.hamburger.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Sidebar: hidden by default, show when .sidebar-open */
+.sidebar {
+    position: fixed;
+    left: -270px;
+    top: 0;
+    height: 100vh;
+    z-index: 2000;
+    transition: left 0.3s;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+    width: 250px;
+    background: rgb(254, 179, 104);
+    color: #fff;
+    padding: 30px 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+.sidebar.sidebar-open {
+    left: 0;
+}
+
+/* Main content: full width */
+.main-content {
+    margin-left: 0 !important;
+    flex: unset;
+    display: flex;
+    flex-direction: column;
+    min-height: unset;
+    height: auto;
+    overflow: unset;
+    padding-bottom: 32px;
+    box-sizing: border-box;
+    margin-top: 120px;/* เพิ่มบรรทัดนี้ เพื่อดันเนื้อหาออกจาก navbar */
+}
+
+/* Hamburger hover: แสดง sidebar เมื่อ hover ที่ hamburger */
+.hamburger {
+    display: flex !important;
+    position: fixed;
+    top: 40px;
+    left: 24px;
+    z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+     border-color: #e74c3c solid 5px;
+}
+
+/* ปรับ sidebar ให้แสดงเมื่อ hover ที่ hamburger */
+.hamburger:hover + .sidebar,
+.sidebar:hover {
+    left: 0;
+}
+
+/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
+.sidebar {
+    pointer-events: auto;
+}
+
+/* Hamburger: always show */
+.hamburger {
+    display: flex !important;
+    position: fixed;
+    top: 40px;
+    left: 24px;
+    z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+}
+
+/* Sidebar: hidden by default */
+.sidebar {
+    left: -270px;
+    transition: left 0.8s;
+}
+
+/* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
+.hamburger:hover + .sidebar,
+.sidebar:hover {
+    left: 0;
+}
+
+/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
+.sidebar {
+    pointer-events: auto;
+}
+
+/* ไม่ต้องใช้ .sidebar.sidebar-open และ JS toggle อีกต่อไป */
+.product-form {
+    width: 100%;
+    max-width: 1300px;
+    margin: 32px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    background: #fffbe9;
+    padding: 32px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border: #fff83c 2px solid;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    height: 50px;
+    transition: border 0.5s, box-shadow 0.5s;   
+    background: transparent;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 2px;
+    color: #333;
+    margin-bottom: -4px;
+}
+    
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select {
+    padding: 8px 12px;
+    border: 1px solid #e0b97d;
+    border-radius: 4px;
+    font-size: 16px;
+    background: #fff;
+    color: #333;
+    transition: border 0.7s,;
+}
+
+.form-group input[type="text"]:hover,
+.form-group input[type="number"]:hover,
+.form-group input[type="file"]:hover,
+.form-group select:hover {
+    border: 2px solid #f65916dd;
+    box-shadow: 0 2px 8px rgba(254,179,104,0.15);
+}
+
+.function-btn-add {
+    background: #4eb31f;
+    color: #fff;
+    border: none;
+    padding: 10px 0;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 55px;
+    transition: background 0.2s;
+}
+.function-btn-add:hover {
+    background: #77e146;
+}
+.product-form-row {
+    display: flex;
+    gap: 32px;
+    width: 100%;
+    justify-content: center;
+}
+.product-form-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+    
+}
+
+body, html, input, select, button, label, .navbar-text {
+    font-family: 'Sarabun', sans-serif;
+    font-weight: bold;
+}
+/*ฟอร์มเพิ่มผู้ผลิตสินค้า*/
+.add-maker-group {
+    margin-top: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.add-maker-group input[type="text"] {
+    width: 60%;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #e0b97d;
+    font-size: 15px;
+}
+
+.add-maker-group button {
+    padding: 6px 16px;
+    border-radius: 4px;
+    border: none;
+    background: #ffa144;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-maker-group button:hover {
+    background: #ffb86c;
+}
+/*สินสุดเพิ่มประเภทสินค้า*/
+
+/*สิ้นสุดประเภท*/
+.add-category-group {
+    margin-top: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.add-category-group input[type="text"] {
+    width: 60%;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #e0b97d;
+    font-size: 15px;
+}
+
+.add-category-group button {
+    padding: 6px 16px;
+    border-radius: 4px;
+    border: none;
+    background: #ffa144;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-category-group button:hover {
+    background: #ffb86c;
+}
+/*สิ้นสุดประเภท*/
+/*หน่วยนับ*/
+.add-unit-group {
+    margin-top: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.add-unit-group input[type="text"] {
+    width: 60%;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #e0b97d;
+    font-size: 15px;
+}
+
+.add-unit-group button {
+    padding: 6px 16px;
+    border-radius: 4px;
+    border: none;
+    background: #ffa144;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-unit-group button:hover {
+    background: #ffb86c;
+}
+/*หน่วยนับ*/
+/*ตำแหน่งสินค้า*/
+.add-location-group {
+    margin-top: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.add-location-group input[type="text"] {
+    width: 60%;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #e0b97d;
+    font-size: 15px;
+}
+
+.add-location-group button {
+    padding: 6px 16px;
+    border-radius: 4px;
+    border: none;
+    background: #ffa144;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-location-group button:hover {
+    background: #ffb86c;
+}
+/*สิ้นสุดตำแห-หน่ง*/
+
+
+/* ปรับแต่งส่วนแนบรูปภาพ */
+.form-group.image-upload {
+    margin-top: 50px;
+}
+
+.form-group.image-upload label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group.image-upload input[type="file"] {
+    padding: 8px;
+    border: 1px solid #e0b97d;
+    border-radius: 4px;
+    font-size: 16px;
+    background: #fff;
+    width: 100%;
+    cursor: pointer;
+}
+
+.form-group.image-upload input[type="file"]:hover {
+    border: 2px solid #f65916dd;
+    box-shadow: 0 2px 8px rgba(254,179,104,0.15);
+}
+
+
+
+
+

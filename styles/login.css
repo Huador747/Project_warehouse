@@ -1,0 +1,287 @@
+body, html, input, select, button, label, .navbar-text {
+    font-family: 'Sarabun', sans-serif;
+    font-weight: bold;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-weight: bold;
+}
+
+.login-container {
+    background-color: rgb(254, 179, 104);
+    padding: 40px 32px;
+    border-radius: 30px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+    width: 800px;
+    max-width: 98vw;
+    min-height: 650px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+}
+
+.login-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container {
+    text-align: center;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #ff0000;
+    padding: 10px;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.login-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 25px;
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-group {
+    position: relative;
+    margin-bottom: 15px;
+    width: 450px;
+    max-width: 90%;
+   
+}
+
+.login-group input[type="text"],
+.login-group input[type="password"] {
+    width: 100%;
+    max-width: 800px;
+    min-width: 200px;
+    padding: 16px 10px 8px 10px;
+    margin: 10px 0 0 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background-color: #ffffff;
+}
+
+.login-group input[type="text"]:hover,
+.login-group input[type="password"]:hover,
+.login-group input[type="text"]:focus,
+.login-group input[type="password"]:focus
+ {
+    border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง */
+    box-shadow: 0 0 0 4px #ffe0b2; /* เงาสีส้มอ่อน */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-group label {
+    position: absolute;
+    left: 12px;
+    top: 18px;
+    color: #888;
+    padding: 0 4px;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.login-group input:focus + label,
+.login-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 8px;
+    font-size: 0.85rem;
+    color: #333;
+    background:none;
+}
+
+input[type="submit"] {
+    background-color: #4cae4c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 50%;
+    font-size: 1rem;
+    margin-top: 40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+input[type="submit"]:hover {
+    background-color: #6ac764;
+     border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง */
+    box-shadow: 0 0 0 4px #ffe0b2; /* เงาสีส้มอ่อน */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 18px;
+    gap: 8px;
+    font-size: 0.97rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+.login-links a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.login-links a:hover {
+    color: #2640e4;
+}
+
+/* ปรับปรุง Responsive ให้ดียิ่งขึ้น */
+@media (max-width: 1024px) {
+    .login-container {
+        width: 95vw;
+        min-height: 500px;
+        padding: 32px 12px;
+    }
+    .logo-container {
+        width: 80px;
+        height: 80px;
+    }
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 800px) {
+    .login-container {
+        flex-direction: column;
+        width: 99vw;
+        min-height: 350px;
+        padding: 18px 4px;
+        border-radius: 18px;
+        gap: 10px;
+    }
+    .login-left, .login-right {
+        width: 100%;
+        min-width: 0;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+    .logo-container {
+        margin-bottom: 10px;
+        width: 60px;
+        height: 60px;
+        padding: 2px;
+    }
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+    .login-group {
+        width: 98vw;
+        max-width: 99vw;
+    }
+    h2 {
+        font-size: 1.1rem;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 6px 1px;
+        max-width: 100vw;
+        border-radius: 8px;
+        min-height: 200px;
+    }
+    .logo-container {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+    }
+    .logo {
+        width: 28px;
+        height: 28px;
+    }
+    .login-group {
+        width: 99vw;
+        max-width: 100vw;
+    }
+    .login-group input[type="text"],
+    .login-group input[type="password"] {
+        font-size: 0.95rem;
+        padding: 7px 4px 5px 4px;
+    }
+    input[type="submit"] {
+        font-size: 0.95rem;
+        padding: 8px;
+        width: 20px;
+
+    }
+    .login-links {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    h2 {
+        font-size: 1rem;
+    }
+}
+
+/* ปรับปรุงปุ่มและ input ให้รองรับจอเล็ก */
+.login-group input[type="text"],
+.login-group input[type="password"] {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 25%;
+    min-width: 0;
+    box-sizing: border-box;
+}

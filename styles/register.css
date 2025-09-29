@@ -1,0 +1,302 @@
+body, html, input, select, button, label, .navbar-text {
+    font-family: 'Sarabun', sans-serif;
+    font-weight: bold;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column; /* เปลี่ยนเป็น column */
+    position: relative;
+    font-weight: bold;
+}
+
+.register-container {
+    background-color: rgb(254, 179, 104);
+    padding: 40px 32px;
+    border-radius: 30px;
+    box-shadow: 0 2px 16px rgba(132, 58, 125, 0.12);
+    width: 800px;
+    max-width: 98vw;
+    min-height: 650px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    position: relative;
+}
+
+
+h2 {
+    text-align: left;
+    color: #333;
+    margin-top: -70px;
+    margin-bottom: 13px;
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.register-group {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+    width: 450px;
+    max-width: 90%;
+
+}
+
+.register-group input[type="text"],
+.register-group input[type="password"] {
+    width: 100%;
+    max-width: 800px;
+    min-width: 200px;
+    padding: 16px 10px 8px 10px;
+    margin-top: -30px;
+    margin: 10px 0 0 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    font-size: 1rem;
+    background-color: #ffffff;
+ 
+}
+
+.register-group label {
+    position: absolute;
+    left: 12px;
+    top: 18px;
+    color: #888;
+    padding: 0 4px;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.register-group input:focus + label,
+.register-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 8px;
+    font-size: 0.85rem;
+    color: #333;
+    background:none;
+}
+
+.register-group input[type="text"]:hover,
+.register-group input[type="password"]:hover,
+.register-group input[type="text"]:focus,
+.register-group input[type="password"]:focus
+ {
+    border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง */
+    box-shadow: 0 0 0 4px #ffe0b2; /* เงาสีส้มอ่อน */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="submit"] {
+     background-color: #4cae4c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 50%;
+    font-size: 1rem;
+    margin-top: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+input[type="submit"]:hover {
+    background-color: #6ac764;
+     border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง */
+    box-shadow: 0 0 0 4px #ffe0b2; /* เงาสีส้มอ่อน */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* ปรับขนาดและจัดวางฝั่งซ้าย (รูป) และขวา (ฟอร์ม) */
+.register-image-frame {
+    margin: 0;
+    border: 3px solid #000000;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.register-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* เพิ่มบรรทัดนี้เพื่อจัด input ให้อยู่ตรงกลาง */
+}
+
+.register-image {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.register-icon {
+    width: 80px;
+    height: 80px;
+    display: block;
+    margin: 0 auto;
+}
+
+.register-upload-label {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    align-self: flex-start; /* ชิดซ้ายใน container */
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #ffaa17;    
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2.5px solid #000000;
+    transition: background 0.5s, color 0.5s, border-color 0.3s;
+    width: 40px;
+    height: 40px;
+}
+
+.back-btn svg {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    color: #000000;
+}
+.back-btn:hover {
+    background: #ff8f06;
+    border-color: #ff0000;
+}
+.back-btn:hover svg path {
+    stroke: #180202;
+}
+
+
+@media (max-width: 1024px) {
+    .register-container {
+        width: 95vw;
+        min-height: 500px;
+        padding: 32px 12px;
+    }
+    .logo-container {
+        width: 80px;
+        height: 80px;
+    }
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 800px) {
+    .register-container {
+        flex-direction: column;
+        width: 99vw;
+        min-height: 350px;
+        padding: 18px 4px;
+        border-radius: 18px;
+        gap: 10px;
+    }
+    .register-left, .register-right {
+        width: 100%;
+        min-width: 0;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+    .logo-container {
+        margin-bottom: 10px;
+        width: 60px;
+        height: 60px;
+        padding: 2px;
+    }
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+    .register-group {
+        width: 98vw;
+        max-width: 99vw;
+    }
+    h2 {
+        font-size: 1.1rem;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .register-container {
+        padding: 6px 1px;
+        max-width: 100vw;
+        border-radius: 8px;
+        min-height: 200px;
+    }
+    .logo-container {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+    }
+    .logo {
+        width: 28px;
+        height: 28px;
+    }
+    .register-group {
+        width: 99vw;
+        max-width: 100vw;
+    }
+    .register-group input[type="text"],
+    .register-group input[type="password"],
+    .register-group input[type="email"] {
+        font-size: 0.95rem;
+        padding: 7px 4px 5px 4px;
+    }
+    input[type="submit"] {
+        font-size: 0.95rem;
+        padding: 8px;
+        width: 90%;
+    }
+    .register-links {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    h2 {
+        font-size: 1rem;
+    }
+}
+
+/* ปรับปรุง Responsive ให้ดียิ่งขึ้น */
+/* ...existing code... */

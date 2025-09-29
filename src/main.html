@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0
+">
+</head>
+<body>
+    <!-- Hamburger button -->
+    <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <img src="../assets/logo.png" alt="Logo" class="logo">
+        </div>
+        <button class="nav-btn active" onclick="window.location.href='main.html'">หน้าหลัก</button>
+        <div class="dropdown-hover">
+            <button class="nav-btn dropdown-btn">
+                เมนู
+                <span class="dropdown-icon">&#9662;</span>
+            </button>
+            <div class="dropdown-content">
+                <button class="dropdown-item">เมนูย่อย 1</button>
+                <button class="dropdown-item">เมนูย่อย 2</button>
+            </div>
+        </div>
+        <button class="nav-btn" onclick="window.location.href='buyin.html'">รายการซื้อ</button>
+        <button class="nav-btn" onclick="window.location.href='sale.html'">รายการขาย</button>
+        <button class="nav-btn" onclick="window.location.href='history.html'">ประวัติการซื้อ-ขาย</button>
+        <button class="nav-btn">คิดไม่ออกบอกโอเค</button>
+    </div>
+
+    <div class="main-content">
+        <div class="navbar">
+            <form class="navbar-form">
+                <span class="navbar-text">
+                    <svg class="stat-icon" viewBox="0 0 24 24"><rect x="3" y="10" width="4" height="11" fill="#4caf50"><animate attributeName="height" values="11;16;11" dur="1.2s" repeatCount="indefinite"/></rect><rect x="10" y="6" width="4" height="15" fill="#2196f3"><animate attributeName="height" values="15;8;15" dur="1.2s" repeatCount="indefinite"/></rect><rect x="17" y="2" width="4" height="19" fill="#ff9800"><animate attributeName="height" values="19;13;19" dur="1.2s" repeatCount="indefinite"/></rect></svg>
+                    รายการสินค้าทั้งหมด <span id="total-products">0</span> รายการ
+                </span>
+                <span class="navbar-text">
+                    <svg class="stat-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ff9800" opacity="0.3"/><path d="M12 2 A10 10 0 0 1 22 12" stroke="#ff9800" stroke-width="4" fill="none"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.2s" repeatCount="indefinite"/></path></svg>
+                    ประเภทสินค้า <span id="total-categories">0</span> ประเภท
+                </span>
+                <span class="navbar-text">
+                    <svg class="stat-icon" viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6" fill="none" stroke="#4caf50" stroke-width="3"><animate attributeName="points" values="4,12 10,18 20,6;4,16 10,12 20,18;4,12 10,18 20,6" dur="1.2s" repeatCount="indefinite"/></polyline></svg>
+                    พร้อมขาย <span id="total-available">0</span> รายการ
+                </span>
+                <span class="navbar-text">
+                    <svg class="stat-icon" viewBox="0 0 24 24">
+                        <line x1="4" y1="4" x2="20" y2="20" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="x2" values="20;4;20" dur="1.2s" repeatCount="indefinite"/>
+                            <animate attributeName="y2" values="20;4;20" dur="1.2s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="20" y1="4" x2="4" y2="20" stroke="#e74c3c" stroke-width="3">
+                            <animate attributeName="x2" values="4;20;4" dur="1.2s" repeatCount="indefinite"/>
+                            <animate attributeName="y2" values="20;4;20" dur="1.2s" repeatCount="indefinite"/>
+                        </line>
+                    </svg>
+                    ไม่พร้อมขาย <span id="total-unavailable">0</span> รายการ
+                </span>
+            </form>
+            <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
+        </div>
+            <div class="function-buttons">
+                <button class="function-btn-add">เพิ่มสินค้า</button>
+                <button class="function-btn-edit">แก้ไขสินค้า</button>
+                <button class="function-btn-delete" onclick="window.location.href='delete.html'">ลบ</button>
+            </div>
+        <div id="product-list" class="product-list-horizontal"></div>
+    </div>
+    <!-- เพิ่ม script แยกต่างหากก่อน </body> -->
+    <script>
+function checkLogin() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+        window.location.replace('login.html');
+    }
+}
+
+// เรียกใช้ฟังก์ชันตรวจสอบเมื่อโหลดหน้า
+document.addEventListener('DOMContentLoaded', function() {
+    checkLogin();   
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+    hamburger?.addEventListener('click', () => {
+        sidebar.classList.toggle('sidebar-open');
+    });
+
+    // แยก logout handler ออกมา
+    const logoutBtn = document.querySelector(".logout-btn");
+    logoutBtn?.addEventListener("click", function(e) {
+        e.preventDefault(); // ป้องกันการทำงานซ้ำซ้อน
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("login.html");
+    });
+
+    // แยก navigation handlers
+    const addProductBtn = document.querySelector(".function-btn-add");
+    addProductBtn?.addEventListener("click", function(e) {
+        e.preventDefault();
+        window.location.href = "addproduct.html";
+    });
+
+    const editProductBtn = document.querySelector(".function-btn-edit");
+    editProductBtn?.addEventListener("click", function(e) {
+        e.preventDefault();
+        window.location.href = "editproduct.html";
+    });
+
+    const deleteProductBtn = document.querySelector(".function-btn-delete");
+    deleteProductBtn?.addEventListener("click", function(e) {
+        e.preventDefault();
+        window.location.href = "delete.html";
+    });
+});
+</script>
+<script>
+// ให้ scroll เมาส์แนวนอนเมื่อชี้ที่ .product-table
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBox = document.querySelector('.product-table');
+    if (tableBox) {
+        tableBox.addEventListener('wheel', function(e) {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                tableBox.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+    }
+});
+</script>
+<script src="../scripts/mainpage.js"></script>
+</body>
+</html>

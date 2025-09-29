@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/editproduct.css">
+    <title>ลบสินค้า</title>
+</head>
+<body>
+    <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <img src="../assets/logo.png" alt="Logo" class="logo">
+        </div>
+        <button class="nav-btn" onclick="window.location.href='main.html'">หน้าหลัก</button>
+        <button class="nav-btn" onclick="window.location.href='delete.html'">ลบสินค้า</button>
+        <!-- เพิ่มเมนูอื่นๆ ตามต้องการ -->
+    </div>
+    <div class="main-content">
+        <div class="navbar">
+            <form class="navbar-form">
+                <span class="navbar-text">ลบสินค้า</span>
+            </form>
+            <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
+        </div>
+        <div class="function-buttons">
+            <button class="function-btn-delete" id="delete-selected-btn">ลบสินค้าที่เลือก</button>
+        </div>
+        <div id="product-list" class="product-list-horizontal"></div>
+    </div>
+    <script src="../scripts/delete.js"></script>
+</body>
+</html>

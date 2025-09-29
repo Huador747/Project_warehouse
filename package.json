@@ -1,0 +1,16 @@
+{
+  "name": "login-project",
+  "version": "1.0.0",
+  "description": "A simple login form project",
+  "main": "src/login.html",
+  "scripts": {
+    "start": "open src/login.html"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

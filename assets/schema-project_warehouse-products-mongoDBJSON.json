@@ -1,0 +1,85 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "_id",
+      "__v",
+      "category",
+      "condition",
+      "createdAt",
+      "description",
+      "image",
+      "maker",
+      "maxQuantity",
+      "minQuantity",
+      "model",
+      "price",
+      "product_code",
+      "product_name",
+      "quantity",
+      "sale_price",
+      "unit",
+      "updatedAt",
+      "vat"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "__v": {
+        "bsonType": "int"
+      },
+      "category": {
+        "bsonType": "string"
+      },
+      "condition": {
+        "bsonType": "string"
+      },
+      "createdAt": {
+        "bsonType": "date"
+      },
+      "description": {
+        "bsonType": "string"
+      },
+      "image": {
+        "bsonType": "string"
+      },
+      "maker": {
+        "bsonType": "string"
+      },
+      "maxQuantity": {
+        "bsonType": "int"
+      },
+      "minQuantity": {
+        "bsonType": "int"
+      },
+      "model": {
+        "bsonType": "string"
+      },
+      "price": {
+        "bsonType": "int"
+      },
+      "product_code": {
+        "bsonType": "string"
+      },
+      "product_name": {
+        "bsonType": "string"
+      },
+      "quantity": {
+        "bsonType": "int"
+      },
+      "sale_price": {
+        "bsonType": "string"
+      },
+      "unit": {
+        "bsonType": "string"
+      },
+      "updatedAt": {
+        "bsonType": "date"
+      },
+      "vat": {
+        "bsonType": "bool"
+      }
+    }
+  }
+}

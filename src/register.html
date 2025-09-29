@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/register.css">
+    <title>Login Form</title>
+</head>
+
+<body>
+    <div class="register-container">
+        <a href="login.html" class="back-btn" title="ย้อนกลับ">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="#ff0000" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </a>
+        <h2>ลงทะเบียน</h2>
+        <div class="register-image-frame">
+            <label for="profile-upload" class="register-upload-label">
+                <svg class="register-icon" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                    fill="#bbb">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" />
+                </svg>
+                <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+            </label>
+        </div>
+        <form action="#" method="post">
+            <div class="register-group">
+                <input type="text" id="username" name="username" required placeholder=" " />
+                <label for="username">ชื่อผู้ใช้</label>
+            </div>
+            <div class="register-group">
+                <input type="password" id="password" name="password" required placeholder=" " />
+                <label for="password">รหัสผ่าน</label>
+            </div>
+            <input type="submit" value="ลงทะเบียน">
+        </form>
+    </div>
+
+    <script>
+        let profileImage = null;
+
+        // แสดงตัวอย่างรูปภาพเมื่อเลือกไฟล์
+        document.getElementById('profile-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // อัพเดทรูปภาพที่แสดง
+                    const svg = document.querySelector('.register-icon');
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '80px';
+                    img.style.height = '80px';
+                    img.style.borderRadius = '50%';
+                    svg.replaceWith(img);
+                    
+                    // เก็บข้อมูลรูปภาพ
+                    profileImage = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // จัดการ form submission
+        document.querySelector('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                username: document.getElementById('username').value.trim(),
+                password: document.getElementById('password').value.trim(),
+                profileImage: profileImage
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('ลงทะเบียนสำเร็จ');
+                    window.location.href = 'login.html';
+                } else {
+                    alert(data.message || 'ชื่อผู้ใช้นี้มีอยู่แล้วหรือข้อมูลไม่ถูกต้อง');
+                }
+            } catch (error) {
+                console.error('Connection error:', error);
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+            }
+        });
+    </script>
+</body>
+
+</html>
