@@ -109,7 +109,7 @@ form {
 .login-group input[type="text"]:focus,
 .login-group input[type="password"]:focus
  {
-    border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง 5555555555555555555555555555555555555555555555555555 */
+    border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง */
     box-shadow: 0 0 0 4px #ffe0b2; /* เงาสีส้มอ่อน */
     transition: border-color 0.2s, box-shadow 0.2s;
 }
