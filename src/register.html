@@ -60,7 +60,7 @@
                     img.style.height = '80px';
                     img.style.borderRadius = '50%';
                     svg.replaceWith(img);
-                    
+
                     // เก็บข้อมูลรูปภาพ
                     profileImage = e.target.result;
                 }
@@ -71,7 +71,7 @@
         // จัดการ form submission
         document.querySelector('form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const formData = {
                 username: document.getElementById('username').value.trim(),
                 password: document.getElementById('password').value.trim(),
@@ -88,7 +88,7 @@
                 });
 
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     alert('ลงทะเบียนสำเร็จ');
                     window.location.href = 'login.html';

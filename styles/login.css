@@ -1,4 +1,10 @@
-body, html, input, select, button, label, .navbar-text {
+body,
+html,
+input,
+select,
+button,
+label,
+.navbar-text {
     font-family: 'Sarabun', sans-serif;
     font-weight: bold;
 }
@@ -37,22 +43,19 @@ body {
 
 .logo-container {
     text-align: center;
-    border-style: solid;
-    border-width: 2px;
-    border-color: #ff0000;
     padding: 10px;
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    background-color: white;
+    width: 180px;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #ffffff;
 }
 
 .logo {
-    width: 100px;
-    height: 100px;
+    width: 250px;
+    height: 250px;
     object-fit: contain;
     display: block;
     margin: 0 auto;
@@ -68,7 +71,7 @@ body {
 
 h2 {
     text-align: center;
-    color: #333;
+    color: #000000;
     margin-top: 25px;
     margin-bottom: 24px;
     font-size: 1.5rem;
@@ -87,7 +90,6 @@ form {
     margin-bottom: 15px;
     width: 450px;
     max-width: 90%;
-   
 }
 
 .login-group input[type="text"],
@@ -100,24 +102,40 @@ form {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    /* ตัวอักษรตอนพิมพ์ใหญ่ขึ้น */
     background-color: #ffffff;
+}
+
+.login-group input[type="text"]::placeholder,
+.login-group input[type="password"]::placeholder {
+    font-size: 1.2rem;
+    /* ตัวอักษรใหญ่ขึ้น */
+    color: #bdbdbd;
+    /* สี placeholder */
+    font-weight: bold;
+    text-align: center;
+    /* จัดให้อยู่ตรงกลางแนวนอน */
+    /* จัดให้อยู่ตรงกลางแนวตั้ง */
+    line-height: 2.5rem;
+    /* ปรับตามความสูง input */
 }
 
 .login-group input[type="text"]:hover,
 .login-group input[type="password"]:hover,
 .login-group input[type="text"]:focus,
-.login-group input[type="password"]:focus
- {
-    border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง */
-    box-shadow: 0 0 0 4px #ffe0b2; /* เงาสีส้มอ่อน */
+.login-group input[type="password"]:focus {
+    border-color: #ffb86c;
+    /* สีส้มอ่อน เข้ากับพื้นหลัง */
+    box-shadow: 0 0 0 4px #ffe0b2;
+    /* เงาสีส้มอ่อน */
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .login-group label {
     position: absolute;
     left: 12px;
-    top: 18px;
+    top: 25px;
     color: #888;
     padding: 0 4px;
     font-size: 1rem;
@@ -125,13 +143,14 @@ form {
     transition: 0.2s;
 }
 
-.login-group input:focus + label,
-.login-group input:not(:placeholder-shown) + label {
-    top: -10px;
+.login-group input:focus+label,
+.login-group input:not(:placeholder-shown)+label {
+    top: -15px;
     left: 8px;
-    font-size: 0.85rem;
-    color: #333;
-    background:none;
+    font-size: 1rem;
+    color: #000000;
+    background: none;
+    font-weight: bold;
 }
 
 input[type="submit"] {
@@ -151,9 +170,11 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #6ac764;
-     border-color: #ffb86c; /* สีส้มอ่อน เข้ากับพื้นหลัง */
-    box-shadow: 0 0 0 4px #ffe0b2; /* เงาสีส้มอ่อน */
+    background-color: #20501c;
+    border-color: #82ff58;
+    /* สีส้มอ่อน เข้ากับพื้นหลัง */
+    box-shadow: 0 0 0 4px #82ff58;
+    /* เงาสีส้มอ่อน */
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -178,7 +199,9 @@ input[type="submit"]:hover {
     color: #2640e4;
 }
 
+
 /* ปรับปรุง Responsive ให้ดียิ่งขึ้น */
+
 @media (max-width: 1024px) {
     .login-container {
         width: 95vw;
@@ -204,7 +227,8 @@ input[type="submit"]:hover {
         border-radius: 18px;
         gap: 10px;
     }
-    .login-left, .login-right {
+    .login-left,
+    .login-right {
         width: 100%;
         min-width: 0;
         justify-content: center;
@@ -261,7 +285,6 @@ input[type="submit"]:hover {
         font-size: 0.95rem;
         padding: 8px;
         width: 20px;
-
     }
     .login-links {
         font-size: 0.9rem;
@@ -272,7 +295,9 @@ input[type="submit"]:hover {
     }
 }
 
+
 /* ปรับปรุงปุ่มและ input ให้รองรับจอเล็ก */
+
 .login-group input[type="text"],
 .login-group input[type="password"] {
     width: 100%;
