@@ -6,6 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); // เพิ่ม limit สำหรับรูปภาพ
 
+/*http://127.0.0.1:5500/src/main.html*/
+
 // เชื่อมต่อ MongoDB
 mongoose.connect('mongodb://localhost:27017/project_warehouse', {
     useNewUrlParser: true,
