@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -165,6 +166,12 @@ app.get('/products/search', async (req, res) => {
 app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
+
+// ใช้งาน static file
+app.use(express.static(path.join(__dirname, 'src')));
+app.use('/styles', express.static(path.join(__dirname, 'styles')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
 
 // เริ่ม server
 const port = 3000;
