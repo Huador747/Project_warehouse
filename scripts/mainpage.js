@@ -13,7 +13,7 @@ function animateCounter(element, to, duration = 800) {
 document.addEventListener('DOMContentLoaded', async function() {
     // ดึงข้อมูลสินค้า
     try {
-        const res = await fetch('http://localhost:3000/products');
+        const res = await fetch('http://192.168.0.101:3000/products');
         const products = await res.json();
         window.allProducts = products; // เก็บไว้ใช้กับ pagination
         window.currentPage = 1;

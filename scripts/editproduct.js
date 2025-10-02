@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!query) return;
 
-        fetch(`http://localhost:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`http://192.168.0.101:3000/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 const resultDiv = document.createElement('div');

@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         formData.image = imageBase64;
 
-        fetch('http://localhost:3000/products', {
+        fetch('http://192.168.0.101:3000/products', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)

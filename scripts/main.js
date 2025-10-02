@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`http://localhost:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`http://192.168.0.101/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 console.log('Search results:', products); // Debug log
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // เพิ่มฟังก์ชันโหลดและแสดงข้อมูลสินค้า
     function loadProducts() {
-        fetch('http://localhost:3000/products')
+        fetch('http://192.168.0.101/products')
             .then(res => res.json())
             .then(products => {
                 const productList = document.getElementById('product-list');
@@ -459,7 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`http://localhost:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`http://192.168.0.101/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 console.log('Search results:', products); // Debug log
@@ -510,7 +510,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // เพิ่มฟังก์ชันโหลดและแสดงข้อมูลสินค้า
     function loadProducts() {
-        fetch('http://localhost:3000/products')
+        fetch('http://192.168.0.101/products')
             .then(res => res.json())
             .then(products => {
                 const productList = document.getElementById('product-list');
@@ -587,8 +587,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const method = currentProductId ? 'PATCH' : 'POST';
         const url = currentProductId 
-            ? `http://localhost:3000/products/${currentProductId}`
-            : 'http://localhost:3000/products';
+            ? `http://192.168.0.101/products/${currentProductId}`: 'http://192.168.0.101/products';
 
         fetch(url, {
             method,

@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         for (let cb of checked) {
             const id = cb.dataset.id;
-            await fetch(`http://localhost:3000/products/${id}`, { method: 'DELETE' });
+            await fetch(`http://192.168.0.101:3000/products/${id}`, { method: 'DELETE' });
         }
         alert('ลบสินค้าเรียบร้อย');
         loadProducts();
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ฟังก์ชันโหลดสินค้า
     function loadProducts() {
-        fetch('http://localhost:3000/products')
+        fetch('http://192.168.0.101:3000/products')
             .then(res => res.json())
             .then(products => {
                 const productList = document.getElementById('product-list');
