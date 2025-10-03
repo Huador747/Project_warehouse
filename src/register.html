@@ -44,6 +44,8 @@
     </div>
 
     <script>
+        const BACKEND_URL = `http://${window.location.hostname}:3000`;
+
         let profileImage = null;
 
         // แสดงตัวอย่างรูปภาพเมื่อเลือกไฟล์
@@ -79,7 +81,7 @@
             };
 
             try {
-                const response = await fetch('http://localhost:3000/register', {
+                const response = await fetch(`${BACKEND_URL}/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

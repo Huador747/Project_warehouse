@@ -1,4 +1,4 @@
-const backendHost = window.location.hostname;
+import { BACKEND_URL } from './config.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     checkLogin();
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         for (let cb of checked) {
             const id = cb.dataset.id;
-            await fetch(`http://${backendHost}:3000/products/${id}`, { method: 'DELETE' });
+            await fetch(`${BACKEND_URL}/products/${id}`, { method: 'DELETE' });
         }
         alert('ลบสินค้าเรียบร้อย');
         loadProducts();
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ฟังก์ชันโหลดสินค้า
     function loadProducts() {
-        fetch('http://${backendHost}:3000/products')
+        fetch(`${BACKEND_URL}/products`)
             .then(res => res.json())
             .then(products => {
                 const productList = document.getElementById('product-list');

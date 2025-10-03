@@ -1,4 +1,4 @@
-const backendHost = window.location.hostname;
+import { BACKEND_URL } from './config.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector('.product-form').addEventListener('submit', async function(e) {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         formData.image = imageBase64;
 
-        fetch(`http://${backendHost}:3000/products`, {
+        fetch(`${BACKEND_URL}/products`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)

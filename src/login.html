@@ -29,7 +29,7 @@
             </form>
 
             <script>
-const backendHost = window.location.hostname;
+const BACKEND_URL = `http://${window.location.hostname}:3000`;
 
 document.getElementById('login-form').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -37,10 +37,8 @@ document.getElementById('login-form').addEventListener('submit', async function(
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
-    console.log('Attempting login with:', { username }); // Log the username attempt
-
     try {
-        const response = await fetch(`http://${backendHost}:3000/login`, {
+        const response = await fetch(`${BACKEND_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -49,7 +47,6 @@ document.getElementById('login-form').addEventListener('submit', async function(
         });
 
         const data = await response.json();
-        console.log('Server response:', data); // Log the server response
 
         if (response.ok && data.message === 'เข้าสู่ระบบสำเร็จ') {
             localStorage.setItem('isLoggedIn', 'true');
@@ -59,7 +56,6 @@ document.getElementById('login-form').addEventListener('submit', async function(
             alert(data.message);
         }
     } catch (error) {
-        console.error('Login error details:', error); // Log detailed error
         alert('เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ' + error.message);
     }
 });

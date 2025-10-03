@@ -1,4 +1,4 @@
-const backendHost = window.location.hostname;
+import { BACKEND_URL } from './config.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector('.search-product-input');
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!query) return;
 
-        fetch(`http://${backendHost}:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`) // ใช้ BACKEND_URL
             .then(res => res.json())
             .then(products => {
                 const resultDiv = document.createElement('div');

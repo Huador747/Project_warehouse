@@ -1,4 +1,4 @@
-const backendHost = window.location.hostname;
+import { BACKEND_URL } from './config.js';
 
 function animateCounter(element, to, duration = 800) {
     const from = parseInt(element.textContent) || 0;
@@ -15,7 +15,7 @@ function animateCounter(element, to, duration = 800) {
 document.addEventListener('DOMContentLoaded', async function() {
     // ดึงข้อมูลสินค้า
     try {
-        const res = await fetch(`http://${backendHost}:3000/products`);
+        const res = await fetch(`${BACKEND_URL}/products`);
         const products = await res.json();
         window.allProducts = products; // เก็บไว้ใช้กับ pagination
         window.currentPage = 1;
@@ -140,3 +140,4 @@ function renderProductsTablePage(products, page) {
         }
     });
 }
+fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)

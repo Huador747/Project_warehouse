@@ -1,3 +1,5 @@
+import { BACKEND_URL } from './config.js';
+
 const backendHost = window.location.hostname;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -219,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`http://${backendHost}:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 console.log('Search results:', products); // Debug log
@@ -270,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // เพิ่มฟังก์ชันโหลดและแสดงข้อมูลสินค้า
     function loadProducts() {
-        fetch('http://192.168.0.101:3000/products')
+        fetch(`${BACKEND_URL}/products`)
             .then(res => res.json())
             .then(products => {
                 const productList = document.getElementById('product-list');
@@ -461,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`http://${backendHost}:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 console.log('Search results:', products); // Debug log
@@ -512,7 +514,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // เพิ่มฟังก์ชันโหลดและแสดงข้อมูลสินค้า
     function loadProducts() {
-        fetch('http://192.168.0.101:3000/products')
+        fetch(`${BACKEND_URL}/products`)
             .then(res => res.json())
             .then(products => {
                 const productList = document.getElementById('product-list');
@@ -589,7 +591,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const method = currentProductId ? 'PATCH' : 'POST';
         const url = currentProductId 
-            ? `http://192.168.0.101:3000/products/${currentProductId}`: 'http://192.168.0.101:3000/products';
+            ? `${BACKEND_URL}/products/${currentProductId}`
+            : `${BACKEND_URL}/products`;
 
         fetch(url, {
             method,
