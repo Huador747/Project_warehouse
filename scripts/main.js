@@ -1,3 +1,5 @@
+const backendHost = window.location.hostname;
+
 document.addEventListener("DOMContentLoaded", function () {
     // เพิ่มฟังก์ชันตรวจสอบการล็อกอิน
     function checkLogin() {
@@ -217,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`http://192.168.0.101:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`http://${backendHost}:3000/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 console.log('Search results:', products); // Debug log
@@ -459,7 +461,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`http://192.168.0.101:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`http://${backendHost}:3000/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 console.log('Search results:', products); // Debug log
@@ -595,7 +597,7 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify(formData)
         })
         .then(res => res.json())
-        .then(data => {
+        .then (data => {
             alert(currentProductId ? 'อัปเดตสินค้าเรียบร้อย!' : 'บันทึกสินค้าเรียบร้อย!');
             this.reset();
             currentProductId = null;

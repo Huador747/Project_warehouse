@@ -1,3 +1,5 @@
+const backendHost = window.location.hostname;
+
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector('.search-product-input');
 
@@ -76,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!query) return;
 
-        fetch(`http://192.168.0.101:3000/products/search?q=${encodeURIComponent(query)}`)
+        fetch(`http://${backendHost}:3000/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
                 const resultDiv = document.createElement('div');
