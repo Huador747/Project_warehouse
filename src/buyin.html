@@ -42,15 +42,16 @@
         <button class="nav-btn">คิดไม่ออกบอกโอเค</button>
     </div>
 
-    <!-- ย้าย navbar ออกมานอก main-content -->
     <div class="navbar">
         <form class="navbar-form">
             <span class="navbar-text">หน้าซื้อสินค้า</span>
         </form>
-        <button class="logout-btn">ออกจากระบบ</button>
+        <div class="search-logout-row">
+            <input type="text" class="search-product-input" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
+            <button class="logout-btn">ออกจากระบบ</button>
+        </div>
     </div>
-
-    <div class="main-content">
+    <div class="main-content"><!-- เริ่มเขียนส่วนเนื้อหา -->
         <form class="product-form">
             <div class="product-form-row">
                 <div class="product-form-col">
@@ -59,34 +60,43 @@
                         <input type="text" id="date" name="date" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label for="productName">โมเดล</label>
-                        <input type="text" id="productName" name="productName">
+                        <label for="product_code">รหัสสินค้า</label>
+                        <input type="text" id="product_code" name="product_code">
                     </div>
                     <div class="form-group">
-                        <label for="productCode">หมายเลขโมเดล</label>
-                        <input type="text" id="productCode" name="productCode">
+                        <label for="model">ชื่อโมเดล(ภาษาอังกฤษ)</label>
+                        <input type="text" id="model" name="model">
                     </div>
                     <div class="form-group">
-                        <label for="quantity">ราคาต้นทุน</label>
-                        <input type="number" id="quantity" name="quantity">
+                        <label for="price">ราคาต้นทุน</label>
+                        <input type="number" id="price" name="price">
                     </div>
                     <div class="form-group">
                         <label for="unit">หน่วยนับ</label>
-                        <input type="text" id="unit" name="unit">
+                        <select id="unit" name="unit" required>
+                            <option value="">-- เลือกหน่วยนับ --</option>
+                            <option value="ชิ้น">ชิ้น</option>
+                            <option value="กล่อง">กล่อง</option>
+                            <option value="ชุด">เซ็ท</option>
+                        </select>
                     </div>
                 </div>
                 <div class="product-form-col">
                     <div class="form-group">
-                        <label for="price">จำนวน</label>
-                        <input type="number" id="price" name="price">
+                        <label for="quantity">จำนวน</label>
+                        <input type="number" id="quantity" name="quantity">
                     </div>
                     <div class="form-group">
-                        <label for="seller">มือ1/มือ2</label>
-                        <input type="text" id="seller" name="seller">
+                        <label for="condition">มือ1/มือ2</label>
+                        <select id="condition" name="condition" required>
+                            <option value="">-- เลือกสถานะ --</option>
+                            <option value="มือ1">มือ 1</option>
+                            <option value="มือ2">มือ 2</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="sellerPhone">ยอดรวม</label>
-                        <input type="text" id="sellerPhone" name="sellerPhone">
+                        <label for="total">ยอดรวม</label>
+                        <input type="text" id="total" name="total">
                     </div>
                     <div class="form-group">
                         <label for="note">หมายเหตุ</label>
@@ -97,57 +107,59 @@
             <button type="submit" class="function-btn-add">บันทึก</button>
         </form>
     </div>
-    <script>
-        
-flatpickr("#date", {
-  dateFormat: "d/m/Y",
-  altInput: true,
-  altFormat: "d/m/Y", // เดือนเป็นตัวเลข
-  allowInput: true,
-  defaultDate: "today",
+     <script type="module" src="../scripts/buyin.js"></script>
 
-  onReady: function(selectedDates, dateStr, instance) {
-    if (selectedDates.length > 0) {
-      const date = selectedDates[0];
-      const buddhistYear = date.getFullYear() + 543;
-      const day = ("0" + date.getDate()).slice(-2);
-      const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      const thaiDate = day + '/' + month + '/' + buddhistYear;
-      
-    }
-    const fp = instance;
-    const calendarContainer = fp.calendarContainer;
-    if (calendarContainer) {
-      let todayBtn = calendarContainer.querySelector(".flatpickr-today-btn");
-      if (!todayBtn) {
-        todayBtn = document.createElement("button");
-        todayBtn.type = "button";
-        todayBtn.className = "flatpickr-today-btn";
-        todayBtn.textContent = "วันนี้";
-        todayBtn.style.margin = "8px";
-        todayBtn.style.padding = "6px 16px";
-        todayBtn.style.background = "#ffe0b2";
-        todayBtn.style.border = "1px solid #e0b97d";
-        todayBtn.style.borderRadius = "4px";
-        todayBtn.style.cursor = "pointer";
-        todayBtn.onclick = function() {
-          fp.setDate(new Date());
-          fp.close();
-        };
-        calendarContainer.appendChild(todayBtn);
-      }
-    }
-  },
-  onChange: function(selectedDates, dateStr, instance) {
-    if (selectedDates.length > 0) {
-      const date = selectedDates[0];
-      const buddhistYear = date.getFullYear() + 543;
-      const day = ("0" + date.getDate()).slice(-2);
-      const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      const thaiDate = day + '/' + month + '/' + buddhistYear;
-    }
-  }
-});
-    </script>
+    <script>if (window.flatpickr) {
+        flatpickr("#date", {
+            dateFormat: "d/m/Y",
+            altInput: true,
+            altFormat: "d/m/Y",
+            allowInput: true,
+            defaultDate: "today",
+            onReady: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    const date = selectedDates[0];
+                    const buddhistYear = date.getFullYear() + 543;
+                    const day = ("0" + date.getDate()).slice(-2);
+                    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+                    const thaiDate = day + '/' + month + '/' + buddhistYear;
+                    // คุณสามารถนำ thaiDate ไปใช้ต่อได้
+                }
+                const fp = instance;
+                const calendarContainer = fp.calendarContainer;
+                if (calendarContainer) {
+                    let todayBtn = calendarContainer.querySelector(".flatpickr-today-btn");
+                    if (!todayBtn) {
+                        todayBtn = document.createElement("button");
+                        todayBtn.type = "button";
+                        todayBtn.className = "flatpickr-today-btn";
+                        todayBtn.textContent = "วันนี้";
+                        todayBtn.style.margin = "8px";
+                        todayBtn.style.padding = "6px 16px";
+                        todayBtn.style.background = "#ffe0b2";
+                        todayBtn.style.border = "1px solid #e0b97d";
+                        todayBtn.style.borderRadius = "4px";
+                        todayBtn.style.cursor = "pointer";
+                        todayBtn.onclick = function() {
+                            fp.setDate(new Date());
+                            fp.close();
+                        };
+                        calendarContainer.appendChild(todayBtn);
+                    }
+                }
+            },
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    const date = selectedDates[0];
+                    const buddhistYear = date.getFullYear() + 543;
+                    const day = ("0" + date.getDate()).slice(-2);
+                    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+                    const thaiDate = day + '/' + month + '/' + buddhistYear;
+                    // คุณสามารถนำ thaiDate ไปใช้ต่อได้
+                }
+            }
+        });
+    }</script>
+
 </body>
 </html>
