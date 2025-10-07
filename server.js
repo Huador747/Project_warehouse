@@ -135,6 +135,28 @@ app.get('/products', async (req, res) => {
     }
 });
 
+// เพิ่ม route สำหรับแก้ไขสินค้า
+app.put('/products/:id', async (req, res) => {
+    try {
+        // เพิ่มวันที่และเวลาอัพเดท
+        const now = new Date();
+        req.body.updatedDate = now.toLocaleDateString('th-TH');
+        req.body.updatedTime = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'ไม่พบสินค้า' });
+        }
+        res.json(updatedProduct);
+    } catch (err) {
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการแก้ไขสินค้า', error: err.message });
+    }
+});
+
 // เพิ่ม route สำหรับเพิ่มสินค้า
 app.post('/products', async (req, res) => {
     try {

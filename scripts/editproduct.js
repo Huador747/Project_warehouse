@@ -3,8 +3,11 @@ import { BACKEND_URL } from './config.js';
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector('.search-product-input');
 
+    let currentProductId = null; // เก็บ id สินค้าที่เลือก
+
     // ฟังก์ชันเติมข้อมูลในฟอร์ม (ตัวอย่าง)
     function fillForm(product) {
+        currentProductId = product._id; // เก็บ id ไว้ใช้ตอนอัพเดท
         document.getElementById('product_code').value = product.product_code || '';
         document.getElementById('model').value = product.model || '';
         document.getElementById('product_name').value = product.product_name || '';
@@ -136,6 +139,102 @@ document.addEventListener("DOMContentLoaded", function () {
                 previewImg.style.display = 'block';
             };
             reader.readAsDataURL(file);
+        }
+    });
+
+    document.querySelector('.product-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!currentProductId) {
+            alert('กรุณาค้นหาและเลือกสินค้าที่ต้องการแก้ไขก่อน');
+            return;
+        }
+
+        // รวบรวมข้อมูลจากฟอร์ม
+        const formData = new FormData(this);
+        let productData = Object.fromEntries(formData.entries());
+
+        const imageInput = document.getElementById('image');
+        const previewImg = document.getElementById('preview-image');
+
+        if (imageInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = async function(evt) {
+                productData.image = evt.target.result;
+                await updateProduct(currentProductId, productData);
+            };
+            reader.readAsDataURL(imageInput.files[0]);
+        } else {
+            // ถ้า previewImg.src มีค่า (แสดงรูปเดิม) ให้ใช้รูปเดิม
+            if (previewImg && previewImg.src && previewImg.style.display !== 'none' && previewImg.src.startsWith('data')) {
+                productData.image = previewImg.src;
+            } else {
+                // ไม่มีรูปเดิมและไม่ได้แนบรูปใหม่ ไม่ต้องส่งฟิลด์ image
+                delete productData.image;
+            }
+            await updateProduct(currentProductId, productData);
+        }
+    });
+
+    async function updateProduct(id, data) {
+        try {
+            const res = await fetch(`${BACKEND_URL}/products/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            if (res.ok) {
+                alert('อัพเดทข้อมูลสินค้าสำเร็จ');
+            } else {
+                alert(result.message || 'เกิดข้อผิดพลาด');
+            }
+        } catch (err) {
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+        }
+    }
+
+    document.getElementById('add-maker-btn').addEventListener('click', function() {
+        const newMaker = document.getElementById('new-maker').value.trim();
+        const makerSelect = document.getElementById('maker');
+        if (newMaker) {
+            let exists = false;
+            for (let option of makerSelect.options) {
+                if (option.value === newMaker) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                const option = document.createElement('option');
+                option.value = newMaker;
+                option.textContent = newMaker;
+                makerSelect.appendChild(option);
+                makerSelect.value = newMaker;
+            }
+            document.getElementById('new-maker').value = '';
+        }
+    });
+
+    document.getElementById('add-category-btn').addEventListener('click', function() {
+        const newCategory = document.getElementById('new-category').value.trim();
+        const categorySelect = document.getElementById('category');
+        if (newCategory) {
+            let exists = false;
+            for (let option of categorySelect.options) {
+                if (option.value === newCategory) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                const option = document.createElement('option');
+                option.value = newCategory;
+                option.textContent = newCategory;
+                categorySelect.appendChild(option);
+                categorySelect.value = newCategory;
+            }
+            document.getElementById('new-category').value = '';
         }
     });
 });

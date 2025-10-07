@@ -140,4 +140,71 @@ function renderProductsTablePage(products, page) {
         }
     });
 }
-fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
+
+function loadProducts() {
+    fetch(`${BACKEND_URL}/products`)
+        .then(res => res.json())
+        .then(products => {
+            const productList = document.getElementById('product-list');
+            
+            if (!products || products.length === 0) {
+                productList.innerHTML = '<tr><td colspan="14" class="no-data">ไม่พบข้อมูลสินค้า</td></tr>';
+                return;
+            }
+
+            // เพิ่มหัวตาราง
+            let tableHTML = `
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>รหัสสินค้า</th>
+                            <th>โมเดล</th>
+                            <th>ชื่อสินค้า</th>
+                            <th>ผู้ผลิต</th>
+                            <th>ประเภท</th>
+                            <th>สถานะ</th>
+                            <th>ราคาต้นทุน</th>
+                            <th>ราคาขาย</th>
+                            <th>หน่วย</th>
+                            <th>ตำแหน่ง</th>
+                            <th>วันที่สร้าง</th>
+                            <th>เวลาสร้าง</th>
+                            <th>วันที่อัพเดท</th>
+                            <th>เวลาอัพเดท</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            tableHTML += products.map(p => `
+                <tr>
+                    <td>${p.product_code || '-'}</td>
+                    <td>${p.model || '-'}</td>
+                    <td>${p.product_name || '-'}</td>
+                    <td>${p.maker || '-'}</td>
+                    <td>${p.category || '-'}</td>
+                    <td>${p.condition || '-'}</td>
+                    <td>${p.price || '-'}</td>
+                    <td>${p.sale_price || '-'}</td>
+                    <td>${p.unit || '-'}</td>
+                    <td>${p.location || '-'}</td>
+                    <td>${p.createdDate || '-'}</td>
+                    <td>${p.createdTime || '-'}</td>
+                    <td>${p.updatedDate || '-'}</td>
+                    <td>${p.updatedTime || '-'}</td>
+                </tr>
+            `).join('');
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            productList.innerHTML = tableHTML;
+        })
+        .catch(error => {
+            console.error('Error loading products:', error);
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '<tr><td colspan="14" class="error">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+        });
+}
