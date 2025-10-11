@@ -82,6 +82,24 @@ const SaleProductSchema = new mongoose.Schema({
 });
 const SaleProduct = mongoose.model('SaleProduct', SaleProductSchema, 'sale_product');
 
+// สร้าง Schema และ Model สำหรับการรับสินค้า
+const BuyinProductSchema = new mongoose.Schema({
+    product_code: String,
+    model: String,
+    product_name: String,
+    maker: String,
+    category: String,
+    condition: String,
+    price: Number,
+    unit: String,
+    quantity: Number,
+    total: Number,
+    buyindate: Date,
+    note: String
+    // เพิ่มฟิลด์อื่นๆ ตามต้องการ
+});
+const BuyinProduct = mongoose.model('BuyinProduct', BuyinProductSchema, 'buyin_product');
+
 // เพิ่ม route สำหรับการลงทะเบียน
 app.post('/register', async (req, res) => {
     try {
@@ -241,6 +259,31 @@ app.post('/sale_product', async (req, res) => {
         console.error('Save sale error:', err);
         res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกการขาย', error: err.message });
     }
+});
+
+// เพิ่ม route สำหรับบันทึกการรับสินค้า
+app.post('/buyin_product', async (req, res) => {
+    try {
+        console.log('POST /buyin_product', req.body);
+        const buyin = new BuyinProduct(req.body);
+        await buyin.save();
+        res.status(201).json(buyin);
+    } catch (err) {
+        console.error('Save buyin error:', err);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกซื้อเข้า', error: err.message });
+    }
+});
+
+// ดึงข้อมูลซื้อเข้า
+app.get('/buyin_product', async (req, res) => {
+    const items = await BuyinProduct.find();
+    res.json(items);
+});
+
+// ดึงข้อมูลขาย
+app.get('/sale_product', async (req, res) => {
+    const items = await SaleProduct.find();
+    res.json(items);
 });
 
 // เริ่ม server

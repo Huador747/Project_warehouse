@@ -95,7 +95,32 @@ if (window.flatpickr) {
         altInput: true,
         altFormat: "d/m/Y",
         allowInput: true,
-        defaultDate: "today"
+        defaultDate: "today",
+        locale: "th",
+        onReady: function(selectedDates, dateStr, instance) {
+            const fp = instance;
+            const calendarContainer = fp.calendarContainer;
+            if (calendarContainer) {
+                let todayBtn = calendarContainer.querySelector(".flatpickr-today-btn");
+                if (!todayBtn) {
+                    todayBtn = document.createElement("button");
+                    todayBtn.type = "button";
+                    todayBtn.className = "flatpickr-today-btn";
+                    todayBtn.textContent = "วันนี้";
+                    todayBtn.style.margin = "8px";
+                    todayBtn.style.padding = "6px 16px";
+                    todayBtn.style.background = "#ffe0b2";
+                    todayBtn.style.border = "1px solid #e0b97d";
+                    todayBtn.style.borderRadius = "4px";
+                    todayBtn.style.cursor = "pointer";
+                    todayBtn.onclick = function() {
+                        fp.setDate(new Date());
+                        fp.close();
+                    };
+                    calendarContainer.appendChild(todayBtn);
+                }
+            }
+        }
     });
 }
 

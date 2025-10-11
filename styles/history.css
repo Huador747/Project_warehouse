@@ -291,3 +291,40 @@ body {
         box-shadow 0.2s,
         transform 0.2s;
 }
+
+/* เพิ่มใน history.css */
+.history-summary, .history-list {
+    margin: 32px 0;
+    background: #fffbe7;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.history-summary h2, .history-list h2 {
+    margin-top: 0;
+    color: #e67e22;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    background: #fff;
+}
+
+th, td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #f0c987;
+    text-align: center;
+}
+
+th {
+    background: #ffd336;
+    color: #333;
+    font-weight: bold;
+}
+
+tr:hover {
+    background: #fff3d1;
+}

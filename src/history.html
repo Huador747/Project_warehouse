@@ -2,49 +2,56 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <title>ประวัติซื้อ-ขาย</title>
     <link rel="stylesheet" href="../styles/history.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <!-- Hamburger button -->
-    <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-    <div class="sidebar" id="sidebar">
-        <div class="logo-container">
-            <img src="../assets/logo.png" alt="Logo" class="logo">
-        </div>
-        <button class="nav-btn" onclick="window.location.href='main.html'">หน้าหลัก</button>
-        <div class="dropdown-hover">
-            <button class="nav-btn dropdown-btn">
-                เมนู
-                <span class="dropdown-icon">&#9662;</span>
-            </button>
-            <div class="dropdown-content">
-                <button class="dropdown-item">เมนูย่อย 1</button>
-                <button class="dropdown-item">เมนูย่อย 2</button>
-            </div>
-        </div>
-        <button class="nav-btn" onclick="window.location.href='buyin.html'">รายการซื้อ</button>
-        <button class="nav-btn" onclick="window.location.href='sale.html'">รายการขาย</button>
-        <button class="nav-btn active" onclick="window.location.href='history.html'">ประวัติการซื้อ-ขาย</button>
-        <button class="nav-btn">คิดไม่ออกบอกโอเค</button>
-    </div>
-
     <div class="main-content">
         <div class="navbar">
             <form class="navbar-form">
                 <span class="navbar-text active">ประวัติการซื้อ-ขาย</span>
-                <!-- เพิ่ม navbar อื่นๆ ตามต้องการ -->
+                <input type="text" id="search-input" placeholder="ค้นหาสินค้า, หมายเลขโมเดล, หมวดหมู่...">
             </form>
-            <button class="logout-btn" type="button">ออกจากระบบ</button>
         </div>
-        <!-- เพิ่มเนื้อหาประวัติการซื้อ-ขายที่นี่ -->
+        <div class="history-summary">
+            <h2>สรุปจำนวนคงเหลือสินค้า</h2>
+            <table id="stock-table">
+                <thead>
+                    <tr>
+                        <th>รหัสสินค้า</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>โมเดล</th>
+                        <th>หมวดหมู่</th>
+                        <th>จำนวนคงเหลือ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- เติมข้อมูลด้วย JS -->
+                </tbody>
+            </table>
+        </div>
+        <div class="history-list">
+            <h2>ประวัติการซื้อ-ขาย</h2>
+            <table id="history-table">
+                <thead>
+                    <tr>
+                        <th>วันที่</th>
+                        <th>ประเภท</th>
+                        <th>รหัสสินค้า</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>โมเดล</th>
+                        <th>จำนวน</th>
+                        <th>ราคาต่อหน่วย</th>
+                        <th>รวม</th>
+                        <th>ลูกค้า/ผู้ขาย</th>
+                        <th>หมายเหตุ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- เติมข้อมูลด้วย JS -->
+                </tbody>
+            </table>
+        </div>
     </div>
     <script type="module" src="../scripts/history.js"></script>
 </body>

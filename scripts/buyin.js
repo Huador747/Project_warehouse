@@ -150,7 +150,6 @@ if (window.flatpickr) {
     
     document.querySelector('.product-form').addEventListener('submit', async function(e) {
         e.preventDefault();
-        console.log('submit event fired'); // เพิ่มบรรทัดนี้
         // รวบรวมข้อมูลจากฟอร์ม
         const formData = new FormData(this);
         let productData = Object.fromEntries(formData.entries());
@@ -160,13 +159,11 @@ if (window.flatpickr) {
             const [day, month, year] = productData.buyindate.split('/');
             let y = parseInt(year, 10);
             if (y > 2500) y -= 543;
-            // ตรวจสอบว่า day, month, year เป็นตัวเลขและไม่ NaN
             if (!isNaN(day) && !isNaN(month) && !isNaN(y)) {
                 const isoDate = new Date(`${y}-${month}-${day}T00:00:00.000Z`);
                 if (!isNaN(isoDate.getTime())) {
                     productData.buyindate = isoDate.toISOString();
                 } else {
-                    // ถ้าแปลงไม่ได้ ให้ลบฟิลด์ date หรือแจ้งเตือน
                     delete productData.buyindate;
                     alert('รูปแบบวันที่ไม่ถูกต้อง');
                 }
@@ -179,46 +176,24 @@ if (window.flatpickr) {
         // แปลงค่าเป็นตัวเลข
         productData.price = Number(productData.price) || 0;
         productData.quantity = Number(productData.quantity) || 0;
-        productData.total = Number(productData.total) || 0; // << สำคัญ
+        productData.total = Number(productData.total) || 0;
 
-        // 
-        if (currentProductId) {
-            // อัปเดตสินค้าเดิม (เพิ่ม/อัปเดต quantity, total, note, date)
-            try {
-                const res = await fetch(`${BACKEND_URL}/products/${currentProductId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(productData)
-                });
-                if (res.ok) {
-                    alert('อัปเดตข้อมูลสำเร็จ');
-                    this.reset();
-                    currentProductId = null;
-                } else {
-                    const data = await res.json();
-                    alert(data.message || 'เกิดข้อผิดพลาด');
-                }
-            } catch (err) {
-                alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+        // **บันทึกเป็นรายการใหม่ทุกครั้ง**
+        try {
+            const res = await fetch(`${BACKEND_URL}/buyin_product`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            });
+            if (res.ok) {
+                alert('บันทึกข้อมูลสำเร็จ');
+                this.reset();
+            } else {
+                const data = await res.json();
+                alert(data.message || 'เกิดข้อผิดพลาด');
             }
-        } else {
-            // สร้างสินค้าใหม่ (กรณีไม่มี _id) กรณีนี้จะบันทึกข้อมูลใหม่ทั้งหมดถ้าในdatabseไม่มี
-            try {
-                const res = await fetch(`${BACKEND_URL}/products`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(productData)
-                });
-                if (res.ok) {
-                    alert('บันทึกข้อมูลสำเร็จ');
-                    this.reset();
-                } else {
-                    const data = await res.json();
-                    alert(data.message || 'เกิดข้อผิดพลาด');
-                }
-            } catch (err) {
-                alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
-            }
+        } catch (err) {
+            alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
         }
     });
     //
