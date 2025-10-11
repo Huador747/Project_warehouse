@@ -56,8 +56,8 @@
             <div class="product-form-row">
                 <div class="product-form-col">
                     <div class="form-group">
-                        <label for="date">วันที่</label>
-                        <input type="text" id="date" name="date" autocomplete="off">
+                        <label for="buyindate">วันที่</label>
+                        <input type="text" id="buyindate" name="buyindate" autocomplete="off" required>
                     </div>
                     <div class="form-group">
                         <label for="product_code">รหัสสินค้า</label>
@@ -96,7 +96,7 @@
                     </div>
                     <div class="form-group">
                         <label for="total">ยอดรวม</label>
-                        <input type="text" id="total" name="total">
+                        <input type="number" id="total" name="total" readonly>
                     </div>
                     <div class="form-group">
                         <label for="note">หมายเหตุ</label>
@@ -107,59 +107,6 @@
             <button type="submit" class="function-btn-add">บันทึก</button>
         </form>
     </div>
-     <script type="module" src="../scripts/buyin.js"></script>
-
-    <script>if (window.flatpickr) {
-        flatpickr("#date", {
-            dateFormat: "d/m/Y",
-            altInput: true,
-            altFormat: "d/m/Y",
-            allowInput: true,
-            defaultDate: "today",
-            onReady: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length > 0) {
-                    const date = selectedDates[0];
-                    const buddhistYear = date.getFullYear() + 543;
-                    const day = ("0" + date.getDate()).slice(-2);
-                    const month = ("0" + (date.getMonth() + 1)).slice(-2);
-                    const thaiDate = day + '/' + month + '/' + buddhistYear;
-                    // คุณสามารถนำ thaiDate ไปใช้ต่อได้
-                }
-                const fp = instance;
-                const calendarContainer = fp.calendarContainer;
-                if (calendarContainer) {
-                    let todayBtn = calendarContainer.querySelector(".flatpickr-today-btn");
-                    if (!todayBtn) {
-                        todayBtn = document.createElement("button");
-                        todayBtn.type = "button";
-                        todayBtn.className = "flatpickr-today-btn";
-                        todayBtn.textContent = "วันนี้";
-                        todayBtn.style.margin = "8px";
-                        todayBtn.style.padding = "6px 16px";
-                        todayBtn.style.background = "#ffe0b2";
-                        todayBtn.style.border = "1px solid #e0b97d";
-                        todayBtn.style.borderRadius = "4px";
-                        todayBtn.style.cursor = "pointer";
-                        todayBtn.onclick = function() {
-                            fp.setDate(new Date());
-                            fp.close();
-                        };
-                        calendarContainer.appendChild(todayBtn);
-                    }
-                }
-            },
-            onChange: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length > 0) {
-                    const date = selectedDates[0];
-                    const buddhistYear = date.getFullYear() + 543;
-                    const day = ("0" + date.getDate()).slice(-2);
-                    const month = ("0" + (date.getMonth() + 1)).slice(-2);
-                    const thaiDate = day + '/' + month + '/' + buddhistYear;
-                    // คุณสามารถนำ thaiDate ไปใช้ต่อได้
-                }
-            }
-        });
-    }</script>
-
+    <script type="module" src="../scripts/buyin.js"></script>
 </body>
 </html>

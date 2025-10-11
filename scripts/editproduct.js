@@ -154,6 +154,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const formData = new FormData(this);
         let productData = Object.fromEntries(formData.entries());
 
+        // === เพิ่มบันทึกวันที่และเวลาแก้ไข ===
+        const now = new Date();
+        productData.updatedDate = now.toLocaleDateString('th-TH');
+        productData.updatedTime = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
         const imageInput = document.getElementById('image');
         const previewImg = document.getElementById('preview-image');
 
@@ -165,11 +170,9 @@ document.addEventListener("DOMContentLoaded", function () {
             };
             reader.readAsDataURL(imageInput.files[0]);
         } else {
-            // ถ้า previewImg.src มีค่า (แสดงรูปเดิม) ให้ใช้รูปเดิม
             if (previewImg && previewImg.src && previewImg.style.display !== 'none' && previewImg.src.startsWith('data')) {
                 productData.image = previewImg.src;
             } else {
-                // ไม่มีรูปเดิมและไม่ได้แนบรูปใหม่ ไม่ต้องส่งฟิลด์ image
                 delete productData.image;
             }
             await updateProduct(currentProductId, productData);

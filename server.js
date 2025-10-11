@@ -47,12 +47,15 @@ const ProductSchema = new mongoose.Schema({
     sale_price: String,
     unit: String,
     location: String,
-    image: String, // base64 หรือ url
+    image: String,
     updatedDate: String,
     updatedTime: String,
     createdDate: String,
-    createdTime: String
-    // เพิ่มฟิลด์อื่นๆ ตามต้องการ
+    createdTime: String,
+    quantity: Number,   // จำนวนสินค้า
+    total: Number,      // ยอดรวม
+    buyindate: Date,       // เปลี่ยนจาก date: Date เป็น buyindate: Date
+    note: String        // หมายเหตุ
 });
 const Product = mongoose.model('Product', ProductSchema);
 
@@ -138,32 +141,28 @@ app.get('/products', async (req, res) => {
 // เพิ่ม route สำหรับแก้ไขสินค้า
 app.put('/products/:id', async (req, res) => {
     try {
-        // เพิ่มวันที่และเวลาอัพเดท
-        const now = new Date();
-        req.body.updatedDate = now.toLocaleDateString('th-TH');
-        req.body.updatedTime = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-        const updatedProduct = await Product.findByIdAndUpdate(
+        // req.body.quantity จะถูกอัปเดตหรือเพิ่มใหม่ถ้ายังไม่มี
+        const updated = await Product.findByIdAndUpdate(
             req.params.id,
-            req.body,
-            { new: true }
+            { $set: { ...req.body, quantity: Number(req.body.quantity) || 0 } },
+            { new: true, upsert: false }
         );
-        if (!updatedProduct) {
-            return res.status(404).json({ message: 'ไม่พบสินค้า' });
-        }
-        res.json(updatedProduct);
+        if (!updated) return res.status(404).json({ message: 'ไม่พบสินค้า' });
+        res.json(updated);
     } catch (err) {
-        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการแก้ไขสินค้า', error: err.message });
+        res.status(500).json({ message: 'เกิดข้อผิดพลาด', error: err.message });
     }
 });
 
 // เพิ่ม route สำหรับเพิ่มสินค้า
 app.post('/products', async (req, res) => {
     try {
+        console.log('POST /products', req.body); // log ข้อมูลที่รับมา
         const product = new Product(req.body);
         await product.save();
         res.status(201).json(product);
     } catch (err) {
+        console.error('Save error:', err); // log error
         res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกสินค้า', error: err.message });
     }
 });
@@ -196,6 +195,17 @@ app.use(express.static(path.join(__dirname, 'src')));
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
+
+// เพิ่ม route สำหรับลบสินค้า
+app.delete('/products/:id', async (req, res) => {
+    try {
+        const deleted = await Product.findByIdAndDelete(req.params.id);
+        if (!deleted) return res.status(404).json({ message: 'ไม่พบสินค้า' });
+        res.json({ message: 'ลบสินค้าเรียบร้อย' });
+    } catch (err) {
+        res.status(500).json({ message: 'เกิดข้อผิดพลาด', error: err.message });
+    }
+});
 
 // เริ่ม server
 const port = 3000;

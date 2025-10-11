@@ -45,9 +45,12 @@
     <!-- ย้าย navbar ออกมานอก main-content -->
     <div class="navbar">
         <form class="navbar-form">
-            <span class="navbar-text">หน้าขายสินค้า</span>
+            <span class="navbar-text">หน้าซื้อสินค้า</span>
         </form>
-        <button class="logout-btn">ออกจากระบบ</button>
+        <div class="search-logout-row">
+            <input type="text" class="search-product-input" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
+            <button class="logout-btn">ออกจากระบบ</button>
+        </div>
     </div>
 
     <div class="main-content">
@@ -67,30 +70,30 @@
                         <input type="text" id="productCode" name="productCode">
                     </div>
                     <div class="form-group">
-                        <label for="costPrice">หน่วยนับ</label>
-                        <input type="number" id="costPrice" name="costPrice">
-                    </div>
-                    <div class="form-group">
-                        <label for="unit">มือ1/มือ2</label>
+                        <label for="unit">หน่วยนับ</label>
                         <input type="text" id="unit" name="unit">
                     </div>
                     <div class="form-group">
-                        <label for="salePrice">ราคาต้นทุน</label>
-                        <input type="number" id="salePrice" name="salePrice">
+                        <label for="condition">มือ1/มือ2</label>
+                        <input type="text" id="condition" name="condition">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">ราคาต้นทุน</label>
+                        <input type="number" id="price" name="price">
                     </div>
                     <div class="form-group">
                         <label for="customerName">ราคาขาย</label>
-                        <input type="text" id="customerName" name="customerName">
+                        <input type="text" id="sale_price" name="sale_price">
                     </div>
                 </div>
                 <div class="product-form-col">
                     <div class="form-group">
                         <label for="quantity">ภาษี7%</label>
-                        <input type="number" id="quantity" name="quantity">
+                        <input type="number" id="vat" name="vat">
                     </div>
                     <div class="form-group">
                         <label for="condition">จำนวน</label>
-                        <input type="text" id="condition" name="condition">
+                        <input type="text" id="quantity" name="quantity">
                     </div>
                     <div class="form-group">
                         <label for="total">ราคาไม่รวมภาษี</label>
@@ -98,81 +101,27 @@
                     </div>
                     <div class="form-group">
                         <label for="note">ราคารวมภาษี</label>
-                        <input type="text" id="note" name="note">
+                        <input type="text" id="total_vat" name="total_vat">
                     </div>
                     <div class="form-group">
                         <label for="customerPhone">กำไร</label>
-                        <input type="text" id="customerPhone" name="customerPhone">
+                        <input type="text" id="profit" name="profit">
                     </div>
                     <div class="form-group">
                         <label for="address">ชื่อลูกค้า</label>
-                        <input type="text" id="address" name="address">
+                        <input type="text" id="customerName" name="customerName">
                     </div>
                     <div class="form-group">
                         <label for="paymentType">หมายเหตุ</label>
-                        <input type="text" id="paymentType" name="paymentType">
+                        <input type="text" id="note" name="note">
                     </div>
                 </div>
             </div>
             <button type="submit" class="function-btn-add">บันทึก</button>
         </form>
-    </div>
-    <script>
-        
-flatpickr("#date", {
-  dateFormat: "d/m/Y",
-  altInput: true,
-  altFormat: "d/m/Y", // เดือนเป็นตัวเลข
-  allowInput: true,
-  defaultDate: "today",
-
-  onReady: function(selectedDates, dateStr, instance) {
-    if (selectedDates.length > 0) {
-      const date = selectedDates[0];
-      const buddhistYear = date.getFullYear() + 543;
-      const day = ("0" + date.getDate()).slice(-2);
-      const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      const thaiDate = day + '/' + month + '/' + buddhistYear;
-      
-    }
-    const fp = instance;
-    const calendarContainer = fp.calendarContainer;
-    if (calendarContainer) {
-      let todayBtn = calendarContainer.querySelector(".flatpickr-today-btn");
-      if (!todayBtn) {
-        todayBtn = document.createElement("button");
-        todayBtn.type = "button";
-        todayBtn.className = "flatpickr-today-btn";
-        todayBtn.textContent = "วันนี้";
-        todayBtn.style.margin = "8px";
-        todayBtn.style.padding = "6px 16px";
-        todayBtn.style.background = "#ffe0b2";
-        todayBtn.style.border = "1px solid #e0b97d";
-        todayBtn.style.borderRadius = "4px";
-        todayBtn.style.cursor = "pointer";
-        todayBtn.onclick = function() {
-          fp.setDate(new Date());
-          fp.close();
-        };
-        calendarContainer.appendChild(todayBtn);
-      }
-    }
-  },
-  onChange: function(selectedDates, dateStr, instance) {
-    if (selectedDates.length > 0) {
-      const date = selectedDates[0];
-      const buddhistYear = date.getFullYear() + 543;
-      const day = ("0" + date.getDate()).slice(-2);
-      const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      const thaiDate = day + '/' + month + '/' + buddhistYear;
-    }
-  }
-});
-    </script>
+    </div> 
 <script type="module" src="../scripts/sale.js"></script>
 <script>
-const BACKEND_URL = `http://${window.location.hostname}:3000`;
-
 // ตัวอย่างการใช้งาน
 // fetch(`${BACKEND_URL}/products`).then(...);
 </script>
