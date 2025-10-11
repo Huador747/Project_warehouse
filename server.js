@@ -44,7 +44,7 @@ const ProductSchema = new mongoose.Schema({
     category: String,
     condition: String,
     price: Number,
-    sale_price: String,
+    sale_price: Number, 
     unit: String,
     location: String,
     image: String,
@@ -52,12 +52,35 @@ const ProductSchema = new mongoose.Schema({
     updatedTime: String,
     createdDate: String,
     createdTime: String,
-    quantity: Number,   // จำนวนสินค้า
-    total: Number,      // ยอดรวม
-    buyindate: Date,       // เปลี่ยนจาก date: Date เป็น buyindate: Date
-    note: String        // หมายเหตุ
+    quantity: Number,
+    total: Number,
+    buyindate: Date,
+    note: String,
 });
 const Product = mongoose.model('Product', ProductSchema);
+
+// สร้าง Schema และ Model สำหรับการขายสินค้า
+const SaleProductSchema = new mongoose.Schema({
+    product_code: String,
+    model: String,
+    product_name: String,
+    maker: String,
+    category: String,
+    condition: String,
+    price: Number,
+    sale_price: Number, 
+    unit: String,
+    saleoutdate: Date,
+    vat: Number,
+    total: Number,   
+    total_vat: Number,
+    profit: Number,
+    salequantity: Number,
+    notesale: String,
+    customerName: String
+    // เพิ่มฟิลด์อื่นๆ ตามต้องการ
+});
+const SaleProduct = mongoose.model('SaleProduct', SaleProductSchema, 'sale_product');
 
 // เพิ่ม route สำหรับการลงทะเบียน
 app.post('/register', async (req, res) => {
@@ -162,7 +185,7 @@ app.post('/products', async (req, res) => {
         await product.save();
         res.status(201).json(product);
     } catch (err) {
-        console.error('Save error:', err); // log error
+        console.error('Save error:', err);
         res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกสินค้า', error: err.message });
     }
 });
@@ -204,6 +227,19 @@ app.delete('/products/:id', async (req, res) => {
         res.json({ message: 'ลบสินค้าเรียบร้อย' });
     } catch (err) {
         res.status(500).json({ message: 'เกิดข้อผิดพลาด', error: err.message });
+    }
+});
+
+// เพิ่ม route สำหรับบันทึกการขายสินค้า
+app.post('/sale_product', async (req, res) => {
+    try {
+        console.log('POST /sale_product', req.body);
+        const sale = new SaleProduct(req.body);
+        await sale.save();
+        res.status(201).json(sale);
+    } catch (err) {
+        console.error('Save sale error:', err);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกการขาย', error: err.message });
     }
 });
 
