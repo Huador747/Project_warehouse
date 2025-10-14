@@ -54,17 +54,22 @@ function renderStockTable(stockList) {
     });
 }
 
-function renderHistoryTable(buyin, sale, search = '') {
+function renderHistoryTable(buyin, sale, search = '', type = 'all') {
     const tbody = document.querySelector('#history-table tbody');
     tbody.innerHTML = '';
-    // รวมและเรียงตามวันที่ (ใหม่สุดก่อน)
-    const all = [
-        ...buyin.map(item => ({...item, type: 'ซื้อ', date: item.buyindate, qty: item.quantity, price: item.price, total: item.total, partner: '-', note: item.note })),
-        ...sale.map(item => ({...item, type: 'ขาย', date: item.saleoutdate, qty: item.salequantity, price: item.sale_price, total: item.total, partner: item.customerName, note: item.notesale }))
-    ];
+    let all = [];
+    if (type === 'buyin') {
+        all = buyin.map(item => ({...item, type: 'ซื้อ', date: item.buyindate, qty: item.quantity, price: item.price, total: item.total, partner: '-', note: item.note }));
+    } else if (type === 'sale') {
+        all = sale.map(item => ({...item, type: 'ขาย', date: item.saleoutdate, qty: item.salequantity, price: item.sale_price, total: item.total, partner: item.customerName, note: item.notesale }));
+    } else {
+        all = [
+            ...buyin.map(item => ({...item, type: 'ซื้อ', date: item.buyindate, qty: item.quantity, price: item.price, total: item.total, partner: '-', note: item.note })),
+            ...sale.map(item => ({...item, type: 'ขาย', date: item.saleoutdate, qty: item.salequantity, price: item.sale_price, total: item.total, partner: item.customerName, note: item.notesale }))
+        ];
+    }
     all.sort((a, b) => new Date(b.date) - new Date(a.date));
     all.forEach(item => {
-        // filter
         if (search && !(
             (item.product_code || '').toLowerCase().includes(search) ||
             (item.product_name || '').toLowerCase().includes(search) ||
@@ -92,13 +97,24 @@ async function main() {
     const { buyin, sale } = await fetchHistory();
     let stockList = summarizeStock(buyin, sale);
     renderStockTable(stockList);
-    renderHistoryTable(buyin, sale);
 
-    // ค้นหา
-    document.getElementById('search-input').addEventListener('input', function() {
-        const search = this.value.trim().toLowerCase();
-        renderHistoryTable(buyin, sale, search);
+    let currentType = 'all';
+    let currentSearch = '';
+
+    // dropdown filter
+    document.getElementById('history-type').addEventListener('change', function() {
+        currentType = this.value;
+        renderHistoryTable(buyin, sale, currentSearch, currentType);
     });
+
+    // search filter
+    document.getElementById('search-input').addEventListener('input', function() {
+        currentSearch = this.value.trim().toLowerCase();
+        renderHistoryTable(buyin, sale, currentSearch, currentType);
+    });
+
+    // initial render
+    renderHistoryTable(buyin, sale, currentSearch, currentType);
 }
 
 main();
