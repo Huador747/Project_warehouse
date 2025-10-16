@@ -130,7 +130,16 @@ body {
     margin: 0 0 0px 75px;
     margin-right: auto;
     /* ดันไปทางซ้าย */
-    background-color: rgb(71, 208, 64);
+    background-color: #ff8c1a;
+    border-radius: 5px;
+}
+
+.navbar-form-delete{
+    gap: 30px;
+    margin: 0 0 0px 75px;
+    margin-right: auto;
+    /* ดันไปทางซ้าย */    
+    background-color: rgb(253, 49, 49);
     border-radius: 5px;
 }
 
@@ -139,6 +148,16 @@ body {
     padding: 7px 16px;
     border-radius: 4px;
     color: #000000;
+    font-size: 31px;
+    margin-right: 10px;
+    min-width: 120px;
+    text-align: center;
+}
+.navbar-text-delete {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 4px;
+    color: #ffe7e7;
     font-size: 31px;
     margin-right: 10px;
     min-width: 120px;
@@ -743,17 +762,20 @@ label,
 #search-result {
     position: absolute;
     top: 70px;
-    /* ปรับตำแหน่งให้อยู่ใต้ช่องค้นหา */
-    right: 120px;
-    /* ปรับตำแหน่งจากขอบขวา */
-    width: 400px;
+    /* เอา right คงที่ออก ให้ JS เป็นผู้กำหนดตำแหน่ง */
+    right: auto;
+    left: 0;
+    /* เอา width ตายตัวออก ให้ปรับโดย JS */
+    width: auto;
+    min-width: 160px;
+    max-width: 100%;
+    box-sizing: border-box;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-height: 400px;
     overflow-y: auto;
     z-index: 3100;
-    /* ให้แสดงทับส่วนอื่นๆ */
     border: 1px solid #e0b97d;
     transition: opacity 0.15s ease-out;
 }
@@ -807,13 +829,9 @@ label,
 
 /* สไตล์สำหรับกรณีไม่พบผลการค้นหา */
 .no-results {
-    padding: 16px;
-    text-align: center;
-    color: #999;
-    font-size: 14px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: end;
+    padding: 8px;
+    color: #ff1900;
+    font-size: 18pxs;
 }
 
 .timestamp-container {

@@ -105,6 +105,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultDiv.style.maxHeight = '250px';
                 resultDiv.style.overflowY = 'auto';
 
+                // หลังสร้าง resultDiv และก่อนแทรกเข้า DOM ให้เพิ่ม:
+                const rect = searchInput.getBoundingClientRect();
+                // ถ้า parent ของ searchInput มี position: relative (เช่น .navbar) ให้คำนวณตำแหน่งแบบ offset ภายใน parent:
+                const parentRect = searchInput.parentElement.getBoundingClientRect();
+                resultDiv.style.width = rect.width + 'px';
+                // วางให้อยู่ใต้ input โดยคำนวณ relative left/top ภายใน parent
+                resultDiv.style.left = (rect.left - parentRect.left) + 'px';
+                resultDiv.style.top = (rect.bottom - parentRect.top + 6) + 'px'; // +6 ช่องว่างเล็กน้อย
+                resultDiv.style.boxSizing = 'border-box';
+
                 if (products.length === 0) {
                     resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
                 } else {
@@ -123,6 +133,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // แทรกผลลัพธ์ใต้ input
                 searchInput.parentNode.insertBefore(resultDiv, searchInput.nextSibling);
+
+                // ให้ CSS animation ทำงาน (เพิ่ม class หลัง insert เพื่อให้ transition/animation เห็น)
+                requestAnimationFrame(() => {
+                    resultDiv.classList.add('animate');
+                });
 
                 // Event เลือกสินค้า
                 resultDiv.querySelectorAll('.search-item').forEach(item => {
