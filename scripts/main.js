@@ -1,54 +1,184 @@
 import { BACKEND_URL } from './config.js';
 
-const backendHost = window.location.hostname;
+const rowsPerPage = 5;
+let currentPage = 1;
+let currentProductId = null;
+let allProducts = [];
 
-document.addEventListener("DOMContentLoaded", function () {
-    // เพิ่มฟังก์ชันตรวจสอบการล็อกอิน
-    function checkLogin() {
-        // ตรวจสอบว่ามีการล็อกอินหรือไม่
-        const isLoggedIn = localStorage.getItem("isLoggedIn") || sessionStorage.getItem("isLoggedIn");
-        if (!isLoggedIn) {
-            window.location.replace("login.html");
-        }
+function checkLogin() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") || sessionStorage.getItem("isLoggedIn");
+    if (!isLoggedIn) {
+        window.location.replace("login.html");
     }
+}
 
-    // เรียกใช้ฟังก์ชันตรวจสอบเมื่อโหลดหน้า
-    checkLogin();
+// Helper: set value for select, add option if not exists
+function setSelectValue(selectId, value) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+    let exists = [...select.options].some(opt => opt.value === value);
+    if (!exists && value) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+    }
+    select.value = value;
+}
 
-    // ประกาศตัวแปร global
-    let currentProductId = null;
-    const searchInput = document.querySelector('.search-product-input');
+// Fill form for edit
+function fillForm(product) {
+    currentProductId = product._id;
+    const fields = {
+        product_code: product.product_code || '',
+        model: product.model || '',
+        product_name: product.product_name || '',
+        price: product.price || '',
+        sale_price: product.sale_price || ''
+    };
+    Object.entries(fields).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.value = value;
+    });
+    const selects = {
+        maker: product.maker,
+        category: product.category,
+        condition: product.condition,
+        unit: product.unit,
+        location: product.location
+    };
+    Object.entries(selects).forEach(([id, value]) => setSelectValue(id, value));
+    document.getElementById('updatedDate').textContent = product.updatedDate || '-';
+    document.getElementById('updatedTime').textContent = product.updatedTime || '-';
+    document.getElementById('search-result')?.remove();
+    document.querySelector('.search-product-input') && (document.querySelector('.search-product-input').value = '');
+}
 
-    // แก้ไขส่วน logout
-    const logoutBtn = document.getElementById("logout-btn");
-    
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
-            // เคลียร์ข้อมูลการล็อกอิน (ถ้ามี)
-            localStorage.clear();
-            sessionStorage.clear();
-            
-            try {
-                // ส่งกลับไปหน้า login
-                window.location.replace("login.html");
-            } catch (error) {
-                console.error("Logout error:", error);
-                // ถ้าเกิดข้อผิดพลาด ให้ใช้วิธีนี้แทน
-                window.location.href = "login.html";
+// Render table with pagination
+function renderProductsTable(products, page = 1) {
+    const productList = document.getElementById('product-list');
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const pageProducts = products.slice(start, end);
+
+    console.log('จำนวนสินค้าต่อหน้า:', pageProducts.length); // ตรวจสอบจำนวนจริง
+
+    if (!pageProducts || pageProducts.length === 0) {
+        productList.innerHTML = '<tr><td colspan="10" class="no-data">ไม่พบข้อมูลสินค้า</td></tr>';
+        return;
+    }
+    const productsHTML = pageProducts.map(p => `
+        <tr>
+            <td>${p.product_code || '-'}</td>
+            <td>${p.model || '-'}</td>
+            <td>${p.product_name || '-'}</td>
+            <td>${p.maker || '-'}</td>
+            <td>${p.category || '-'}</td>
+            <td>${p.condition || '-'}</td>
+            <td>${p.price || '-'}</td>
+            <td>${p.sale_price || '-'}</td>
+            <td>${p.unit || '-'}</td>
+            <td>${p.location || '-'}</td>
+        </tr>
+    `).join('');
+    productList.innerHTML = productsHTML;
+}
+
+function renderPagination(products, page = 1) {
+    const totalPages = Math.ceil(products.length / rowsPerPage);
+    const paginationDiv = document.getElementById('pagination');
+    if (!paginationDiv) return;
+    let html = '';
+    if (totalPages > 1) {
+        html += `<button ${page === 1 ? 'disabled' : ''} id="prev-page">ก่อนหน้า</button>`;
+        html += `<span style="margin:0 8px;">หน้า ${page} / ${totalPages}</span>`;
+        html += `<button ${page === totalPages ? 'disabled' : ''} id="next-page">ถัดไป</button>`;
+    }
+    paginationDiv.innerHTML = html;
+
+    if (totalPages > 1) {
+        document.getElementById('prev-page')?.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderProductsTable(allProducts, currentPage);
+                renderPagination(allProducts, currentPage);
+            }
+        });
+        document.getElementById('next-page')?.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderProductsTable(allProducts, currentPage);
+                renderPagination(allProducts, currentPage);
             }
         });
     }
+}
 
-    const categorySelect = document.getElementById('category');
-    const addCategoryBtn = document.getElementById('add-category-btn');
-    const newCategoryInput = document.getElementById('new-category');
+// Load all products and render
+function loadProducts() {
+    fetch(`${BACKEND_URL}/products`)
+        .then(res => res.json())
+        .then(products => {
+            allProducts = products;
+            currentPage = 1;
+            renderProductsTable(allProducts, currentPage);
+            renderPagination(allProducts, currentPage);
+        })
+        .catch(error => {
+            console.error('Error loading products:', error);
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '<tr><td colspan="10" class="error">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+        });
+}
 
-    // เพิ่มประเภทใหม่เข้า dropdown
-    addCategoryBtn.addEventListener('click', function() {
-        const newCategory = newCategoryInput.value.trim();
+// Convert file to base64
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+// --- DOMContentLoaded ---
+document.addEventListener("DOMContentLoaded", function () {
+    checkLogin();
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+    hamburger?.addEventListener('click', () => {
+        sidebar.classList.toggle('sidebar-open');
+    });
+
+    // Logout
+    const logoutBtn = document.getElementById("logout-btn");
+    logoutBtn?.addEventListener("click", function () {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("login.html");
+    });
+
+    // Navigation
+    document.querySelector(".function-btn-add")?.addEventListener("click", e => {
+        e.preventDefault();
+        window.location.href = "addproduct.html";
+    });
+    document.querySelector(".function-btn-edit")?.addEventListener("click", e => {
+        e.preventDefault();
+        window.location.href = "editproduct.html";
+    });
+    document.querySelector(".function-btn-delete")?.addEventListener("click", e => {
+        e.preventDefault();
+        window.location.href = "delete.html";
+    });
+
+    // Add category
+    document.getElementById('add-category-btn')?.addEventListener('click', function() {
+        const newCategory = document.getElementById('new-category').value.trim();
         const categorySelect = document.getElementById('category');
-        if (newCategory) {
-            // เช็คว่ามีอยู่แล้วหรือยัง
+        if (newCategory && categorySelect) {
             let exists = false;
             for (let option of categorySelect.options) {
                 if (option.value === newCategory) {
@@ -63,15 +193,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 categorySelect.appendChild(option);
                 categorySelect.value = newCategory;
             }
-            newCategoryInput.value = '';
+            document.getElementById('new-category').value = '';
         }
     });
 
-    // เพิ่มผู้ผลิตใหม่
-    document.getElementById('add-maker-btn').addEventListener('click', function() {
+    // Add maker
+    document.getElementById('add-maker-btn')?.addEventListener('click', function() {
         const newMaker = document.getElementById('new-maker').value.trim();
         const makerSelect = document.getElementById('maker');
-        if (newMaker) {
+        if (newMaker && makerSelect) {
             let exists = false;
             for (let option of makerSelect.options) {
                 if (option.value === newMaker) {
@@ -90,11 +220,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // เพิ่มหน่วยนับใหม่
-    document.getElementById('add-unit-btn').addEventListener('click', function() {
+    // Add unit
+    document.getElementById('add-unit-btn')?.addEventListener('click', function() {
         const newUnit = document.getElementById('new-unit').value.trim();
         const unitSelect = document.getElementById('unit');
-        if (newUnit) {
+        if (newUnit && unitSelect) {
             let exists = false;
             for (let option of unitSelect.options) {
                 if (option.value === newUnit) {
@@ -113,11 +243,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // เพิ่มตำแหน่งใหม่
-    document.getElementById('add-location-btn').addEventListener('click', function() {
+    // Add location
+    document.getElementById('add-location-btn')?.addEventListener('click', function() {
         const newLocation = document.getElementById('new-location').value.trim();
         const locationSelect = document.getElementById('location');
-        if (newLocation) {
+        if (newLocation && locationSelect) {
             let exists = false;
             for (let option of locationSelect.options) {
                 if (option.value === newLocation) {
@@ -136,105 +266,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ฟังก์ชัน helper สำหรับจัดการ select elements
-    function setSelectValue(selectId, value) {
-        const select = document.getElementById(selectId);
-        if (!select) {
-            console.warn(`Select element ${selectId} not found`);
-            return;
-        }
-        
-        let exists = [...select.options].some(opt => opt.value === value);
-        if (!exists) {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = value;
-            select.appendChild(option);
-        }
-        select.value = value;
-    }
-
-    // ฟังก์ชันเติมข้อมูลในฟอร์ม
-    function fillForm(product) {
-        console.log('Filling form with:', product); // Debug log
-
-        // เก็บ ID สำหรับการอัพเดท
-        currentProductId = product._id;
-
-        // ตั้งค่า input fields
-        const fields = {
-            product_code: product.product_code || '',
-            model: product.model || '',
-            product_name: product.product_name || '',
-            price: product.price || '',
-            sale_price: product.sale_price || ''
-        };
-
-        // เติมข้อมูลใน input fields
-        Object.entries(fields).forEach(([id, value]) => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.value = value;
-                console.log(`Set ${id} to ${value}`); // Debug log
-            } else {
-                console.warn(`Element ${id} not found`);
-            }
-        });
-
-        // ตั้งค่า select fields
-        const selects = {
-            maker: product.maker,
-            category: product.category,
-            condition: product.condition,
-            unit: product.unit,
-            location: product.location
-        };
-
-        // เติมข้อมูลใน select fields
-        Object.entries(selects).forEach(([id, value]) => {
-            try {
-                setSelectValue(id, value);
-                console.log(`Set ${id} to ${value}`); // Debug log
-            } catch (err) {
-                console.warn(`Error setting ${id}:`, err);
-            }
-        });
-
-        // แสดงเวลา
-        document.getElementById('updatedDate').textContent = product.updatedDate || '-';
-        document.getElementById('updatedTime').textContent = product.updatedTime || '-';
-
-        // ซ่อนผลการค้นหา
-        const searchResult = document.getElementById('search-result');
-        if (searchResult) searchResult.remove();
-        
-        // เคลียร์ช่องค้นหา
-        if (searchInput) searchInput.value = '';
-    }
-
-    // Event listener สำหรับการค้นหา
+    // Search product
+    const searchInput = document.querySelector('.search-product-input');
     searchInput?.addEventListener('input', function() {
         const query = this.value.trim();
-        
-        if (query.length === 0) {
-            document.getElementById('search-result')?.remove();
-            return;
-        }
-
+        document.getElementById('search-result')?.remove();
+        if (!query) return;
         fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(products => {
-                console.log('Search results:', products); // Debug log
-                
-                // ลบผลการค้นหาเก่า
                 const oldResult = document.getElementById('search-result');
                 if (oldResult) oldResult.remove();
-
-                // สร้างกล่องผลการค้นหาใหม่
                 const resultDiv = document.createElement('div');
                 resultDiv.id = 'search-result';
-                resultDiv.className = 'search-results-container'; // เพิ่ม class สำหรับ styling
-
+                resultDiv.className = 'search-results-container';
                 if (products.length === 0) {
                     resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
                 } else {
@@ -248,16 +293,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                     `).join('');
                 }
-
-                // แทรกผลการค้นหาใต้ช่องค้นหา
                 searchInput.parentNode.appendChild(resultDiv);
-
-                // เพิ่ม event listeners สำหรับแต่ละผลการค้นหา
                 document.querySelectorAll('.search-item').forEach(item => {
                     item.addEventListener('click', function() {
                         try {
                             const product = JSON.parse(this.dataset.product);
-                            console.log('Clicked product:', product); // Debug log
                             fillForm(product);
                         } catch (err) {
                             console.error('Error parsing product data:', err);
@@ -270,291 +310,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    // เพิ่มฟังก์ชันโหลดและแสดงข้อมูลสินค้า
-    function loadProducts() {
-        fetch(`${BACKEND_URL}/products`)
-            .then(res => res.json())
-            .then(products => {
-                const productList = document.getElementById('product-list');
-                
-                if (!products || products.length === 0) {
-                    productList.innerHTML = '<tr><td colspan="10" class="no-data">ไม่พบข้อมูลสินค้า</td></tr>';
-                    return;
-                }
-
-                const productsHTML = products.map(p => `
-                    <tr>
-                        <td>${p.product_code || '-'}</td>
-                        <td>${p.model || '-'}</td>
-                        <td>${p.product_name || '-'}</td>
-                        <td>${p.maker || '-'}</td>
-                        <td>${p.category || '-'}</td>
-                        <td>${p.condition || '-'}</td>
-                        <td>${p.price || '-'}</td>
-                        <td>${p.sale_price || '-'}</td>
-                        <td>${p.unit || '-'}</td>
-                        <td>${p.location || '-'}</td>
-                    </tr>
-                `).join('');
-                
-                productList.innerHTML = productsHTML;
-            })
-            .catch(error => {
-                console.error('Error loading products:', error);
-                const productList = document.getElementById('product-list');
-                productList.innerHTML = '<tr><td colspan="10" class="error">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
-            });
-    }
-
-    // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
-    loadProducts();
-
-    // เพิ่มผู้ผลิตใหม่
-    document.getElementById('add-maker-btn').addEventListener('click', function() {
-        const newMaker = document.getElementById('new-maker').value.trim();
-        const makerSelect = document.getElementById('maker');
-        if (newMaker) {
-            let exists = false;
-            for (let option of makerSelect.options) {
-                if (option.value === newMaker) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                const option = document.createElement('option');
-                option.value = newMaker;
-                option.textContent = newMaker;
-                makerSelect.appendChild(option);
-                makerSelect.value = newMaker;
-            }
-            document.getElementById('new-maker').value = '';
-        }
-    });
-
-    // เพิ่มหน่วยนับใหม่
-    document.getElementById('add-unit-btn').addEventListener('click', function() {
-        const newUnit = document.getElementById('new-unit').value.trim();
-        const unitSelect = document.getElementById('unit');
-        if (newUnit) {
-            let exists = false;
-            for (let option of unitSelect.options) {
-                if (option.value === newUnit) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                const option = document.createElement('option');
-                option.value = newUnit;
-                option.textContent = newUnit;
-                unitSelect.appendChild(option);
-                unitSelect.value = newUnit;
-            }
-            document.getElementById('new-unit').value = '';
-        }
-    });
-
-    // เพิ่มตำแหน่งใหม่
-    document.getElementById('add-location-btn').addEventListener('click', function() {
-        const newLocation = document.getElementById('new-location').value.trim();
-        const locationSelect = document.getElementById('location');
-        if (newLocation) {
-            let exists = false;
-            for (let option of locationSelect.options) {
-                if (option.value === newLocation) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                const option = document.createElement('option');
-                option.value = newLocation;
-                option.textContent = newLocation;
-                locationSelect.appendChild(option);
-                locationSelect.value = newLocation;
-            }
-            document.getElementById('new-location').value = '';
-        }
-    });
-
-    // ฟังก์ชัน helper สำหรับจัดการ select elements
-    function setSelectValue(selectId, value) {
-        const select = document.getElementById(selectId);
-        if (!select) {
-            console.warn(`Select element ${selectId} not found`);
-            return;
-        }
-        
-        let exists = [...select.options].some(opt => opt.value === value);
-        if (!exists) {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = value;
-            select.appendChild(option);
-        }
-        select.value = value;
-    }
-
-    // ฟังก์ชันเติมข้อมูลในฟอร์ม
-    function fillForm(product) {
-        console.log('Filling form with:', product); // Debug log
-
-        // เก็บ ID สำหรับการอัพเดท
-        currentProductId = product._id;
-
-        // ตั้งค่า input fields
-        const fields = {
-            product_code: product.product_code || '',
-            model: product.model || '',
-            product_name: product.product_name || '',
-            price: product.price || '',
-            sale_price: product.sale_price || ''
-        };
-
-        // เติมข้อมูลใน input fields
-        Object.entries(fields).forEach(([id, value]) => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.value = value;
-                console.log(`Set ${id} to ${value}`); // Debug log
-            } else {
-                console.warn(`Element ${id} not found`);
-            }
-        });
-
-        // ตั้งค่า select fields
-        const selects = {
-            maker: product.maker,
-            category: product.category,
-            condition: product.condition,
-            unit: product.unit,
-            location: product.location
-        };
-
-        // เติมข้อมูลใน select fields
-        Object.entries(selects).forEach(([id, value]) => {
-            try {
-                setSelectValue(id, value);
-                console.log(`Set ${id} to ${value}`); // Debug log
-            } catch (err) {
-                console.warn(`Error setting ${id}:`, err);
-            }
-        });
-
-        // แสดงเวลา
-        document.getElementById('updatedDate').textContent = product.updatedDate || '-';
-        document.getElementById('updatedTime').textContent = product.updatedTime || '-';
-
-        // ซ่อนผลการค้นหา
-        const searchResult = document.getElementById('search-result');
-        if (searchResult) searchResult.remove();
-        
-        // เคลียร์ช่องค้นหา
-        if (searchInput) searchInput.value = '';
-    }
-
-    // Event listener สำหรับการค้นหา
-    searchInput?.addEventListener('input', function() {
-        const query = this.value.trim();
-        
-        if (query.length === 0) {
-            document.getElementById('search-result')?.remove();
-            return;
-        }
-
-        fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(products => {
-                console.log('Search results:', products); // Debug log
-                
-                // ลบผลการค้นหาเก่า
-                const oldResult = document.getElementById('search-result');
-                if (oldResult) oldResult.remove();
-
-                // สร้างกล่องผลการค้นหาใหม่
-                const resultDiv = document.createElement('div');
-                resultDiv.id = 'search-result';
-                resultDiv.className = 'search-results-container'; // เพิ่ม class สำหรับ styling
-
-                if (products.length === 0) {
-                    resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
-                } else {
-                    resultDiv.innerHTML = products.map(p => `
-                        <div class="search-item" data-product='${JSON.stringify(p)}'>
-                            <div class="product-code">${p.product_code || ''}</div>
-                            <div class="product-name">${p.product_name || ''}</div>
-                            <div class="product-details">
-                                ${p.model || ''} - ${p.maker || ''} - ${p.category || ''}
-                            </div>
-                        </div>
-                    `).join('');
-                }
-
-                // แทรกผลการค้นหาใต้ช่องค้นหา
-                searchInput.parentNode.appendChild(resultDiv);
-
-                // เพิ่ม event listeners สำหรับแต่ละผลการค้นหา
-                document.querySelectorAll('.search-item').forEach(item => {
-                    item.addEventListener('click', function() {
-                        try {
-                            const product = JSON.parse(this.dataset.product);
-                            console.log('Clicked product:', product); // Debug log
-                            fillForm(product);
-                        } catch (err) {
-                            console.error('Error parsing product data:', err);
-                        }
-                    });
-                });
-            })
-            .catch(err => {
-                console.error('Search error:', err);
-            });
-    });
-
-    // เพิ่มฟังก์ชันโหลดและแสดงข้อมูลสินค้า
-    function loadProducts() {
-        fetch(`${BACKEND_URL}/products`)
-            .then(res => res.json())
-            .then(products => {
-                const productList = document.getElementById('product-list');
-                
-                if (!products || products.length === 0) {
-                    productList.innerHTML = '<tr><td colspan="10" class="no-data">ไม่พบข้อมูลสินค้า</td></tr>';
-                    return;
-                }
-
-                const productsHTML = products.map(p => `
-                    <tr>
-                        <td>${p.product_code || '-'}</td>
-                        <td>${p.model || '-'}</td>
-                        <td>${p.product_name || '-'}</td>
-                        <td>${p.maker || '-'}</td>
-                        <td>${p.category || '-'}</td>
-                        <td>${p.condition || '-'}</td>
-                        <td>${p.price || '-'}</td>
-                        <td>${p.sale_price || '-'}</td>
-                        <td>${p.unit || '-'}</td>
-                        <td>${p.location || '-'}</td>
-                    </tr>
-                `).join('');
-                
-                productList.innerHTML = productsHTML;
-            })
-            .catch(error => {
-                console.error('Error loading products:', error);
-                const productList = document.getElementById('product-list');
-                productList.innerHTML = '<tr><td colspan="10" class="error">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
-            });
-    }
-
-    // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
-    loadProducts();
-
-    // เพิ่ม event listener สำหรับการ submit form
-    document.querySelector('.product-form').addEventListener('submit', async function(e) {
+    // Submit form (add/edit product)
+    document.querySelector('.product-form')?.addEventListener('submit', async function(e) {
         e.preventDefault();
-
         const formData = {
             product_code: document.getElementById('product_code').value,
             model: document.getElementById('model').value,
@@ -566,31 +324,24 @@ document.addEventListener("DOMContentLoaded", function () {
             sale_price: document.getElementById('sale_price').value,
             unit: document.getElementById('unit').value,
             location: document.getElementById('location').value,
-            // เพิ่มข้อมูลเวลาอัพเดท
             updatedDate: new Date().toLocaleDateString('th-TH', {
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric'
+                year: 'numeric', month: 'numeric', day: 'numeric'
             }),
             updatedTime: new Date().toLocaleTimeString('th-TH', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
             })
         };
-
-        // แปลงไฟล์ภาพเป็น base64
+        // Image
         const imageInput = document.getElementById('image');
         let imageBase64 = "";
-        if (imageInput.files && imageInput.files[0]) {
+        if (imageInput && imageInput.files && imageInput.files[0]) {
             const file = imageInput.files[0];
             imageBase64 = await toBase64(file);
         }
-
         formData.image = imageBase64;
 
         const method = currentProductId ? 'PATCH' : 'POST';
-        const url = currentProductId 
+        const url = currentProductId
             ? `${BACKEND_URL}/products/${currentProductId}`
             : `${BACKEND_URL}/products`;
 
@@ -600,10 +351,11 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify(formData)
         })
         .then(res => res.json())
-        .then (data => {
+        .then(data => {
             alert(currentProductId ? 'อัปเดตสินค้าเรียบร้อย!' : 'บันทึกสินค้าเรียบร้อย!');
             this.reset();
             currentProductId = null;
+            loadProducts();
         })
         .catch(err => {
             console.error(err);
@@ -611,13 +363,30 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ฟังก์ชันแปลงไฟล์เป็น base64
-    function toBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
+    // Horizontal scroll for .product-table
+    const tableBox = document.querySelector('.product-table');
+    if (tableBox) {
+        tableBox.addEventListener('wheel', function(e) {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                tableBox.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+    }
+
+    // Initial load
+    loadProducts();
+});
+// ให้ scroll เมาส์แนวนอนเมื่อชี้ที่ .product-table
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBox = document.querySelector('.product-table');
+    if (tableBox) {
+        tableBox.addEventListener('wheel', function(e) {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                tableBox.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
     }
 });
+

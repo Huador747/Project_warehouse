@@ -1,330 +1,455 @@
-body, html, input, select, button, label, .navbar-text {
-    font-family: 'Sarabun', sans-serif;
-    font-weight: bold;
+body,
+html,
+input,
+select,
+button,
+label,
+.navbar-text {
+  font-family: "Sarabun", sans-serif;
+  font-weight: bold;
+}
+
+html,
+body {
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    width: 100vw;
-    display: block;
-    overflow-y: auto;
+  /* ลบหรือไม่ใช้ width: 100vw; */
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important;
 }
 
 .logo-container {
-    text-align: center;
-    padding: 0px;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  text-align: center;
+  padding: 0px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-    margin-top: 1000px;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  margin-top: 1000px;
 }
 
 /* Sidebar styles */
 .sidebar {
-    position: fixed;
-    left: -270px;
-    top: 0;
-    height: 100vh;
-    z-index: 2000;
-    transition: left 0.3s;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-    width: 250px;
-    background: rgb(254, 179, 104);
-    color: #fff;
-    padding: 30px 30px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    overflow: hidden;
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 2000;
+  transition: left 0.3s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  overflow: hidden;
 }
 .sidebar input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 .sidebar .nav-btn {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    background: #fff;
-    color: #333;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 .sidebar .nav-btn:hover {
-    background: #ffe0b2;
+  background: #ffe0b2;
+  border: 3px solid #8b7f7f; /* ขอบทองอ่อน */
 }
 
 /* Main content styles */
 .main-content {
-    margin-left: 0 !important;
-    flex: unset;
-    display: flex;
-    flex-direction: column;
-    min-height: unset;
-    height: auto;
-    overflow: unset;
-    padding-bottom: 32px;
-    box-sizing: border-box;
-    margin-top: 120px; /* ให้เท่ากับ .navbar height */
+  width: 100%;
+  max-width: 1400px; /* หรือขนาดที่ต้องการ */
+  margin: 120px auto 0 auto; /* จัดให้อยู่กลาง */
+  box-sizing: border-box;
+  padding: 0 16px 32px 16px; /* padding ซ้ายขวา */
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: unset;
+  height: auto;
+  padding-bottom: 32px;
 }
 
 /* Navbar styles */
 .navbar {
-    width: 100vw;
-    left: 0;
-    top: 0;
-    background: rgb(244, 224, 125);
-    color: #fff;
-    padding: 15px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    height: 120px;
-    position: fixed;
-    z-index: 3000;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background: rgb(244, 224, 125);
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  height: 120px;
+  position: fixed;
+  z-index: 3000;
 }
 
 .navbar-text {
-    display: inline-block;
-    padding: 7px 16px;
-    border-radius: 4px;
-    background: #ffd336;
-    color: #333;
-    font-size: 30px;
-    margin-right: 10px;
-    min-width: 120px;
-    text-align: center;
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  background: #ffd336;
+  color: #333;
+  font-size: 30px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
 }
 
 .navbar-form {
-    gap: 30px;
-    margin: 0 0 0px 75px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0 8px 0;
+  margin-left: 70px;
 }
 
 .navbar-form input[type="text"] {
-    padding: 7px;
-    border: none;
-    border-radius: 4px;
-    height: 50px;
+  padding: 7px;
+  border: none;
+  border-radius: 4px;
+  height: 50px;
 }
 
 .logout-btn {
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    height: 50px;
-    font-size: 14;
-    align-items: center;
-    justify-content: center;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
+  font-size: 14;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Dropdown styles */
 .dropdown-content {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    margin-bottom: 10px;
-    margin-top: -10px;
-    z-index: 1;
-    position: relative;
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 10px;
+  margin-top: -10px;
+  z-index: 1;
+  position: relative;
 }
 .dropdown-item {
-    padding: 8px;
-    border: none;
-    background: #fff;
-    color: #333;
-    text-align: left;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
+  padding: 8px;
+  border: none;
+  background: #fff;
+  color: #333;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
 .dropdown-item:hover {
-    background: #ffe0b2;
+  background: #ffe0b2;
 }
 
 /* ปรับ dropdown hover ให้ถูกต้อง */
 .dropdown-hover {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .dropdown-hover .dropdown-btn {
-    width: 100%;
+  width: 100%;
 }
 .dropdown-hover:hover .dropdown-content,
 .dropdown-hover:focus-within .dropdown-content {
-    display: flex;
+  display: flex;
 }
 .dropdown-btn:focus + .dropdown-content,
 .dropdown-btn.active + .dropdown-content {
-    display: flex;
+  display: flex;
 }
 /* Optional: show dropdown on click */
 .sidebar .dropdown-btn {
-    position: relative;
-    align-items: center;
+  position: relative;
+  align-items: center;
 }
 .sidebar .dropdown-content {
-    position: relative;
+  position: relative;
 }
 .sidebar .dropdown-btn + .dropdown-content {
-    display: none;
-    position: relative;
-    justify-content: space-between;
+  display: none;
+  position: relative;
+  justify-content: space-between;
 }
 .sidebar .dropdown-btn:hover + .dropdown-content,
 .sidebar .dropdown-content:hover {
-    display: flex;
+  display: flex;
 }
 .dropdown-icon {
-    margin-left: 8px;
-    font-size: 18px;
-    vertical-align: middle;
+  margin-left: 8px;
+  font-size: 18px;
+  vertical-align: middle;
 }
 
 /* Hamburger styles */
 .hamburger {
-    display: flex !important;
-    position: fixed;
-    top: 40px;
-    left: 24px;
-    z-index: 4000;
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
+  display: flex !important;
+  position: fixed;
+  top: 40px;
+  left: 24px;
+  z-index: 4000;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
 }
 .hamburger span {
-    display: block;
-    width: 28px;
-    height: 4px;
-    background: #050505;
-    border-radius: 2px;
-    margin: 3px 0;
-    transition: 0.4s;
-    margin-left: auto;
-    margin-right: auto;
+  display: block;
+  width: 28px;
+  height: 4px;
+  background: #050505;
+  border-radius: 2px;
+  margin: 3px 0;
+  transition: 0.4s;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* เมื่อ hover ที่ปุ่ม hamburger */
 .hamburger:hover span {
-    background: #ffa144;
-    width: 36px;
-    transition: 0.4s;
+  background: #ffa144;
+  width: 36px;
+  transition: 0.4s;
 }
 
 .hamburger.active span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg);
 }
 .hamburger.active span:nth-child(2) {
-    opacity: 0;
+  opacity: 0;
 }
 .hamburger.active span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* Sidebar: hidden by default, show when .sidebar-open */
 .sidebar {
-    left: -270px;
-    transition: left 0.8s;
+  left: -270px;
+  transition: left 0.8s;
 }
 
 /* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
 .hamburger:hover + .sidebar,
 .sidebar:hover {
-    left: 0;
+  left: 0;
 }
 
 /* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
 .sidebar {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 .nav-btn.active {
-    background: #ffd336;         /* สีเหลืองสดใส */
-    color: #333;                 /* ตัวอักษรสีเข้ม อ่านง่าย */
-    font-weight: bold;
-    border: 2.5px solid #e0b97d; /* ขอบทองอ่อน */
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18); /* เงาเพิ่มมิติ */
-    transform: scale(1.06);      /* ขยายเล็กน้อย */
-    z-index: 1;
-    position: relative;
-    transition: 
-        background 0.2s,
-        color 0.2s,
-        border 0.2s,
-        box-shadow 0.2s,
-        transform 0.2s;
+  background: #ffd336; /* สีเหลืองสดใส */
+  color: #333; /* ตัวอักษรสีเข้ม อ่านง่าย */
+  font-weight: bold;
+  border: 2.5px solid #e0b97d; /* ขอบทองอ่อน */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18); /* เงาเพิ่มมิติ */
+  transform: scale(1.06); /* ขยายเล็กน้อย */
+  z-index: 1;
+  position: relative;
+  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s,
+    transform 0.2s;
 }
 
 /* เพิ่มใน history.css */
-.history-summary, .history-list {
-    margin: 32px 0;
-    background: #fffbe7;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+.history-summary,
+.history-list {
+  margin: 32px 0;
+  background: #fffbe7;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.history-summary h2, .history-list h2 {
-    margin-top: 0;
-    color: #e67e22;
+.history-summary h2,
+.history-list h2 {
+  margin-top: 0;
+  color: #e67e22;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-    background: #fff;
+  width: 100%;
+  min-width: 900px; /* ป้องกันตารางบีบเกินไป */
+  box-sizing: border-box;
+  overflow-x: auto;
+  margin-top: 16px;
+  background: #fff;
 }
 
-th, td {
-    padding: 10px 8px;
-    border-bottom: 1px solid #f0c987;
-    text-align: center;
+th,
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f0c987;
+  text-align: center;
 }
 
 th {
-    background: #ffd336;
-    color: #333;
-    font-weight: bold;
+  background: #ffd336;
+  color: #333;
+  font-weight: bold;
 }
 
 tr:hover {
-    background: #fff3d1;
+  background: #fff3d1;
+}
+
+/* ตกแต่ง navbar-form */
+.navbar-form {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0 8px 0;
+}
+
+/* ตกแต่งข้อความหัวข้อ */
+.navbar-text.active {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e67e22;
+  letter-spacing: 1px;
+  margin-right: 12px;
+  text-shadow: 0 2px 8px #ffe0b2;
+  position: relative;
+}
+.navbar-text.active::before {
+  content: "📊";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
+}
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.2;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ตกแต่ง select */
+#history-type {
+  padding: 10px 36px 10px 16px;
+  border-radius: 8px;
+  border: 2px solid #ffd336;
+  background: linear-gradient(90deg, #fffbe7 80%, #ffd336 100%);
+  color: #e67e22;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(255, 211, 54, 0.1);
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+  position: relative;
+  margin-left: 10px;
+}
+
+/* ลูกศร custom ด้วย SVG */
+#history-type {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='orange' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 24px 24px;
+}
+
+#history-type:focus,
+#history-type:hover {
+  border: 2.5px solid #e0b97d;
+  box-shadow: 0 4px 16px rgba(255, 211, 54, 0.18);
+  background: linear-gradient(90deg, #fffbe7 60%, #ffd336 100%);
+  color: #d35400;
+}
+
+/* Animation เล็กน้อยเมื่อเปลี่ยน */
+#history-type {
+  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s;
+}
+
+/* ตาราง: hover แถว */
+#stock-table tr:hover,
+#history-table tr:hover {
+  background: #ffe9b2 !important;
+  transition: background 0.2s;
+}
+
+/* ตาราง: แถวหัวข้อ */
+#stock-table th,
+#history-table th {
+  background: linear-gradient(90deg, #ffd336 80%, #ffe0b2 100%);
+  color: #333;
+  font-weight: bold;
+  border-bottom: 2px solid #f0c987;
+}
+
+/* ตาราง: แถวสลับสี */
+#stock-table tbody tr:nth-child(even),
+#history-table tbody tr:nth-child(even) {
+  background: #fffbe7;
+}
+#stock-table tbody tr:nth-child(odd),
+#history-table tbody tr:nth-child(odd) {
+  background: #fff;
 }

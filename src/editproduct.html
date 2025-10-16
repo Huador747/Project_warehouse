@@ -92,25 +92,25 @@
                             <input type="text" id="new-category" placeholder="เพิ่มประเภทใหม่...">
                             <button type="button" id="add-category-btn">เพิ่ม</button>
                         </div>
+                        <div class="form-group">
+                            <label for="condition">มือ1/มือ2</label>
+                            <select id="condition" name="condition" required>
+                                <option value="">-- เลือกสถานะ --</option>
+                                <option value="มือ1">มือ 1</option>
+                                <option value="มือ2">มือ 2</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="product-form-col">
                     <div class="form-group">
-                        <label for="condition">มือ1/มือ2</label>
-                        <select id="condition" name="condition" required>
-                            <option value="">-- เลือกสถานะ --</option>
-                            <option value="มือ1">มือ 1</option>
-                            <option value="มือ2">มือ 2</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">ราคาต้นทุน</label>
-                        <input type="number" id="price" name="price" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label for="sale_price">ราคาขาย</label>
-                        <input type="text" id="sale_price" name="sale_price">
-                    </div>
+                            <label for="price">ราคาต้นทุน</label>
+                            <input type="number" id="price" name="price" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="sale_price">ราคาขาย</label>
+                            <input type="text" id="sale_price" name="sale_price">
+                        </div>
                     <div class="form-group">
                         <label for="unit">หน่วยนับ</label>
                         <select id="unit" name="unit" required>
@@ -124,7 +124,6 @@
                         <input type="text" id="new-unit" placeholder="เพิ่มหน่วยนับใหม่">
                         <button type="button" id="add-unit-btn">เพิ่ม</button>
                     </div>
-
                     <div class="form-group">
                         <label for="location">ตำแหน่งสินค้า</label>
                         <select id="location" name="location" required>
@@ -138,22 +137,23 @@
                     <div class="add-location-group">
                         <input type="text" id="new-location" placeholder="เพิ่มตำแหน่งใหม่">
                         <button type="button" id="add-location-btn">เพิ่ม</button>
-                    </div>  
+                    </div>
                     <!-- ก่อนฟอร์มแก้ไขรูปภาพสินค้า -->
                     <div class="form-group">
-                        <label>รูปภาพสินค้าเดิม</label>
+                        <div class="form-group image-upload">
+                            <label for="image">แก้ไขรูปสินค้า</label>
+                            <input type="file" id="image" name="image" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="form-group-image-upload">
                         <div class="image-imageupload-stack">
-                            <div class="image-preview-box">
-                            </div>
-                            <div class="form-group image-upload">
-                                <label for="image">แก้ไขรูปสินค้า</label>
-                                <input type="file" id="image" name="image" accept="image/*">
-                            </div>
+                            <label>รูปภาพสินค้าเดิม</label>
+                            <div class="image-preview-box"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="">บันทึกการแก้ไข</button>
+            <button type="submit" class="submit-btn">บันทึกการแก้ไข</button>
         </form>
     </div> <!-- ปิด .main-content -->
 </body>

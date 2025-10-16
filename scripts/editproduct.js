@@ -57,16 +57,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         locationSelect.value = product.location || '';
 
-        // แสดงรูปภาพสินค้าเดิม (ถ้ามี)
-        const previewImg = document.getElementById('preview-image');
-        const placeholder = document.getElementById('image-placeholder');
+        // เติมรูปภาพสินค้าเดิม
+        const previewBox = document.querySelector('.image-preview-box');
+        previewBox.innerHTML = ''; // เคลียร์ของเดิมก่อน
+
         if (product.image) {
-            previewImg.src = product.image;
-            previewImg.style.display = 'block';
-            placeholder.style.display = 'none';
+            const img = document.createElement('img');
+            img.id = 'preview-image';
+            img.src = product.image;
+            img.alt = 'รูปสินค้าเดิม';
+            img.style.maxWidth = '180px';
+            img.style.maxHeight = '180px';
+            img.style.display = 'block';
+            img.style.margin = '0 auto';
+            previewBox.appendChild(img);
         } else {
-            previewImg.style.display = 'none';
-            placeholder.style.display = 'block';
+            // ถ้าไม่มีรูป ให้แสดงข้อความ placeholder
+            const label = document.createElement('label');
+            label.className = 'label-image-preview';
+            label.textContent = 'รูปภาพสินค้าเดิม';
+            previewBox.appendChild(label);
         }
 
         // ลบผลลัพธ์การค้นหา
@@ -88,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultDiv.id = 'search-result';
                 resultDiv.className = 'search-results-container';
                 resultDiv.style.position = 'absolute';
-                resultDiv.style.background = '#fff';
+                resultDiv.style.background = '#faf2b9ff';
                 resultDiv.style.border = '1px solid #ccc';
                 resultDiv.style.width = searchInput.offsetWidth + 'px';
                 resultDiv.style.zIndex = 9999;
@@ -100,8 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     resultDiv.innerHTML = products.map(p => `
                         <div class="search-item" style="padding:8px;cursor:pointer;" data-product='${JSON.stringify(p)}'>
-                            <b>${p.product_code || ''}</b> - ${p.product_name || ''} <br>
-                            <small>${p.model || ''} | ${p.maker || ''} | ${p.category || ''}</small>
+                            <b class="product_code">${p.product_code || ''}</b>
+                            <span class="product_name">${p.product_name || ''}</span>
+                            <small class="product_model">
+                                ${p.model || ''} | 
+                                <span class="maker">${p.maker || ''}</span> | 
+                                <span class="category">${p.category || ''}</span>
+                            </small>
                         </div>
                     `).join('');
                 }

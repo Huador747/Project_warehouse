@@ -1,414 +1,411 @@
-body, html, input, select, button, label, .navbar-text {
-    font-family: 'Sarabun', sans-serif;
-    font-weight: bold;
+body,
+html,
+input,
+select,
+button,
+label,
+.navbar-text {
+  font-family: "Sarabun", sans-serif;
+  font-weight: bold;
 }
 
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    overflow: auto;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: auto;
 }
 
 body {
-    display: block;
-    min-height: 100vh;
-    width: 100vw;
-    overflow-y: auto;
+  display: block;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
 }
 
 .logo-container {
-    text-align: center;
-    padding: 0px;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+  text-align: center;
+  padding: 0px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-    margin-top: 1000px;
-    
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  margin-top: 1000px;
 }
-        /* Sidebar styles */
-        .sidebar {
-            position: fixed;
-            left: -270px;
-            top: 0;
-            height: 100vh;
-            z-index: 2000;
-            transition: left 0.3s;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-            width: 250px;
-            background: rgb(254, 179, 104);
-            color: #fff;
-            padding: 30px 30px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-        }
-        .sidebar input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        .sidebar .nav-btn {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            background: #fff;
-            color: #333;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .sidebar .nav-btn:hover {
-            background: #ffe0b2;
-        }
-        /* Main content styles */
-        .main-content {
-            margin-left: 0 !important;
-            flex: unset;
-            display: flex;
-            flex-direction: column;
-            min-height: unset;
-            height: auto;
-            overflow: unset;
-            padding-bottom: 32px;
-            box-sizing: border-box;
-        }
-        /* Navbar styles */
-        .navbar {
-            width: 100vw;         /* หรือ 100% */
-            left: 0;
-            top: 0;
-            background: rgb(244, 224, 125);
-            color: #fff;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-sizing: border-box;
-            height: 120px;
-            position: fixed;
-            z-index: 3000;
-            
-        }
-
-        .navbar-text{
-            display: inline-block;
-            padding: 7px 16px;
-            border-radius: 4px;
-            background: #ffd336;
-            color: #333;
-            font-size: 30px;
-            margin-right: 10px;
-            min-width: 120px;
-            text-align: center
-
-        }
-        .navbar-form {
-            
-            gap: 30px;
-            margin: 0 0 0px 75px;
-            
-        }
-        .navbar-form input[type="text"] {
-            padding: 7px;
-            border: none;
-            border-radius: 4px;
-            height: 50px;
-        }
-
-    #search-code {
-    width: 230px;
-    background: #ffffff;
-    color: #000000;
-    border: none;
-    padding: 0px 18px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-family: 'Sarabun', sans-serif;
-    font-size: 18px;
-    height: 50px;
-    margin-right: 16px; /* เพิ่มระยะห่างจากปุ่ม logout */
+/* Sidebar styles */
+.sidebar {
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 2000;
+  transition: left 0.3s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+.sidebar input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.sidebar .nav-btn {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sidebar .nav-btn:hover {
+  background: #ffe0b2;
+  border: 3px solid #8b7f7f; /* ขอบทองอ่อน */
+}
+/* Main content styles */
+.main-content {
+  margin-left: 0 !important;
+  flex: unset;
+  display: flex;
+  flex-direction: column;
+  min-height: unset;
+  height: auto;
+  overflow: unset;
+  padding-bottom: 32px;
+  box-sizing: border-box;
+}
+/* Navbar styles */
+.navbar {
+  width: 100vw; /* หรือ 100% */
+  left: 0;
+  top: 0;
+  background: rgb(244, 224, 125);
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  height: 120px;
+  position: fixed;
+  z-index: 3000;
 }
 
-    /* ปรับแต่งช่องค้นหา */
-    .search-product-input {
-        width: 300px;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px; 
-        font-size: 16px;
-        box-sizing: border-box;
-        margin-right: 35px;
-    }
+.navbar-text {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  background: #ffd336;
+  color: #333;
+  font-size: 30px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
+}
+.navbar-form {
+  gap: 30px;
+  margin: 0 0 0px 75px;
+}
+.navbar-form input[type="text"] {
+  padding: 7px;
+  border: none;
+  border-radius: 4px;
+  height: 50px;
+}
 
-        .logout-btn {
-            background: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            height: 50px;
-            font-size: 14;
-            align-items: center;
-            justify-content: center;
-        }
+#search-code {
+  width: 230px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0px 18px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: "Sarabun", sans-serif;
+  font-size: 18px;
+  height: 50px;
+  margin-right: 16px; /* เพิ่มระยะห่างจากปุ่ม logout */
+}
 
-        .dropdown-content {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    margin-bottom: 10px;
-    margin-top: -10px;
-    z-index: 1;
-    position: relative;
+/* ปรับแต่งช่องค้นหา */
+.search-product-input {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-right: 35px;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
+  font-size: 14;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 10px;
+  margin-top: -10px;
+  z-index: 1;
+  position: relative;
 }
 .dropdown-item {
-    padding: 8px;
-    border: none;
-    background: #fff;
-    color: #333;
-    text-align: left;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
+  padding: 8px;
+  border: none;
+  background: #fff;
+  color: #333;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
 .dropdown-item:hover {
-    background: #ffe0b2;
+  background: #ffe0b2;
 }
 
 /* ปรับ dropdown hover ให้ถูกต้อง */
 .dropdown-hover {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .dropdown-hover .dropdown-btn {
-    width: 100%;
+  width: 100%;
 }
 .dropdown-hover:hover .dropdown-content,
 .dropdown-hover:focus-within .dropdown-content {
-    display: flex;
+  display: flex;
 }
 .dropdown-btn:focus + .dropdown-content,
 .dropdown-btn.active + .dropdown-content {
-    display: flex;
+  display: flex;
 }
 /* Optional: show dropdown on click */
 .sidebar .dropdown-btn {
-    position: relative;
-    align-items: center;
-
+  position: relative;
+  align-items: center;
 }
 .sidebar .dropdown-content {
-    position: relative;
-
+  position: relative;
 }
 .sidebar .dropdown-btn + .dropdown-content {
-    display: none;
-    position: relative;
-    justify-content: space-between;
+  display: none;
+  position: relative;
+  justify-content: space-between;
 }
 
 .sidebar .dropdown-btn:hover + .dropdown-content,
 .sidebar .dropdown-content:hover {
-    display: flex;
+  display: flex;
 }
 .dropdown-icon {
-    margin-left: 8px;
-    font-size: 18px;
-    vertical-align: middle;
-
+  margin-left: 8px;
+  font-size: 18px;
+  vertical-align: middle;
 }
 /* Hamburger styles */
 .hamburger {
-    display: flex !important;
-    position: fixed;
-    top: 130px;
-    left: 24px;
-    z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
+  display: flex !important;
+  position: fixed;
+  top: 130px;
+  left: 24px;
+  z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
 }
 .hamburger span {
-    display: block;
-    width: 28px;
-    height: 4px;
-    background: #050505;
-    border-radius: 2px;
-    margin: 3px 0;
-    transition: 0.4s;
-    margin-left: auto;
-    margin-right: auto;
+  display: block;
+  width: 28px;
+  height: 4px;
+  background: #050505;
+  border-radius: 2px;
+  margin: 3px 0;
+  transition: 0.4s;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* เมื่อ hover ที่ปุ่ม hamburger */
 .hamburger:hover span {
-    background: #ffa144;
-    width: 36px;
-    transition: 0.4s;
+  background: #ffa144;
+  width: 36px;
+  transition: 0.4s;
 }
 
 /* Sidebar: hidden by default, show when .sidebar-open */
 .sidebar {
-    position: fixed;
-    left: -270px;
-    top: 0;
-    height: 100vh;
-    z-index: 2000;
-    transition: left 0.3s;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-    width: 250px;
-    background: rgb(254, 179, 104);
-    color: #fff;
-    padding: 30px 30px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 2000;
+  transition: left 0.3s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
 }
 .sidebar.sidebar-open {
-    left: 0;
+  left: 0;
 }
 
 /* Main content: full width */
 .main-content {
-    margin-left: 0 !important;
-    flex: unset;
-    display: flex;
-    flex-direction: column;
-    min-height: unset;
-    height: auto;
-    overflow: unset;
-    padding-bottom: 32px;
-    box-sizing: border-box;
+  margin-left: 0 !important;
+  flex: unset;
+  display: flex;
+  flex-direction: column;
+  min-height: unset;
+  height: auto;
+  overflow: unset;
+  padding-bottom: 32px;
+  box-sizing: border-box;
 }
 
 /* Hamburger hover: แสดง sidebar เมื่อ hover ที่ hamburger */
 .hamburger {
-    display: flex !important;
-    position: fixed;
-    top: 40px;
-    left: 24px;
-    z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
+  display: flex !important;
+  position: fixed;
+  top: 40px;
+  left: 24px;
+  z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
 }
 
 /* ปรับ sidebar ให้แสดงเมื่อ hover ที่ hamburger */
 .hamburger:hover + .sidebar,
 .sidebar:hover {
-    left: 0;
+  left: 0;
 }
 
 /* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
 .sidebar {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 /* Hamburger: always show */
 .hamburger {
-    display: flex !important;
-    position: fixed;
-    top: 40px;
-    left: 24px;
-    z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
+  display: flex !important;
+  position: fixed;
+  top: 40px;
+  left: 24px;
+  z-index: 4000; /* เพิ่ม z-index ให้สูงกว่า navbar */
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
 }
 
 /* Sidebar: hidden by default */
 .sidebar {
-    left: -270px;
-    transition: left 0.8s;
+  left: -270px;
+  transition: left 0.8s;
 }
 
 /* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
 .hamburger:hover + .sidebar,
 .sidebar:hover {
-    left: 0;
+  left: 0;
 }
 
 /* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
 .sidebar {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 /* ไม่ต้องใช้ .sidebar.sidebar-open และ JS toggle อีกต่อไป */
 .product-form {
-    width: 100%;
-    max-width: 1300px;
-    margin: 32px auto 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    background: #fffbe9;
-    padding: 32px 24px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    border: #fff83c 2px solid;
+  width: 100%;
+  max-width: 1300px;
+  margin: 32px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: #fffbe9;
+  padding: 32px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  border: #fff83c 2px solid;
 }
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0;           /* ปรับ gap ให้เป็น 0 */
-    width: 100%;
-    height: auto; 
-    
-   
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* ปรับ gap ให้เป็น 0 */
+  width: 100%;
+  height: auto;
 }
 .form-group label {
-    font-weight: bold;
-    margin-bottom: 2px;
-    color: #333;
+  font-weight: bold;
+  margin-bottom: 2px;
+  color: #333;
 }
 
 /* วางโค้ดนี้ต่อจาก .form-group label */
@@ -416,127 +413,122 @@ body {
 .form-group input[type="number"],
 .form-group input[type="file"],
 .form-group select {
-    padding: 8px 12px;
-    border: 1px solid #e0b97d;
-    border-radius: 4px;
-    font-size: 16px;
-    background: #fff;
-    color: #333;
-    transition: border 0.5s,;
+  padding: 8px 12px;
+  border: 1px solid #e0b97d;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #fff;
+  color: #333;
+  transition: border 0.5s;
 }
 
 .form-group input[type="text"]:hover,
 .form-group input[type="number"]:hover,
 .form-group input[type="file"]:hover,
 .form-group select:hover {
-    border: 2px solid #ffa144;
-    box-shadow: 0 2px 8px rgba(254,179,104,0.15);
+  border: 2px solid #ffa144;
+  box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
 }
 .function-btn-add {
-    background: #4eb31f;
-    color: #fff;
-    border: none;
-    padding: 10px 0;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 16px;
-    transition: background 0.2s;
+  background: #4eb31f;
+  color: #fff;
+  border: none;
+  padding: 10px 0;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background 0.2s;
 }
 .function-btn-add:hover {
-    background: #77e146;
+  background: #77e146;
 }
 .product-form-row {
-    display: flex;
-    gap: 32px;
-    width: 100%;
-    justify-content: center;
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  justify-content: center;
 }
 .product-form-col {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    min-width: 0;
-    
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
 }
 @media (max-width: 900px) {
-    .product-form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-    .product-form-col {
-        width: 100%;
-    }
+  .product-form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .product-form-col {
+    width: 100%;
+  }
 }
 .main-content {
-    margin-top: 120px; /* ให้เท่ากับ .navbar height */
+  margin-top: 120px; /* ให้เท่ากับ .navbar height */
 }
 .form-group select {
-    padding: 8px 12px;
-    border: 1px solid #e0b97d;
-    border-radius: 4px;
-    font-size: 16px;
-    background: #fff;
-    color: #333;
-    height: 100%;
-    box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid #e0b97d;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #fff;
+  color: #333;
+  height: 100%;
+  box-sizing: border-box;
 }
 .hamburger.active span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg);
 }
 .hamburger.active span:nth-child(2) {
-    opacity: 0;
+  opacity: 0;
 }
 .hamburger.active span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg);
 }
 .nav-btn.active {
-    background: #ffd336;         /* สีเหลืองสดใส */
-    color: #333;                 /* ตัวอักษรสีเข้ม อ่านง่าย */
-    font-weight: bold;
-    border: 2.5px solid #e0b97d; /* ขอบทองอ่อน */
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18); /* เงาเพิ่มมิติ */
-    transform: scale(1.06);      /* ขยายเล็กน้อย */
-    z-index: 1;
-    position: relative;
-    transition: 
-        background 0.2s,
-        color 0.2s,
-        border 0.2s,
-        box-shadow 0.2s,
-        transform 0.2s;
+  background: #ffd336; /* สีเหลืองสดใส */
+  color: #333; /* ตัวอักษรสีเข้ม อ่านง่าย */
+  font-weight: bold;
+  border: 2.5px solid #e0b97d; /* ขอบทองอ่อน */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18); /* เงาเพิ่มมิติ */
+  transform: scale(1.06); /* ขยายเล็กน้อย */
+  z-index: 1;
+  position: relative;
+  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s,
+    transform 0.2s;
 }
 
 /* เพิ่มใน buyin.css */
 #search-result-list {
-    position: absolute;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    width: 350px;
-    max-height: 220px;
-    overflow-y: auto;
-    z-index: 100;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: 350px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 100;
 }
 .search-item:hover {
-    background: #ffe0b2;
+  background: #ffe0b2;
 }
 .search-results-container {
-    position: absolute;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 350px;
-    max-height: 220px;
-    overflow-y: auto;
-    z-index: 100;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 350px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 100;
 }
 .search-item:hover {
-    background: #ffe0b2;
+  background: #ffe0b2;
 }
 .no-results {
-    padding: 8px;
-    color: #e74c3c;
+  padding: 8px;
+  color: #e74c3c;
 }

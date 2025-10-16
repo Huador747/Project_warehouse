@@ -107,11 +107,14 @@ async function main() {
         renderHistoryTable(buyin, sale, currentSearch, currentType);
     });
 
-    // search filter
-    document.getElementById('search-input').addEventListener('input', function() {
-        currentSearch = this.value.trim().toLowerCase();
-        renderHistoryTable(buyin, sale, currentSearch, currentType);
-    });
+    // ตรวจสอบว่ามี search-input หรือไม่
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            currentSearch = this.value.trim().toLowerCase();
+            renderHistoryTable(buyin, sale, currentSearch, currentType);
+        });
+    }
 
     // initial render
     renderHistoryTable(buyin, sale, currentSearch, currentType);
