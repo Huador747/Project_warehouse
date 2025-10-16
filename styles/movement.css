@@ -3,32 +3,38 @@ body {
     background: #f7f7f7;
     margin: 0;
 }
+
 .main-content {
     max-width: 900px;
     margin: 40px auto;
     background: #fff;
     padding: 32px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+
 h2 {
     margin-bottom: 24px;
 }
+
 .controls {
     margin-bottom: 24px;
 }
+
 label {
     font-weight: bold;
     margin-right: 8px;
 }
+
 select {
     padding: 6px 12px;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 1em;
 }
+
 #movementChart {
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }

@@ -423,9 +423,12 @@ body {
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     border: #fff83c 2px solid;
-    min-height: 0;      /* ยืดหยุ่นตามเนื้อหา */
-    height: 760px;       /* ยืดหยุ่นตามเนื้อหา */
-    max-height: none;   /* ไม่จำกัดความสูง */
+    min-height: 0;
+    /* ยืดหยุ่นตามเนื้อหา */
+    height: 760px;
+    /* ยืดหยุ่นตามเนื้อหา */
+    max-height: none;
+    /* ไม่จำกัดความสูง */
 }
 
 .form-group {
@@ -776,50 +779,33 @@ label,
 .search-item:last-child {
     border-bottom: none;
 }
-.search-item .product_code { 
-    color: red; 
+
+.search-item .product_code {
+    color: red;
     font-size: 16px;
 }
-.search-item .product_name { 
-    color: rgb(0, 0, 0); 
+
+.search-item .product_name {
+    color: rgb(0, 0, 0);
     font-size: 16px;
 }
-.search-item .product_model { 
-    color: rgb(255, 149, 28); 
+
+.search-item .product_model {
+    color: rgb(255, 149, 28);
     font-size: 16px;
 }
-.maker{
+
+.maker {
     color: #ff0000;
 }
-.category{
+
+.category {
     color: #21f116;
 }
+
 /* สไตล์สำหรับข้อมูลในแต่ละรายการ */
 
-.product-code {
-    font-weight: bold;
-    color: #333;
-    font-size: 16px;
-    margin-bottom: 4px;
-}
-
-.product-name {
-    color: #cd4c4c;
-    font-size: 14px;
-    margin-bottom: 2px;
-}
-
-.product-details {
-    color: #000000;
-    font-size: 13px;
-    display: flex;
-    gap: 8px;
-}
-
-
-
 /* สไตล์สำหรับกรณีไม่พบผลการค้นหา */
-
 .no-results {
     padding: 16px;
     text-align: center;
@@ -890,7 +876,7 @@ label,
     flex-direction: column;
     align-items: center;
     width: fit-content;
-    gap:9px
+    gap: 9px
 }
 
 .image-preview-box {
@@ -988,6 +974,7 @@ label,
     height: 100%;
     display: block;
 }
+
 .submit-btn {
     background: #4eb31f;
     color: #fff;
@@ -1000,10 +987,12 @@ label,
     margin-top: 15px;
     transition: background 0.2s;
 }
+
 .form-group-image-upload {
     display: flex;
     flex-direction: column;
-    align-items: center; /* ชิดขวา */
+    align-items: center;
+    /* ชิดขวา */
     justify-content: flex-end;
     margin-top: 15px;
 }

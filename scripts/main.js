@@ -123,6 +123,15 @@ function loadProducts() {
             currentPage = 1;
             renderProductsTable(allProducts, currentPage);
             renderPagination(allProducts, currentPage);
+
+            // เพิ่มอนิเมชันให้ product-card (stagger) เมื่อโหลดเสร็จ
+            requestAnimationFrame(() => {
+                const cards = document.querySelectorAll('.product-card');
+                cards.forEach((c, i) => {
+                    c.classList.add('animate');
+                    c.style.animationDelay = `${100 + i * 60}ms`;
+                });
+            });
         })
         .catch(error => {
             console.error('Error loading products:', error);
@@ -294,6 +303,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     `).join('');
                 }
                 searchInput.parentNode.appendChild(resultDiv);
+
+                // ให้ผลลัพธ์แสดง animation แบบ stagger
+                requestAnimationFrame(() => resultDiv.classList.add('animate'));
+
                 document.querySelectorAll('.search-item').forEach(item => {
                     item.addEventListener('click', function() {
                         try {
@@ -373,6 +386,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }, { passive: false });
     }
+
+    // เพิ่ม: สไลด์ .navbar-text จากซ้ายแบบ stagger
+    const navbarTextEls = document.querySelectorAll('.navbar .navbar-text');
+    navbarTextEls.forEach((el, idx) => {
+        // ซ่อนก่อน เพื่อให้ animation เริ่มจากซ้ายอย่างราบรื่น
+        el.style.opacity = '0';
+        // ค่าหน่วงเวลาเพิ่มขึ้นตามลำดับ (ms)
+        const delay = 100 + idx * 120;
+        el.style.animationDelay = `${delay}ms`;
+        // ใส่คลาส แบบ requestAnimationFrame เพื่อให้ browser รับรู้การเปลี่ยนแปลงสถานะก่อนเริ่ม
+        requestAnimationFrame(() => el.classList.add('slide-in'));
+    });
 
     // Initial load
     loadProducts();

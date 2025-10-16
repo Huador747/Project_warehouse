@@ -52,7 +52,7 @@ body {
   top: 0;
   height: 100vh;
   z-index: 2000;
-  transition: left 0.3s;
+  transition: left 0.8s;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
   width: 250px;
   background: rgb(254, 179, 104);
@@ -65,6 +65,7 @@ body {
   align-items: center;
   overflow: hidden;
 }
+
 .sidebar input[type="text"] {
   width: 100%;
   padding: 8px;
@@ -72,6 +73,7 @@ body {
   border-radius: 4px;
   margin-bottom: 10px;
 }
+
 .sidebar .nav-btn {
   width: 100%;
   padding: 8px;
@@ -84,18 +86,23 @@ body {
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .sidebar .nav-btn:hover {
   background: #ffe0b2;
-  border: 3px solid #8b7f7f; /* ขอบทองอ่อน */
+  border: 3px solid #8b7f7f;
+  /* ขอบทองอ่อน */
 }
 
 /* Main content styles */
 .main-content {
   width: 100%;
-  max-width: 1400px; /* หรือขนาดที่ต้องการ */
-  margin: 120px auto 0 auto; /* จัดให้อยู่กลาง */
+  max-width: 1400px;
+  /* หรือขนาดที่ต้องการ */
+  margin: 120px auto 0 auto;
+  /* จัดให้อยู่กลาง */
   box-sizing: border-box;
-  padding: 0 16px 32px 16px; /* padding ซ้ายขวา */
+  padding: 0 16px 32px 16px;
+  /* padding ซ้ายขวา */
   overflow-x: auto;
   display: flex;
   flex-direction: column;
@@ -175,6 +182,7 @@ body {
   z-index: 1;
   position: relative;
 }
+
 .dropdown-item {
   padding: 8px;
   border: none;
@@ -186,6 +194,7 @@ body {
   border-radius: 4px;
   transition: background 0.2s;
 }
+
 .dropdown-item:hover {
   background: #ffe0b2;
 }
@@ -198,34 +207,42 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
 .dropdown-hover .dropdown-btn {
   width: 100%;
 }
+
 .dropdown-hover:hover .dropdown-content,
 .dropdown-hover:focus-within .dropdown-content {
   display: flex;
 }
-.dropdown-btn:focus + .dropdown-content,
-.dropdown-btn.active + .dropdown-content {
+
+.dropdown-btn:focus+.dropdown-content,
+.dropdown-btn.active+.dropdown-content {
   display: flex;
 }
+
 /* Optional: show dropdown on click */
 .sidebar .dropdown-btn {
   position: relative;
   align-items: center;
 }
+
 .sidebar .dropdown-content {
   position: relative;
 }
-.sidebar .dropdown-btn + .dropdown-content {
+
+.sidebar .dropdown-btn+.dropdown-content {
   display: none;
   position: relative;
   justify-content: space-between;
 }
-.sidebar .dropdown-btn:hover + .dropdown-content,
+
+.sidebar .dropdown-btn:hover+.dropdown-content,
 .sidebar .dropdown-content:hover {
   display: flex;
 }
+
 .dropdown-icon {
   margin-left: 8px;
   font-size: 18px;
@@ -249,6 +266,7 @@ body {
   cursor: pointer;
   gap: 6px;
 }
+
 .hamburger span {
   display: block;
   width: 28px;
@@ -271,9 +289,11 @@ body {
 .hamburger.active span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
+
 .hamburger.active span:nth-child(2) {
   opacity: 0;
 }
+
 .hamburger.active span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
@@ -285,7 +305,7 @@ body {
 }
 
 /* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
-.hamburger:hover + .sidebar,
+.hamburger:hover+.sidebar,
 .sidebar:hover {
   left: 0;
 }
@@ -296,12 +316,17 @@ body {
 }
 
 .nav-btn.active {
-  background: #ffd336; /* สีเหลืองสดใส */
-  color: #333; /* ตัวอักษรสีเข้ม อ่านง่าย */
+  background: #ffd336;
+  /* สีเหลืองสดใส */
+  color: #333;
+  /* ตัวอักษรสีเข้ม อ่านง่าย */
   font-weight: bold;
-  border: 2.5px solid #e0b97d; /* ขอบทองอ่อน */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18); /* เงาเพิ่มมิติ */
-  transform: scale(1.06); /* ขยายเล็กน้อย */
+  border: 2.5px solid #e0b97d;
+  /* ขอบทองอ่อน */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  /* เงาเพิ่มมิติ */
+  transform: scale(1.06);
+  /* ขยายเล็กน้อย */
   z-index: 1;
   position: relative;
   transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s,
@@ -326,7 +351,8 @@ body {
 
 table {
   width: 100%;
-  min-width: 900px; /* ป้องกันตารางบีบเกินไป */
+  min-width: 900px;
+  /* ป้องกันตารางบีบเกินไป */
   box-sizing: border-box;
   overflow-x: auto;
   margin-top: 16px;
@@ -368,6 +394,7 @@ tr:hover {
   text-shadow: 0 2px 8px #ffe0b2;
   position: relative;
 }
+
 .navbar-text.active::before {
   content: "📊";
   margin-right: 8px;
@@ -375,15 +402,18 @@ tr:hover {
   vertical-align: middle;
   animation: bounceIn 0.7s;
 }
+
 @keyframes bounceIn {
   0% {
     transform: scale(0.7);
     opacity: 0.2;
   }
+
   60% {
     transform: scale(1.2);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
   }
@@ -449,6 +479,7 @@ tr:hover {
 #history-table tbody tr:nth-child(even) {
   background: #fffbe7;
 }
+
 #stock-table tbody tr:nth-child(odd),
 #history-table tbody tr:nth-child(odd) {
   background: #fff;

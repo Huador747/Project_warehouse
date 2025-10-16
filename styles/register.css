@@ -225,10 +225,12 @@ form {
         min-height: 500px;
         padding: 32px 12px;
     }
+
     .logo-container {
         width: 80px;
         height: 80px;
     }
+
     .logo {
         width: 60px;
         height: 60px;
@@ -244,6 +246,7 @@ form {
         border-radius: 18px;
         gap: 10px;
     }
+
     .register-left,
     .register-right {
         width: 100%;
@@ -252,20 +255,24 @@ form {
         align-items: center;
         padding: 0;
     }
+
     .logo-container {
         margin-bottom: 10px;
         width: 60px;
         height: 60px;
         padding: 2px;
     }
+
     .logo {
         width: 40px;
         height: 40px;
     }
+
     .register-group {
         width: 98vw;
         max-width: 99vw;
     }
+
     h2 {
         font-size: 1.1rem;
         margin-top: 10px;
@@ -280,34 +287,41 @@ form {
         border-radius: 8px;
         min-height: 200px;
     }
+
     .logo-container {
         width: 40px;
         height: 40px;
         padding: 0;
     }
+
     .logo {
         width: 28px;
         height: 28px;
     }
+
     .register-group {
         width: 99vw;
         max-width: 100vw;
     }
+
     .register-group input[type="text"],
     .register-group input[type="password"],
     .register-group input[type="email"] {
         font-size: 0.95rem;
         padding: 7px 4px 5px 4px;
     }
+
     input[type="submit"] {
         font-size: 0.95rem;
         padding: 8px;
         width: 90%;
     }
+
     .register-links {
         font-size: 0.9rem;
         text-align: center;
     }
+
     h2 {
         font-size: 1rem;
     }

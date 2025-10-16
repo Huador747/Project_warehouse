@@ -93,6 +93,45 @@ if (window.flatpickr) {
     document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector('.search-product-input');
 
+    // ให้ navbar-text สไลด์จากซ้ายเมื่อหน้าโหลด
+    const navbarText = document.querySelector('.navbar-text');
+    if (navbarText) {
+        // เพิ่มคลาสแบบ async เล็กน้อยเพื่อให้ browser เขียนค่าเริ่มต้นก่อนเล่น animation
+        requestAnimationFrame(() => {
+            navbarText.classList.add('slide-in');
+        });
+    }
+
+    // --- เพิ่ม: toggle sidebar ด้วย click (และ animation) ---
+    //const hamburger = document.getElementById('hamburger-btn');
+    //const sidebar = document.getElementById('sidebar');
+    //hamburger?.addEventListener('click', function (e) {
+        //e.stopPropagation();
+        //hamburger.classList.toggle('active');
+        //sidebar.classList.toggle('sidebar-open');
+   // });
+
+    // ปิด sidebar เมื่อคลิกนอก
+    //document.addEventListener('click', function (ev) {
+       // if (!sidebar.contains(ev.target) && !hamburger.contains(ev.target)) {
+           // sidebar.classList.remove('sidebar-open');
+           // hamburger.classList.remove('active');
+        //}
+   // });
+
+    // --- เพิ่ม: entrance animation ให้ฟอร์มและทำ stagger ให้แต่ละ .form-group ---
+    const productForm = document.querySelector('.product-form');
+    if (productForm) {
+        // เพิ่ม class เพื่อให้ CSS ทำงาน
+        productForm.classList.add('animate');
+        // เพิ่ม stagger ให้แต่ละ .form-group (JS ตั้ง delay ทีละชิ้น)
+        const groups = productForm.querySelectorAll('.form-group');
+        groups.forEach((g, idx) => {
+            g.classList.add('stagger');
+            g.style.animationDelay = (100 + idx * 70) + 'ms';
+        });
+    }
+
     // ระบบค้นหา
     searchInput.addEventListener('input', function () {
         const query = this.value.trim();
@@ -106,8 +145,9 @@ if (window.flatpickr) {
                 const resultDiv = document.createElement('div');
                 resultDiv.id = 'search-result';
                 resultDiv.className = 'search-results-container';
+                // ปรับ style พื้นฐาน (เดิม)...
                 resultDiv.style.position = 'absolute';
-                resultDiv.style.background = '#fff';
+                resultDiv.style.background = '#faf2b9ff';
                 resultDiv.style.border = '1px solid #ccc';
                 resultDiv.style.width = searchInput.offsetWidth + 'px';
                 resultDiv.style.zIndex = 9999;
@@ -119,14 +159,24 @@ if (window.flatpickr) {
                 } else {
                     resultDiv.innerHTML = products.map(p => `
                         <div class="search-item" style="padding:8px;cursor:pointer;" data-product='${JSON.stringify(p)}'>
-                            <b>${p.product_code || ''}</b> - ${p.product_name || ''} <br>
-                            <small>${p.model || ''} | ${p.maker || ''} | ${p.category || ''}</small>
+                            <b class="product_code">${p.product_code || ''}</b>
+                            <span class="product_name">${p.product_name || ''}</span>
+                            <small class="product_model">
+                                ${p.model || ''} | 
+                                <span class="maker">${p.maker || ''}</span> | 
+                                <span class="category">${p.category || ''}</span>
+                            </small>
                         </div>
                     `).join('');
                 }
 
                 // แทรกผลลัพธ์ใต้ input
                 searchInput.parentNode.insertBefore(resultDiv, searchInput.nextSibling);
+
+                // ให้ CSS animation ทำงาน (เพิ่ม class หลัง insert เพื่อให้ transition/animation เห็น)
+                requestAnimationFrame(() => {
+                    resultDiv.classList.add('animate');
+                });
 
                 // Event เลือกสินค้า
                 resultDiv.querySelectorAll('.search-item').forEach(item => {
@@ -141,7 +191,7 @@ if (window.flatpickr) {
             });
     });
 
-    // ปิดผลลัพธ์เมื่อคลิกข้างนอก
+    // ปิดผลลัพธ์เมื่อคลิกข้างนอก (ให้ทำงานร่วมกับ toggle sidebar)
     document.addEventListener('click', function (e) {
         if (!searchInput.contains(e.target) && !document.getElementById('search-result')?.contains(e.target)) {
             document.getElementById('search-result')?.remove();

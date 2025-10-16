@@ -6,11 +6,12 @@
     margin-top: 32px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     font-size: 16px;
 }
 
-.product-table th, .product-table td {
+.product-table th,
+.product-table td {
     padding: 10px 12px;
     border-bottom: 1px solid #f0f0f0;
     text-align: left;
@@ -51,7 +52,7 @@
     cursor: pointer;
     margin: 32px 0 16px 0;
     transition: background 0.2s;
-    box-shadow: 0 2px 8px rgba(254,179,104,0.10);
+    box-shadow: 0 2px 8px rgba(254, 179, 104, 0.10);
 }
 
 .function-btn-delete:hover {
@@ -110,16 +111,19 @@
 
 .function-buttons {
     display: flex;
-    justify-content: flex-end; /* ชิดขวา */
+    justify-content: flex-end;
+    /* ชิดขวา */
     align-items: center;
     margin-top: 24px;
     margin-bottom: 0;
-    width: 100%; /* ให้กินพื้นที่เต็มแถว */
+    width: 100%;
+    /* ให้กินพื้นที่เต็มแถว */
 }
 
 #delete-all-btn {
     background: #b71c1c;
 }
+
 #delete-all-btn:hover {
     background: #d32f2f;
 }
