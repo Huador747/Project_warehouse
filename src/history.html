@@ -18,6 +18,7 @@
         <button class="nav-btn" onclick="window.location.href='main.html'">หน้าหลัก</button>
         <button class="nav-btn" onclick="window.location.href='buyin.html'">รายการซื้อ</button>
         <button class="nav-btn" onclick="window.location.href='sale.html'">รายการขาย</button>
+        <button class="nav-btn" onclick="window.location.href='inventory.html'">สรุปจำนวนคงเหลือสินค้า</button>
         <button class="nav-btn active" onclick="window.location.href='history.html'">ประวัติการซื้อ-ขาย</button>
         <button class="nav-btn" onclick="window.location.href='movement.html'">กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</button>
     </div>
@@ -30,24 +31,18 @@
                     <option value="buyin">รายการซื้อ</option>
                     <option value="sale">รายการขาย</option>
                 </select>
+                <!-- เพิ่มดรอปดาวน์แยกปีและเดือน -->
+                <select id="month-select">
+                    <option value="all">ทุกเดือน</option>
+                </select>
+                <select id="year-select">
+                    <option value="all">ทุกปี</option>
+                </select>
             </form>
+            <div class="search-logout-row">
+            <input id="search-input" type="text" class="search-product-input" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
+            <button class="logout-btn">ออกจากระบบ</button>
         </div>
-        <div class="history-summary">
-            <h2>สรุปจำนวนคงเหลือสินค้า</h2>
-            <table id="stock-table">
-                <thead>
-                    <tr>
-                        <th>รหัสสินค้า</th>
-                        <th>ชื่อสินค้า</th>
-                        <th>โมเดล</th>
-                        <th>หมวดหมู่</th>
-                        <th>จำนวนคงเหลือ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- เติมข้อมูลด้วย JS -->
-                </tbody>
-            </table>
         </div>
         <div class="history-list">
             <h2>ประวัติการซื้อ-ขาย</h2>
@@ -70,6 +65,28 @@
                     <!-- เติมข้อมูลด้วย JS -->
                 </tbody>
             </table>
+            <!-- เพิ่มส่วนสรุปยอด -->
+            <div class="monthly-summary">
+                <h3>สรุปยอดประจำเดือน</h3>
+                <div class="summary-grid">
+                    <div class="summary-box">
+                        <div class="summary-label">ยอดซื้อรวม</div>
+                        <div id="total-buyin" class="summary-value">-</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">ยอดขายรวม</div>
+                        <div id="total-sale" class="summary-value">-</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">จำนวนรายการซื้อ</div>
+                        <div id="count-buyin" class="summary-value">-</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="summary-label">จำนวนรายการขาย</div>
+                        <div id="count-sale" class="summary-value">-</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script type="module" src="../scripts/history.js"></script>

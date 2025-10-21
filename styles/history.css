@@ -93,6 +93,33 @@ body {
   /* ขอบทองอ่อน */
 }
 
+#search-code {
+  width: 230px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0px 18px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: "Sarabun", sans-serif;
+  font-size: 18px;
+  height: 50px;
+  margin-right: 16px;
+  /* เพิ่มระยะห่างจากปุ่ม logout */
+}
+
+/* ปรับแต่งช่องค้นหา */
+.search-product-input {
+  height: 50px;         
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-right: 35px;
+}
+
 /* Main content styles */
 .main-content {
   width: 100%;
@@ -483,4 +510,51 @@ tr:hover {
 #stock-table tbody tr:nth-child(odd),
 #history-table tbody tr:nth-child(odd) {
   background: #fff;
+}
+
+/* Monthly summary styles */
+.monthly-summary {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.monthly-summary h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.summary-box {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.summary-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.summary-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+#total-buyin {
+  color: #e74c3c;
+}
+
+#total-sale {
+  color: #2ecc71;
 }
