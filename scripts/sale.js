@@ -208,19 +208,20 @@ function updateTotal() {
   const quantity = parseInt(document.getElementById("salequantity").value) || 0;
   const cost = parseFloat(document.getElementById("price").value) || 0;
 
+  // คำนวณยอดรวม
   const total = price * quantity;
-  document.getElementById("total").value = total;
+  document.getElementById("total").value = total.toFixed(2);
 
-  // คำนวณ vat เป็น 7% ของ total
+  // คำนวณ VAT 7%
   const vat = total * 0.07;
   document.getElementById("vat").value = vat.toFixed(2);
 
-  // คำนวณราคารวมภาษี (total + vat)
+  // คำนวณยอดรวม VAT
   const total_vat = total + vat;
   document.getElementById("total_vat").value = total_vat.toFixed(2);
 
-  // คำนวณกำไร (ต้นทุน*จำนวน) - ราคารวมภาษี
-  const profit = total_vat - cost * quantity;
+  // คำนวณกำไร
+  const profit = total_vat - (cost * quantity);
   document.getElementById("profit").value = profit.toFixed(2);
 }
 
