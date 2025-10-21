@@ -1,7 +1,12 @@
-body {
-    font-family: 'Sarabun', sans-serif;
-    background: #f7f7f7;
-    margin: 0;
+body,
+html,
+input,
+select,
+button,
+label,
+.navbar-text {
+  font-family: "Sarabun", sans-serif;
+  font-weight: bold;
 }
 
 .main-content {
