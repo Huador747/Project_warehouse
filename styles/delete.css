@@ -127,3 +127,36 @@
 #delete-all-btn:hover {
     background: #d32f2f;
 }
+/* ปรับแต่งช่องค้นหา */
+.search-product-input {
+  height: 50px;
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-right: 35px;
+}
+
+/* Function buttons styles */
+.function-buttons {
+  position: sticky;
+  top: 120px;
+  z-index: 2500;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  /* หรือ center ถ้าอยากให้อยู่กลาง */
+  align-items: center;
+  padding: 8px 18px;
+  width: max-content;
+  /* ใช้พื้นที่เท่าที่ปุ่มต้องการ */
+  margin-left: auto;
+  /* ชิดขวา */
+  margin-right: 30px;
+  /* เว้นขอบขวานิดหน่อย */
+
+  margin-top: 7px;
+  margin-bottom: -45px;
+}

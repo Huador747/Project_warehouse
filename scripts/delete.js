@@ -18,34 +18,16 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.clear();
         window.location.replace("login.html");
     });
-
+    
     // โหลดรายการสินค้า
-    loadProducts();
-
-    // ลบสินค้าที่เลือก
-    document.getElementById('delete-selected-btn').addEventListener('click', async function() {
-        const checked = document.querySelectorAll('.delete-checkbox:checked');
-        if (checked.length === 0) {
-            alert('กรุณาเลือกสินค้าที่ต้องการลบ');
-            return;
-        }
-        if (!confirm('คุณแน่ใจว่าต้องการลบสินค้าที่เลือก?')) return;
-
-        for (let cb of checked) {
-            const id = cb.dataset.id;
-            await fetch(`${BACKEND_URL}/products/${id}`, { method: 'DELETE' });
-        }
-        alert('ลบสินค้าเรียบร้อย');
-        loadProducts();
-    });
-
-    // ฟังก์ชันโหลดสินค้า
-    function loadProducts() {
+    function loadProducts(filteredList) {
         fetch(`${BACKEND_URL}/products`)
             .then(res => res.json())
             .then(products => {
+                window.allProducts = products; // กำหนดค่าไว้ใช้ค้นหา
                 const productList = document.getElementById('product-list');
-                if (!products || products.length === 0) {
+                const showList = filteredList || products;
+                if (!showList || showList.length === 0) {
                     productList.innerHTML = '<div>ไม่พบสินค้า</div>';
                     return;
                 }
@@ -66,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </thead>
                         <tbody>
                 `;
-                for (const p of products) {
+                for (const p of showList) {
                     html += `
                         <tr>
                             <td><input type="checkbox" class="delete-checkbox" data-id="${p._id}"></td>
@@ -99,4 +81,40 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         window.location.href = "delete.html";
     });
+
+    // ลบสินค้าที่เลือก
+    document.getElementById('delete-selected-btn').addEventListener('click', async function() {
+        const checked = document.querySelectorAll('.delete-checkbox:checked');
+        if (checked.length === 0) {
+            alert('กรุณาเลือกสินค้าที่ต้องการลบ');
+            return;
+        }
+        if (!confirm('คุณแน่ใจว่าต้องการลบสินค้าที่เลือก?')) return;
+
+        for (let cb of checked) {
+            const id = cb.dataset.id;
+            await fetch(`${BACKEND_URL}/products/${id}`, { method: 'DELETE' });
+        }
+        alert('ลบสินค้าเรียบร้อย');
+        loadProducts();
+    });
+
+    // ช่องค้นหาแบบ realtime
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    function doSearch() {
+        const q = (searchInput.value || '').trim().toLowerCase();
+        const filtered = (window.allProducts || []).filter(p =>
+            (p.product_code ?? '').toLowerCase().includes(q) ||
+            (p.product_name ?? '').toLowerCase().includes(q) ||
+            (p.model ?? '').toLowerCase().includes(q)
+        );
+        loadProducts(filtered); // แสดงเฉพาะสินค้าที่ค้นเจอ
+    }
+    searchInput?.addEventListener('input', doSearch);
+    searchBtn?.addEventListener('click', doSearch);
+
+    // โหลดสินค้าครั้งแรก
+    loadProducts();
 });
+
