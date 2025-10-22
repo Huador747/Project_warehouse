@@ -252,6 +252,26 @@ body {
   overflow-y: auto;
 }
 
+/* Function buttons styles */
+.function-buttons {
+  top: 120px;
+  z-index: 2500;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  /* หรือ center ถ้าอยากให้อยู่กลาง */
+  align-items: center;
+  padding: 8px 18px;
+  width: max-content;
+  /* ใช้พื้นที่เท่าที่ปุ่มต้องการ */
+  margin-left: auto;
+  /* ชิดขวา */
+  margin-right: 30px;
+  /* เว้นขอบขวานิดหน่อย */
+
+  margin-top: 7px;
+  margin-bottom: -45px;
+}
 #search-code {
   width: 230px;
   background: #ffffff;
@@ -278,29 +298,6 @@ body {
   box-sizing: border-box;
   margin-right: 35px;
 }
-
-/* Function buttons styles */
-.function-buttons {
-  position: sticky;
-  top: 120px;
-  z-index: 2500;
-  display: flex;
-  gap: 15px;
-  justify-content: flex-end;
-  /* หรือ center ถ้าอยากให้อยู่กลาง */
-  align-items: center;
-  padding: 8px 18px;
-  width: max-content;
-  /* ใช้พื้นที่เท่าที่ปุ่มต้องการ */
-  margin-left: auto;
-  /* ชิดขวา */
-  margin-right: 30px;
-  /* เว้นขอบขวานิดหน่อย */
-
-  margin-top: 7px;
-  margin-bottom: -45px;
-}
-
 .function-btn-add {
   padding: 10px 20px;
   border: none;
