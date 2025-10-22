@@ -13,46 +13,76 @@ function animateCounter(element, to, duration = 800) {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    // ดึงข้อมูลสินค้า
     try {
         const res = await fetch(`${BACKEND_URL}/products`);
         const products = await res.json();
-        window.allProducts = products; // เก็บไว้ใช้กับ pagination
+        window.allProducts = products;
         window.currentPage = 1;
         renderProductsTablePage(products, 1);
+
+        // ดึงข้อมูลซื้อ/ขายและคำนวณจำนวนคงเหลือ
+        const { buyin, sale } = await fetchBuyinAndSale();
+        const stockMap = computeStock(products, buyin, sale);
 
         // Animated counter
         // 1. จำนวนสินค้าทั้งหมด
         const totalProductsElem = document.getElementById('total-products');
         if (totalProductsElem) animateCounter(totalProductsElem, products.length, 800);
 
-        // 2. จำนวนประเภทสินค้า (นับ category ที่ไม่ซ้ำ)
+        // 2. จำนวนประเภทสินค้า
         const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
         const totalCategoriesElem = document.getElementById('total-categories');
         if (totalCategoriesElem) animateCounter(totalCategoriesElem, categories.length, 800);
 
-        // 3. พร้อมขาย (เช่น condition == "พร้อมขาย" หรือกำหนดเอง)
-        const available = products.filter(p => p.condition === "พร้อมขาย").length;
+        // 3. พร้อมขาย: เฉพาะสินค้าที่ condition == "พร้อมขาย" และ stock > 0
+        const available = products.filter(p => {
+            const code = p.product_code ?? p.code ?? '';
+            return (stockMap[code] ?? 0) > 0;
+        }).length;
         const totalAvailableElem = document.getElementById('total-available');
         if (totalAvailableElem) animateCounter(totalAvailableElem, available, 800);
 
-        // 4. ไม่พร้อมขาย (เช่น condition == "ไม่พร้อมขาย" หรือกำหนดเอง)
-        const unavailable = products.filter(p => p.condition === "ไม่พร้อมขาย").length;
+        // 4. ไม่พร้อมขาย: เฉพาะสินค้าที่ condition == "ไม่พร้อมขาย" หรือ stock <= 0
+        const unavailable = products.filter(p => {
+            const code = p.product_code ?? p.code ?? '';
+            return p.condition === "ไม่พร้อมขาย" || (stockMap[code] ?? 0) <= 0;
+        }).length;
         const totalUnavailableElem = document.getElementById('total-unavailable');
         if (totalUnavailableElem) animateCounter(totalUnavailableElem, unavailable, 800);
 
     } catch (err) {
         document.getElementById('product-list').innerHTML = '<div class="error">เกิดข้อผิดพลาดในการโหลดข้อมูลสินค้า</div>';
     }
+
+    // ช่องค้นหาแบบrealtime
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    function doSearch() {
+        const q = (searchInput.value || '').trim().toLowerCase();
+        const filtered = window.allProducts.filter(p =>
+            (p.product_code ?? '').toLowerCase().includes(q) ||
+            (p.product_name ?? '').toLowerCase().includes(q) ||
+            (p.model ?? '').toLowerCase().includes(q)
+        );
+        window.currentPage = 1;
+        renderProductsTablePage(filtered, 1);
+    }
+    searchInput?.addEventListener('input', doSearch);
+    searchBtn?.addEventListener('click', doSearch);
+
 });
 
-function renderProductsTablePage(products, page) {
+async function renderProductsTablePage(products, page) {
     const container = document.getElementById('product-list');
     const perPage = 7;
     const totalPages = Math.ceil(products.length / perPage);
     const start = (page - 1) * perPage;
     const end = start + perPage;
     const pageProducts = products.slice(start, end);
+
+    // ดึงข้อมูลซื้อ/ขายและคำนวณจำนวนคงเหลือ
+    const { buyin, sale } = await fetchBuyinAndSale();
+    const stockMap = computeStock(products, buyin, sale);
 
     let html = `
         <div class="product-table">
@@ -79,14 +109,17 @@ function renderProductsTablePage(products, page) {
             </thead>
             <tbody>
     `;
-    html += pageProducts.map(product => `
+    html += pageProducts.map(product => {
+        const code = product.product_code ?? product.code ?? '';
+        const stockQty = stockMap[code] ?? 0;
+        return `
         <tr>
             <td>${product.product_code || '-'}</td>
             <td>${product.model || '-'}</td>
             <td>${product.product_name || '-'}</td>
             <td>${product.maker || '-'}</td>
             <td>${product.category || '-'}</td>
-            <td>${product.quantity ?? '-'}</td>
+            <td>${stockQty}</td>
             <td>${product.condition || '-'}</td>
             <td>${product.price ?? '-'}</td>
             <td>${product.sale_price || '-'}</td>
@@ -102,7 +135,8 @@ function renderProductsTablePage(products, page) {
                     : '-'}
             </td>
         </tr>
-    `).join('');
+    `;
+    }).join('');
     html += `
             </tbody>
         </table>
@@ -207,4 +241,31 @@ function loadProducts() {
             const productList = document.getElementById('product-list');
             productList.innerHTML = '<tr><td colspan="14" class="error">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
         });
+}
+
+async function fetchBuyinAndSale() {
+    const [buyinRes, saleRes] = await Promise.all([
+        fetch(`${BACKEND_URL}/buyin_product`).then(r => r.json()).catch(()=>[]),
+        fetch(`${BACKEND_URL}/sale_product`).then(r => r.json()).catch(()=>[])
+    ]);
+    return { buyin: Array.isArray(buyinRes) ? buyinRes : [], sale: Array.isArray(saleRes) ? saleRes : [] };
+}
+
+function computeStock(products, buyin, sale) {
+    const stockMap = {};
+    products.forEach(p => {
+        const code = p.product_code ?? p.code ?? '';
+        stockMap[code] = 0;
+    });
+    buyin.forEach(b => {
+        const code = b.product_code ?? b.code ?? '';
+        const qty = Number(b.quantity ?? b.buyquantity ?? b.buy_quantity ?? b.qty ?? 0);
+        if (code in stockMap) stockMap[code] += qty;
+    });
+    sale.forEach(s => {
+        const code = s.product_code ?? s.code ?? '';
+        const qty = Number(s.salequantity ?? s.sale_quantity ?? s.quantity ?? s.qty ?? 0);
+        if (code in stockMap) stockMap[code] -= qty;
+    });
+    return stockMap;
 }

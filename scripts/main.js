@@ -54,6 +54,8 @@ function fillForm(product) {
     document.querySelector('.search-product-input') && (document.querySelector('.search-product-input').value = '');
 }
 
+
+
 // Render table with pagination
 function renderProductsTable(products, page = 1) {
     const productList = document.getElementById('product-list');
@@ -273,6 +275,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             document.getElementById('new-location').value = '';
         }
+    });
+
+// กรองด้วยคำค้นหา
+    const searchLower = search.toLowerCase();
+    transactions = transactions.filter(item => {
+        if (!search) return true;
+        return (
+            (item.product_code || '').toLowerCase().includes(searchLower) ||
+            (item.product_name || '').toLowerCase().includes(searchLower) ||
+            (item.model || '').toLowerCase().includes(searchLower)
+        );
     });
 
     // Search product

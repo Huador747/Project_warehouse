@@ -197,6 +197,14 @@ if (window.flatpickr) {
             document.getElementById('search-result')?.remove();
         }
     });
+
+    // Logout
+    const logoutBtn = document.getElementById("logout-btn");
+    logoutBtn?.addEventListener("click", function () {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("login.html");
+    });
     
     document.querySelector('.product-form').addEventListener('submit', async function(e) {
         e.preventDefault();

@@ -51,6 +51,15 @@ function computeStock(products, buyin, sale) {
         if (!map[code].category) map[code].category = b.category ?? '';
     });
 
+    // Logout
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn?.addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("login.html");
+    });
+
     // subtract sale - handle possible sale field names
     sale.forEach(s => {
         const code = s.product_code ?? '';

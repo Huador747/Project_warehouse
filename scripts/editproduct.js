@@ -271,3 +271,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+ // Logout
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn?.addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("login.html");
+    });

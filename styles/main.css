@@ -252,6 +252,33 @@ body {
   overflow-y: auto;
 }
 
+#search-code {
+  width: 230px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0px 18px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: "Sarabun", sans-serif;
+  font-size: 18px;
+  height: 50px;
+  margin-right: 16px;
+  /* เพิ่มระยะห่างจากปุ่ม logout */
+}
+
+/* ปรับแต่งช่องค้นหา */
+.search-product-input {
+  height: 50px;
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-right: 35px;
+}
+
 /* Function buttons styles */
 .function-buttons {
   position: sticky;

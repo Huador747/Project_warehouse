@@ -147,6 +147,15 @@ if (window.flatpickr) {
   });
 }
 
+ // Logout
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn?.addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace("login.html");
+    });
+
 // ดัก event submit ฟอร์ม ขายสินค้า
 document
   .querySelector(".product-form")
