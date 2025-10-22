@@ -39,28 +39,30 @@
       </button>
     </div>
 
-    <div class="main-content">
-      <div class="navbar">
+    <!-- ส่วน navbar -->
+    <div class="navbar">
         <form class="navbar-form">
-          <span class="navbar-text">กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</span>
+            <span class="navbar-text">หน้าการเคลื่อนไหวสินค้า</span>
         </form>
+        <button class="logout-btn">ออกจากระบบ</button>
+    </div>
+
     <div class="main-content">
-        <h2>กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</h2>
-        <div class="controls">
-            <label for="period-type">เลือกช่วงเวลา:</label>
-            <select id="period-type">
-                <option value="month">รายเดือน</option>
-                <option value="quarter">รายไตรมาส</option>
-                <option value="year">รายปี</option>
-            </select>
-            <label for="product-select" style="margin-left:16px;">เลือกดูเฉพาะสินค้า:</label>
-            <select id="product-select">
-                <option value="">ทั้งหมด</option>
-                <!-- เติม option ด้วย JS -->
-            </select>
-        </div>
-        <div id="inventory-info" style="margin-bottom:24px; font-weight:bold; color:#d35400;"></div>
-        <canvas id="movementChart" width="900" height="400"></canvas>
+      <div class="controls">
+          <label for="period-type">เลือกช่วงเวลา:</label>
+          <select id="period-type">
+              <option value="month">รายเดือน</option>
+              <option value="quarter">รายไตรมาส</option>
+              <option value="year">รายปี</option>
+          </select>
+          <label for="product-select" style="margin-left:16px;">เลือกดูเฉพาะสินค้า:</label>
+          <select id="product-select">
+              <option value="">ทั้งหมด</option>
+              <!-- เติม option ด้วย JS -->
+          </select>
+      </div>
+      <div id="inventory-info" style="margin-bottom:24px; font-weight:bold; color:#d35400;"></div>
+      <canvas id="movementChart" width="900" height="400"></canvas>
     </div>
     <script type="module" src="../scripts/movement.js"></script>
 </body>
