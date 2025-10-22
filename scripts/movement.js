@@ -152,19 +152,16 @@ function renderInventorySummary(entries) {
   // คำนวณเงินจมรวม
   const totalSunk = (entries || []).reduce((s, e) => s + toNumber(e.sunk), 0);
   // คำนวณกำไรรวม
-  const totalProfit = (entries || []).reduce(
-    (s, e) => s + toNumber(e.profit),
-    0
-  );
+  const totalProfit = (entries || []).reduce((s, e) => s + toNumber(e.profit), 0);
+  // คำนวณยอดขายรวม
+  const totalSale = (entries || []).reduce((s, e) => s + toNumber(e.saleTotal), 0);
 
   // แสดงผลรวม
-  inventoryInfo.innerHTML = `<div style="color:green;">กำไรรวม: ${totalProfit.toLocaleString(
-    "th-TH"
-  )} บาท</div>
-        <div style="color:red;">เงินจมรวม: ${totalSunk.toLocaleString(
-          "th-TH"
-        )} บาท</div>
-        `;
+  inventoryInfo.innerHTML = `
+    <div style="color:orange;">ยอดขายรวม: ${totalSale.toLocaleString("th-TH")} บาท</div>
+    <div style="color:green;">กำไรรวม: ${totalProfit.toLocaleString("th-TH")} บาท</div>
+    <div style="color:red;">เงินจมรวม: ${totalSunk.toLocaleString("th-TH")} บาท</div>
+  `;
 }
 
 // เพิ่มการคำนวณกำไรใน showInventoryInfo
