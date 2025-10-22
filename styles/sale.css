@@ -156,6 +156,26 @@ body {
   height: 50px;
 }
 
+.navbar-text {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  background: #3cff3c;
+  color: #333;
+  font-size: 30px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.navbar-text.active::before {
+  content: "🚛📦";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
+}
+
 .logout-btn {
   background: #e74c3c;
   color: #fff;
@@ -168,18 +188,6 @@ body {
   font-size: 14;
   align-items: center;
   justify-content: center;
-}
-
-.navbar-text {
-  display: inline-block;
-  padding: 7px 16px;
-  border-radius: 4px;
-  background: #3cff3c;
-  color: #333;
-  font-size: 30px;
-  margin-right: 10px;
-  min-width: 120px;
-  text-align: center;
 }
 
 .dropdown-content {
@@ -708,19 +716,15 @@ body {
   }
 }
 
-.navbar-text {
-  will-change: transform, opacity;
-}
-
 /* slide-in สำหรับ navbar-text */
 @keyframes slideFromLeft {
   0% {
-    transform: translateX(-120%);
+    transform: translateX(-100%);
     opacity: 0;
   }
 
   60% {
-    transform: translateX(6%);
+    transform: translateX(8%);
     opacity: 1;
   }
 
@@ -730,7 +734,8 @@ body {
   }
 }
 
-.navbar-text.slide-in {
+.navbar-text {
+  will-change: transform, opacity;
   animation:
     slideFromLeft 640ms cubic-bezier(.2, .9, .2, 1) both,
     subtlePulse 3.2s ease-in-out 640ms infinite;

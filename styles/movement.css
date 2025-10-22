@@ -8,16 +8,17 @@ label,
     font-family: "Sarabun", sans-serif;
     font-weight: bold;
 }
+
 .navbar-form {
-  gap: 30px;
-  margin: 0 0 0px 75px;
+    gap: 30px;
+    margin: 0 0 0px 75px;
 }
 
 .navbar-form input[type="text"] {
-  padding: 7px;
-  border: none;
-  border-radius: 4px;
-  height: 50px;
+    padding: 7px;
+    border: none;
+    border-radius: 4px;
+    height: 50px;
 }
 
 /* Sidebar styles */
@@ -88,15 +89,16 @@ label,
     margin: 0 auto;
     margin-top: 1080px;
 }
+
 .logout-btn {
-  background: #e74c3c;
-  color: #fff;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  height: 50px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    height: 50px;
 }
 
 .nav-btn.active {
@@ -110,6 +112,14 @@ label,
     position: relative;
     transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s,
         transform 0.2s;
+}
+
+.navbar-text.active::before {
+    content: "📊";
+    margin-right: 8px;
+    font-size: 1.3em;
+    vertical-align: middle;
+    animation: bounceIn 0.7s;
 }
 
 /* อัพเดท hamburger animation */
@@ -221,6 +231,10 @@ select {
     margin-right: 10px;
     min-width: 120px;
     text-align: center;
+    will-change: transform, opacity;
+    animation: 
+        slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
+        subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
 /* Hamburger styles */
@@ -260,4 +274,33 @@ select {
 .sidebar.sidebar-open {
     left: 0;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+}
+
+/* เพิ่ม animation bounceIn */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Add keyframes for animations */
+@keyframes subtlePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideFromLeft {
+  0% { transform: translateX(-100%); opacity: 0; }
+  60% { transform: translateX(8%); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
 }
