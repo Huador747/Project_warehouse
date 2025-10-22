@@ -173,6 +173,7 @@ document
     saleData.total = Number(saleData.total) || 0;
     saleData.total_vat = Number(saleData.total_vat) || 0;
     saleData.profit = Number(saleData.profit) || 0;
+    saleData.shipping = Number(saleData.shipping) || 0;
 
     // แปลงวันที่
     if (saleData.saleoutdate) {
@@ -216,9 +217,10 @@ function updateTotal() {
   const price = parseFloat(document.getElementById("sale_price").value) || 0;
   const quantity = parseInt(document.getElementById("salequantity").value) || 0;
   const cost = parseFloat(document.getElementById("price").value) || 0;
+  const shipping = parseFloat(document.getElementById("shipping").value) || 0;
 
-  // คำนวณยอดรวม
-  const total = price * quantity;
+  // คำนวณยอดรวม (รวมค่าขนส่ง)
+  const total = (price * quantity) + shipping;
   document.getElementById("total").value = total.toFixed(2);
 
   // คำนวณ VAT 7%
@@ -229,8 +231,8 @@ function updateTotal() {
   const total_vat = total + vat;
   document.getElementById("total_vat").value = total_vat.toFixed(2);
 
-  // คำนวณกำไร
-  const profit = total_vat - (cost * quantity);
+  // คำนวณกำไร (ราคารวมภาษี - ต้นทุน*จำนวน - ค่าขนส่ง)
+  const profit = total_vat - (cost * quantity) - shipping;
   document.getElementById("profit").value = profit.toFixed(2);
 }
 
@@ -238,6 +240,8 @@ function updateTotal() {
 document.getElementById("sale_price").addEventListener("input", updateTotal);
 document.getElementById("salequantity").addEventListener("input", updateTotal);
 document.getElementById("price").addEventListener("input", updateTotal);
+document.getElementById("shipping").addEventListener("input", updateTotal);
+document.getElementById("shipping").value = 100;
 
 app.post("/sale_product", async (req, res) => {
   // ...
@@ -251,13 +255,14 @@ const SaleProductSchema = new mongoose.Schema({
   condition: String,
   price: Number,
   sale_price: Number,
-  vat: Number,
+  vat: Number, 
   salequantity: Number,
   total: Number,
   total_vat: Number,
   profit: Number,
   customerName: String,
   notesale: String,
+  shipping: Number,
 });
 
 // เพิ่มการสไลด์ navbar-text, entrance ฟอร์ม, hamburger toggle และ animation ให้ผลลัพธ์การค้นหา

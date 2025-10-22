@@ -168,3 +168,40 @@
   margin-top: 7px;
   margin-bottom: -45px;
 }
+
+/* Animation keyframes สำหรับ navbar-text */
+@keyframes subtlePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideFromLeft {
+  0% { transform: translateX(-100%); opacity: 0; }
+  60% { transform: translateX(8%); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* ใช้ animation กับ .navbar-form แทน .navbar-text */
+.navbar-form {
+    will-change: transform, opacity;
+    animation: 
+        slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
+        subtlePulse 3.2s ease-in-out 640ms infinite;
+}
+
+/* ถ้าไม่ต้องการให้ .navbar-text ซ้อน animation ให้ลบบรรทัด animation ออก */
+.navbar-text {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 31px;
+    margin-right: 10px;
+    min-width: 120px;
+    text-align: center;
+    will-change: transform, opacity;
+    animation: 
+        slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
+        subtlePulse 3.2s ease-in-out 640ms infinite;
+}

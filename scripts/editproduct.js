@@ -272,6 +272,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const navbarText = document.querySelector('.navbar-text');
+    if (navbarText) {
+        requestAnimationFrame(() => {
+            navbarText.classList.add('slide-in');
+        });
+    }
+});
+
  // Logout
     const logoutBtn = document.getElementById('logout-btn');
     logoutBtn?.addEventListener('click', function(e) {

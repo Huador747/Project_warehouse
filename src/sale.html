@@ -1,120 +1,167 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/sale.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/sale.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>"
-    <meta name="viewport" content="width=device-width, initial-scale=1.0
-">
-</head>
-<body>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
+    "
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0
+"
+    />
+  </head>
+  <body>
     <!-- Hamburger button -->
     <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
-        <span></span>
-        <span></span>
-        <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
     <div class="sidebar" id="sidebar">
-        <div class="logo-container">
-            <img src="../assets/logo.png" alt="Logo" class="logo">
-        </div>
-        <button class="nav-btn" onclick="window.location.href='main.html'">หน้าหลัก</button>
-        <button class="nav-btn " onclick="window.location.href='buyin.html'">รายการซื้อ</button>
-        <button class="nav-btn active" onclick="window.location.href='sale.html'">รายการขาย</button>
-<button class="nav-btn" onclick="window.location.href='inventory.html'">สรุปจำนวนคงเหลือสินค้า</button>
-        <button class="nav-btn" onclick="window.location.href='history.html'">ประวัติการซื้อ-ขาย</button>
-        <button class="nav-btn" onclick="window.location.href='movement.html'">กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</button>
+      <div class="logo-container">
+        <img src="../assets/logo.png" alt="Logo" class="logo" />
+      </div>
+      <button class="nav-btn" onclick="window.location.href='main.html'">
+        หน้าหลัก
+      </button>
+      <button class="nav-btn" onclick="window.location.href='buyin.html'">
+        รายการซื้อ
+      </button>
+      <button class="nav-btn active" onclick="window.location.href='sale.html'">
+        รายการขาย
+      </button>
+      <button class="nav-btn" onclick="window.location.href='inventory.html'">
+        สรุปจำนวนคงเหลือสินค้า
+      </button>
+      <button class="nav-btn" onclick="window.location.href='history.html'">
+        ประวัติการซื้อ-ขาย
+      </button>
+      <button class="nav-btn" onclick="window.location.href='movement.html'">
+        กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+      </button>
     </div>
 
     <!-- ย้าย navbar ออกมานอก main-content -->
     <div class="navbar">
-        <form class="navbar-form">
-            <span class="navbar-text active">หน้าขายสินค้า</span>
-        </form>
-        <div class="search-logout-row">
-            <input type="text" class="search-product-input" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
-            <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
-        </div>
+      <form class="navbar-form">
+        <span class="navbar-text active">หน้าขายสินค้า</span>
+      </form>
+      <div class="search-logout-row">
+        <input
+          type="text"
+          class="search-product-input"
+          placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล..."
+        />
+        <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
+      </div>
     </div>
 
     <div class="main-content">
-        <form class="product-form">
-            <div class="product-form-row">
-                <div class="product-form-col">
-                    <div class="form-group">
-                        <label for="saleoutdate">วันที่</label>
-                        <input type="text" id="saleoutdate" name="saleoutdate" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="productName">โมเดล</label>
-                        <input type="text" id="product_name" name="product_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="productCode">หมายเลขโมเดล</label>
-                        <input type="text" id="product_code" name="product_code">
-                    </div>
-                    <div class="form-group">
-                        <label for="unit">หน่วยนับ</label>
-                        <input type="text" id="unit" name="unit">
-                    </div>
-                    <div class="form-group">
-                        <label for="condition">มือ1/มือ2</label>
-                        <input type="text" id="condition" name="condition">
-                    </div>
-                    <div class="form-group">
-                        <label for="price">ราคาต้นทุน</label>
-                        <input type="number" id="price" name="price">
-                    </div>
-                    <div class="form-group">
-                        <label for="customerName">ราคาขาย</label>
-                        <input type="text" id="sale_price" name="sale_price">
-                    </div>
-                </div>
-                <div class="product-form-col">
-                    <div class="form-group">
-                        <label for="quantity">ภาษี7%</label>
-                        <input type="number" id="vat" name="vat" step="0.01" readonly>
-                </div>
-                <div class="form-group">
-                        <label for="salequantity">จำนวนที่ขาย</label>
-                        <input type="text" id="salequantity" name="salequantity">
-                    </div>
-                    <div class="form-group">
-                        <label for="total">ราคาไม่รวมภาษี</label>
-                        <input type="text" id="total" name="total">
-                    </div>
-                    <div class="form-group">
-                        <label for="note">ราคารวมภาษี</label>
-                        <input type="text" id="total_vat" name="total_vat" step="0.01" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerPhone">กำไร</label>
-                        <input type="text" id="profit" name="profit" step="0.01" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">ชื่อลูกค้า</label>
-                        <input type="text" id="customerName" name="customerName">
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentType">หมายเหตุการขาย</label>
-                        <input type="text" id="notesale" name="notesale">
-                    </div>
-                </div>
+      <form class="product-form">
+        <div class="product-form-row">
+          <div class="product-form-col">
+            <div class="form-group">
+              <label for="saleoutdate">วันที่</label>
+              <input
+                type="text"
+                id="saleoutdate"
+                name="saleoutdate"
+                autocomplete="off"
+              />
             </div>
-            <button type="submit" class="function-btn-add">บันทึก</button>
-        </form>
-    </div> 
-<script type="module" src="../scripts/sale.js"></script>
-<script>
-// ตัวอย่างการใช้งาน
-// fetch(`${BACKEND_URL}/products`).then(...);
-</script>
-</body>
+            <div class="form-group">
+              <label for="productName">โมเดล</label>
+              <input type="text" id="product_name" name="product_name" />
+            </div>
+            <div class="form-group">
+              <label for="productCode">หมายเลขโมเดล</label>
+              <input type="text" id="product_code" name="product_code" />
+            </div>
+            <div class="form-group">
+              <label for="unit">หน่วยนับ</label>
+              <input type="text" id="unit" name="unit" />
+            </div>
+            <div class="form-group">
+              <label for="condition">มือ1/มือ2</label>
+              <input type="text" id="condition" name="condition" />
+            </div>
+            <div class="form-group">
+              <label for="price">ราคาต้นทุน</label>
+              <input type="number" id="price" name="price" />
+            </div>
+            <div class="form-group">
+              <label for="customerName">ราคาขาย</label>
+              <input type="text" id="sale_price" name="sale_price" />
+            </div>
+          </div>
+          <div class="product-form-col">
+            <div class="form-group">
+              <label for="salequantity">จำนวนที่ขาย</label>
+              <input type="text" id="salequantity" name="salequantity" />
+            </div>
+            <div class="form-group">
+              <label for="shipping">ค่าขนส่ง</label>
+              <input type="number" id="shipping" name="shipping" step="0.01" value="100" />
+            </div>
+            <div class="form-group">
+              <label for="quantity">ภาษี7%</label>
+              <input type="number" id="vat" name="vat" step="0.01" readonly />
+            </div>
+            <div class="form-group">
+              <label for="total">ราคาไม่รวมภาษี</label>
+              <input type="text" id="total" name="total" />
+            </div>
+            <div class="form-group">
+              <label for="note">ราคารวมภาษี</label>
+              <input
+                type="text"
+                id="total_vat"
+                name="total_vat"
+                step="0.01"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label for="customerPhone">กำไร</label>
+              <input
+                type="text"
+                id="profit"
+                name="profit"
+                step="0.01"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label for="address">ชื่อลูกค้า</label>
+              <input type="text" id="customerName" name="customerName" />
+            </div>
+            <div class="form-group">
+              <label for="paymentType">หมายเหตุการขาย</label>
+              <input type="text" id="notesale" name="notesale" />
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="function-btn-add">บันทึก</button>
+      </form>
+    </div>
+    <script type="module" src="../scripts/sale.js"></script>
+    <script>
+      // ตัวอย่างการใช้งาน
+      // fetch(`${BACKEND_URL}/products`).then(...);
+    </script>
+  </body>
 </html>
