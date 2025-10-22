@@ -84,6 +84,42 @@ body {
   border: 3px solid #8b7f7f;
   /* ขอบทองอ่อน */
 }
+/* Optional: show dropdown on click */
+.sidebar .dropdown-btn {
+  position: relative;
+  align-items: center;
+}
+
+.sidebar .dropdown-content {
+  position: relative;
+}
+
+.sidebar .dropdown-btn+.dropdown-content {
+  display: none;
+  position: relative;
+  justify-content: space-between;
+}
+
+.sidebar .dropdown-btn:hover+.dropdown-content,
+.sidebar .dropdown-content:hover {
+  display: flex;
+}
+/* Sidebar: hidden by default */
+.sidebar {
+  left: -270px;
+  transition: left 0.8s;
+}
+
+/* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
+.hamburger:hover+.sidebar,
+.sidebar:hover {
+  left: 0;
+}
+
+/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
+.sidebar {
+  pointer-events: auto;
+}
 
 .nav-btn.active {
   background: #ffd336;
@@ -216,26 +252,7 @@ body {
   display: flex;
 }
 
-/* Optional: show dropdown on click */
-.sidebar .dropdown-btn {
-  position: relative;
-  align-items: center;
-}
 
-.sidebar .dropdown-content {
-  position: relative;
-}
-
-.sidebar .dropdown-btn+.dropdown-content {
-  display: none;
-  position: relative;
-  justify-content: space-between;
-}
-
-.sidebar .dropdown-btn:hover+.dropdown-content,
-.sidebar .dropdown-content:hover {
-  display: flex;
-}
 
 .dropdown-icon {
   margin-left: 8px;
@@ -415,23 +432,6 @@ body {
 
 .hamburger.active span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
-}
-
-/* Sidebar: hidden by default */
-.sidebar {
-  left: -270px;
-  transition: left 0.8s;
-}
-
-/* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
-.hamburger:hover+.sidebar,
-.sidebar:hover {
-  left: 0;
-}
-
-/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
-.sidebar {
-  pointer-events: auto;
 }
 
 /* Responsive Design */

@@ -262,6 +262,28 @@ productSelect.addEventListener('change', function() {
     showInventoryInfo(this.value);
 });
 
+//กดให้sidebarค้างไว้
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    // Toggle sidebar
+    hamburger?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        hamburger.classList.toggle('active');
+        sidebar.classList.toggle('sidebar-open');
+    });
+
+    // ปิด sidebar เมื่อคลิกนอก
+    document.addEventListener('click', function(ev) {
+        if (!sidebar.contains(ev.target) && !hamburger.contains(ev.target)) {
+            sidebar.classList.remove('sidebar-open');
+            hamburger.classList.remove('active');
+        }
+    });
+});
+//กดให้sidebarค้างไว้
+
 // init
 (async function init() {
     await populateProductSelect();

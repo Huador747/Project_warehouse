@@ -60,10 +60,11 @@ body {
 .sidebar {
   position: fixed;
   left: -270px;
+  /* ซ่อน sidebar ด้านซ้าย */
   top: 0;
   height: 100vh;
   z-index: 2000;
-  transition: left 0.3s;
+  transition: left 0.8s, transform 0.8s cubic-bezier(.2, .9, .2, 1), box-shadow 0.8s;
   /* ลดเวลา transition */
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
   width: 250px;
@@ -77,6 +78,12 @@ body {
   align-items: center;
   overflow: hidden;
   /* ป้องกันภาพฉีก */
+}
+
+.sidebar.sidebar-open {
+  left: 0;
+  transform: translateX(0);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
 }
 
 .sidebar input[type="text"] {
@@ -258,10 +265,9 @@ body {
 .hamburger {
   display: flex !important;
   position: fixed;
-  top: 130px;
+  top: 40px;
   left: 24px;
   z-index: 4000;
-  /* เพิ่ม z-index ให้สูงกว่า navbar */
   width: 40px;
   height: 40px;
   background: transparent;
@@ -281,8 +287,6 @@ body {
   border-radius: 2px;
   margin: 3px 0;
   transition: 0.4s;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .hamburger:hover span {
@@ -310,7 +314,7 @@ body {
   top: 0;
   height: 100vh;
   z-index: 2000;
-  transition: left 0.8s;
+  transition: left 0.8s, transform 0.8s cubic-bezier(.2,.9,.2,1), box-shadow 0.8s;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
   width: 250px;
   background: rgb(254, 179, 104);
@@ -325,6 +329,8 @@ body {
 
 .sidebar.sidebar-open {
   left: 0;
+  transform: translateX(0);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
 }
 
 /* Main content: full width */
@@ -347,7 +353,6 @@ body {
   top: 40px;
   left: 24px;
   z-index: 4000;
-  /* เพิ่ม z-index ให้สูงกว่า navbar */
   width: 40px;
   height: 40px;
   background: transparent;
@@ -377,7 +382,6 @@ body {
   top: 40px;
   left: 24px;
   z-index: 4000;
-  /* เพิ่ม z-index ให้สูงกว่า navbar */
   width: 40px;
   height: 40px;
   background: transparent;
@@ -423,7 +427,7 @@ body {
 
 /* ปรับแต่งช่องค้นหา */
 .search-product-input {
-  height: 50px;         
+  height: 50px;
   width: 300px;
   padding: 8px;
   border: 1px solid #ddd;
@@ -650,10 +654,19 @@ body {
 
 /* ไล่สีพื้นหลัง navbar เบา ๆ */
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
+
 .navbar {
   background-image: linear-gradient(90deg, #9effa9, #3cff3c, #3bb54a);
   background-size: 300% 300%;
@@ -662,49 +675,141 @@ body {
 }
 
 /* โลโก้ลอยเบา ๆ */
-@keyframes floatY { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
-.logo { animation: floatY 6s ease-in-out infinite; }
+@keyframes floatY {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.logo {
+  animation: floatY 6s ease-in-out infinite;
+}
 
 /* ปุ่ม navbar-text พอง/ยุบ */
-@keyframes subtlePulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
-.navbar-text { will-change: transform, opacity; }
+@keyframes subtlePulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.navbar-text {
+  will-change: transform, opacity;
+}
 
 /* slide-in สำหรับ navbar-text */
 @keyframes slideFromLeft {
-  0%   { transform: translateX(-120%); opacity: 0; }
-  60%  { transform: translateX(6%);   opacity: 1; }
-  100% { transform: translateX(0);     opacity: 1; }
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+
+  60% {
+    transform: translateX(6%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
+
 .navbar-text.slide-in {
   animation:
-    slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
-    subtlePulse   3.2s ease-in-out 640ms infinite;
+    slideFromLeft 640ms cubic-bezier(.2, .9, .2, 1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
 /* ฟอร์มการเพิ่มสินค้า: entrance + stagger (JS ตั้ง delay) */
 @keyframes cardIn {
-  0% { opacity: 0; transform: translateY(20px) scale(.995); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-.product-form.animate { animation: cardIn 520ms cubic-bezier(.2,.9,.2,1) forwards; }
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(.995);
+  }
 
-@keyframes staggerUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
-.form-group.stagger { opacity: 0; transform: translateY(8px); animation: staggerUp 360ms ease forwards; }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.product-form.animate {
+  animation: cardIn 520ms cubic-bezier(.2, .9, .2, 1) forwards;
+}
+
+@keyframes staggerUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group.stagger {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: staggerUp 360ms ease forwards;
+}
 
 /* ผลลัพธ์การค้นหา: slide + fade รายการ */
-@keyframes slideIn { 0% { opacity: 0; transform: translateY(-8px); } 100% { opacity: 1; transform: translateY(0); } }
-.search-results-container.animate .search-item { opacity: 0; animation: slideIn 220ms cubic-bezier(.2,.9,.2,1) forwards; }
-.search-results-container.animate .search-item:nth-child(1) { animation-delay: 40ms; }
-.search-results-container.animate .search-item:nth-child(2) { animation-delay: 80ms; }
-.search-results-container.animate .search-item:nth-child(3) { animation-delay: 120ms; }
-.search-results-container.animate .search-item:nth-child(4) { animation-delay: 160ms; }
-.search-item { transition: background-color 0.18s, transform 0.14s; }
-.search-item:hover { transform: translateY(-3px); }
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 
-/* ปรับเวลา sidebar ให้เท่ากับ main (ซ่อน/แสดงช้าเท่ากัน) */
-.sidebar {
-  left: -270px;
-  transition: left 0.8s, transform 0.8s cubic-bezier(.2,.9,.2,1), box-shadow 0.8s;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+.search-results-container.animate .search-item {
+  opacity: 0;
+  animation: slideIn 220ms cubic-bezier(.2, .9, .2, 1) forwards;
+}
+
+.search-results-container.animate .search-item:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.search-results-container.animate .search-item:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.search-results-container.animate .search-item:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.search-results-container.animate .search-item:nth-child(4) {
+  animation-delay: 160ms;
+}
+
+.search-item {
+  transition: background-color 0.18s, transform 0.14s;
+}
+
+.search-item:hover {
+  transform: translateY(-3px);
+}
 /* ========== จบส่วนเพิ่ม ========== */
