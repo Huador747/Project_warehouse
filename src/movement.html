@@ -44,7 +44,7 @@
         <form class="navbar-form">
             <span class="navbar-text">หน้าการเคลื่อนไหวสินค้า</span>
         </form>
-        <button class="logout-btn">ออกจากระบบ</button>
+        <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
     </div>
 
     <div class="main-content">
@@ -60,11 +60,34 @@
               <option value="">ทั้งหมด</option>
               <!-- เติม option ด้วย JS -->
           </select>
+          <label for="year-select" id="year-label" style="margin-left:16px;">เลือกปี:</label>
+          <select id="year-select"></select>
       </div>
       <div id="inventory-info" style="margin-bottom:24px; font-weight:bold; color:#d35400;"></div>
       <canvas id="movementChart" width="900" height="400"></canvas>
     </div>
     <script type="module" src="../scripts/movement.js"></script>
+    <script>
+      const yearSelect = document.getElementById("year-select");
+      const yearLabel = document.getElementById("year-label");
+
+      async function populateYearSelect() {
+        const { buyin, sale } = await fetchAll();
+        const years = new Set();
+        const safeDate = (d) => { try { return new Date(d); } catch { return new Date(NaN); } };
+        (buyin || []).forEach(b => { const dt = safeDate(b.buyindate ?? b.date); if (!isNaN(dt)) years.add(dt.getFullYear()); });
+        (sale || []).forEach(s => { const dt = safeDate(s.saleoutdate ?? s.date); if (!isNaN(dt)) years.add(dt.getFullYear()); });
+        const sorted = Array.from(years).sort((a, b) => b - a);
+        yearSelect.innerHTML = '';
+        sorted.forEach(y => {
+          const opt = document.createElement('option');
+          opt.value = y;
+          opt.textContent = y;
+          yearSelect.appendChild(opt);
+        });
+        if (sorted.length) yearSelect.value = sorted[0];
+      }
+    </script>
 </body>
 
 </html>

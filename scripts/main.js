@@ -277,17 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-// กรองด้วยคำค้นหา
-    const searchLower = search.toLowerCase();
-    transactions = transactions.filter(item => {
-        if (!search) return true;
-        return (
-            (item.product_code || '').toLowerCase().includes(searchLower) ||
-            (item.product_name || '').toLowerCase().includes(searchLower) ||
-            (item.model || '').toLowerCase().includes(searchLower)
-        );
-    });
-
     // Search product
     const searchInput = document.querySelector('.search-product-input');
     searchInput?.addEventListener('input', function() {
