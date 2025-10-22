@@ -1,7 +1,12 @@
-body {
-    font-family: 'Sarabun', sans-serif;
-    background: #f7f7f7;
-    margin: 0;
+body,
+html,
+input,
+select,
+button,
+label,
+.navbar-text {
+  font-family: "Sarabun", sans-serif;
+  font-weight: bold;
 }
 
 .main-content {
@@ -25,7 +30,9 @@ label {
     font-weight: bold;
     margin-right: 8px;
 }
-
+.controls select {
+    margin-top: 5px;
+}
 select {
     padding: 6px 12px;
     border-radius: 6px;
