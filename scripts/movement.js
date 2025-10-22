@@ -560,6 +560,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 //กดให้sidebarค้างไว้
 
+document.addEventListener('DOMContentLoaded', () => {
+    const navbarText = document.querySelector('.navbar-text');
+    if (navbarText) {
+        requestAnimationFrame(() => {
+            navbarText.classList.add('slide-in');
+        });
+    }
+});
+
 // init
 (async function init() {
   await populateProductSelect();

@@ -131,3 +131,12 @@ async function main() {
 }
 
 main();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const navbarText = document.querySelector('.navbar-text');
+    if (navbarText) {
+        requestAnimationFrame(() => {
+            navbarText.classList.add('slide-in');
+        });
+    }
+});

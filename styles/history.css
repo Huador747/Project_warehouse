@@ -165,6 +165,10 @@ body {
   margin-right: 10px;
   min-width: 120px;
   text-align: center;
+  will-change: transform, opacity;
+  animation:
+    slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
 .navbar-form {
@@ -423,7 +427,7 @@ tr:hover {
 }
 
 .navbar-text.active::before {
-  content: "📊";
+  content: "🔍";
   margin-right: 8px;
   font-size: 1.3em;
   vertical-align: middle;
@@ -624,4 +628,17 @@ tr:hover {
 
 #total-sale {
   color: #2ecc71;
+}
+
+/* Add animation keyframes */
+@keyframes subtlePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideFromLeft {
+  0% { transform: translateX(-100%); opacity: 0; }
+  60% { transform: translateX(8%); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
 }

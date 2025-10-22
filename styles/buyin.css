@@ -148,6 +148,14 @@ body {
   height: 50px;
 }
 
+.navbar-text.active::before {
+  content: "📦";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
+}
+
 #search-code {
   width: 230px;
   background: #ffffff;
@@ -855,7 +863,7 @@ select:focus,
   align-items: center;
 }
 
-/* ถ้ามีบล็อก .sidebar.sidebar-open ใช้ left:0 เหมือนเดิม */
+/* ลบ .sidebar ที่ซ้ำออก แล้วเหลือแค่ .sidebar.sidebar-open */
 .sidebar.sidebar-open {
   left: 0;
   transform: translateX(0);

@@ -172,6 +172,22 @@ body {
     background-color: #77e146;
 }
 
+.navbar-text.active::before {
+    content: "🧾✏️";
+    margin-right: 8px;
+    font-size: 1.3em;
+    vertical-align: middle;
+    animation: bounceIn 0.7s;
+}
+
+.navbar-text.active1::before {
+    content: "🗑️📦";
+    margin-right: 8px;
+    font-size: 1.3em;
+    vertical-align: middle;
+    animation: bounceIn 0.7s;
+}
+
 .logout-btn {
     background: #e74c3c;
     color: #fff;
