@@ -19,7 +19,7 @@
       <div class="logo-container">
         <img src="/assets/logo.png" alt="Logo" class="logo" />
       </div>
-      <button class="nav-btn active" onclick="window.location.href='main.html'">
+      <button class="nav-btn" onclick="window.location.href='main.html'">
         หน้าหลัก
       </button>
       <button class="nav-btn" onclick="window.location.href='buyin.html'">
@@ -34,11 +34,10 @@
       <button class="nav-btn" onclick="window.location.href='history.html'">
         ประวัติการซื้อ-ขาย
       </button>
-      <button class="nav-btn" onclick="window.location.href='movement.html'">
+      <button class="nav-btn active" onclick="window.location.href='movement.html'">
         กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
       </button>
     </div>
-
     <!-- ส่วน navbar -->
     <div class="navbar">
         <form class="navbar-form">
@@ -46,22 +45,29 @@
         </form>
         <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
     </div>
-
     <div class="main-content">
       <div class="controls">
+        <div class="control-group">
           <label for="period-type">เลือกช่วงเวลา:</label>
           <select id="period-type">
               <option value="month">รายเดือน</option>
               <option value="quarter">รายไตรมาส</option>
               <option value="year">รายปี</option>
           </select>
-          <label for="product-select" style="margin-left:16px;">เลือกดูเฉพาะสินค้า:</label>
+        </div>
+
+        <div class="control-group">
+          <label for="product-select">เลือกดูเฉพาะสินค้า:</label>
           <select id="product-select">
               <option value="">ทั้งหมด</option>
               <!-- เติม option ด้วย JS -->
           </select>
-          <label for="year-select" id="year-label" style="margin-left:16px;">เลือกปี:</label>
+        </div>
+
+        <div class="control-group">
+          <label for="year-select" id="year-label">เลือกปี:</label>
           <select id="year-select"></select>
+        </div>
       </div>
       <div id="inventory-info" style="margin-bottom:24px; font-weight:bold; color:#d35400;"></div>
       <canvas id="movementChart" width="900" height="400"></canvas>
