@@ -217,19 +217,20 @@ function updateTotal() {
   const quantity = parseInt(document.getElementById("salequantity").value) || 0;
   const cost = parseFloat(document.getElementById("price").value) || 0;
 
+  // คำนวณยอดรวม
   const total = price * quantity;
-  document.getElementById("total").value = total;
+  document.getElementById("total").value = total.toFixed(2);
 
-  // คำนวณ vat เป็น 7% ของ total
+  // คำนวณ VAT 7%
   const vat = total * 0.07;
   document.getElementById("vat").value = vat.toFixed(2);
 
-  // คำนวณราคารวมภาษี (total + vat)
+  // คำนวณยอดรวม VAT
   const total_vat = total + vat;
   document.getElementById("total_vat").value = total_vat.toFixed(2);
 
-  // คำนวณกำไร (ต้นทุน*จำนวน) - ราคารวมภาษี
-  const profit = total_vat - cost * quantity;
+  // คำนวณกำไร
+  const profit = total_vat - (cost * quantity);
   document.getElementById("profit").value = profit.toFixed(2);
 }
 
@@ -261,6 +262,27 @@ const SaleProductSchema = new mongoose.Schema({
 
 // เพิ่มการสไลด์ navbar-text, entrance ฟอร์ม, hamburger toggle และ animation ให้ผลลัพธ์การค้นหา
 document.addEventListener("DOMContentLoaded", () => {
+  // Toggle Sidebar
+  const hamburger = document.getElementById("hamburger-btn");
+  const sidebar = document.getElementById("sidebar");
+  
+  if (hamburger && sidebar) {
+      // เมื่อคลิกที่ปุ่ม hamburger
+      hamburger.addEventListener("click", (e) => {
+          e.stopPropagation();
+          hamburger.classList.toggle("active");
+          sidebar.classList.toggle("sidebar-open");
+      });
+
+      // ปิด sidebar เมื่อคลิกนอก
+      document.addEventListener("click", (ev) => {
+          if (!sidebar.contains(ev.target) && !hamburger.contains(ev.target)) {
+              sidebar.classList.remove("sidebar-open");
+              hamburger.classList.remove("active");
+          }
+      });
+  }
+
   // slide-in navbar text
   const navbarText = document.querySelector(".navbar-text");
   if (navbarText)
@@ -274,23 +296,6 @@ document.addEventListener("DOMContentLoaded", () => {
     groups.forEach((g, idx) => {
       g.classList.add("stagger");
       g.style.animationDelay = 100 + idx * 70 + "ms";
-    });
-  }
-
-  // hamburger toggle (คลิกเปิด/ปิด) — ทำงานร่วมกับ CSS hover fallback
-  const hamburger = document.getElementById("hamburger-btn");
-  const sidebar = document.getElementById("sidebar");
-  if (hamburger && sidebar) {
-    hamburger.addEventListener("click", (e) => {
-      e.stopPropagation();
-      hamburger.classList.toggle("active");
-      sidebar.classList.toggle("sidebar-open");
-    });
-    document.addEventListener("click", (ev) => {
-      if (!sidebar.contains(ev.target) && !hamburger.contains(ev.target)) {
-        sidebar.classList.remove("sidebar-open");
-        hamburger.classList.remove("active");
-      }
     });
   }
 });
