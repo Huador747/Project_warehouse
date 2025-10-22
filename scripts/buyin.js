@@ -96,28 +96,28 @@ if (window.flatpickr) {
     // ให้ navbar-text สไลด์จากซ้ายเมื่อหน้าโหลด
     const navbarText = document.querySelector('.navbar-text');
     if (navbarText) {
-        // เพิ่มคลาสแบบ async เล็กน้อยเพื่อให้ browser เขียนค่าเริ่มต้นก่อนเล่น animation
         requestAnimationFrame(() => {
             navbarText.classList.add('slide-in');
         });
     }
 
-    // --- เพิ่ม: toggle sidebar ด้วย click (และ animation) ---
-    //const hamburger = document.getElementById('hamburger-btn');
-    //const sidebar = document.getElementById('sidebar');
-    //hamburger?.addEventListener('click', function (e) {
-        //e.stopPropagation();
-        //hamburger.classList.toggle('active');
-        //sidebar.classList.toggle('sidebar-open');
-   // });
+    // Toggle sidebar
+    const hamburger = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+    
+    hamburger?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        hamburger.classList.toggle('active');
+        sidebar.classList.toggle('sidebar-open');
+    });
 
     // ปิด sidebar เมื่อคลิกนอก
-    //document.addEventListener('click', function (ev) {
-       // if (!sidebar.contains(ev.target) && !hamburger.contains(ev.target)) {
-           // sidebar.classList.remove('sidebar-open');
-           // hamburger.classList.remove('active');
-        //}
-   // });
+    document.addEventListener('click', function(ev) {
+        if (!sidebar.contains(ev.target) && !hamburger.contains(ev.target)) {
+            sidebar.classList.remove('sidebar-open');
+            hamburger.classList.remove('active');
+        }
+    });
 
     // --- เพิ่ม: entrance animation ให้ฟอร์มและทำ stagger ให้แต่ละ .form-group ---
     const productForm = document.querySelector('.product-form');
