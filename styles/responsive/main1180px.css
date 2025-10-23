@@ -84,9 +84,18 @@
     font-size: 22px;
   }
   .navbar-text {
-    font-size: 16px;
-    min-width: 80px;
-    padding: 6px 10px;
+    font-size: 14px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stat-icon {
+    width: 20px; /* ลดจากค่าเริ่มต้น */
+    height: 20px; /* ลดจากค่าเริ่มต้น */
+    margin-right: 6px; /* เพิ่มระยะห่างจากข้อความ */
+    vertical-align: middle; /* จัดให้อยู่กึ่งกลางกับข้อความ */
   }
   .navbar-text.active {
     font-size: 1.5rem;
@@ -112,12 +121,72 @@
     max-width: 98vw;
     margin: 100px auto 0 auto;
     padding: 0 8px 24px 8px;
+    position: relative; /* เพิ่ม เพื่อให้ .function-buttons สามารถอ้างอิงตำแหน่งจาก container นี้ */
   }
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+  }
+
   .product-list-horizontal {
     display: flex;
     justify-content: center;
     margin-left: -25px;
+    width: 90vw;
+    margin-left: 55px;
   }
 
-  
-}/* Responsive for iPad 1180x820 */
+  .function-buttons {
+    position: absolute; /* ยึดตำแหน่งสัมพันธ์กับ .main-content */
+    top: -11px; /* ปรับให้ต่ำ/สูงตามต้องการ (ค่าตั้งต้น) */
+    right: 8px; /* เท่ากับ padding ขวาของ .main-content => ชิดขอบเดียวกับ product-list */
+    z-index: 2500;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 8px 18px;
+    box-sizing: border-box;
+    width: auto;
+    margin: 0; /* เอา margin-left / margin-right แบบลบออก */
+  }
+
+  .pagination-controls {
+    position: sticky;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    margin: 20px auto;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 251, 235, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(224, 185, 125, 0.3);
+    z-index: 100;
+  }
+
+  .pagination-controls button {
+    background: linear-gradient(180deg,#ffefb0,#ffd336);
+    border: none;
+    color: #1f1f1f;
+    padding: 8px 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .pagination-controls button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.16);
+  }
+} /* Responsive for iPad 1180x820 */
