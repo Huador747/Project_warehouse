@@ -676,7 +676,8 @@ body {
 }
 
 .navbar {
-  background-image: linear-gradient(90deg, #9effa9, #3cff3c, #3bb54a);
+  /* ใช้ background-image แทนเพื่อไม่ไปทับสีเดิมมาก */
+  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   transition: box-shadow 0.3s;
