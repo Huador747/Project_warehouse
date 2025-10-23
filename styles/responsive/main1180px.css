@@ -1,0 +1,123 @@
+/* Responsive for iPad 1180x820 */
+@media screen and (max-width: 1200px) and (min-width: 900px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 90px;
+    padding: 10px 12px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+  }
+
+  .hamburger {
+    position: fixed;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4000;
+    width: 40px;
+    height: 40px;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .hamburger {
+    display: flex !important;
+    position: fixed;
+    top: 40px;
+    left: 24px;
+    z-index: 4000;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 28px;
+    height: 4px;
+    background: #050505;
+    border-radius: 2px;
+    margin: 3px 0;
+    transition: 0.4s;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* เมื่อ hover ที่ปุ่ม hamburger */
+  .hamburger:hover span {
+    background: #ffa144;
+    width: 36px;
+    transition: 0.4s;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 90px;
+    padding: 10px 12px;
+    font-size: 22px;
+  }
+  .navbar-text {
+    font-size: 16px;
+    min-width: 80px;
+    padding: 6px 10px;
+  }
+  .navbar-text.active {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e67e22;
+    letter-spacing: 1px;
+    margin-right: 12px;
+    margin-left: 48px; /* เพิ่มบรรทัดนี้เพื่อขยับไปทางขวา */
+    text-shadow: 0 2px 8px #ffe0b2;
+    position: relative;
+  }
+  .navbar-form {
+    gap: 10px;
+    margin-left: 20px;
+    padding: 10px 0 4px 0;
+  }
+  .navbar-form input[type="text"] {
+    height: 36px;
+    font-size: 18px;
+    padding: 6px;
+  }
+  .main-content {
+    max-width: 98vw;
+    margin: 100px auto 0 auto;
+    padding: 0 8px 24px 8px;
+  }
+  .product-list-horizontal {
+    display: flex;
+    justify-content: center;
+    margin-left: -25px;
+  }
+
+  
+}/* Responsive for iPad 1180x820 */
