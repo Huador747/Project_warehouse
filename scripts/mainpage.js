@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function renderProductsTablePage(products, page) {
   const container = document.getElementById("product-list");
-  const perPage = 7;
+  const perPage = 5;
   const totalPages = Math.ceil(products.length / perPage);
   const start = (page - 1) * perPage;
   const end = start + perPage;
@@ -89,30 +89,31 @@ async function renderProductsTablePage(products, page) {
   const { buyin, sale } = await fetchBuyinAndSale();
   const stockMap = computeStock(products, buyin, sale);
 
+  // สร้าง HTML ตารางสินค้า (ไม่มี pagination-controls ในนี้)
   let html = `
-        <div class="product-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>รหัสสินค้า</th>
-                    <th>Model</th>
-                    <th>ชื่อสินค้า</th>
-                    <th>Maker</th>
-                    <th>หมวดหมู่</th>
-                    <th>จำนวน</th>
-                    <th>สภาพ</th>
-                    <th>ราคา</th>
-                    <th>ราคาขาย</th>
-                    <th>หน่วย</th>
-                    <th>ที่เก็บ</th>
-                    <th>วันที่สร้าง</th>
-                    <th>เวลาสร้าง</th>
-                    <th>วันที่แก้ไข</th>
-                    <th>เวลาแก้ไข</th>
-                    <th>รูปภาพ</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="product-table">
+      <table>
+        <thead>
+            <tr>
+                <th>รหัสสินค้า</th>
+                <th>Model</th>
+                <th>ชื่อสินค้า</th>
+                <th>Maker</th>
+                <th>หมวดหมู่</th>
+                <th>จำนวน</th>
+                <th>สภาพ</th>
+                <th>ราคา</th>
+                <th>ราคาขาย</th>
+                <th>หน่วย</th>
+                <th>ที่เก็บ</th>
+                <th>วันที่สร้าง</th>
+                <th>เวลาสร้าง</th>
+                <th>วันที่แก้ไข</th>
+                <th>เวลาแก้ไข</th>
+                <th>รูปภาพ</th>
+            </tr>
+        </thead>
+        <tbody>
     `;
   html += pageProducts
     .map((product) => {
@@ -153,19 +154,22 @@ async function renderProductsTablePage(products, page) {
   html += `
             </tbody>
         </table>
-        <div class="pagination-controls">
-            <button id="prev-page" ${
-              page === 1 ? "disabled" : ""
-            }>ย้อนกลับ</button>
-            <span>หน้า ${page} / ${totalPages}</span>
-            <button id="next-page" ${
-              page === totalPages ? "disabled" : ""
-            }>ถัดไป</button>
-        </div>
         </div>
     `;
   container.innerHTML = html;
 
+  // สร้าง pagination-controls แยกต่างหาก
+  let paginationHtml = `
+    <div class="pagination-controls">
+      <button id="prev-page" ${page === 1 ? "disabled" : ""}>ย้อนกลับ</button>
+      <span>หน้า ${page} / ${totalPages}</span>
+      <button id="next-page" ${page === totalPages ? "disabled" : ""}>ถัดไป</button>
+    </div>
+  `;
+
+  // แทรก pagination-controls ต่อจาก product-list
+  container.insertAdjacentHTML('afterend', paginationHtml);
+  
   // เพิ่ม event scroll แนวนอนหลัง render ตาราง
   const tableBox = container.querySelector(".product-table");
   if (tableBox) {

@@ -112,15 +112,6 @@ body {
   margin-top: 1080px;
 }
 
-/* Content wrapper for main content and sidebar */
-.content-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  padding: 20px;
-}
-
 /* Product list styles */
 .product-list-horizontal {
   width: 90vw;
