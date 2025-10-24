@@ -178,6 +178,27 @@ input[type="submit"]:hover {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+#register-btn {
+    background-color: #fa7942;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 25%;
+    font-size: 1rem;
+    margin-top: 12px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+#register-btn:hover {
+    background-color: #e65100;
+    box-shadow: 0 0 0 4px #ffe0b2;
+}
+
 .login-links {
     display: flex;
     flex-direction: column;

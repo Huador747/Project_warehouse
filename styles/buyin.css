@@ -156,6 +156,16 @@ body {
   animation: bounceIn 0.7s;
 }
 
+.sidebar .nav-btn.active {
+  background: #ffd336;
+  color: #222;
+  border: 3px solid #e0b97d;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px) scale(1.02);
+  position: relative;
+}
+
 #search-code {
   width: 230px;
   background: #ffffff;
@@ -390,6 +400,42 @@ body {
 .form-group select:hover {
   border: 2px solid #ffa144;
   box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
+}
+
+select,
+.form-group select,
+.product-form select {
+  padding: 8px 12px;
+  border: 1.5px solid #e0b97d;
+  border-radius: 6px;
+  font-size: 16px;
+  background: #fffbe9;
+  color: #333;
+  transition: border 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+select:focus,
+.form-group select:focus,
+.product-form select:focus {
+  border: 2px solid #ffa144;
+  box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
+}
+
+select:hover,
+.form-group select:hover,
+.product-form select:hover {
+  border: 2px solid #ffd336;
+  background: #fffde4;
+}
+
+select:disabled {
+  background: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
 }
 
 .function-btn-add {

@@ -1,16 +1,4 @@
-body,
-html,
-input,
-select,
-button,
-label,
-.navbar-text {
-  font-family: "Sarabun", sans-serif;
-  font-weight: bold;
-}
-
-/* ด้านล่างนี้คือ CSS จาก buyin.css ทั้งหมด */
-html,
+@media screen and (max-width: 1200px) and (min-width: 900px) {
 body {
   height: 100%;
   width: 100%;
@@ -25,7 +13,6 @@ body {
   width: 100vw;
   overflow-y: auto;
 }
-
 .logo-container {
   text-align: center;
   padding: 0px;
@@ -102,16 +89,6 @@ body {
   /* ขอบทองอ่อน */
 }
 
-.sidebar .nav-btn.active {
-  background: #ffd336;
-  color: #222;
-  border: 3px solid #e0b97d;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
-    inset 0 -6px 12px rgba(0, 0, 0, 0.06);
-  transform: translateY(-4px) scale(1.02);
-  position: relative;
-}
-
 /* Main content styles */
 .main-content {
   margin-left: 0 !important;
@@ -175,6 +152,18 @@ body {
   animation: bounceIn 0.7s;
 }
 
+nav-btn active
+
+.sidebar .nav-btn.active {
+  background: #ffd336;
+  color: #222;
+  border: 3px solid #e0b97d;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px) scale(1.02);
+  position: relative;
+}
+}
 .logout-btn {
   background: #e74c3c;
   color: #fff;
@@ -462,7 +451,7 @@ body {
 .product-form {
   width: 100%;
   max-width: 1300px;
-  margin: 32px auto 0 auto;
+  margin: 32px 20px 0 20px; /* เพิ่ม margin ซ้ายขวา 20px */
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -471,6 +460,21 @@ body {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   border: #fff83c 2px solid;
+}
+
+.product-form {
+  max-width: 1000px;           /* ไม่เกิน 1000px เพื่อมีขอบซ้ายขวา */
+  width: 100%;
+  margin: 32px auto 0 auto;    /* อยู่กลางจอ มีขอบซ้ายขวา */
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: #fffbe9;
+  padding: 32px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  border: #fff83c 2px solid;
+  box-sizing: border-box;
 }
 
 .form-group {
@@ -542,279 +546,3 @@ body {
   gap: 18px;
   min-width: 0;
 }
-
-@media (max-width: 900px) {
-  .product-form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .product-form-col {
-    width: 100%;
-  }
-}
-
-.main-content {
-  margin-top: 120px;
-  /* ให้เท่ากับ .navbar height */
-}
-
-.form-group select {
-  padding: 8px 12px;
-  border: 1px solid #e0b97d;
-  border-radius: 4px;
-  font-size: 16px;
-  background: #fff;
-  color: #333;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.nav-btn.active {
-  background: #ffd336;
-  /* สีเหลืองสดใส */
-  color: #333;
-  /* ตัวอักษรสีเข้ม อ่านง่าย */
-  font-weight: bold;
-  border: 2.5px solid #e0b97d;
-  /* ขอบทองอ่อน */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  /* เงาเพิ่มมิติ */
-  transform: scale(1.06);
-  /* ขยายเล็กน้อย */
-  z-index: 1;
-  position: relative;
-  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s,
-    transform 0.2s;
-}
-
-/* สไตล์สำหรับผลการค้นหา */
-#search-result-list {
-  position: absolute;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  width: 350px;
-  max-height: 220px;
-  overflow-y: auto;
-  z-index: 100;
-}
-
-.search-results-container {
-  position: absolute;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 350px;
-  max-height: 220px;
-  overflow-y: auto;
-  z-index: 100;
-}
-
-.no-results {
-  padding: 8px;
-  color: #e74c3c;
-}
-
-/* สไตล์สำหรับแต่ละรายการในผลการค้นหา */
-.search-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.search-item:hover {
-  background-color: #f5e0c0;
-}
-
-.search-item:last-child {
-  border-bottom: none;
-}
-
-.search-item .product_code {
-  color: red;
-  font-size: 16px;
-}
-
-.search-item .product_name {
-  color: rgb(0, 0, 0);
-  font-size: 16px;
-}
-
-.search-item .product_model {
-  color: rgb(255, 149, 28);
-  font-size: 16px;
-}
-
-.maker {
-  color: #ff0000;
-}
-
-.category {
-  color: #21f116;
-}
-
-/* สไตล์สำหรับข้อมูลในแต่ละรายการ */
-
-/* ========== นำลูกเล่นจาก buyin มาลงให้หน้า sale ========== */
-
-/* ไล่สีพื้นหลัง navbar เบา ๆ */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.navbar {
-  /* ใช้ background-image แทนเพื่อไม่ไปทับสีเดิมมาก */
-  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
-  background-size: 300% 300%;
-  animation: gradientShift 8s ease-in-out infinite;
-  transition: box-shadow 0.3s;
-}
-
-/* โลโก้ลอยเบา ๆ */
-@keyframes floatY {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-8px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.logo {
-  animation: floatY 6s ease-in-out infinite;
-}
-
-/* ปุ่ม navbar-text พอง/ยุบ */
-@keyframes subtlePulse {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.03);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* slide-in สำหรับ navbar-text */
-@keyframes slideFromLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-
-  60% {
-    transform: translateX(8%);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.navbar-text {
-  will-change: transform, opacity;
-  animation:
-    slideFromLeft 640ms cubic-bezier(.2, .9, .2, 1) both,
-    subtlePulse 3.2s ease-in-out 640ms infinite;
-}
-
-/* ฟอร์มการเพิ่มสินค้า: entrance + stagger (JS ตั้ง delay) */
-@keyframes cardIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(.995);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.product-form.animate {
-  animation: cardIn 520ms cubic-bezier(.2, .9, .2, 1) forwards;
-}
-
-@keyframes staggerUp {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.form-group.stagger {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: staggerUp 360ms ease forwards;
-}
-
-/* ผลลัพธ์การค้นหา: slide + fade รายการ */
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.search-results-container.animate .search-item {
-  opacity: 0;
-  animation: slideIn 220ms cubic-bezier(.2, .9, .2, 1) forwards;
-}
-
-.search-results-container.animate .search-item:nth-child(1) {
-  animation-delay: 40ms;
-}
-
-.search-results-container.animate .search-item:nth-child(2) {
-  animation-delay: 80ms;
-}
-
-.search-results-container.animate .search-item:nth-child(3) {
-  animation-delay: 120ms;
-}
-
-.search-results-container.animate .search-item:nth-child(4) {
-  animation-delay: 160ms;
-}
-
-.search-item {
-  transition: background-color 0.18s, transform 0.14s;
-}
-
-.search-item:hover {
-  transform: translateY(-3px);
-}
-/* ========== จบส่วนเพิ่ม ========== */
