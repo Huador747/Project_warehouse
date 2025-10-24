@@ -152,6 +152,18 @@ body {
   animation: bounceIn 0.7s;
 }
 
+nav-btn active
+
+.sidebar .nav-btn.active {
+  background: #ffd336;
+  color: #222;
+  border: 3px solid #e0b97d;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px) scale(1.02);
+  position: relative;
+}
+}
 .logout-btn {
   background: #e74c3c;
   color: #fff;
@@ -533,5 +545,4 @@ body {
   flex-direction: column;
   gap: 18px;
   min-width: 0;
-}
 }

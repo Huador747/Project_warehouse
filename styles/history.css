@@ -434,6 +434,16 @@ tr:hover {
   animation: bounceIn 0.7s;
 }
 
+.sidebar .nav-btn.active {
+  background: #ffd336;
+  color: #222;
+  border: 3px solid #e0b97d;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px) scale(1.02);
+  position: relative;
+}
+
 @keyframes bounceIn {
   0% {
     transform: scale(0.7);
@@ -586,7 +596,7 @@ tr:hover {
 .monthly-summary {
   margin-top: 20px;
   padding: 20px;
-  background-color: #f8f9fa;
+  background-color: #d5cdcd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -609,10 +619,32 @@ tr:hover {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.summary-buyin {
+  background: #ffeaea;
+  border-left: 6px solid #e74c3c;
+}
+
+.summary-sale {
+  background: #eaffea;
+  border-left: 6px solid #2ecc71;
+}
+
+.summary-count-buyin {
+  background: #fff8e1;
+  border-left: 6px solid #ff9800;
+}
+
+.summary-count-sale {
+  background: #e3f2fd;
+  border-left: 6px solid #2196f3;
+}
+
 .summary-label {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
 }
 
 .summary-value {

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <title>ประวัติซื้อ-ขาย</title>
     <link rel="stylesheet" href="../styles/history.css">
 </head>
+
 <body>
     <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
         <span></span>
@@ -15,12 +17,24 @@
         <div class="logo-container">
             <img src="../assets/logo.png" alt="Logo" class="logo">
         </div>
-        <button class="nav-btn" onclick="window.location.href='main.html'">หน้าหลัก</button>
-        <button class="nav-btn" onclick="window.location.href='buyin.html'">รายการซื้อ</button>
-        <button class="nav-btn" onclick="window.location.href='sale.html'">รายการขาย</button>
-        <button class="nav-btn" onclick="window.location.href='inventory.html'">สรุปจำนวนคงเหลือสินค้า</button>
-        <button class="nav-btn active" onclick="window.location.href='history.html'">ประวัติการซื้อ-ขาย</button>
-        <button class="nav-btn" onclick="window.location.href='movement.html'">กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</button>
+        <button class="nav-btn" onclick="window.location.href='main.html'">
+            <span class="nav-icon">🏠</span> หน้าหลัก
+        </button>
+        <button class="nav-btn" onclick="window.location.href='buyin.html'">
+            <span class="nav-icon">🛒</span> รายการซื้อ
+        </button>
+        <button class="nav-btn" onclick="window.location.href='sale.html'">
+            <span class="nav-icon">💸</span> รายการขาย
+        </button>
+        <button class="nav-btn" onclick="window.location.href='inventory.html'">
+            <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
+        </button>
+        <button class="nav-btn active" onclick="window.location.href='history.html'">
+            <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
+        </button>
+        <button class="nav-btn" onclick="window.location.href='movement.html'">
+            <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+        </button>
     </div>
     <div class="main-content">
         <div class="navbar">
@@ -40,9 +54,10 @@
                 </select>
             </form>
             <div class="search-logout-row">
-            <input id="search-input" type="text" class="search-product-input" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
-            <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
-        </div>
+                <input id="search-input" type="text" class="search-product-input"
+                    placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
+                <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
+            </div>
         </div>
         <div class="history-list">
             <h2>ประวัติการซื้อ-ขาย</h2>
@@ -69,20 +84,75 @@
             <div class="monthly-summary">
                 <h3>สรุปยอดประจำเดือน</h3>
                 <div class="summary-grid">
-                    <div class="summary-box">
-                        <div class="summary-label">ยอดซื้อรวม</div>
+                    <div class="summary-box summary-buyin">
+                        <div class="summary-label">
+                            <!-- SVG เคลื่อนไหว: ยอดซื้อรวม -->
+                            <svg width="22" height="22" viewBox="0 0 24 24"
+                                style="vertical-align:middle;margin-right:6px;">
+                                <rect x="3" y="6" width="18" height="2" fill="#e74c3c">
+                                    <animate attributeName="width" values="0;18;0;18" dur="1.2s"
+                                        repeatCount="indefinite" />
+                                </rect>
+                                <rect x="5" y="10" width="14" height="2" fill="#e74c3c">
+                                    <animate attributeName="width" values="0;14;0;14" dur="1.2s"
+                                        repeatCount="indefinite" begin="0.3s" />
+                                </rect>
+                                <rect x="7" y="14" width="10" height="2" fill="#e74c3c">
+                                    <animate attributeName="width" values="0;10;0;10" dur="1.2s"
+                                        repeatCount="indefinite" begin="0.6s" />
+                                </rect>
+                            </svg>
+                            ยอดซื้อรวม
+                        </div>
                         <div id="total-buyin" class="summary-value">-</div>
                     </div>
-                    <div class="summary-box">
-                        <div class="summary-label">ยอดขายรวม</div>
+                    <div class="summary-box summary-sale">
+                        <div class="summary-label">
+                            <!-- SVG เคลื่อนไหว: ยอดขายรวม -->
+                            <svg width="22" height="22" viewBox="0 0 24 24"
+                                style="vertical-align:middle;margin-right:6px;">
+                                <circle cx="12" cy="12" r="8" fill="#2ecc71">
+                                    <animate attributeName="r" values="4;8;4" dur="1.2s" repeatCount="indefinite" />
+                                </circle>
+                                <rect x="11" y="4" width="2" height="8" fill="#fff">
+                                    <animate attributeName="height" values="2;8;2" dur="1.2s"
+                                        repeatCount="indefinite" />
+                                </rect>
+                            </svg>
+                            ยอดขายรวม
+                        </div>
                         <div id="total-sale" class="summary-value">-</div>
                     </div>
-                    <div class="summary-box">
-                        <div class="summary-label">จำนวนรายการซื้อ</div>
+                    <div class="summary-box summary-count-buyin">
+                        <div class="summary-label">
+                            <!-- SVG เคลื่อนไหว: จำนวนรายการซื้อ -->
+                            <svg width="22" height="22" viewBox="0 0 24 24"
+                                style="vertical-align:middle;margin-right:6px;">
+                                <circle cx="12" cy="12" r="10" fill="#ff9800">
+                                    <animate attributeName="r" values="6;10;6" dur="1.2s" repeatCount="indefinite" />
+                                </circle>
+                                <text x="12" y="16" text-anchor="middle" font-size="12" fill="#fff">B</text>
+                            </svg>
+                            จำนวนรายการซื้อ
+                        </div>
                         <div id="count-buyin" class="summary-value">-</div>
                     </div>
-                    <div class="summary-box">
-                        <div class="summary-label">จำนวนรายการขาย</div>
+                    <div class="summary-box summary-count-sale">
+                        <div class="summary-label">
+                            <!-- SVG เคลื่อนไหว: จำนวนรายการขาย -->
+                            <svg width="28" height="28" viewBox="0 0 28 28"
+                                style="vertical-align:middle;margin-right:8px;">
+                                <circle cx="14" cy="14" r="10" fill="#2196f3" opacity="0.2" />
+                                <polyline points="9,15 13,19 19,11" fill="none" stroke="#2196f3" stroke-width="3">
+                                    <animate attributeName="points"
+                                        values="9,15 13,19 19,11;9,19 13,15 19,11;9,15 13,19 19,11" dur="1.2s"
+                                        repeatCount="indefinite" />
+                                </polyline>
+                                <text x="14" y="18" text-anchor="middle" font-size="12" fill="#2196f3"
+                                    font-weight="bold">S</text>
+                            </svg>
+                            จำนวนรายการขาย
+                        </div>
                         <div id="count-sale" class="summary-value">-</div>
                     </div>
                 </div>
@@ -91,4 +161,5 @@
     </div>
     <script type="module" src="../scripts/history.js"></script>
 </body>
+
 </html>

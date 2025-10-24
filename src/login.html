@@ -26,6 +26,7 @@
                     <label for="password">รหัสผ่าน</label>
                 </div>
                 <input type="submit" value="เข้าสู่ระบบ">
+                <button type="button" id="register-btn" style="margin-top:12px;">ลงทะเบียน</button>
             </form>
 
             <script>
@@ -74,6 +75,11 @@ document.getElementById('login-form').addEventListener('submit', async function(
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
     await loginUser(username, password);
+});
+
+// เพิ่ม event สำหรับปุ่มลงทะเบียน
+document.getElementById('register-btn').addEventListener('click', function() {
+    window.location.href = 'register.html';
 });
 </script>
         </div>
