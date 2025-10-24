@@ -210,4 +210,16 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
   }
+
+  /*และเพิ่ม CSS สำหรับแถวว่าง:*/
+  .product-table tr.empty-row {
+    height: 60px; /* กำหนดความสูงเท่ากับแถวปกติ */
+    background-color: #f5f5f5; /* สีพื้นหลังอ่อนๆ */
+    opacity: 0.6;
+  }
+
+  .product-table tr.empty-row td {
+    color: #999; /* สีข้อความจางๆ */
+    border-bottom: 1px solid #ddd;
+  }
 } /* Responsive for iPad 1180x820 */

@@ -575,3 +575,34 @@ document.addEventListener('DOMContentLoaded', () => {
   renderChart(periodType, "", selectedYear);
   showInventoryInfo("", selectedYear);
 })();
+
+async function renderProductsTablePage(products, page) {
+    const perPage = 10;
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    const paginatedProducts = products.slice(start, end);
+
+    // ...existing code for rendering products table...
+
+    // อัพเดท pagination (สร้างใหม่ทุกครั้ง)
+    const totalPages = Math.ceil(products.length / perPage);
+    const paginationControls = `
+        <button id="prev-page" ${page === 1 ? "disabled" : ""}>ย้อนกลับ</button>
+        <span id="page-info">หน้า ${page} / ${totalPages}</span>
+        <button id="next-page" ${page === totalPages ? "disabled" : ""}>ถัดไป</button>
+    `;
+    document.querySelector(".pagination-controls").innerHTML = paginationControls;
+
+    // เพิ่ม event listeners ใหม่ทุกครั้ง
+    document.getElementById("prev-page")?.addEventListener("click", () => {
+      if (page > 1) {
+        renderProductsTablePage(products, page - 1);
+      }
+    });
+
+    document.getElementById("next-page")?.addEventListener("click", () => {
+      if (page < totalPages) {
+        renderProductsTablePage(products, page + 1);
+      }
+    });
+}

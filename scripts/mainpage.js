@@ -77,9 +77,28 @@ document.addEventListener("DOMContentLoaded", async function () {
   searchBtn?.addEventListener("click", doSearch);
 });
 
+let currentPage = 1; // ตัวแปร global
+
+function goToPage(products, page) {
+  const perPage = 10;
+  const totalPages = Math.ceil(products.length / perPage);
+
+  // ป้องกันออกนอกขอบเขต
+  if (page < 1) page = 1;
+  if (page > totalPages) page = totalPages;
+
+  currentPage = page;
+  renderProductsTablePage(products, currentPage);
+}
+
+// ปัญหานี้เกิดจากการที่ event listeners 
+// ถูกเพิ่มซ้ำๆ ทุกครั้งที่มีการ render ตาราง ทำให้เกิดการทำงานซ้ำซ้อน
+let prevPageListener = null;  
+let nextPageListener = null;
+
 async function renderProductsTablePage(products, page) {
     const tableBody = document.getElementById("product-table-body");
-    const perPage = 5;
+    const perPage = 5;  // จำนวนแถวต่อหน้า
     const start = (page - 1) * perPage;
     const end = start + perPage;
     const pageProducts = products.slice(start, end);
@@ -89,7 +108,7 @@ async function renderProductsTablePage(products, page) {
     const stockMap = computeStock(products, buyin, sale);
 
     // สร้าง HTML สำหรับแถวข้อมูล
-    const rowsHtml = pageProducts
+    let rowsHtml = pageProducts
         .map((product) => {
             const code = product.product_code ?? product.code ?? "";
             const stockQty = stockMap[code] ?? 0;
@@ -116,42 +135,84 @@ async function renderProductsTablePage(products, page) {
         })
         .join("");
 
+    // จะแก้ไขให้ตารางมีขนาดคงที่แม้ข้อมูลไม่ครบ 5 แถว โดยการเพิ่มแถวว่างเข้าไปให้ครบ 5 แถว
+    const emptyRows = perPage - pageProducts.length;
+    if (emptyRows > 0) {
+        const emptyRowHtml = `
+            <tr class="empty-row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        `;
+        rowsHtml += emptyRowHtml.repeat(emptyRows);
+    }
+
     tableBody.innerHTML = rowsHtml;
 
     // อัพเดท pagination
     const totalPages = Math.ceil(products.length / perPage);
-    document.getElementById("prev-page").disabled = page === 1;
-    document.getElementById("next-page").disabled = page === totalPages;
+    const prevButton = document.getElementById("prev-page");
+    const nextButton = document.getElementById("next-page");
+    
+    // ลบ event listeners เดิมออก
+    if (prevPageListener) {
+        prevButton.removeEventListener("click", prevPageListener);
+    }
+    if (nextPageListener) {
+        nextButton.removeEventListener("click", nextPageListener);
+    }
+
+    // สร้าง event listeners ใหม่
+    prevPageListener = () => {
+        if (page > 1) {
+            renderProductsTablePage(products, page - 1);
+        }
+    };
+    
+    nextPageListener = () => {
+        if (page < totalPages) {
+            renderProductsTablePage(products, page + 1);
+        }
+    };
+
+    // เพิ่ม event listeners ใหม่
+    prevButton.addEventListener("click", prevPageListener);
+    nextButton.addEventListener("click", nextPageListener);
+
+    // อัพเดทสถานะปุ่ม
+    prevButton.disabled = page === 1;
+    nextButton.disabled = page === totalPages;
     document.getElementById("page-info").textContent = `หน้า ${page} / ${totalPages}`;
 
-    // เพิ่ม event listeners
-    document.getElementById("prev-page")?.addEventListener("click", () => {
-      if (page > 1) {
-        renderProductsTablePage(products, page - 1);
-      }
-    });
-
-    document.getElementById("next-page")?.addEventListener("click", () => {
-      if (page < totalPages) {
-        renderProductsTablePage(products, page + 1);
-      }
-    });
-
-  // เพิ่ม event scroll แนวนอนหลัง render ตาราง
-  const tableBox = document.querySelector(".product-table");
-  if (tableBox) {
-    tableBox.addEventListener(
-      "wheel",
-      function (e) {
-        // เลื่อนแนวนอนด้วยลูกกลิ้งเมาส์ (ไม่ต้องกด Shift)
-        if (e.deltaX !== 0 || e.deltaY !== 0) {
-            e.preventDefault();
-            tableBox.scrollLeft += (e.deltaX !== 0 ? e.deltaX : e.deltaY);
-        }
-      },
-      { passive: false }
-    );
-  }
+    // เพิ่ม event scroll แนวนอนหลัง render ตาราง
+    const tableBox = document.querySelector(".product-table");
+    if (tableBox) {
+      tableBox.addEventListener(
+        "wheel",
+        function (e) {
+          // เลื่อนแนวนอนด้วยลูกกลิ้งเมาส์ (ไม่ต้องกด Shift)
+          if (e.deltaX !== 0 || e.deltaY !== 0) {
+              e.preventDefault();
+              tableBox.scrollLeft += (e.deltaX !== 0 ? e.deltaX : e.deltaY);
+          }
+        },
+        { passive: false }
+      );
+    }
 }
 
 async function fetchBuyinAndSale() {
