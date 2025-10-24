@@ -25,15 +25,9 @@
   margin-right: 35px;
 }
 
-body,
-html,
-input,
-select,
-button,
-label,
-.navbar-text {
-  font-family: "Sarabun", sans-serif;
-  font-weight: bold;
+* {
+  font-family: "Sarabun", sans-serif !important;
+  font-weight: bold !important;
 }
 
 html,
@@ -451,4 +445,25 @@ tr:hover {
   0% { transform: translateX(-100%); opacity: 0; }
   60% { transform: translateX(8%); opacity: 1; }
   100% { transform: translateX(0); opacity: 1; }
+}
+
+body,
+html,
+input,
+select,
+button,
+label,
+.navbar-text,
+th,
+td,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Sarabun", sans-serif !important;
+  font-weight: bold !important;
 }
