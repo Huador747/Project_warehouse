@@ -152,15 +152,27 @@ function renderInventorySummary(entries) {
   // คำนวณเงินจมรวม
   const totalSunk = (entries || []).reduce((s, e) => s + toNumber(e.sunk), 0);
   // คำนวณกำไรรวม
-  const totalProfit = (entries || []).reduce((s, e) => s + toNumber(e.profit), 0);
+  const totalProfit = (entries || []).reduce(
+    (s, e) => s + toNumber(e.profit),
+    0
+  );
   // คำนวณยอดขายรวม
-  const totalSale = (entries || []).reduce((s, e) => s + toNumber(e.saleTotal), 0);
+  const totalSale = (entries || []).reduce(
+    (s, e) => s + toNumber(e.saleTotal),
+    0
+  );
 
   // แสดงผลรวม
   inventoryInfo.innerHTML = `
-    <div style="color:orange;">ยอดขายรวม: ${totalSale.toLocaleString("th-TH")} บาท</div>
-    <div style="color:green;">กำไรรวม: ${totalProfit.toLocaleString("th-TH")} บาท</div>
-    <div style="color:red;">เงินจมรวม: ${totalSunk.toLocaleString("th-TH")} บาท</div>
+    <div style="color:orange;">ยอดขายรวม: ${totalSale.toLocaleString(
+      "th-TH"
+    )} บาท</div>
+    <div style="color:green;">กำไรรวม: ${totalProfit.toLocaleString(
+      "th-TH"
+    )} บาท</div>
+    <div style="color:red;">เงินจมรวม: ${totalSunk.toLocaleString(
+      "th-TH"
+    )} บาท</div>
   `;
 }
 
@@ -170,13 +182,14 @@ async function showInventoryInfo(productCode = "", selectedYear = null) {
   const map = computeInventory(products, buyin, sale);
 
   // กรองข้อมูลตามปีที่เลือก (ถ้ามี)
-  let filteredBuyin = buyin, filteredSale = sale;
+  let filteredBuyin = buyin,
+    filteredSale = sale;
   if (selectedYear) {
-    filteredBuyin = buyin.filter(b => {
+    filteredBuyin = buyin.filter((b) => {
       const dt = new Date(b.buyindate ?? b.date);
       return dt.getFullYear() === Number(selectedYear);
     });
-    filteredSale = sale.filter(s => {
+    filteredSale = sale.filter((s) => {
       const dt = new Date(s.saleoutdate ?? s.date);
       return dt.getFullYear() === Number(selectedYear);
     });
@@ -209,9 +222,17 @@ async function showInventoryInfo(productCode = "", selectedYear = null) {
 
     // ยอดรวมซื้อของสินค้าแต่ละตัว (ปีนั้น)
     const buyTotalCost = filteredBuyin
-      .filter(b => (b.product_code ?? b.code ?? "") === e.product_code)
-      .reduce((sum, b) =>
-        sum + toNumber(b.total ?? toNumber(b.price ?? b.buy_price) * toNumber(b.quantity ?? b.buyquantity ?? b.qty ?? 0)), 0);
+      .filter((b) => (b.product_code ?? b.code ?? "") === e.product_code)
+      .reduce(
+        (sum, b) =>
+          sum +
+          toNumber(
+            b.total ??
+              toNumber(b.price ?? b.buy_price) *
+                toNumber(b.quantity ?? b.buyquantity ?? b.qty ?? 0)
+          ),
+        0
+      );
 
     // ยอดรวมขายของสินค้าแต่ละตัว (ปีนั้น)
     const saleTotal = saleInfo.total ?? 0;
@@ -258,13 +279,25 @@ async function populateProductSelect() {
 async function populateYearSelect() {
   const { buyin, sale } = await fetchAll();
   const years = new Set();
-  const safeDate = (d) => { try { return new Date(d); } catch { return new Date(NaN); } };
-  (buyin || []).forEach(b => { const dt = safeDate(b.buyindate ?? b.date); if (!isNaN(dt)) years.add(dt.getFullYear()); });
-  (sale || []).forEach(s => { const dt = safeDate(s.saleoutdate ?? s.date); if (!isNaN(dt)) years.add(dt.getFullYear()); });
+  const safeDate = (d) => {
+    try {
+      return new Date(d);
+    } catch {
+      return new Date(NaN);
+    }
+  };
+  (buyin || []).forEach((b) => {
+    const dt = safeDate(b.buyindate ?? b.date);
+    if (!isNaN(dt)) years.add(dt.getFullYear());
+  });
+  (sale || []).forEach((s) => {
+    const dt = safeDate(s.saleoutdate ?? s.date);
+    if (!isNaN(dt)) years.add(dt.getFullYear());
+  });
   const sorted = Array.from(years).sort((a, b) => b - a);
-  yearSelect.innerHTML = '';
-  sorted.forEach(y => {
-    const opt = document.createElement('option');
+  yearSelect.innerHTML = "";
+  sorted.forEach((y) => {
+    const opt = document.createElement("option");
     opt.value = y;
     opt.textContent = y;
     yearSelect.appendChild(opt);
@@ -272,7 +305,11 @@ async function populateYearSelect() {
   if (sorted.length) yearSelect.value = sorted[0];
 }
 
-async function fetchStats(type = "month", productCode = "", selectedYear = null) {
+async function fetchStats(
+  type = "month",
+  productCode = "",
+  selectedYear = null
+) {
   const { products, buyin, sale } = await fetchAll();
   if (productSelect.options.length <= 1) await populateProductSelect();
 
@@ -454,7 +491,11 @@ async function fetchStats(type = "month", productCode = "", selectedYear = null)
   return { labels, buyinSummary, saleSummary };
 }
 
-async function renderChart(type = "month", productCode = "", selectedYear = null) {
+async function renderChart(
+  type = "month",
+  productCode = "",
+  selectedYear = null
+) {
   const { labels, buyinSummary, saleSummary } = await fetchStats(
     type,
     productCode,
@@ -507,20 +548,22 @@ async function renderChart(type = "month", productCode = "", selectedYear = null
 }
 
 // event listeners
-document.getElementById("period-type").addEventListener("change", async function () {
-  // ให้รายเดือนก็แสดงดรอปดาวน์ปีด้วย
-  if (["month", "quarter", "year"].includes(this.value)) {
-    await populateYearSelect();
-    yearSelect.style.display = '';
-    yearLabel.style.display = '';
-  } else {
-    yearSelect.style.display = 'none';
-    yearLabel.style.display = 'none';
-  }
-  const selectedYear = yearSelect.value;
-  renderChart(this.value, productSelect.value, selectedYear);
-  showInventoryInfo(productSelect.value, selectedYear);
-});
+document
+  .getElementById("period-type")
+  .addEventListener("change", async function () {
+    // ให้รายเดือนก็แสดงดรอปดาวน์ปีด้วย
+    if (["month", "quarter", "year"].includes(this.value)) {
+      await populateYearSelect();
+      yearSelect.style.display = "";
+      yearLabel.style.display = "";
+    } else {
+      yearSelect.style.display = "none";
+      yearLabel.style.display = "none";
+    }
+    const selectedYear = yearSelect.value;
+    renderChart(this.value, productSelect.value, selectedYear);
+    showInventoryInfo(productSelect.value, selectedYear);
+  });
 
 productSelect.addEventListener("change", function () {
   const periodType = document.getElementById("period-type").value;
@@ -529,8 +572,8 @@ productSelect.addEventListener("change", function () {
   showInventoryInfo(this.value, selectedYear);
 });
 
-yearSelect.addEventListener('change', function() {
-  const periodType = document.getElementById('period-type').value;
+yearSelect.addEventListener("change", function () {
+  const periodType = document.getElementById("period-type").value;
   renderChart(periodType, productSelect.value, yearSelect.value);
   showInventoryInfo(productSelect.value, yearSelect.value);
 });
@@ -555,15 +598,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-//กดให้sidebarค้างไว้
 
-document.addEventListener('DOMContentLoaded', () => {
-    const navbarText = document.querySelector('.navbar-text');
-    if (navbarText) {
-        requestAnimationFrame(() => {
-            navbarText.classList.add('slide-in');
-        });
-    }
+//กดให้sidebarค้างไว้
+document.addEventListener("DOMContentLoaded", () => {
+  const navbarText = document.querySelector(".navbar-text");
+  if (navbarText) {
+    requestAnimationFrame(() => {
+      navbarText.classList.add("slide-in");
+    });
+  }
 });
 
 // init
@@ -577,32 +620,101 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 async function renderProductsTablePage(products, page) {
-    const perPage = 10;
-    const start = (page - 1) * perPage;
-    const end = start + perPage;
-    const paginatedProducts = products.slice(start, end);
-
-    // ...existing code for rendering products table...
-
-    // อัพเดท pagination (สร้างใหม่ทุกครั้ง)
-    const totalPages = Math.ceil(products.length / perPage);
-    const paginationControls = `
-        <button id="prev-page" ${page === 1 ? "disabled" : ""}>ย้อนกลับ</button>
-        <span id="page-info">หน้า ${page} / ${totalPages}</span>
-        <button id="next-page" ${page === totalPages ? "disabled" : ""}>ถัดไป</button>
-    `;
-    document.querySelector(".pagination-controls").innerHTML = paginationControls;
-
-    // เพิ่ม event listeners ใหม่ทุกครั้ง
-    document.getElementById("prev-page")?.addEventListener("click", () => {
-      if (page > 1) {
-        renderProductsTablePage(products, page - 1);
-      }
-    });
-
-    document.getElementById("next-page")?.addEventListener("click", () => {
-      if (page < totalPages) {
-        renderProductsTablePage(products, page + 1);
-      }
-    });
+  const perPage = 10;
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+  const paginatedProducts = products.slice(start, end);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.querySelector('.search-product-input');
+  const productSelect = document.getElementById('product-select');
+  const productLabel = document.querySelector('label[for="product-select"]');
+
+  // ระบบค้นหาแบบ buyin
+  searchInput.addEventListener('input', function () {
+    const query = this.value.trim();
+    document.getElementById('search-result')?.remove();
+
+    if (!query) return;
+
+    fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(products => {
+        const resultDiv = document.createElement('div');
+        resultDiv.id = 'search-result';
+        resultDiv.className = 'search-results-container';
+        resultDiv.style.position = 'absolute';
+        resultDiv.style.background = '#faf2b9ff';
+        resultDiv.style.border = '1px solid #ccc';
+        resultDiv.style.width = searchInput.offsetWidth + 'px';
+        resultDiv.style.zIndex = 9999;
+        resultDiv.style.maxHeight = '250px';
+        resultDiv.style.overflowY = 'auto';
+
+        if (products.length === 0) {
+          resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
+        } else {
+          resultDiv.innerHTML = products.map(p => `
+            <div class="search-item" style="padding:8px;cursor:pointer;" data-product='${JSON.stringify(p)}'>
+              <b class="product_code">${p.product_code || ''}</b>
+              <span class="product_name">${p.product_name || ''}</span>
+              <small class="product_model">
+                ${p.model || ''} | 
+                <span class="maker">${p.maker || ''}</span> | 
+                <span class="category">${p.category || ''}</span>
+              </small>
+            </div>
+          `).join('');
+        }
+
+        // แทรกผลลัพธ์ใต้ input
+        searchInput.parentNode.insertBefore(resultDiv, searchInput.nextSibling);
+
+        // Animation
+        requestAnimationFrame(() => {
+          resultDiv.classList.add('animate');
+        });
+
+        // Event เลือกสินค้า
+        resultDiv.querySelectorAll('.search-item').forEach(item => {
+          item.addEventListener('click', function () {
+            const product = JSON.parse(this.dataset.product);
+
+            // เติมชื่อสินค้าใน select ถ้ายังไม่มี
+            let found = false;
+            Array.from(productSelect.options).forEach(opt => {
+              if (opt.value === (product.product_code ?? product.code)) found = true;
+            });
+            if (!found) {
+              const opt = document.createElement('option');
+              opt.value = product.product_code ?? product.code ?? "";
+              opt.textContent = product.product_name ?? "-";
+              productSelect.appendChild(opt);
+            }
+            productSelect.value = product.product_code ?? product.code ?? "";
+
+            // ลบผลลัพธ์การค้นหา
+            document.getElementById('search-result')?.remove();
+            searchInput.value = '';
+
+            // เริ่มคำนวณและแสดงกราฟทันที
+            const periodType = document.getElementById("period-type").value;
+            const selectedYear = yearSelect.value;
+            renderChart(periodType, productSelect.value, selectedYear);
+            showInventoryInfo(productSelect.value, selectedYear);
+          });
+        });
+      })
+      .catch(err => {
+        console.error('เกิดข้อผิดพลาดในการค้นหา:', err);
+      });
+  });
+
+  // ปิดผลลัพธ์เมื่อคลิกข้างนอก
+  document.addEventListener('click', function (e) {
+    if (!searchInput.contains(e.target) && !document.getElementById('search-result')?.contains(e.target)) {
+      document.getElementById('search-result')?.remove();
+    }
+  });
+});

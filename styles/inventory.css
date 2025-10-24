@@ -25,15 +25,9 @@
   margin-right: 35px;
 }
 
-body,
-html,
-input,
-select,
-button,
-label,
-.navbar-text {
-  font-family: "Sarabun", sans-serif;
-  font-weight: bold;
+* {
+  font-family: "Sarabun", sans-serif !important;
+  font-weight: bold !important;
 }
 
 html,

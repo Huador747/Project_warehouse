@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="../styles/delete.css">
-    <link rel="stylesheet" href="../styles/editproduct.css">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/delete.css" />
+    <link rel="stylesheet" href="../styles/editproduct.css" />
     <title>ลบสินค้า</title>
-</head>
-<body>
+  </head>
+  <body>
     <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
-        <span></span>
-        <span></span>
-        <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
     <div class="sidebar" id="sidebar">
         <div class="logo-container">
@@ -35,20 +39,52 @@
   <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
 </button>
         <!-- เพิ่มเมนูอื่นๆ ตามต้องการ -->
+      <div class="logo-container">
+        <img src="../assets/logo.png" alt="Logo" class="logo" />
+      </div>
+      <button class="nav-btn" onclick="window.location.href='main.html'">
+        หน้าหลัก
+      </button>
+      <button
+        class="nav-btn active"
+        onclick="window.location.href='buyin.html'"
+      >
+        รายการซื้อ
+      </button>
+      <button class="nav-btn" onclick="window.location.href='sale.html'">
+        รายการขาย
+      </button>
+      <button class="nav-btn" onclick="window.location.href='inventory.html'">
+        สรุปจำนวนคงเหลือสินค้า
+      </button>
+      <button class="nav-btn" onclick="window.location.href='history.html'">
+        ประวัติการซื้อ-ขาย
+      </button>
+      <button class="nav-btn" onclick="window.location.href='movement.html'">
+        กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+      </button>
+      <!-- เพิ่มเมนูอื่นๆ ตามต้องการ -->
     </div>
     <div class="main-content">
-        <div class="navbar">
-            <form class="navbar-form-delete">
-                <span class="navbar-text active1">ลบสินค้า</span>
-            </form>
-            <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
-        </div>
-        <div class="function-buttons">
-            <input id="search-input" type="text" class="search-product-input" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
-            <button class="function-btn-delete" id="delete-selected-btn">ลบสินค้าที่เลือก</button>
-        </div>
-        <div id="product-list" class="product-list-horizontal"></div>
+      <div class="navbar">
+        <form class="navbar-form-delete">
+          <span class="navbar-text active1">ลบสินค้า</span>
+        </form>
+        <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
+      </div>
+      <div class="function-buttons">
+        <input
+          id="search-input"
+          type="text"
+          class="search-product-input"
+          placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล..."
+        />
+        <button class="function-btn-delete" id="delete-selected-btn">
+          ลบสินค้าที่เลือก
+        </button>
+      </div>
+      <div id="product-list" class="product-list-horizontal"></div>
     </div>
     <script type="module" src="../scripts/delete.js"></script>
-</body>
+  </body>
 </html>

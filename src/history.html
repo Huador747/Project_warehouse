@@ -9,9 +9,9 @@
 
 <body>
     <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
-        <span></span>
-        <span></span>
-        <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
     <div class="sidebar" id="sidebar">
         <div class="logo-container">
@@ -157,7 +157,21 @@
                     </div>
                 </div>
             </div>
+            <div class="summary-box">
+              <div class="summary-label">ยอดขายรวม</div>
+              <div id="total-sale" class="summary-value">-</div>
+            </div>
+            <div class="summary-box">
+              <div class="summary-label">จำนวนรายการซื้อ</div>
+              <div id="count-buyin" class="summary-value">-</div>
+            </div>
+            <div class="summary-box">
+              <div class="summary-label">จำนวนรายการขาย</div>
+              <div id="count-sale" class="summary-value">-</div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
     <script type="module" src="../scripts/history.js"></script>
 </body>

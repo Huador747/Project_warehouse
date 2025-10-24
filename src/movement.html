@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="th">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</title>
-    <link rel="stylesheet" href="../styles/movement.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/movement.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Hamburger button -->
     <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
       <span></span>
@@ -40,26 +40,33 @@
     </div>
     <!-- ส่วน navbar -->
     <div class="navbar">
-        <form class="navbar-form">
-            <span class="navbar-text active">หน้าการเคลื่อนไหวสินค้า</span>
-        </form>
+      <form class="navbar-form">
+        <span class="navbar-text active">หน้าการเคลื่อนไหวสินค้า</span>
+      </form>
+      <div class="search-logout-row">
+        <input
+          type="text"
+          class="search-product-input"
+          placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล..."
+        />
         <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
+      </div>
     </div>
     <div class="main-content">
       <div class="controls">
         <div class="control-group">
           <label for="product-select">เลือกดูเฉพาะสินค้า:</label>
           <select id="product-select">
-              <option value="">ทั้งหมด</option>
-              <!-- เติม option ด้วย JS -->
+            <option value="">ทั้งหมด</option>
+            <!-- เติม option ด้วย JS -->
           </select>
         </div>
         <div class="control-group">
           <label for="period-type">เลือกช่วงเวลา:</label>
           <select id="period-type">
-              <option value="month">รายเดือน</option>
-              <option value="quarter">รายไตรมาส</option>
-              <option value="year">รายปี</option>
+            <option value="month">รายเดือน</option>
+            <option value="quarter">รายไตรมาส</option>
+            <option value="year">รายปี</option>
           </select>
         </div>
 
@@ -68,7 +75,10 @@
           <select id="year-select"></select>
         </div>
       </div>
-      <div id="inventory-info" style="margin-bottom:24px; font-weight:bold; color:#d35400;"></div>
+      <div
+        id="inventory-info"
+        style="margin-bottom: 24px; font-weight: bold; color: #d35400"
+      ></div>
       <canvas id="movementChart" width="900" height="400"></canvas>
     </div>
     <script type="module" src="../scripts/movement.js"></script>
@@ -79,13 +89,25 @@
       async function populateYearSelect() {
         const { buyin, sale } = await fetchAll();
         const years = new Set();
-        const safeDate = (d) => { try { return new Date(d); } catch { return new Date(NaN); } };
-        (buyin || []).forEach(b => { const dt = safeDate(b.buyindate ?? b.date); if (!isNaN(dt)) years.add(dt.getFullYear()); });
-        (sale || []).forEach(s => { const dt = safeDate(s.saleoutdate ?? s.date); if (!isNaN(dt)) years.add(dt.getFullYear()); });
+        const safeDate = (d) => {
+          try {
+            return new Date(d);
+          } catch {
+            return new Date(NaN);
+          }
+        };
+        (buyin || []).forEach((b) => {
+          const dt = safeDate(b.buyindate ?? b.date);
+          if (!isNaN(dt)) years.add(dt.getFullYear());
+        });
+        (sale || []).forEach((s) => {
+          const dt = safeDate(s.saleoutdate ?? s.date);
+          if (!isNaN(dt)) years.add(dt.getFullYear());
+        });
         const sorted = Array.from(years).sort((a, b) => b - a);
-        yearSelect.innerHTML = '';
-        sorted.forEach(y => {
-          const opt = document.createElement('option');
+        yearSelect.innerHTML = "";
+        sorted.forEach((y) => {
+          const opt = document.createElement("option");
           opt.value = y;
           opt.textContent = y;
           yearSelect.appendChild(opt);
@@ -93,6 +115,5 @@
         if (sorted.length) yearSelect.value = sorted[0];
       }
     </script>
-</body>
-
+  </body>
 </html>
