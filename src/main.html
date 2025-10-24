@@ -182,7 +182,45 @@
         <button class="function-btn-edit active"></button>
         <button class="function-btn-delete active"></button>
       </div>
-        <div id="product-list" class="product-list-horizontal"></div>
+        <!-- ส่วนแสดงตารางสินค้า -->
+        <div id="product-list">
+            <div class="product-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>รหัสสินค้า</th>
+                            <th>Model</th>
+                            <th>ชื่อสินค้า</th>
+                            <th>Maker</th>
+                            <th>หมวดหมู่</th>
+                            <th>จำนวน</th>
+                            <th>สภาพ</th>
+                            <th>ราคา</th>
+                            <th>ราคาขาย</th>
+                            <th>หน่วย</th>
+                            <th>ที่เก็บ</th>
+                            <th>วันที่สร้าง</th>
+                            <th>เวลาสร้าง</th>
+                            <th>วันที่แก้ไข</th>
+                            <th>เวลาแก้ไข</th>
+                            <th>รูปภาพ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-table-body">
+                        <!-- ข้อมูลจะถูกเพิ่มด้วย JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ส่วนแสดง pagination -->
+        <div id="pagination">
+            <div class="pagination-controls">
+                <button id="prev-page" disabled>ย้อนกลับ</button>
+                <span id="page-info">หน้า 1 / 1</span>
+                <button id="next-page" disabled>ถัดไป</button>
+            </div>
+        </div>
     </div>
     <!--- ใช้งานsciptsภายใน --->
     <script>

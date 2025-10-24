@@ -78,200 +78,80 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 async function renderProductsTablePage(products, page) {
-  const container = document.getElementById("product-list");
-  const perPage = 5;
-  const totalPages = Math.ceil(products.length / perPage);
-  const start = (page - 1) * perPage;
-  const end = start + perPage;
-  const pageProducts = products.slice(start, end);
+    const tableBody = document.getElementById("product-table-body");
+    const perPage = 5;
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    const pageProducts = products.slice(start, end);
 
-  // ดึงข้อมูลซื้อ/ขายและคำนวณจำนวนคงเหลือ
-  const { buyin, sale } = await fetchBuyinAndSale();
-  const stockMap = computeStock(products, buyin, sale);
+    // ดึงข้อมูลซื้อ/ขายและคำนวณจำนวนคงเหลือ
+    const { buyin, sale } = await fetchBuyinAndSale();
+    const stockMap = computeStock(products, buyin, sale);
 
-  // สร้าง HTML ตารางสินค้า (ไม่มี pagination-controls ในนี้)
-  let html = `
-    <div class="product-table">
-      <table>
-        <thead>
-            <tr>
-                <th>รหัสสินค้า</th>
-                <th>Model</th>
-                <th>ชื่อสินค้า</th>
-                <th>Maker</th>
-                <th>หมวดหมู่</th>
-                <th>จำนวน</th>
-                <th>สภาพ</th>
-                <th>ราคา</th>
-                <th>ราคาขาย</th>
-                <th>หน่วย</th>
-                <th>ที่เก็บ</th>
-                <th>วันที่สร้าง</th>
-                <th>เวลาสร้าง</th>
-                <th>วันที่แก้ไข</th>
-                <th>เวลาแก้ไข</th>
-                <th>รูปภาพ</th>
-            </tr>
-        </thead>
-        <tbody>
-    `;
-  html += pageProducts
-    .map((product) => {
-      const code = product.product_code ?? product.code ?? "";
-      const stockQty = stockMap[code] ?? 0;
-      return `
-        <tr>
-            <td>${product.product_code || "-"}</td>
-            <td>${product.model || "-"}</td>
-            <td>${product.product_name || "-"}</td>
-            <td>${product.maker || "-"}</td>
-            <td>${product.category || "-"}</td>
-            <td>${stockQty}</td>
-            <td>${product.condition || "-"}</td>
-            <td>${product.price ?? "-"}</td>
-            <td>${product.sale_price || "-"}</td>
-            <td>${product.unit || "-"}</td>
-            <td>${product.location || "-"}</td>
-            <td>${product.createdDate || "-"}</td>
-            <td>${product.createdTime || "-"}</td>
-            <td>${
-              product.updatedDate ? product.updatedDate : "ยังไม่มีการแก้ไข"
-            }</td>
-            <td>${
-              product.updatedTime ? product.updatedTime : "ยังไม่มีการแก้ไข"
-            }</td>
-            <td>
-                ${
-                  product.image
-                    ? `<img src="${product.image}" alt="img" style="width:60px;height:60px;object-fit:contain;border-radius:8px;">`
-                    : "-"
-                }
-            </td>
-        </tr>
-    `;
-    })
-    .join("");
-  html += `
-            </tbody>
-        </table>
-        </div>
-    `;
-  container.innerHTML = html;
+    // สร้าง HTML สำหรับแถวข้อมูล
+    const rowsHtml = pageProducts
+        .map((product) => {
+            const code = product.product_code ?? product.code ?? "";
+            const stockQty = stockMap[code] ?? 0;
+            return `
+                <tr>
+                    <td>${product.product_code || "-"}</td>
+                    <td>${product.model || "-"}</td>
+                    <td>${product.product_name || "-"}</td>
+                    <td>${product.maker || "-"}</td>
+                    <td>${product.category || "-"}</td>
+                    <td>${stockQty}</td>
+                    <td>${product.condition || "-"}</td>
+                    <td>${product.price ?? "-"}</td>
+                    <td>${product.sale_price || "-"}</td>
+                    <td>${product.unit || "-"}</td>
+                    <td>${product.location || "-"}</td>
+                    <td>${product.createdDate || "-"}</td>
+                    <td>${product.createdTime || "-"}</td>
+                    <td>${product.updatedDate ? product.updatedDate : "ยังไม่มีการแก้ไข"}</td>
+                    <td>${product.updatedTime ? product.updatedTime : "ยังไม่มีการแก้ไข"}</td>
+                    <td>${product.image ? `<img src="${product.image}" alt="img" style="width:60px;height:60px;object-fit:contain;border-radius:8px;">` : "-"}</td>
+                </tr>
+            `;
+        })
+        .join("");
 
-  // สร้าง pagination-controls แยกต่างหาก
-  let paginationHtml = `
-    <div class="pagination-controls">
-      <button id="prev-page" ${page === 1 ? "disabled" : ""}>ย้อนกลับ</button>
-      <span>หน้า ${page} / ${totalPages}</span>
-      <button id="next-page" ${page === totalPages ? "disabled" : ""}>ถัดไป</button>
-    </div>
-  `;
+    tableBody.innerHTML = rowsHtml;
 
-  // แทรก pagination-controls ต่อจาก product-list
-  container.insertAdjacentHTML('afterend', paginationHtml);
-  
+    // อัพเดท pagination
+    const totalPages = Math.ceil(products.length / perPage);
+    document.getElementById("prev-page").disabled = page === 1;
+    document.getElementById("next-page").disabled = page === totalPages;
+    document.getElementById("page-info").textContent = `หน้า ${page} / ${totalPages}`;
+
+    // เพิ่ม event listeners
+    document.getElementById("prev-page")?.addEventListener("click", () => {
+      if (page > 1) {
+        renderProductsTablePage(products, page - 1);
+      }
+    });
+
+    document.getElementById("next-page")?.addEventListener("click", () => {
+      if (page < totalPages) {
+        renderProductsTablePage(products, page + 1);
+      }
+    });
+
   // เพิ่ม event scroll แนวนอนหลัง render ตาราง
-  const tableBox = container.querySelector(".product-table");
+  const tableBox = document.querySelector(".product-table");
   if (tableBox) {
     tableBox.addEventListener(
       "wheel",
       function (e) {
-        if (e.deltaY !== 0) {
-          e.preventDefault();
-          tableBox.scrollLeft += e.deltaY;
+        // เลื่อนแนวนอนด้วยลูกกลิ้งเมาส์ (ไม่ต้องกด Shift)
+        if (e.deltaX !== 0 || e.deltaY !== 0) {
+            e.preventDefault();
+            tableBox.scrollLeft += (e.deltaX !== 0 ? e.deltaX : e.deltaY);
         }
       },
       { passive: false }
     );
   }
-
-  // เพิ่ม event ให้ปุ่ม
-  document.getElementById("prev-page")?.addEventListener("click", () => {
-    if (page > 1) {
-      window.currentPage = page - 1;
-      renderProductsTablePage(window.allProducts, window.currentPage);
-    }
-  });
-  document.getElementById("next-page")?.addEventListener("click", () => {
-    if (page < totalPages) {
-      window.currentPage = page + 1;
-      renderProductsTablePage(window.allProducts, window.currentPage);
-    }
-  });
-}
-
-function loadProducts() {
-  fetch(`${BACKEND_URL}/products`)
-    .then((res) => res.json())
-    .then((products) => {
-      const productList = document.getElementById("product-list");
-
-      if (!products || products.length === 0) {
-        productList.innerHTML =
-          '<tr><td colspan="14" class="no-data">ไม่พบข้อมูลสินค้า</td></tr>';
-        return;
-      }
-
-      // เพิ่มหัวตาราง
-      let tableHTML = `
-                <table class="product-table">
-                    <thead>
-                        <tr>
-                            <th>รหัสสินค้า</th>
-                            <th>โมเดล</th>
-                            <th>ชื่อสินค้า</th>
-                            <th>ผู้ผลิต</th>
-                            <th>ประเภท</th>
-                            <th>สถานะ</th>
-                            <th>ราคาต้นทุน</th>
-                            <th>ราคาขาย</th>
-                            <th>หน่วย</th>
-                            <th>ตำแหน่ง</th>
-                            <th>วันที่สร้าง</th>
-                            <th>เวลาสร้าง</th>
-                            <th>วันที่อัพเดท</th>
-                            <th>เวลาอัพเดท</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-      tableHTML += products
-        .map(
-          (p) => `
-                <tr>
-                    <td>${p.product_code || "-"}</td>
-                    <td>${p.model || "-"}</td>
-                    <td>${p.product_name || "-"}</td>
-                    <td>${p.maker || "-"}</td>
-                    <td>${p.category || "-"}</td>
-                    <td>${p.condition || "-"}</td>
-                    <td>${p.price || "-"}</td>
-                    <td>${p.sale_price || "-"}</td>
-                    <td>${p.unit || "-"}</td>
-                    <td>${p.location || "-"}</td>
-                    <td>${p.createdDate || "-"}</td>
-                    <td>${p.createdTime || "-"}</td>
-                    <td>${p.updatedDate || "-"}</td>
-                    <td>${p.updatedTime || "-"}</td>
-                </tr>
-            `
-        )
-        .join("");
-
-      tableHTML += `
-                    </tbody>
-                </table>
-            `;
-
-      productList.innerHTML = tableHTML;
-    })
-    .catch((error) => {
-      console.error("Error loading products:", error);
-      const productList = document.getElementById("product-list");
-      productList.innerHTML =
-        '<tr><td colspan="14" class="error">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
-    });
 }
 
 async function fetchBuyinAndSale() {

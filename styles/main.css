@@ -114,9 +114,17 @@ body {
 
 /* Product list styles */
 .product-list-horizontal {
-  width: 90vw;
-  margin-left: 55px;
-  /* ... existing styles ... */
+  width: 100vw;
+  margin-top: 20px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  overflow-x: auto;
+  color: #000000;
 }
 
 /* Pagination controls styles */
@@ -246,6 +254,7 @@ body {
 }
 
 .navbar-form {
+  font-size: 20px;
   display: flex;
   gap: 30px;
   margin: 0 15px;
@@ -270,16 +279,34 @@ body {
 }
 
 .navbar-text {
-    font-size: 14px;
+    font-size: 16px;
     padding: 6px 12px;
     display: flex;
     align-items: center;
     gap: 6px;
+    white-space: nowrap; /* ป้องกันขึ้นบรรทัดใหม่ */
+}
+
+/* Responsive: ปรับขนาด navbar-text เมื่อหน้าจอเล็กลง */
+@media (max-width: 900px) {
+  .navbar-text {
+    font-size: 14px;
+    padding: 4px 6px;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar-text {
+    font-size: 12px;
+    padding: 2px 2px;
+    gap: 2px;
+  }
 }
 
 .stat-icon {
-    width: 20px;  /* ลดจากค่าเริ่มต้น */
-    height: 20px; /* ลดจากค่าเริ่มต้น */
+    width: 30px;  /* ลดจากค่าเริ่มต้น */
+    height: 30px; /* ลดจากค่าเริ่มต้น */
     margin-right: 6px; /* เพิ่มระยะห่างจากข้อความ */
     vertical-align: middle; /* จัดให้อยู่กึ่งกลางกับข้อความ */
 }
@@ -366,7 +393,7 @@ body {
   /* ใช้พื้นที่เท่าที่ปุ่มต้องการ */
   margin-left: auto;
   /* ชิดขวา */
-  margin-right: -50px;
+  margin-right: 0px;
   /* เว้นขอบขวานิดหน่อย */
   margin-top: 7px;
   margin-bottom: -45px;
@@ -379,12 +406,6 @@ body {
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
-}
-
-.product-list-horizontal {
-  width: 90vw;
-  margin-left: 55px;
-  /* ... existing styles ... */
 }
 
 .pagination-controls {
@@ -554,226 +575,23 @@ body {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .main-content {
-    margin-top: 100px;
-    padding: 16px 8px;
-  }
-
-  .navbar {
-    height: 100px;
-    padding: 10px 10px;
-  }
-
-  .logo-container {
-    text-align: center;
-    padding: 0px;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .logo {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-    margin-top: 1080px;
-  }
-}
-
-@media (max-width: 900px) {
-  .sidebar {
-    width: 200px;
-    padding: 18px 10px;
-  }
-
-  .navbar {
-    height: 80px;
-    padding: 8px 4px;
-  }
-
-  .main-content {
-    margin-top: 80px;
-    padding: 10px 2px;
-  }
-
-  .logo-container {
-    width: 60px;
-    height: 60px;
-  }
-
-  .logo {
-    width: 40px;
-    height: 40px;
-  }
-
-  .navbar-text {
-    font-size: 14px;
-    min-width: 80px;
-    padding: 5px 8px;
-  }
-
-  .navbar-form input[type="text"] {
-    height: 36px;
-    font-size: 14px;
-  }
-
-  .logout-btn {
-    height: 36px;
-    font-size: 14px;
-    padding: 6px 12px;
-  }
-}
-
-@media (max-width: 600px) {
-  .sidebar {
-    width: 100vw;
-    left: -100vw;
-    padding: 10px 2px;
-    gap: 8px;
-  }
-
-  .sidebar.sidebar-open,
-  .sidebar:hover {
-    left: 0 !important;
-  }
-
-  .navbar {
-    height: 60px;
-    padding: 4px 2px;
-    font-size: 13px;
-  }
-
-  .main-content {
-    margin-top: 60px;
-    padding: 4px 1px;
-  }
-
-  .logo-container {
-    width: 36px;
-    height: 36px;
-  }
-
-  .logo {
-    width: 28px;
-    height: 28px;
-  }
-
-  .navbar-text {
-    font-size: 12px;
-    min-width: 60px;
-    padding: 3px 4px;
-  }
-
-  .navbar-form {
-    gap: 10px;
-    margin: 0 2px;
-  }
-
-  .navbar-form input[type="text"] {
-    height: 28px;
-    font-size: 12px;
-    padding: 4px;
-  }
-
-  .logout-btn {
-    height: 28px;
-    font-size: 12px;
-    padding: 4px 8px;
-  }
-
-  .function-btn-add,
-  .function-btn-edit,
-  .function-btn-delete {
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-
-  .hamburger {
-    top: 12px;
-    left: 8px;
-    width: 32px;
-    height: 32px;
-    gap: 3px;
-  }
-
-  .hamburger span {
-    width: 20px;
-    height: 3px;
-    margin: 2px 0;
-  }
-}
-
-/* ปรับแต่งให้ sidebar เปิดเต็มจอบนมือถือ */
-@media (max-width: 600px) {
-  .sidebar {
-    border-radius: 0 8px 8px 0;
-    min-width: 0;
-    max-width: 100vw;
-  }
-
-  .sidebar .nav-btn,
-  .sidebar .dropdown-btn {
-    font-size: 14px;
-    padding: 6px;
-  }
-
-  .dropdown-content,
-  .sidebar .dropdown-content {
-    font-size: 13px;
-    padding: 4px 0;
-  }
-}
-
-/* ปรับแต่งปุ่มและ input ให้รองรับจอเล็ก */
-@media (max-width: 480px) {
-  .function-buttons,
-  .function-buttons-edit,
-  .function-buttons-delete {
-    flex-direction: column;
-    gap: 6px;
-    margin: 4px 0;
-  }
-
-  .function-btn-add,
-  .function-btn-edit,
-  .function-btn-delete {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
-
-  .main-content,
-  .content-area {
-    padding: 2px 0;
-  }
-}
-
 /* เพิ่ม styles สำหรับตาราง */
 .product-table {
-  margin: 20px 0;
-  overflow-y: hidden !important;
-  /* ไม่ให้มี scroll แนวตั้ง .*/
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 50px;
   overflow-x: auto;
-  width: 90vw;
-  /* จาก 66.66vw เป็น 133.32vw (2 เท่า) */
-  max-width: 90vw;
-  /* จาก 66.66vw เป็น 133.32vw (2 เท่า) */
+  overflow-y: hidden !important;
+  width: calc(100vw - 40px);
+  max-width: calc(100vw - 40px);
   min-width: 380px;
-  /* เพิ่มขึ้น 2 เท่า */
   background: #b1a9a9;
   border-radius: 15px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  padding: 20px;
-  margin-left: 55px;
+  box-sizing: border-box; /* สำคัญ! */
+  padding: 25px;
   position: relative;
-  /* สำคัญสำหรับ sticky ด้านใน */
 }
+
 
 .product-table table {
   min-width: 2500px;
@@ -836,17 +654,6 @@ tr:hover {
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
-}
-
-.product-list-horizontal {
-  width: 90vw;
-  margin-left: 55px;
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-  overflow-x: auto;
-  padding: 24px 0;
-  color: #000000;
 }
 
 .product-card {
@@ -1215,4 +1022,172 @@ td {
     object-fit: contain; /* รักษาอัตราส่วนภาพ */
     display: block;     /* จัดกึ่งกลาง */
     margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 200px;
+    padding: 18px 10px;
+  }
+
+  .navbar {
+    height: 80px;
+    padding: 8px 4px;
+  }
+
+  .main-content {
+    margin-top: 80px;
+    padding: 10px 2px;
+  }
+
+  .logo-container {
+    width: 60px;
+    height: 60px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navbar-text {
+    font-size: 14px;
+    min-width: 80px;
+    padding: 5px 8px;
+  }
+
+  .navbar-form input[type="text"] {
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .logout-btn {
+    height: 36px;
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 100vw;
+    left: -100vw;
+    padding: 10px 2px;
+    gap: 8px;
+  }
+
+  .sidebar.sidebar-open,
+  .sidebar:hover {
+    left: 0 !important;
+  }
+
+  .navbar {
+    height: 60px;
+    padding: 4px 2px;
+    font-size: 13px;
+  }
+
+  .main-content {
+    margin-top: 60px;
+    padding: 4px 1px;
+  }
+
+  .logo-container {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .navbar-text {
+    font-size: 12px;
+    min-width: 60px;
+    padding: 3px 4px;
+  }
+
+  .navbar-form {
+    gap: 10px;
+    margin: 0 2px;
+  }
+
+  .navbar-form input[type="text"] {
+    height: 28px;
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  .logout-btn {
+    height: 28px;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .function-btn-add,
+  .function-btn-edit,
+  .function-btn-delete {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .hamburger {
+    top: 12px;
+    left: 8px;
+    width: 32px;
+    height: 32px;
+    gap: 3px;
+  }
+
+  .hamburger span {
+    width: 20px;
+    height: 3px;
+    margin: 2px 0;
+  }
+}
+
+/* ปรับแต่งให้ sidebar เปิดเต็มจอบนมือถือ */
+@media (max-width: 600px) {
+  .sidebar {
+    border-radius: 0 8px 8px 0;
+    min-width: 0;
+    max-width: 100vw;
+  }
+
+  .sidebar .nav-btn,
+  .sidebar .dropdown-btn {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .dropdown-content,
+  .sidebar .dropdown-content {
+    font-size: 13px;
+    padding: 4px 0;
+  }
+}
+
+/* ปรับแต่งปุ่มและ input ให้รองรับจอเล็ก */
+@media (max-width: 480px) {
+  .function-buttons,
+  .function-buttons-edit,
+  .function-buttons-delete {
+    flex-direction: column;
+    gap: 6px;
+    margin: 4px 0;
+  }
+
+  .function-btn-add,
+  .function-btn-edit,
+  .function-btn-delete {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .main-content,
+  .content-area {
+    padding: 2px 0;
+  }
 }
