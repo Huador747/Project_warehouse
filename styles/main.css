@@ -34,25 +34,6 @@ body {
   margin-top: 1080px;
 }
 
-.logo-container {
-  text-align: center;
-  padding: 0px;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-  margin-top: 1080px;
-}
-
 /* Product list styles */
 .product-list-horizontal {
   width: 100vw;
@@ -66,26 +47,6 @@ body {
   gap: 24px;
   overflow-x: auto;
   color: #000000;
-}
-
-/* Pagination controls styles */
-.pagination-controls {
-  position: sticky;
-  left: 50%;
-  transform: translateX(-50%);
-  width: fit-content;
-  margin: 20px auto;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255, 251, 235, 0.95); /* พื้นหลังโปร่งแสงเล็กน้อย */
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* เงาอ่อนๆ */
-  backdrop-filter: blur(8px); /* เบลอพื้นหลังเล็กน้อย */
-  border: 1px solid rgba(224, 185, 125, 0.3); /* ขอบบางๆ */
-  z-index: 100;
 }
 
 .pagination-controls button {
@@ -231,34 +192,6 @@ body {
 
 .hamburger.active span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
-}
-
-/* Responsive sidebar */
-@media (max-width: 900px) {
-  .sidebar {
-    width: 200px;
-    padding: 18px 10px;
-  }
-}
-
-@media (max-width: 600px) {
-  .sidebar {
-    width: 100vw;
-    left: -100vw;
-    padding: 10px 2px;
-    gap: 8px;
-    border-radius: 0 8px 8px 0;
-    min-width: 0;
-    max-width: 100vw;
-  }
-  .sidebar.sidebar-open,
-  .sidebar:hover {
-    left: 0 !important;
-  }
-  .sidebar .nav-btn {
-    font-size: 14px;
-    padding: 6px;
-  }
 }
 
 /* Main content styles */
@@ -444,25 +377,6 @@ body {
   box-sizing: border-box;
 }
 
-.pagination-controls {
-  position: sticky;
-  left: 50%;
-  transform: translateX(-50%);
-  width: fit-content;
-  margin: 20px auto;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255, 251, 235, 0.95); /* พื้นหลังโปร่งแสงเล็กน้อย */
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* เงาอ่อนๆ */
-  backdrop-filter: blur(8px); /* เบลอพื้นหลังเล็กน้อย */
-  border: 1px solid rgba(224, 185, 125, 0.3); /* ขอบบางๆ */
-  z-index: 100;
-}
-
 #search-code {
   width: 230px;
   background: #ffffff;
@@ -559,58 +473,6 @@ body {
   border: 2px solid #fab31a;
 }
 /* ปุ่มลบ สินค้า */
-
-/* Hamburger styles */
-.hamburger {
-  display: flex !important;
-  position: fixed;
-  top: 40px;
-  /* ปรับให้ตรงกับ addproduct.css */
-  left: 24px;
-  z-index: 4000;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: none;
-  flex-direction: column;
-  justify-content: center;
-  /* สำคัญ: จัดแนวกลางแนวตั้ง */
-  align-items: center;
-  /* สำคัญ: จัดแนวกลางแนวนอน */
-  cursor: pointer;
-  gap: 6px;
-}
-
-.hamburger span {
-  display: block;
-  width: 28px;
-  height: 4px;
-  background: #050505;
-  border-radius: 2px;
-  margin: 3px 0;
-  transition: 0.4s;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* เมื่อ hover ที่ปุ่ม hamburger */
-.hamburger:hover span {
-  background: #ffa144;
-  width: 36px;
-  transition: 0.4s;
-}
-
-.hamburger.active span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
 
 /* เพิ่ม styles สำหรับตาราง */
 .product-table {
@@ -745,26 +607,6 @@ tr:hover {
   word-break: break-word;
   /* ตัดคำถ้ายาวมาก */
 }
-
-.pagination-controls {
-  position: sticky;
-  left: 50%;
-  transform: translateX(-50%);
-  width: fit-content;
-  margin: 20px auto;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255, 251, 235, 0.95); /* พื้นหลังโปร่งแสงเล็กน้อย */
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* เงาอ่อนๆ */
-  backdrop-filter: blur(8px); /* เบลอพื้นหลังเล็กน้อย */
-  border: 1px solid rgba(224, 185, 125, 0.3); /* ขอบบางๆ */
-  z-index: 100;
-}
-
 /* ========== เพิ่มลูกเล่นจาก buyin ========== */
 
 /* ไล่สีพื้นหลัง navbar เบา ๆ */
@@ -932,24 +774,6 @@ td {
   padding: 7px 4px;
 }
 
-.logo-container {
-  text-align: center;
-  padding: 0px;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-  margin-top: 1080px;
-}
 .monthly-summary {
   padding: 12px;
 }
@@ -1005,174 +829,53 @@ td {
   color: #999; /* สีข้อความจางๆ */
   border-bottom: 1px solid #ddd;
 }
-
-@media (max-width: 900px) {
-  .sidebar {
-    width: 200px;
-    padding: 18px 10px;
-  }
-
-  .navbar {
-    height: 80px;
-    padding: 8px 4px;
-  }
-
-  .main-content {
-    margin-top: 80px;
-    padding: 10px 2px;
-  }
-
-  .logo-container {
-    width: 60px;
-    height: 60px;
-  }
-
-  .logo {
-    width: 40px;
-    height: 40px;
-  }
-
-  .navbar-text {
-    font-size: 14px;
-    min-width: 80px;
-    padding: 5px 8px;
-  }
-
-  .navbar-form input[type="text"] {
-    height: 36px;
-    font-size: 14px;
-  }
-
-  .logout-btn {
-    height: 36px;
-    font-size: 14px;
-    padding: 6px 12px;
-  }
+/* ตกแต่ง pagination-controls ให้เหมือน inventory */
+.pagination-controls {
+  position: sticky;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  margin: 20px auto;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 251, 235, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(224, 185, 125, 0.3);
+  z-index: 100;
 }
 
-@media (max-width: 600px) {
-  .sidebar {
-    width: 100vw;
-    left: -100vw;
-    padding: 10px 2px;
-    gap: 8px;
-    border-radius: 0 8px 8px 0;
-    min-width: 0;
-    max-width: 100vw;
-  }
-
-  .sidebar.sidebar-open,
-  .sidebar:hover {
-    left: 0 !important;
-  }
-
-  .navbar {
-    height: 60px;
-    padding: 4px 2px;
-    font-size: 13px;
-  }
-
-  .main-content {
-    margin-top: 60px;
-    padding: 4px 1px;
-  }
-
-  .logo-container {
-    width: 36px;
-    height: 36px;
-  }
-
-  .logo {
-    width: 28px;
-    height: 28px;
-  }
-
-  .navbar-text {
-    font-size: 12px;
-    min-width: 60px;
-    padding: 3px 4px;
-  }
-
-  .navbar-form {
-    gap: 10px;
-    margin: 0 2px;
-  }
-
-  .navbar-form input[type="text"] {
-    height: 28px;
-    font-size: 12px;
-    padding: 4px;
-  }
-
-  .logout-btn {
-    height: 28px;
-    font-size: 12px;
-    padding: 4px 8px;
-  }
-
-  .function-btn-add,
-  .function-btn-edit,
-  .function-btn-delete {
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-
-  .hamburger {
-    top: 12px;
-    left: 8px;
-    width: 32px;
-    height: 32px;
-    gap: 3px;
-  }
-
-  .hamburger span {
-    width: 20px;
-    height: 3px;
-    margin: 2px 0;
-  }
+.pagination-controls button {
+  background: linear-gradient(180deg, #ffefb0, #ffd336);
+  border: none;
+  color: #1f1f1f;
+  padding: 8px 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-/* ปรับแต่งให้ sidebar เปิดเต็มจอบนมือถือ */
-@media (max-width: 600px) {
-  .sidebar {
-    border-radius: 0 8px 8px 0;
-    min-width: 0;
-    max-width: 100vw;
-  }
-
-  .sidebar .nav-btn,
-  .sidebar .dropdown-btn {
-    font-size: 14px;
-    padding: 6px;
-  }
-
-  .dropdown-content,
-  .sidebar .dropdown-content {
-    font-size: 13px;
-    padding: 4px 0;
-  }
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* ปรับแต่งปุ่มและ input ให้รองรับจอเล็ก */
-@media (max-width: 480px) {
-  .function-buttons,
-  .function-buttons-edit,
-  .function-buttons-delete {
-    flex-direction: column;
-    gap: 6px;
-    margin: 4px 0;
-  }
+.pagination-controls button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
 
-  .function-btn-add,
-  .function-btn-edit,
-  .function-btn-delete {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
-
-  .main-content,
-  .content-area {
-    padding: 2px 0;
-  }
+#page-info {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #e67e22;
+  margin: 0 8px;
+  letter-spacing: 1px;
 }

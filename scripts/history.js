@@ -444,13 +444,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const wrapper = document.querySelector('.history-table-wrapper');
+  const wrapper = document.querySelector(".history-table-wrapper");
   if (wrapper) {
-    wrapper.addEventListener('wheel', function(e) {
-      if (e.deltaY !== 0) {
-        e.preventDefault();
-        wrapper.scrollLeft += e.deltaY;
-      }
-    }, { passive: false });
+    wrapper.addEventListener(
+      "wheel",
+      function (e) {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          wrapper.scrollLeft += e.deltaY;
+        }
+      },
+      { passive: false }
+    );
   }
 });
