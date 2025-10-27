@@ -12,9 +12,9 @@
 
 <body>
     <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
-      <span></span>
-      <span></span>
-      <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
     </button>
     <div class="sidebar" id="sidebar">
         <div class="logo-container">
@@ -29,7 +29,7 @@
         <button class="nav-btn" onclick="window.location.href='sale.html'">
             <span class="nav-icon">💸</span> รายการขาย
         </button>
-          <button class="nav-btn active" onclick="window.location.href='history.html'">
+        <button class="nav-btn active" onclick="window.location.href='history.html'">
             <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
         </button>
         <button class="nav-btn" onclick="window.location.href='inventory.html'">
@@ -63,34 +63,33 @@
             </div>
         </div>
         <div class="history-list">
-            <h2>ประวัติการซื้อ-ขาย</h2>
             <div class="history-table-wrapper">
-  <table id="history-table">
-  <thead>
-    <tr>
-      <th>วันที่</th>
-      <th>ประเภท</th>
-      <th>รหัสสินค้า</th>
-      <th>ชื่อสินค้า</th>
-      <th>โมเดล</th>
-      <th>จำนวน</th>
-      <th>ราคาต่อหน่วย</th>
-      <th>รวม</th>
-      <th>ลูกค้า/ผู้ขาย</th>
-      <th>หมายเหตุ</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- เติมข้อมูลด้วย JS -->
-  </tbody>
-</table>
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th>วันที่</th>
+                            <th>ประเภท</th>
+                            <th>รหัสสินค้า</th>
+                            <th>ชื่อสินค้า</th>
+                            <th>โมเดล</th>
+                            <th>จำนวน</th>
+                            <th>ราคาต่อหน่วย</th>
+                            <th>รวม</th>
+                            <th>ลูกค้า/ผู้ขาย</th>
+                            <th>หมายเหตุ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- เติมข้อมูลด้วย JS -->
+                    </tbody>
+                </table>
             </div>
             <!-- เพิ่ม pagination -->
-  <div class="pagination-controls" id="pagination">
-    <button id="prev-page" class="page-btn">ก่อนหน้า</button>
-    <span id="page-info">หน้า 1 จาก 1</span>
-    <button id="next-page" class="page-btn">ถัดไป</button>
-</div>
+            <div class="pagination-controls" id="pagination">
+                <button id="prev-page" class="page-btn">ก่อนหน้า</button>
+                <span id="page-info">หน้า 1 จาก 1</span>
+                <button id="next-page" class="page-btn">ถัดไป</button>
+            </div>
             <!-- เพิ่มส่วนสรุปยอด -->
             <div class="monthly-summary">
                 <h3>สรุปยอดประจำเดือน</h3>
@@ -168,9 +167,9 @@
                     </div>
                 </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+    </div>
     </div>
     <script type="module" src="../scripts/history.js"></script>
 </body>

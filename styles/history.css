@@ -271,6 +271,7 @@ body {
 
 /* Main content styles */
 .main-content {
+  background-color: #fce4bb;
   width: 100%;
   max-width: 1400px;
   /* หรือขนาดที่ต้องการ */
@@ -697,7 +698,6 @@ body {
     opacity: 1;
   }
 }
-
 /* ครอบตารางด้วย div ที่มี overflow-x:auto */
 .history-table-wrapper {
   width: 100%;
