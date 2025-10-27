@@ -443,4 +443,14 @@ document.addEventListener("DOMContentLoaded", () => {
       navbarText.classList.add("slide-in");
     });
   }
+
+  const wrapper = document.querySelector('.history-table-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('wheel', function(e) {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        wrapper.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+  }
 });

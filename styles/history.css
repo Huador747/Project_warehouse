@@ -760,6 +760,44 @@ tr:hover {
   }
 }
 
+/* ครอบตารางด้วย div ที่มี overflow-x:auto */
+.history-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* ตารางให้ min-width มากกว่ากรอบ */
+#history-table {
+  min-width: 900px;
+  width: max-content;
+  border-collapse: collapse;
+}
+
+/* กำหนดขนาดและ overflow ให้ .history-list */
+.history-list {
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+/* กำหนดตารางให้ไม่ล้น */
+.history-list table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  word-break: break-word;
+}
+
+.history-list th, .history-list td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  word-break: break-word;
+  max-width: 220px; /* ปรับตามต้องการ */
+  overflow-wrap: break-word;
+}
+
 /* Responsive for iPad 1180x820 */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
   .navbar {
