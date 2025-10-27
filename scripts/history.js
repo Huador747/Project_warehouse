@@ -93,6 +93,69 @@ function generateYearAndMonthOptions(transactions) {
   monthSelect.value = currentMonth;
 }
 
+const rowsPerPage = 10;
+let currentPage = 1;
+let currentTransactions = [];
+
+function renderHistoryTablePaged(transactions, page = 1) {
+  const tbody = document.querySelector("#history-table tbody");
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+  const startIdx = (page - 1) * rowsPerPage;
+  const pagedTransactions = transactions.slice(
+    startIdx,
+    startIdx + rowsPerPage
+  );
+
+  pagedTransactions.forEach((item) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+            <td>${formatDate(item.date)}</td>
+            <td>${item.type}</td>
+            <td>${item.product_code || "-"}</td>
+            <td>${item.product_name}</td>
+            <td>${item.model}</td>
+            <td>${formatNumber(item.quantity)}</td>
+            <td>${formatNumber(item.price)}</td>
+            <td>${formatNumber(item.total)}</td>
+            <td>${item.partner}</td>
+            <td>${item.note}</td>
+        `;
+    tbody.appendChild(tr);
+  });
+
+  // แสดงข้อความเมื่อไม่มีข้อมูล
+  if (pagedTransactions.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td colspan="10" style="text-align: center;">ไม่พบข้อมูล</td>';
+    tbody.appendChild(tr);
+  }
+
+  // เพิ่มแถวว่างให้ครบ 10 แถว
+  const emptyRows = rowsPerPage - pagedTransactions.length;
+  if (emptyRows > 0) {
+    for (let i = 0; i < emptyRows; i++) {
+      const tr = document.createElement("tr");
+      tr.className = "empty-row";
+      tr.innerHTML = `
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+}
+
 function renderHistoryTable(
   buyin,
   sale,
@@ -181,6 +244,9 @@ function renderHistoryTable(
     });
   }
 
+  // Save filtered transactions for pagination
+  currentTransactions = transactions;
+
   // Logout
   const logoutBtn = document.getElementById("logout-btn");
   logoutBtn?.addEventListener("click", function (e) {
@@ -188,24 +254,6 @@ function renderHistoryTable(
     localStorage.clear();
     sessionStorage.clear();
     window.location.replace("login.html");
-  });
-
-  // แสดงผลในตาราง
-  transactions.forEach((item) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-            <td>${formatDate(item.date)}</td>
-            <td>${item.type}</td>
-            <td>${item.product_code || "-"}</td>
-            <td>${item.product_name}</td>
-            <td>${item.model}</td>
-            <td>${formatNumber(item.quantity)}</td>
-            <td>${formatNumber(item.price)}</td>
-            <td>${formatNumber(item.total)}</td>
-            <td>${item.partner}</td>
-            <td>${item.note}</td>
-        `;
-    tbody.appendChild(tr);
   });
 
   // คำนวณสรุปยอด
@@ -236,13 +284,11 @@ function renderHistoryTable(
   document.getElementById("count-sale").textContent =
     formatNumber(summary.saleCount) + " รายการ";
 
-  // แสดงข้อความเมื่อไม่มีข้อมูล
-  if (transactions.length === 0) {
-    const tr = document.createElement("tr");
-    tr.innerHTML =
-      '<td colspan="10" style="text-align: center;">ไม่พบข้อมูล</td>';
-    tbody.appendChild(tr);
-  }
+  // Render paged table
+  renderHistoryTablePaged(transactions, currentPage);
+
+  // Render pagination controls
+  renderPagination(transactions, currentPage);
 }
 //000000000000000000000000000000000000000000
 function renderPagination(transactions, page = 1) {
@@ -256,9 +302,13 @@ function renderPagination(transactions, page = 1) {
   }
   let html = "";
   if (totalPages > 1) {
-    html += `<button ${page === 1 ? "disabled" : ""} id="prev-page">ก่อนหน้า</button>`;
+    html += `<button ${
+      page === 1 ? "disabled" : ""
+    } id="prev-page">ก่อนหน้า</button>`;
     html += `<span style="margin:0 8px;">หน้า ${page} / ${totalPages}</span>`;
-    html += `<button ${page === totalPages ? "disabled" : ""} id="next-page">ถัดไป</button>`;
+    html += `<button ${
+      page === totalPages ? "disabled" : ""
+    } id="next-page">ถัดไป</button>`;
   }
   paginationDiv.innerHTML = html;
 
@@ -384,6 +434,8 @@ async function main() {
   }
 }
 
+main();
+
 document.addEventListener("DOMContentLoaded", () => {
   const navbarText = document.querySelector(".navbar-text");
   if (navbarText) {
@@ -392,10 +444,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-//0000000000000000000000000000000000000000000000
-const rowsPerPage = 5;
-let currentPage = 1;
-let currentTransactions = [];
-
-main();

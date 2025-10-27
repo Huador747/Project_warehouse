@@ -406,6 +406,40 @@ tr:hover {
   background: #fff3d1;
 }
 
+/* ปรับขนาด cell ในตารางให้คงที่ */
+#history-table th,
+#history-table td {
+  min-width: 90px;
+  height: 48px;
+  font-size: 16px;
+  padding: 10px 8px;
+  box-sizing: border-box;
+  text-align: center;
+  vertical-align: middle;
+  /* ป้องกันข้อความล้น */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ให้ Model กับ ชื่อสินค้า ยาวตามข้อความ */
+#history-table th:nth-child(4),
+#history-table td:nth-child(4),
+#history-table th:nth-child(5),
+#history-table td:nth-child(5) {
+  min-width: 140px;
+  max-width: 220px;
+}
+
+/* แถวว่าง */
+#history-table tr.empty-row td {
+  background: #fffbe7 !important;
+  border-bottom: 1px solid #f0c987;
+  height: 48px;
+  /* ให้สูงเท่าแถวปกติ */
+  padding: 10px 8px;
+}
+
 /* ตกแต่ง navbar-form */
 .navbar-form {
   display: flex;
@@ -460,7 +494,50 @@ tr:hover {
   }
 }
 
-/* ตกแต่ง select */
+/* Pagination controls styles */
+.pagination-controls {
+  position: sticky;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  margin: 20px auto;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 251, 235, 0.95); /* พื้นหลังโปร่งแสงเล็กน้อย */
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* เงาอ่อนๆ */
+  backdrop-filter: blur(8px); /* เบลอพื้นหลังเล็กน้อย */
+  border: 1px solid rgba(224, 185, 125, 0.3); /* ขอบบางๆ */
+  z-index: 100;
+}
+
+.pagination-controls button {
+  background: linear-gradient(180deg, #ffefb0, #ffd336);
+  border: none;
+  color: #1f1f1f;
+  padding: 8px 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+  white-space: nowrap; /* ป้องกันข้อความแตก */
+}
+
+/* เพิ่ม hover effect */
+.pagination-controls button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
+/* Animation เล็กน้อยเมื่อเปลี่ยน */
+#history-type {
+  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s;
+}
+
 #history-type {
   padding: 10px 36px 10px 16px;
   border-radius: 8px;
@@ -478,7 +555,6 @@ tr:hover {
   margin-left: 10px;
 }
 
-/* ลูกศร custom ด้วย SVG */
 #history-type {
   background-image: url("data:image/svg+xml;utf8,<svg fill='orange' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
@@ -492,11 +568,6 @@ tr:hover {
   box-shadow: 0 4px 16px rgba(255, 211, 54, 0.18);
   background: linear-gradient(90deg, #fffbe7 60%, #ffd336 100%);
   color: #d35400;
-}
-
-/* Animation เล็กน้อยเมื่อเปลี่ยน */
-#history-type {
-  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s;
 }
 
 /* ตกแต่งปุ่มกรองเลือกเดือน */

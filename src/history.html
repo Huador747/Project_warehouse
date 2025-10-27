@@ -62,24 +62,30 @@
         <div class="history-list">
             <h2>ประวัติการซื้อ-ขาย</h2>
             <table id="history-table">
-                <thead>
-                    <tr>
-                        <th>วันที่</th>
-                        <th>ประเภท</th>
-                        <th>รหัสสินค้า</th>
-                        <th>ชื่อสินค้า</th>
-                        <th>โมเดล</th>
-                        <th>จำนวน</th>
-                        <th>ราคาต่อหน่วย</th>
-                        <th>รวม</th>
-                        <th>ลูกค้า/ผู้ขาย</th>
-                        <th>หมายเหตุ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- เติมข้อมูลด้วย JS -->
-                </tbody>
-            </table>
+  <thead>
+    <tr>
+      <th>วันที่</th>
+      <th>ประเภท</th>
+      <th>รหัสสินค้า</th>
+      <th>ชื่อสินค้า</th>
+      <th>โมเดล</th>
+      <th>จำนวน</th>
+      <th>ราคาต่อหน่วย</th>
+      <th>รวม</th>
+      <th>ลูกค้า/ผู้ขาย</th>
+      <th>หมายเหตุ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- เติมข้อมูลด้วย JS -->
+  </tbody>
+</table>
+            <!-- เพิ่ม pagination -->
+  <div class="pagination-controls" id="pagination">
+    <button id="prev-page" class="page-btn">ก่อนหน้า</button>
+    <span id="page-info">หน้า 1 จาก 1</span>
+    <button id="next-page" class="page-btn">ถัดไป</button>
+</div>
             <!-- เพิ่มส่วนสรุปยอด -->
             <div class="monthly-summary">
                 <h3>สรุปยอดประจำเดือน</h3>
@@ -156,18 +162,6 @@
                         <div id="count-sale" class="summary-value">-</div>
                     </div>
                 </div>
-            </div>
-            <div class="summary-box">
-              <div class="summary-label">ยอดขายรวม</div>
-              <div id="total-sale" class="summary-value">-</div>
-            </div>
-            <div class="summary-box">
-              <div class="summary-label">จำนวนรายการซื้อ</div>
-              <div id="count-buyin" class="summary-value">-</div>
-            </div>
-            <div class="summary-box">
-              <div class="summary-label">จำนวนรายการขาย</div>
-              <div id="count-sale" class="summary-value">-</div>
             </div>
           </div>
         </div>

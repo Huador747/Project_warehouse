@@ -160,9 +160,9 @@ body {
   min-width: 120px;
   text-align: center;
   will-change: transform, opacity;
-  animation: 
-      slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
-      subtlePulse 3.2s ease-in-out 640ms infinite;
+  animation:
+    slideFromLeft 640ms cubic-bezier(.2, .9, .2, 1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
 .navbar-form {
@@ -434,16 +434,110 @@ tr:hover {
   background: #fff;
 }
 
+/* ปรับขนาด cell ในตารางให้คงที่และเหมือน mainpage */
+#stock-table th,
+#stock-table td {
+  min-width: 120px;
+  max-width: 200px;
+  height: 70px;
+  padding: 8px 12px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  font-size: 15px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* แถวว่าง */
+#stock-table tr.empty-row {
+  height: 70px;
+  background-color: #f5f5f5;
+  opacity: 0.6;
+}
+
+#stock-table tr.empty-row td {
+  color: #999;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Pagination controls styles */
+.pagination-controls {
+  position: sticky;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  margin: 20px auto;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 251, 235, 0.95);
+  /* พื้นหลังโปร่งแสงเล็กน้อย */
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  /* เงาอ่อนๆ */
+  backdrop-filter: blur(8px);
+  /* เบลอพื้นหลังเล็กน้อย */
+  border: 1px solid rgba(224, 185, 125, 0.3);
+  /* ขอบบางๆ */
+  z-index: 100;
+}
+
+.pagination-controls{
+  margin-top: -20px;
+}
+
+.pagination-controls button {
+  background: linear-gradient(180deg, #ffefb0, #ffd336);
+  border: none;
+  color: #1f1f1f;
+  padding: 8px 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  /* ป้องกันข้อความแตก */
+}
+
+/* เพิ่ม hover effect */
+.pagination-controls button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
 /* Add keyframes animations */
 @keyframes subtlePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes slideFromLeft {
-  0% { transform: translateX(-100%); opacity: 0; }
-  60% { transform: translateX(8%); opacity: 1; }
-  100% { transform: translateX(0); opacity: 1; }
-}
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
 
+  60% {
+    transform: translateX(8%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
