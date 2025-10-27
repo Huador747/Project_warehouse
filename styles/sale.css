@@ -45,16 +45,13 @@ body {
   margin-top: 1080px;
 }
 
-/* Sidebar styles */
 .sidebar {
   position: fixed;
   left: -270px;
-  /* ซ่อน sidebar ด้านซ้าย */
   top: 0;
   height: 100vh;
   z-index: 2000;
   transition: left 0.8s, transform 0.8s cubic-bezier(.2, .9, .2, 1), box-shadow 0.8s;
-  /* ลดเวลา transition */
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
   width: 250px;
   background: rgb(254, 179, 104);
@@ -66,7 +63,6 @@ body {
   gap: 15px;
   align-items: center;
   overflow: hidden;
-  /* ป้องกันภาพฉีก */
 }
 
 .sidebar.sidebar-open {
@@ -240,28 +236,6 @@ body {
 .dropdown-btn.active+.dropdown-content {
   display: flex;
 }
-
-/* Optional: show dropdown on click */
-.sidebar .dropdown-btn {
-  position: relative;
-  align-items: center;
-}
-
-.sidebar .dropdown-content {
-  position: relative;
-}
-
-.sidebar .dropdown-btn+.dropdown-content {
-  display: none;
-  position: relative;
-  justify-content: space-between;
-}
-
-.sidebar .dropdown-btn:hover+.dropdown-content,
-.sidebar .dropdown-content:hover {
-  display: flex;
-}
-
 .dropdown-icon {
   margin-left: 8px;
   font-size: 18px;
@@ -314,32 +288,6 @@ body {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Sidebar: hidden by default, show when .sidebar-open */
-.sidebar {
-  position: fixed;
-  left: -270px;
-  top: 0;
-  height: 100vh;
-  z-index: 2000;
-  transition: left 0.8s, transform 0.8s cubic-bezier(.2,.9,.2,1), box-shadow 0.8s;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  width: 250px;
-  background: rgb(254, 179, 104);
-  color: #fff;
-  padding: 30px 30px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
-
-.sidebar.sidebar-open {
-  left: 0;
-  transform: translateX(0);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
-}
-
 /* Main content: full width */
 .main-content {
   margin-left: 0 !important;
@@ -369,52 +317,6 @@ body {
   align-items: center;
   cursor: pointer;
   gap: 6px;
-}
-
-/* ปรับ sidebar ให้แสดงเมื่อ hover ที่ hamburger */
-.hamburger:hover+.sidebar,
-.sidebar:hover {
-  left: 0;
-}
-
-/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
-.sidebar {
-  pointer-events: auto;
-}
-
-/* Hamburger: always show */
-.hamburger {
-  display: flex !important;
-  position: fixed;
-  top: 40px;
-  left: 24px;
-  z-index: 4000;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  gap: 6px;
-}
-
-/* Sidebar: hidden by default */
-.sidebar {
-  left: -270px;
-  transition: left 0.8s;
-}
-
-/* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
-.hamburger:hover+.sidebar,
-.sidebar:hover {
-  left: 0;
-}
-
-/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
-.sidebar {
-  pointer-events: auto;
 }
 
 #search-code {

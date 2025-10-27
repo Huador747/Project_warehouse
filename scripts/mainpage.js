@@ -75,6 +75,23 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   searchInput?.addEventListener("input", doSearch);
   searchBtn?.addEventListener("click", doSearch);
+
+  const hamburger = document.getElementById("hamburger-btn");
+  const sidebar = document.getElementById("sidebar");
+
+  hamburger?.addEventListener("click", function (e) {
+    e.stopPropagation();
+    hamburger.classList.toggle("active");
+    sidebar.classList.toggle("sidebar-open");
+  });
+
+  // ปิด sidebar เมื่อคลิกข้างนอก
+  document.addEventListener("click", function (ev) {
+    if (!sidebar.contains(ev.target) && !hamburger.contains(ev.target)) {
+      sidebar.classList.remove("sidebar-open");
+      hamburger.classList.remove("active");
+    }
+  });
 });
 
 let currentPage = 1; // ตัวแปร global
