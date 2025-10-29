@@ -22,29 +22,33 @@
       <span></span>
     </button>
     <div class="sidebar" id="sidebar">
+      <div class="sidebar-nav-btn">
+        <button
+          class="nav-btn active"
+          onclick="window.location.href='main.html'"
+        >
+          <span class="nav-icon">🏠</span> หน้าหลัก
+        </button>
+        <button class="nav-btn" onclick="window.location.href='buyin.html'">
+          <span class="nav-icon">🛒</span> รายการซื้อ
+        </button>
+        <button class="nav-btn" onclick="window.location.href='sale.html'">
+          <span class="nav-icon">💸</span> รายการขาย
+        </button>
+        <button class="nav-btn" onclick="window.location.href='history.html'">
+          <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
+        </button>
+        <button class="nav-btn" onclick="window.location.href='inventory.html'">
+          <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
+        </button>
+        <button class="nav-btn" onclick="window.location.href='movement.html'">
+          <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+        </button>
+      </div>
       <div class="logo-container">
         <img src="/assets/logo.png" alt="Logo" class="logo" />
       </div>
-      <button class="nav-btn active" onclick="window.location.href='main.html'">
-        <span class="nav-icon">🏠</span> หน้าหลัก
-      </button>
-      <button class="nav-btn" onclick="window.location.href='buyin.html'">
-        <span class="nav-icon">🛒</span> รายการซื้อ
-      </button>
-      <button class="nav-btn" onclick="window.location.href='sale.html'">
-        <span class="nav-icon">💸</span> รายการขาย
-      </button>
-       <button class="nav-btn " onclick="window.location.href='history.html'">
-        <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
-      </button>
-      <button class="nav-btn" onclick="window.location.href='inventory.html'">
-        <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
-      </button>   
-      <button class="nav-btn" onclick="window.location.href='movement.html'">
-        <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
-      </button>
     </div>
-
     <div class="main-content">
       <div class="navbar">
         <form class="navbar-form">
@@ -182,45 +186,50 @@
         <button class="function-btn-edit active"></button>
         <button class="function-btn-delete active"></button>
       </div>
-        <!-- ส่วนแสดงตารางสินค้า -->
-        <div id="product-list">
-            <div class="product-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>รหัสสินค้า</th>
-                            <th>Model</th>
-                            <th>ชื่อสินค้า</th>
-                            <th>Maker</th>
-                            <th>หมวดหมู่</th>
-                            <th>จำนวน</th>
-                            <th>สภาพ</th>
-                            <th>ราคา</th>
-                            <th>ราคาขาย</th>
-                            <th>หน่วย</th>
-                            <th>ที่เก็บ</th>
-                            <th>วันที่สร้าง</th>
-                            <th>เวลาสร้าง</th>
-                            <th>วันที่แก้ไข</th>
-                            <th>เวลาแก้ไข</th>
-                            <th>รูปภาพ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="product-table-body">
-                        <!-- ข้อมูลจะถูกเพิ่มด้วย JavaScript -->
-                    </tbody>
-                </table>
-            </div>
+      <!-- ส่วนแสดงตารางสินค้า -->
+      <div id="product-list">
+        <div class="product-table">
+          <table>
+            <thead>
+              <tr>
+                <th>รหัสสินค้า</th>
+                <th>Model</th>
+                <th>ชื่อสินค้า</th>
+                <th>Maker</th>
+                <th>หมวดหมู่</th>
+                <th>จำนวน</th>
+                <th>สภาพ</th>
+                <th>ราคา</th>
+                <th>ราคาขาย</th>
+                <th>หน่วย</th>
+                <th>ที่เก็บ</th>
+                <th>วันที่สร้าง</th>
+                <th>เวลาสร้าง</th>
+                <th>วันที่แก้ไข</th>
+                <th>เวลาแก้ไข</th>
+                <th>รูปภาพ</th>
+              </tr>
+            </thead>
+            <tbody id="product-table-body">
+              <!-- ข้อมูลจะถูกเพิ่มด้วย JavaScript -->
+            </tbody>
+          </table>
         </div>
-        <!-- ส่วนแสดง pagination -->
-        <div id="pagination">
-            <div class="pagination-controls">
-                <button id="prev-page" disabled>ย้อนกลับ</button>
-                <span id="page-info">หน้า 1 / 1</span>
-                <button id="next-page" disabled>ถัดไป</button>
-            </div>
+      </div>
+      <!-- ส่วนแสดง pagination -->
+      <div id="pagination">
+        <div class="pagination-controls">
+          <button id="prev-page" disabled>ย้อนกลับ</button>
+          <span id="page-info">หน้า 1 / 1</span>
+          <button id="next-page" disabled>ถัดไป</button>
         </div>
+      </div>
     </div>
+    <div id="image-modal" class="image-modal" style="display: none">
+      <span class="close-modal" onclick="closeImageModal()">&times;</span>
+      <img id="modal-img" src="" alt="รูปสินค้า" />
+    </div>
+
     <!--- ใช้งานsciptsภายใน --->
     <script>
       function checkLogin() {
@@ -271,5 +280,6 @@
     </script>
     <!--- ใช้งานsciptsภายนอก --->
     <script type="module" src="../scripts/mainpage.js"></script>
+    <!-- เพิ่มท้ายไฟล์ main.html -->
   </body>
 </html>

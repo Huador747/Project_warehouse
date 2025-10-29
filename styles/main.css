@@ -16,8 +16,8 @@ body {
 }
 
 .logo-container {
-  text-align: center;
-  padding: 0px;
+  margin-top: auto;
+  margin-bottom: 10px;
   width: 120px;
   height: 120px;
   display: flex;
@@ -31,7 +31,22 @@ body {
   object-fit: contain;
   display: block;
   margin: 0 auto;
-  margin-top: 1080px;
+}
+
+.logo {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+  flex: 1;                   /* ขยายเต็มพื้นที่ sidebar */
+}
+
+.sidebar-nav-btn .nav-btn {
+  margin: 10px 0;
 }
 
 /* Product list styles */
@@ -84,9 +99,8 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 15px;
   align-items: center;
-  pointer-events: auto;
+  justify-content: center; /* เพิ่มบรรทัดนี้ */
 }
 
 .sidebar.sidebar-open {
@@ -377,6 +391,7 @@ body {
   box-sizing: border-box;
 }
 
+
 #search-code {
   width: 230px;
   background: #ffffff;
@@ -476,8 +491,8 @@ body {
 
 /* เพิ่ม styles สำหรับตาราง */
 .product-table {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 10px;
+  margin-right: 0px;
   margin-top: 50px;
   overflow-x: auto;
   overflow-y: hidden !important;
@@ -492,8 +507,7 @@ body {
 }
 
 .product-table table {
-  min-width: 2500px;
-  /* จาก 2000px เป็น 4000px (2 เท่า) */
+  min-width: 1200px;
   width: max-content;
   border-collapse: collapse;
   background: #fff;
@@ -592,6 +606,16 @@ tr:hover {
   margin-bottom: 2px;
 }
 
+.product-table th{
+  font-size: 17.5px;
+}
+
+.product-table th,
+.product-table td {
+  text-align: center;      /* จัดข้อความให้อยู่ตรงกลางแนวนอน */
+  vertical-align: middle;  /* จัดข้อความให้อยู่ตรงกลางแนวตั้ง */
+}
+
 /* ให้ Model กับ ชื่อสินค้า ยาวตามข้อความ */
 .product-table th:nth-child(2),
 .product-table td:nth-child(2),
@@ -646,9 +670,7 @@ tr:hover {
   }
 }
 
-.logo {
-  animation: floatY 6s ease-in-out infinite;
-}
+
 
 /* ปุ่ม navbar-text เล็ก ๆ พอง/ยุบ */
 @keyframes subtlePulse {
@@ -795,7 +817,7 @@ td {
 .product-table th {
   min-width: 120px; /* ความกว้างขั้นต่ำ */
   max-width: 200px; /* ความกว้างสูงสุด */
-  height: 70px; /* ความสูงคงที่ */
+  height: 90px; /* ความสูงคงที่ */
   padding: 8px 12px; /* padding เท่ากันทุก cell */
   vertical-align: middle; /* จัดเนื้อหาตรงกลางแนวตั้ง */
   box-sizing: border-box;
@@ -878,4 +900,49 @@ td {
   color: #e67e22;
   margin: 0 8px;
   letter-spacing: 1px;
+}
+
+/* Modal styles */
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.image-modal img {
+  max-width: 80vw;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: #fff;
+  padding: 12px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  font-size: 3rem;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10001;
+  font-weight: bold;
+}
+
+.no-image-text {
+  color: #ff0000;
+  font-weight: bold;
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  background-color: #efb85f;
+  border-radius: 5px;
 }

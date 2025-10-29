@@ -108,28 +108,28 @@ function goToPage(products, page) {
   renderProductsTablePage(products, currentPage);
 }
 
-// ปัญหานี้เกิดจากการที่ event listeners 
+// ปัญหานี้เกิดจากการที่ event listeners
 // ถูกเพิ่มซ้ำๆ ทุกครั้งที่มีการ render ตาราง ทำให้เกิดการทำงานซ้ำซ้อน
-let prevPageListener = null;  
+let prevPageListener = null;
 let nextPageListener = null;
 
 async function renderProductsTablePage(products, page) {
-    const tableBody = document.getElementById("product-table-body");
-    const perPage = 5;  // จำนวนแถวต่อหน้า
-    const start = (page - 1) * perPage;
-    const end = start + perPage;
-    const pageProducts = products.slice(start, end);
+  const tableBody = document.getElementById("product-table-body");
+  const perPage = 5; // จำนวนแถวต่อหน้า
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+  const pageProducts = products.slice(start, end);
 
-    // ดึงข้อมูลซื้อ/ขายและคำนวณจำนวนคงเหลือ
-    const { buyin, sale } = await fetchBuyinAndSale();
-    const stockMap = computeStock(products, buyin, sale);
+  // ดึงข้อมูลซื้อ/ขายและคำนวณจำนวนคงเหลือ
+  const { buyin, sale } = await fetchBuyinAndSale();
+  const stockMap = computeStock(products, buyin, sale);
 
-    // สร้าง HTML สำหรับแถวข้อมูล
-    let rowsHtml = pageProducts
-        .map((product) => {
-            const code = product.product_code ?? product.code ?? "";
-            const stockQty = stockMap[code] ?? 0;
-            return `
+  // สร้าง HTML สำหรับแถวข้อมูล
+  let rowsHtml = pageProducts
+    .map((product) => {
+      const code = product.product_code ?? product.code ?? "";
+      const stockQty = stockMap[code] ?? 0;
+      return `
                 <tr>
                     <td>${product.product_code || "-"}</td>
                     <td>${product.model || "-"}</td>
@@ -142,20 +142,34 @@ async function renderProductsTablePage(products, page) {
                     <td>${product.sale_price || "-"}</td>
                     <td>${product.unit || "-"}</td>
                     <td>${product.location || "-"}</td>
-                    <td>${product.createdDate || "-"}</td>
+                    <td>${thaiDateToAD(product.createdDate) || "-"}</td>
                     <td>${product.createdTime || "-"}</td>
-                    <td>${product.updatedDate ? product.updatedDate : "ยังไม่มีการแก้ไข"}</td>
-                    <td>${product.updatedTime ? product.updatedTime : "ยังไม่มีการแก้ไข"}</td>
-                    <td>${product.image ? `<img src="${product.image}" alt="img" style="width:60px;height:60px;object-fit:contain;border-radius:8px;">` : "-"}</td>
+                    <td>${
+                      product.updatedDate
+                        ? thaiDateToAD(product.updatedDate)
+                        : "ยังไม่มีการแก้ไข"
+                    }</td>
+                    <td>${
+                      product.updatedTime
+                        ? product.updatedTime
+                        : "ยังไม่มีการแก้ไข"
+                    }</td>
+                   <td>
+  ${
+    product.image
+      ? `<img src="${product.image}" alt="img" class="product-img-thumb" style="width:80px;height:80px;object-fit:contain;border-radius:8px;cursor:pointer;" onclick="showImageModal('${product.image}')">`
+      : `<span class="no-image-text">ไม่มีรูปภาพ</span>`
+  }
+</td>
                 </tr>
             `;
-        })
-        .join("");
+    })
+    .join("");
 
-    // จะแก้ไขให้ตารางมีขนาดคงที่แม้ข้อมูลไม่ครบ 5 แถว โดยการเพิ่มแถวว่างเข้าไปให้ครบ 5 แถว
-    const emptyRows = perPage - pageProducts.length;
-    if (emptyRows > 0) {
-        const emptyRowHtml = `
+  // จะแก้ไขให้ตารางมีขนาดคงที่แม้ข้อมูลไม่ครบ 5 แถว โดยการเพิ่มแถวว่างเข้าไปให้ครบ 5 แถว
+  const emptyRows = perPage - pageProducts.length;
+  if (emptyRows > 0) {
+    const emptyRowHtml = `
             <tr class="empty-row">
                 <td></td>
                 <td></td>
@@ -175,61 +189,63 @@ async function renderProductsTablePage(products, page) {
                 <td></td>
             </tr>
         `;
-        rowsHtml += emptyRowHtml.repeat(emptyRows);
-    }
+    rowsHtml += emptyRowHtml.repeat(emptyRows);
+  }
 
-    tableBody.innerHTML = rowsHtml;
+  tableBody.innerHTML = rowsHtml;
 
-    // อัพเดท pagination
-    const totalPages = Math.ceil(products.length / perPage);
-    const prevButton = document.getElementById("prev-page");
-    const nextButton = document.getElementById("next-page");
-    
-    // ลบ event listeners เดิมออก
-    if (prevPageListener) {
-        prevButton.removeEventListener("click", prevPageListener);
-    }
-    if (nextPageListener) {
-        nextButton.removeEventListener("click", nextPageListener);
-    }
+  // อัพเดท pagination
+  const totalPages = Math.ceil(products.length / perPage);
+  const prevButton = document.getElementById("prev-page");
+  const nextButton = document.getElementById("next-page");
 
-    // สร้าง event listeners ใหม่
-    prevPageListener = () => {
-        if (page > 1) {
-            renderProductsTablePage(products, page - 1);
+  // ลบ event listeners เดิมออก
+  if (prevPageListener) {
+    prevButton.removeEventListener("click", prevPageListener);
+  }
+  if (nextPageListener) {
+    nextButton.removeEventListener("click", nextPageListener);
+  }
+
+  // สร้าง event listeners ใหม่
+  prevPageListener = () => {
+    if (page > 1) {
+      renderProductsTablePage(products, page - 1);
+    }
+  };
+
+  nextPageListener = () => {
+    if (page < totalPages) {
+      renderProductsTablePage(products, page + 1);
+    }
+  };
+
+  // เพิ่ม event listeners ใหม่
+  prevButton.addEventListener("click", prevPageListener);
+  nextButton.addEventListener("click", nextPageListener);
+
+  // อัพเดทสถานะปุ่ม
+  prevButton.disabled = page === 1;
+  nextButton.disabled = page === totalPages;
+  document.getElementById(
+    "page-info"
+  ).textContent = `หน้า ${page} / ${totalPages}`;
+
+  // เพิ่ม event scroll แนวนอนหลัง render ตาราง
+  const tableBox = document.querySelector(".product-table");
+  if (tableBox) {
+    tableBox.addEventListener(
+      "wheel",
+      function (e) {
+        // เลื่อนแนวนอนด้วยลูกกลิ้งเมาส์ (ไม่ต้องกด Shift)
+        if (e.deltaX !== 0 || e.deltaY !== 0) {
+          e.preventDefault();
+          tableBox.scrollLeft += e.deltaX !== 0 ? e.deltaX : e.deltaY;
         }
-    };
-    
-    nextPageListener = () => {
-        if (page < totalPages) {
-            renderProductsTablePage(products, page + 1);
-        }
-    };
-
-    // เพิ่ม event listeners ใหม่
-    prevButton.addEventListener("click", prevPageListener);
-    nextButton.addEventListener("click", nextPageListener);
-
-    // อัพเดทสถานะปุ่ม
-    prevButton.disabled = page === 1;
-    nextButton.disabled = page === totalPages;
-    document.getElementById("page-info").textContent = `หน้า ${page} / ${totalPages}`;
-
-    // เพิ่ม event scroll แนวนอนหลัง render ตาราง
-    const tableBox = document.querySelector(".product-table");
-    if (tableBox) {
-      tableBox.addEventListener(
-        "wheel",
-        function (e) {
-          // เลื่อนแนวนอนด้วยลูกกลิ้งเมาส์ (ไม่ต้องกด Shift)
-          if (e.deltaX !== 0 || e.deltaY !== 0) {
-              e.preventDefault();
-              tableBox.scrollLeft += (e.deltaX !== 0 ? e.deltaX : e.deltaY);
-          }
-        },
-        { passive: false }
-      );
-    }
+      },
+      { passive: false }
+    );
+  }
 }
 
 async function fetchBuyinAndSale() {
@@ -269,3 +285,41 @@ function computeStock(products, buyin, sale) {
   });
   return stockMap;
 }
+
+function thaiDateToISO(dateStr) {
+  // รับรูปแบบ "15/10/2568" → คืนค่า "2025-10-15"
+  if (!dateStr || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) return dateStr;
+  const [d, m, y] = dateStr.split("/");
+  const yearAD = +y > 2400 ? +y - 543 : +y;
+  return `${yearAD}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+}
+
+function thaiDateToAD(dateStr) {
+  // รับ "15/10/2568" → คืนค่า "15/10/2025"
+  if (!dateStr || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) return dateStr;
+  const [d, m, y] = dateStr.split("/");
+  const yearAD = +y > 2400 ? +y - 543 : +y;
+  return `${d}/${m}/${yearAD}`;
+}
+
+window.showImageModal = function (src) {
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-img");
+  if (modal && modalImg) {
+    modalImg.src = src;
+    modal.style.display = "flex";
+  }
+};
+
+window.closeImageModal = function () {
+  const modal = document.getElementById("image-modal");
+  if (modal) modal.style.display = "none";
+};
+
+// ปิด modal เมื่อคลิกที่พื้นหลัง
+document.addEventListener("click", function (e) {
+  const modal = document.getElementById("image-modal");
+  if (modal && modal.style.display === "flex" && e.target === modal) {
+    modal.style.display = "none";
+  }
+});

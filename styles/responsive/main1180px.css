@@ -28,6 +28,7 @@
     gap: 6px;
     cursor: pointer;
   }
+
   .hamburger {
     display: flex !important;
     position: fixed;
@@ -75,6 +76,7 @@
   .hamburger.active span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
   }
+
   .navbar {
     position: fixed;
     top: 0;
@@ -83,6 +85,7 @@
     padding: 10px 12px;
     font-size: 22px;
   }
+
   .navbar-text {
     font-size: 14px;
     padding: 6px 12px;
@@ -92,37 +95,59 @@
   }
 
   .stat-icon {
-    width: 20px; /* ลดจากค่าเริ่มต้น */
-    height: 20px; /* ลดจากค่าเริ่มต้น */
-    margin-right: 6px; /* เพิ่มระยะห่างจากข้อความ */
-    vertical-align: middle; /* จัดให้อยู่กึ่งกลางกับข้อความ */
+    width: 20px;
+    /* ลดจากค่าเริ่มต้น */
+    height: 20px;
+    /* ลดจากค่าเริ่มต้น */
+    margin-right: 6px;
+    /* เพิ่มระยะห่างจากข้อความ */
+    vertical-align: middle;
+    /* จัดให้อยู่กึ่งกลางกับข้อความ */
   }
+
   .navbar-text.active {
     font-size: 1.5rem;
     font-weight: bold;
     color: #e67e22;
     letter-spacing: 1px;
     margin-right: 12px;
-    margin-left: 48px; /* เพิ่มบรรทัดนี้เพื่อขยับไปทางขวา */
+    margin-left: 48px;
+    /* เพิ่มบรรทัดนี้เพื่อขยับไปทางขวา */
     text-shadow: 0 2px 8px #ffe0b2;
     position: relative;
   }
+
   .navbar-form {
     gap: 10px;
     margin-left: 20px;
     padding: 10px 0 4px 0;
   }
+
   .navbar-form input[type="text"] {
     height: 36px;
     font-size: 18px;
     padding: 6px;
   }
+
+  .sidebar-nav-btn {
+    margin-top: -80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+    flex: 1;
+    /* ขยายเต็มพื้นที่ sidebar */
+  }
+
   .main-content {
     max-width: 98vw;
     margin: 100px auto 0 auto;
     padding: 0 8px 24px 8px;
-    position: relative; /* เพิ่ม เพื่อให้ .function-buttons สามารถอ้างอิงตำแหน่งจาก container นี้ */
+    position: relative;
+    /* เพิ่ม เพื่อให้ .function-buttons สามารถอ้างอิงตำแหน่งจาก container นี้ */
   }
+
   .content-wrapper {
     display: flex;
     flex-direction: column;
@@ -150,7 +175,8 @@
     min-width: 380px;
     background: #b1a9a9;
     border-radius: 15px;
-    box-sizing: border-box; /* สำคัญ! */
+    box-sizing: border-box;
+    /* สำคัญ! */
     padding: 25px;
     position: relative;
   }
@@ -213,13 +239,18 @@
 
   /*และเพิ่ม CSS สำหรับแถวว่าง:*/
   .product-table tr.empty-row {
-    height: 60px; /* กำหนดความสูงเท่ากับแถวปกติ */
-    background-color: #f5f5f5; /* สีพื้นหลังอ่อนๆ */
+    height: 60px;
+    /* กำหนดความสูงเท่ากับแถวปกติ */
+    background-color: #f5f5f5;
+    /* สีพื้นหลังอ่อนๆ */
     opacity: 0.6;
   }
 
   .product-table tr.empty-row td {
-    color: #999; /* สีข้อความจางๆ */
+    color: #999;
+    /* สีข้อความจางๆ */
     border-bottom: 1px solid #ddd;
   }
-} /* Responsive for iPad 1180x820 */
+}
+
+/* Responsive for iPad 1180x820 */

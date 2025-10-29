@@ -51,7 +51,7 @@ body {
   left: -270px;
   top: 0;
   height: 100vh;
-  z-index: 2000;
+  z-index: 8000;
   /* เพิ่มเวลาเป็น 1.3s (เดิม 0.3s) */
   transition: left 1.3s;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
@@ -121,7 +121,7 @@ body {
   box-sizing: border-box;
   height: 120px;
   position: fixed;
-  z-index: 3000;
+  z-index: 1200;
 }
 
 .navbar-text {
@@ -266,19 +266,6 @@ body {
 
 .sidebar.sidebar-open {
   left: 0;
-}
-
-/* Main content: full width */
-.main-content {
-  margin-left: 0 !important;
-  flex: unset;
-  display: flex;
-  flex-direction: column;
-  min-height: unset;
-  height: auto;
-  overflow: unset;
-  padding-bottom: 32px;
-  box-sizing: border-box;
 }
 
 /* Hamburger styles */

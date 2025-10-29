@@ -154,6 +154,9 @@ function renderHistoryTablePaged(transactions, page = 1) {
       tbody.appendChild(tr);
     }
   }
+
+  // เพิ่มบรรทัดนี้
+  centerTableIfEmpty();
 }
 
 function renderHistoryTable(
@@ -164,8 +167,9 @@ function renderHistoryTable(
   type = "all",
   yearFilter = "all",
   monthFilter = "all"
-) {
-  const tbody = document.querySelector("#history-table tbody");
+  ) 
+  
+  {const tbody = document.querySelector("#history-table tbody");
   if (!tbody) return;
 
   tbody.innerHTML = "";
@@ -289,7 +293,52 @@ function renderHistoryTable(
 
   // Render pagination controls
   renderPagination(transactions, currentPage);
+  
 }
+
+function centerTableIfEmpty() {
+  const wrapper = document.querySelector('.history-table-wrapper');
+  const tbody = document.querySelector('#history-table tbody');
+  if (!wrapper || !tbody) return;
+
+  // ตรวจสอบว่ามีแต่แถว "ไม่พบข้อมูล" หรือแถวว่าง
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const onlyEmpty = rows.length === 1 && rows[0].textContent.includes('ไม่พบข้อมูล');
+  const allEmpty = rows.every(tr => tr.classList.contains('empty-row')) || onlyEmpty;
+
+  if (allEmpty) {
+    wrapper.classList.add('center-when-empty');
+  } else {
+    wrapper.classList.remove('center-when-empty');
+  }
+}
+
+main();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const navbarText = document.querySelector(".navbar-text");
+  if (navbarText) {
+    requestAnimationFrame(() => {
+      navbarText.classList.add("slide-in");
+    });
+  }
+
+  const wrapper = document.querySelector(".history-table-wrapper");
+  if (wrapper) {
+    wrapper.addEventListener(
+      "wheel",
+      function (e) {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          wrapper.scrollLeft += e.deltaY;
+        }
+      },
+      { passive: false }
+    );
+  }
+});
+
+
 //000000000000000000000000000000000000000000
 function renderPagination(transactions, page = 1) {
   const totalPages = Math.ceil(transactions.length / rowsPerPage);
@@ -434,27 +483,4 @@ async function main() {
   }
 }
 
-main();
 
-document.addEventListener("DOMContentLoaded", () => {
-  const navbarText = document.querySelector(".navbar-text");
-  if (navbarText) {
-    requestAnimationFrame(() => {
-      navbarText.classList.add("slide-in");
-    });
-  }
-
-  const wrapper = document.querySelector(".history-table-wrapper");
-  if (wrapper) {
-    wrapper.addEventListener(
-      "wheel",
-      function (e) {
-        if (e.deltaY !== 0) {
-          e.preventDefault();
-          wrapper.scrollLeft += e.deltaY;
-        }
-      },
-      { passive: false }
-    );
-  }
-});

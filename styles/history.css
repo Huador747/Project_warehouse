@@ -35,6 +35,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .logo {
   width: 200px;
   height: 200px;
@@ -65,6 +66,7 @@ body {
   overflow: hidden;
   pointer-events: auto;
 }
+
 .sidebar input[type="text"] {
   width: 100%;
   padding: 8px;
@@ -72,6 +74,7 @@ body {
   border-radius: 4px;
   margin-bottom: 10px;
 }
+
 .sidebar .nav-btn {
   width: 100%;
   padding: 8px;
@@ -84,12 +87,15 @@ body {
   cursor: pointer;
   transition: background 0.2s;
 }
+
+
+
 .sidebar .nav-btn:hover {
   background: #ffe0b2;
   border: 3px solid #8b7f7f;
 }
 
-.hamburger:hover + .sidebar,
+.hamburger:hover+.sidebar,
 .sidebar:hover {
   left: 0;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
@@ -112,6 +118,7 @@ body {
   cursor: pointer;
   gap: 6px;
 }
+
 .hamburger span {
   display: block;
   width: 28px;
@@ -123,17 +130,21 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
 .hamburger:hover span {
   background: #ffa144;
   width: 36px;
   transition: 0.4s;
 }
+
 .hamburger.active span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
+
 .hamburger.active span:nth-child(2) {
   opacity: 0;
 }
+
 .hamburger.active span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
@@ -154,6 +165,7 @@ body {
   position: fixed;
   z-index: 3000;
 }
+
 .navbar-text {
   display: inline-block;
   padding: 7px 16px;
@@ -168,6 +180,7 @@ body {
   animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
     subtlePulse 3.2s ease-in-out 640ms infinite;
 }
+
 .navbar-text.active {
   font-size: 1.5rem;
   font-weight: bold;
@@ -178,6 +191,7 @@ body {
   text-shadow: 0 2px 8px #ffe0b2;
   position: relative;
 }
+
 .navbar-form {
   display: flex;
   align-items: center;
@@ -185,6 +199,7 @@ body {
   padding: 18px 0 8px 0;
   margin-left: 70px;
 }
+
 .navbar-form input[type="text"] {
   padding: 7px;
   border: none;
@@ -217,56 +232,6 @@ body {
   font-size: 16px;
   box-sizing: border-box;
   margin-right: 35px;
-}
-
-/* Responsive for iPad 1180x820 */
-@media screen and (max-width: 1200px) and (min-width: 900px) {
-  .navbar {
-    height: 90px;
-    padding: 10px 12px;
-    font-size: 22px;
-  }
-  .navbar-text {
-    font-size: 22px;
-    min-width: 80px;
-    padding: 6px 10px;
-  }
-  .navbar-text.active {
-    font-size: 1.5rem;
-    margin-right: 12px;
-    margin-left: 48px;
-  }
-  .navbar-form {
-    gap: 10px;
-    margin-left: 20px;
-    padding: 10px 0 4px 0;
-  }
-  .search-product-input,
-  #search-code {
-    width: 180px;
-    font-size: 15px;
-    height: 40px;
-    margin-right: 10px;
-  }
-  .logout-btn {
-    height: 40px;
-    font-size: 13px;
-    padding: 6px 12px;
-  }
-  .main-content {
-    max-width: 98vw;
-    margin: 100px auto 0 auto;
-    padding: 0 8px 24px 8px;
-  }
-  .logo-container {
-    width: 120px;
-    height: 120px;
-  }
-  .logo {
-    width: 200px;
-    height: 200px;
-    margin-top: 1080px;
-  }
 }
 
 /* Main content styles */
@@ -336,8 +301,8 @@ body {
   display: flex;
 }
 
-.dropdown-btn:focus + .dropdown-content,
-.dropdown-btn.active + .dropdown-content {
+.dropdown-btn:focus+.dropdown-content,
+.dropdown-btn.active+.dropdown-content {
   display: flex;
 }
 
@@ -351,13 +316,13 @@ body {
   position: relative;
 }
 
-.sidebar .dropdown-btn + .dropdown-content {
+.sidebar .dropdown-btn+.dropdown-content {
   display: none;
   position: relative;
   justify-content: space-between;
 }
 
-.sidebar .dropdown-btn:hover + .dropdown-content,
+.sidebar .dropdown-btn:hover+.dropdown-content,
 .sidebar .dropdown-content:hover {
   display: flex;
 }
@@ -439,10 +404,13 @@ body {
   margin: 32px auto 24px auto;
   padding: 15px 30px;
   width: fit-content;
-  background: rgba(255, 251, 235, 0.95); /* พื้นหลังโปร่งแสงเล็กน้อย */
+  background: rgba(255, 251, 235, 0.95);
+  /* พื้นหลังโปร่งแสงเล็กน้อย */
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* เงาอ่อนๆ */
-  border: 1px solid rgba(224, 185, 125, 0.3); /* ขอบบางๆ */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  /* เงาอ่อนๆ */
+  border: 1px solid rgba(224, 185, 125, 0.3);
+  /* ขอบบางๆ */
   z-index: 100;
 }
 
@@ -456,7 +424,8 @@ body {
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transition: all 0.2s ease;
-  white-space: nowrap; /* ป้องกันข้อความแตก */
+  white-space: nowrap;
+  /* ป้องกันข้อความแตก */
 }
 
 /* เพิ่ม hover effect */
@@ -676,9 +645,11 @@ body {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.03);
   }
+
   100% {
     transform: scale(1);
   }
@@ -689,15 +660,18 @@ body {
     transform: translateX(-100%);
     opacity: 0;
   }
+
   60% {
     transform: translateX(8%);
     opacity: 1;
   }
+
   100% {
     transform: translateX(0);
     opacity: 1;
   }
 }
+
 /* ครอบตารางด้วย div ที่มี overflow-x:auto */
 .history-table-wrapper {
   width: 100%;
@@ -732,8 +706,7 @@ body {
   ส่วนหัวข้อ
 }
 */
-
-.history-list th{
+.history-list th {
   padding: 8px 12px;
   text-align: center;
   vertical-align: top;
@@ -744,17 +717,19 @@ body {
 /* กำหนดความสูงของทุกแถวในตารางให้เท่ากัน */
 #history-table tr,
 #history-table tr.empty-row {
-  height: 48px; /* ปรับตามต้องการ เช่น 48px */
+  height: 48px;
+  /* ปรับตามต้องการ เช่น 48px */
 }
 
 /* กำหนดความสูงของเซลล์ในทุกแถว */
 #history-table th,
 #history-table td {
-  height: 48px; /* ให้ตรงกับ tr */
+  height: 48px;
+  /* ให้ตรงกับ tr */
   padding: 8px 12px;
   box-sizing: border-box;
   vertical-align: middle;
-    border-bottom: 2px solid #000000;
+  border-bottom: 2px solid #000000;
 }
 
 /* กำหนดให้เซลล์ในแถวว่างมีพื้นหลังเหมือนแถวปกติ (ถ้าต้องการ) */
@@ -767,6 +742,15 @@ body {
   border-bottom: 1px solid #f0c987;
 }
 
+.center-when-empty {
+  min-height: 400px; /* หรือสูงกว่านี้ตามต้องการ */
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  /* ให้แน่ใจว่าไม่มี padding หรือ margin ด้านบนล่างที่ดันออกจากกลาง */
+}
+
+
 /* Responsive for iPad 1180x820 */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
   .navbar {
@@ -774,21 +758,25 @@ body {
     padding: 10px 12px;
     font-size: 22px;
   }
+
   .navbar-text {
     font-size: 22px;
     min-width: 80px;
     padding: 6px 10px;
   }
+
   .navbar-text.active {
     font-size: 1.5rem;
     margin-right: 12px;
     margin-left: 48px;
   }
+
   .navbar-form {
     gap: 10px;
     margin-left: 20px;
     padding: 10px 0 4px 0;
   }
+
   .search-product-input,
   #search-code {
     width: 180px;
@@ -796,20 +784,24 @@ body {
     height: 40px;
     margin-right: 10px;
   }
+
   .logout-btn {
     height: 40px;
     font-size: 13px;
     padding: 6px 12px;
   }
+
   .main-content {
     max-width: 98vw;
     margin: 100px auto 0 auto;
     padding: 0 8px 24px 8px;
   }
+
   .logo-container {
     width: 120px;
     height: 120px;
   }
+
   .logo {
     width: 200px;
     height: 200px;
