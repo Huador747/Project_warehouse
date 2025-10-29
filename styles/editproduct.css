@@ -1,540 +1,538 @@
 html,
 body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    overflow: auto;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: auto;
 }
 
 body {
-    display: block;
-    min-height: 100vh;
-    width: 100vw;
-    overflow-y: auto;
+  display: block;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
 }
 
 .logo-container {
-    text-align: center;
-    padding: 0px;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin-top: auto;
+  margin-bottom: 10px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-    margin-top: 1080px;
+  width: 210px;
+  height: 210px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
+.logo {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+  flex: 1;
+  margin-top: 5rem; /* ขยายเต็มพื้นที่ sidebar */
+}
+
+.sidebar-nav-btn .nav-btn {
+  align-items: center;
+  margin-top: 15px;
+}
 
 /* Sidebar styles */
-
 .sidebar {
-    position: fixed;
-    left: -270px;
-    top: 0;
-    height: 100vh;
-    z-index: 2000;
-    transition: left 0.3s;
-    /* ลดเวลา transition */
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-    width: 250px;
-    background: rgb(254, 179, 104);
-    color: #fff;
-    padding: 30px 30px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    overflow: hidden;
-    /* ป้องกันภาพฉีก */
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 3000;
+  /* เพิ่มเวลาเป็น 1.3s (เดิม 0.3s) */
+  transition: left 1.3s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
 }
 
 .sidebar input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .sidebar .nav-btn {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    background: #fff;
-    color: #333;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .sidebar .nav-btn:hover {
-    background: #ffe0b2;
+  background: #ffe0b2;
 }
-
 
 /* Main content styles */
 .main-content {
-    width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: unset;
-    height: auto;
-    overflow: unset;
-    padding-bottom: 32px;
-    box-sizing: border-box;
-    margin-top: 120px;
-    /* เพิ่มบรรทัดนี้ เพื่อดันเนื้อหาออกจาก navbar */
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: unset;
+  height: auto;
+  overflow: unset;
+  padding-bottom: 32px;
+  box-sizing: border-box;
+  margin-top: 120px;
+  /* เพิ่มบรรทัดนี้ เพื่อดันเนื้อหาออกจาก navbar */
 }
-
 
 /* Navbar styles */
 
 .navbar {
-    width: 100vw;
-    /* หรือ 100% */
-    left: 0;
-    top: 0;
-    background: rgb(244, 224, 125);
-    color: #fff;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-    height: 120px;
-    position: fixed;
-    z-index: 3000;
-    gap: 20px;
-    /* เพิ่มระยะห่างระหว่างองค์ประกอบทั้งหมดใน navbar */
-    position: relative;
-    /* เพิ่มบรรทัดนี้ */
+  width: 100vw;
+  /* หรือ 100% */
+  left: 0;
+  top: 0;
+  background: rgb(244, 224, 125);
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 120px;
+  position: fixed;
+  z-index: 3000;
+  gap: 20px;
+  /* เพิ่มระยะห่างระหว่างองค์ประกอบทั้งหมดใน navbar */
+  position: relative;
+  /* เพิ่มบรรทัดนี้ */
 }
 
 .navbar-form {
-    gap: 30px;
-    margin: 0 0 0px 75px;
-    margin-right: auto;
-    /* ดันไปทางซ้าย */
-    background-color: #ff8c1a;
-    border-radius: 5px;
+  gap: 30px;
+  margin: 0 0 0px 75px;
+  margin-right: auto;
+  /* ดันไปทางซ้าย */
+  background-color: #ff8c1a;
+  border-radius: 5px;
 }
 
-.navbar-form-delete{
-    gap: 30px;
-    margin: 0 0 0px 75px;
-    margin-right: auto;
-    /* ดันไปทางซ้าย */    
-    background-color: rgb(253, 49, 49);
-    border-radius: 5px;
+.navbar-form-delete {
+  gap: 30px;
+  margin: 0 0 0px 75px;
+  margin-right: auto;
+  /* ดันไปทางซ้าย */
+  background-color: rgb(253, 49, 49);
+  border-radius: 5px;
 }
 
 .navbar-text {
-    display: inline-block;
-    padding: 7px 16px;
-    border-radius: 4px;
-    color: #000000;
-    font-size: 31px;
-    margin-right: 10px;
-    min-width: 120px;
-    text-align: center;
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  color: #000000;
+  font-size: 31px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
 }
 .navbar-text-delete {
-    display: inline-block;
-    padding: 7px 16px;
-    border-radius: 4px;
-    color: #ffe7e7;
-    font-size: 31px;
-    margin-right: 10px;
-    min-width: 120px;
-    text-align: center;
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  color: #ffe7e7;
+  font-size: 31px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
 }
 
 .navbar-form input[type="text"] {
-    padding: 7px;
-    border: none;
-    border-radius: 4px;
-    height: 50px;
-    background-color: #77e146;
+  padding: 7px;
+  border: none;
+  border-radius: 4px;
+  height: 50px;
+  background-color: #77e146;
 }
 
 .navbar-text.active::before {
-    content: "🧾✏️";
-    margin-right: 8px;
-    font-size: 1.3em;
-    vertical-align: middle;
-    animation: bounceIn 0.7s;
+  content: "🧾✏️";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
 }
 
 .navbar-text.active1::before {
-    content: "🗑️📦";
-    margin-right: 8px;
-    font-size: 1.3em;
-    vertical-align: middle;
-    animation: bounceIn 0.7s;
+  content: "🗑️📦";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
 }
 
 .logout-btn {
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    height: 50px;
-    margin-left: 20px;
-    /* เพิ่มระยะห่างด้านซ้าย */
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
+  margin-left: 20px;
+  /* เพิ่มระยะห่างด้านซ้าย */
 }
 
 .dropdown-content {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    margin-bottom: 10px;
-    margin-top: -10px;
-    z-index: 1;
-    position: relative;
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 10px;
+  margin-top: -10px;
+  z-index: 1;
+  position: relative;
 }
 
 .dropdown-item {
-    padding: 8px;
-    border: none;
-    background: #fff;
-    color: #333;
-    text-align: left;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
+  padding: 8px;
+  border: none;
+  background: #fff;
+  color: #333;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
 
 .dropdown-item:hover {
-    background: #ffe0b2;
+  background: #ffe0b2;
 }
-
 
 /* ปรับ dropdown hover ให้ถูกต้อง */
 
 .dropdown-hover {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dropdown-hover .dropdown-btn {
-    width: 100%;
+  width: 100%;
 }
 
 .dropdown-hover:hover .dropdown-content,
 .dropdown-hover:focus-within .dropdown-content {
-    display: flex;
+  display: flex;
 }
 
-.dropdown-btn:focus+.dropdown-content,
-.dropdown-btn.active+.dropdown-content {
-    display: flex;
+.dropdown-btn:focus + .dropdown-content,
+.dropdown-btn.active + .dropdown-content {
+  display: flex;
 }
-
 
 /* Optional: show dropdown on click */
 
 .sidebar .dropdown-btn {
-    position: relative;
-    align-items: center;
+  position: relative;
+  align-items: center;
 }
 
 .sidebar .dropdown-content {
-    position: relative;
+  position: relative;
 }
 
-.sidebar .dropdown-btn+.dropdown-content {
-    display: none;
-    position: relative;
-    justify-content: space-between;
+.sidebar .dropdown-btn + .dropdown-content {
+  display: none;
+  position: relative;
+  justify-content: space-between;
 }
 
-.sidebar .dropdown-btn:hover+.dropdown-content,
+.sidebar .dropdown-btn:hover + .dropdown-content,
 .sidebar .dropdown-content:hover {
-    display: flex;
+  display: flex;
 }
 
 .dropdown-icon {
-    margin-left: 8px;
-    font-size: 18px;
-    vertical-align: middle;
+  margin-left: 8px;
+  font-size: 18px;
+  vertical-align: middle;
 }
-
 
 /* Hamburger styles */
 
 .hamburger {
-    display: flex !important;
-    position: fixed;
-    top: 130px;
-    left: 24px;
-    z-index: 4000;
-    /* เพิ่ม z-index ให้สูงกว่า navbar */
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
+  display: flex !important;
+  position: fixed;
+  top: 130px;
+  left: 24px;
+  z-index: 4000;
+  /* เพิ่ม z-index ให้สูงกว่า navbar */
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
 }
 
 .hamburger span {
-    display: block;
-    width: 28px;
-    height: 4px;
-    background: #050505;
-    border-radius: 2px;
-    margin: 3px 0;
-    transition: 0.4s;
-    margin-left: auto;
-    margin-right: auto;
+  display: block;
+  width: 28px;
+  height: 4px;
+  background: #050505;
+  border-radius: 2px;
+  margin: 3px 0;
+  transition: 0.4s;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hamburger:hover span {
-    background: #ffa144;
-    width: 36px;
-    transition: 0.4s;
+  background: #ffa144;
+  width: 36px;
+  transition: 0.4s;
 }
 
 .hamburger.active span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg);
 }
 
 .hamburger.active span:nth-child(2) {
-    opacity: 0;
+  opacity: 0;
 }
 
 .hamburger.active span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg);
 }
-
 
 /* Sidebar: hidden by default, show when .sidebar-open */
 
 .sidebar {
-    position: fixed;
-    left: -270px;
-    top: 0;
-    height: 100vh;
-    z-index: 2000;
-    transition: left 0.3s;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-    width: 250px;
-    background: rgb(254, 179, 104);
-    color: #fff;
-    padding: 30px 30px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 2000;
+  transition: left 0.3s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
 }
 
 .sidebar.sidebar-open {
-    left: 0;
+  left: 0;
 }
-
-
 
 /* Hamburger hover: แสดง sidebar เมื่อ hover ที่ hamburger */
 
 .hamburger {
-    display: flex !important;
-    position: fixed;
-    top: 40px;
-    left: 24px;
-    z-index: 4000;
-    /* เพิ่ม z-index ให้สูงกว่า navbar */
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
-    border-color: #e74c3c solid 5px;
+  display: flex !important;
+  position: fixed;
+  top: 40px;
+  left: 24px;
+  z-index: 4000;
+  /* เพิ่ม z-index ให้สูงกว่า navbar */
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
+  border-color: #e74c3c solid 5px;
 }
-
 
 /* ปรับ sidebar ให้แสดงเมื่อ hover ที่ hamburger */
 
-.hamburger:hover+.sidebar,
+.hamburger:hover + .sidebar,
 .sidebar:hover {
-    left: 0;
+  left: 0;
 }
-
 
 /* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
 
 .sidebar {
-    pointer-events: auto;
+  pointer-events: auto;
 }
-
 
 /* Hamburger: always show */
 
 .hamburger {
-    display: flex !important;
-    position: fixed;
-    top: 40px;
-    left: 24px;
-    z-index: 4000;
-    /* เพิ่ม z-index ให้สูงกว่า navbar */
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 6px;
+  display: flex !important;
+  position: fixed;
+  top: 40px;
+  left: 24px;
+  z-index: 4000;
+  /* เพิ่ม z-index ให้สูงกว่า navbar */
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
 }
-
 
 /* Sidebar: hidden by default */
 
 .sidebar {
-    left: -270px;
-    transition: left 0.8s;
+  left: -270px;
+  transition: left 0.8s;
 }
-
 
 /* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
 
-.hamburger:hover+.sidebar,
+.hamburger:hover + .sidebar,
 .sidebar:hover {
-    left: 0;
+  left: 0;
 }
-
 
 /* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
 
 .sidebar {
-    pointer-events: auto;
+  pointer-events: auto;
 }
-
 
 /* ไม่ต้องใช้ .sidebar.sidebar-open และ JS toggle อีกต่อไป */
 
 .product-form {
-    width: 100%;
-    max-width: 100%;
-    margin: 32px auto 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    background: #fffbe9;
-    padding: 32px 24px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-    border: #fff83c 2px solid;
-    min-height: 0;
-    /* ยืดหยุ่นตามเนื้อหา */
-    height: 760px;
-    /* ยืดหยุ่นตามเนื้อหา */
-    max-height: none;
-    /* ไม่จำกัดความสูง */
+  width: 100%;
+  max-width: 100%;
+  margin: 32px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: #fffbe9;
+  padding: 32px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  border: #fff83c 2px solid;
+  min-height: 0;
+  /* ยืดหยุ่นตามเนื้อหา */
+  height: 760px;
+  /* ยืดหยุ่นตามเนื้อหา */
+  max-height: none;
+  /* ไม่จำกัดความสูง */
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-    height: 50px;
-    transition: border 0.5s, box-shadow 0.5s;
-    background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  height: 50px;
+  transition: border 0.5s, box-shadow 0.5s;
+  background: transparent;
 }
 
 .form-group label {
-    font-weight: bold;
-    margin-bottom: 2px;
-    color: #333;
-    margin-bottom: -4px;
+  font-weight: bold;
+  margin-bottom: 2px;
+  color: #333;
+  margin-bottom: -4px;
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"],
 .form-group select {
-    padding: 8px 12px;
-    border: 1px solid #e0b97d;
-    border-radius: 4px;
-    font-size: 16px;
-    background: #fff;
-    color: #333;
-    transition: border 0.7s, ;
+  padding: 8px 12px;
+  border: 1px solid #e0b97d;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #fff;
+  color: #333;
+  transition: border 0.7s;
 }
 
 .form-group input[type="text"]:hover,
 .form-group input[type="number"]:hover,
 .form-group input[type="file"]:hover,
 .form-group select:hover {
-    border: 2px solid #f65916dd;
-    box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
+  border: 2px solid #f65916dd;
+  box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
 }
 
 .function-btn-add {
-    background: #4eb31f;
-    color: #fff;
-    border: none;
-    padding: 10px 0;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 55px;
-    transition: background 0.2s;
-    margin-top: 250px;
+  background: #4eb31f;
+  color: #fff;
+  border: none;
+  padding: 10px 0;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 55px;
+  transition: background 0.2s;
+  margin-top: 250px;
 }
 
 .function-btn-add:hover {
-    background: #77e146;
+  background: #77e146;
 }
 
 .product-form-row {
-    display: flex;
-    gap: 32px;
-    width: 100%;
-    justify-content: center;
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  justify-content: center;
 }
 
 .product-form-col {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    min-width: 0;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
 }
 
 body,
@@ -544,526 +542,523 @@ select,
 button,
 label,
 .navbar-text {
-    font-family: 'Sarabun', sans-serif;
-    font-weight: bold;
+  font-family: "Sarabun", sans-serif;
+  font-weight: bold;
 }
-
 
 /*ฟอร์มเพิ่มผู้ผลิตสินค้า*/
 
 .add-maker-group {
-    margin-top: 6px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .add-maker-group input[type="text"] {
-    width: 60%;
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid #e0b97d;
-    font-size: 15px;
+  width: 60%;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #e0b97d;
+  font-size: 15px;
 }
 
 .add-maker-group button {
-    padding: 6px 16px;
-    border-radius: 4px;
-    border: none;
-    background: #ffa144;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #ffa144;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .add-maker-group button:hover {
-    background: #ffb86c;
+  background: #ffb86c;
 }
 
-
 /*สินสุดเพิ่มประเภทสินค้า*/
-
 
 /*สิ้นสุดประเภท*/
 
 .add-category-group {
-    margin-top: 6px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .add-category-group input[type="text"] {
-    width: 60%;
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid #e0b97d;
-    font-size: 15px;
+  width: 60%;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #e0b97d;
+  font-size: 15px;
 }
 
 .add-category-group button {
-    padding: 6px 16px;
-    border-radius: 4px;
-    border: none;
-    background: #ffa144;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #ffa144;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .add-category-group button:hover {
-    background: #ffb86c;
+  background: #ffb86c;
 }
 
-
 /*สิ้นสุดประเภท*/
-
 
 /*หน่วยนับ*/
 
 .add-unit-group {
-    margin-top: 6px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .add-unit-group input[type="text"] {
-    width: 60%;
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid #e0b97d;
-    font-size: 15px;
+  width: 60%;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #e0b97d;
+  font-size: 15px;
 }
 
 .add-unit-group button {
-    padding: 6px 16px;
-    border-radius: 4px;
-    border: none;
-    background: #ffa144;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #ffa144;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .add-unit-group button:hover {
-    background: #ffb86c;
+  background: #ffb86c;
 }
 
-
 /*หน่วยนับ*/
-
 
 /*ตำแหน่งสินค้า*/
 
 .add-location-group {
-    margin-top: 6px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .add-location-group input[type="text"] {
-    width: 60%;
-    padding: 6px 10px;
-    border-radius: 4px;
-    border: 1px solid #e0b97d;
-    font-size: 15px;
+  width: 60%;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #e0b97d;
+  font-size: 15px;
 }
 
 .add-location-group button {
-    padding: 6px 16px;
-    border-radius: 4px;
-    border: none;
-    background: #ffa144;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: none;
+  background: #ffa144;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .add-location-group button:hover {
-    background: #ffb86c;
+  background: #ffb86c;
 }
-
 
 /*สิ้นสุดตำแห-หน่ง*/
 
 #search-code {
-    width: 230px;
-    background: #ffffff;
-    color: #000000;
-    border: none;
-    padding: 0px 18px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-family: 'Sarabun', sans-serif;
-    font-size: 18px;
-    height: 50px;
-    margin-right: 16px;
-    /* เพิ่มระยะห่างจากปุ่ม logout */
+  width: 230px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0px 18px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: "Sarabun", sans-serif;
+  font-size: 18px;
+  height: 50px;
+  margin-right: 16px;
+  /* เพิ่มระยะห่างจากปุ่ม logout */
 }
-
 
 /* ปรับแต่งช่องค้นหา */
 
 .search-product-input {
-    width: 300px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    font-size: 16px;
-    box-sizing: border-box;
-    height: 65%;
-    font-size: 17px;
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  font-size: 16px;
+  box-sizing: border-box;
+  height: 65%;
+  font-size: 17px;
 }
-
 
 /* สีตัวอักษรขณะ ตอนพิมพ์ค้นหา */
 
 .search-product-input:focus {
-    color: #000000;
-    box-shadow: 0 0 0 2px #ffa14488;
-    outline: none;
-    font-size: 19px;
-    transition: 0.5s;
-    transition: box-shadow 0.5s, font-size 0.5s;
+  color: #000000;
+  box-shadow: 0 0 0 2px #ffa14488;
+  outline: none;
+  font-size: 19px;
+  transition: 0.5s;
+  transition: box-shadow 0.5s, font-size 0.5s;
 }
-
 
 /* ปรับแต่งปุ่มออกจากระบบ */
 
 .logout-btn {
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    height: 50px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
 }
-
 
 /* ปรับ navbar ให้มีการจัดวางที่ดีขึ้น */
 
 .navbar {
-    width: 100vw;
-    left: 0;
-    top: 0;
-    background: rgb(244, 224, 125);
-    color: #fff;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    /* จัดระยะห่างระหว่างองค์ประกอบ */
-    align-items: center;
-    box-sizing: border-box;
-    height: 120px;
-    position: fixed;
-    z-index: 3000;
-    gap: 20px;
-    /* เพิ่มระยะห่างระหว่างองค์ประกอบทั้งหมดใน navbar */
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background: rgb(244, 224, 125);
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  /* จัดระยะห่างระหว่างองค์ประกอบ */
+  align-items: center;
+  box-sizing: border-box;
+  height: 120px;
+  position: fixed;
+  z-index: 3000;
+  gap: 20px;
+  /* เพิ่มระยะห่างระหว่างองค์ประกอบทั้งหมดใน navbar */
 }
 
-
 /* เพิ่มสไตล์สำหรับ maker และ category */
-
 
 /* สไตล์สำหรับกล่องผลการค้นหา */
 
 #search-result {
-    position: absolute;
-    top: 70px;
-    /* เอา right คงที่ออก ให้ JS เป็นผู้กำหนดตำแหน่ง */
-    right: auto;
-    left: 0;
-    /* เอา width ตายตัวออก ให้ปรับโดย JS */
-    width: auto;
-    min-width: 160px;
-    max-width: 100%;
-    box-sizing: border-box;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    max-height: 400px;
-    overflow-y: auto;
-    z-index: 3100;
-    border: 1px solid #e0b97d;
-    transition: opacity 0.15s ease-out;
+  position: absolute;
+  top: 70px;
+  /* เอา right คงที่ออก ให้ JS เป็นผู้กำหนดตำแหน่ง */
+  right: auto;
+  left: 0;
+  /* เอา width ตายตัวออก ให้ปรับโดย JS */
+  width: auto;
+  min-width: 160px;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 3100;
+  border: 1px solid #e0b97d;
+  transition: opacity 0.15s ease-out;
 }
 
 #search-result.hiding {
-    opacity: 0;
+  opacity: 0;
 }
-
 
 /* สไตล์สำหรับแต่ละรายการในผลการค้นหา */
 
 .search-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .search-item:hover {
-    background-color: #f5e0c0;
+  background-color: #f5e0c0;
 }
 
 .search-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .search-item .product_code {
-    color: red;
-    font-size: 16px;
+  color: red;
+  font-size: 16px;
 }
 
 .search-item .product_name {
-    color: rgb(0, 0, 0);
-    font-size: 16px;
+  color: rgb(0, 0, 0);
+  font-size: 16px;
 }
 
 .search-item .product_model {
-    color: rgb(255, 149, 28);
-    font-size: 16px;
+  color: rgb(255, 149, 28);
+  font-size: 16px;
 }
 
 .maker {
-    color: #ff0000;
+  color: #ff0000;
 }
 
 .category {
-    color: #21f116;
+  color: #21f116;
 }
 
 /* สไตล์สำหรับข้อมูลในแต่ละรายการ */
 
 /* สไตล์สำหรับกรณีไม่พบผลการค้นหา */
 .no-results {
-    padding: 8px;
-    color: #ff1900;
-    font-size: 18pxs;
+  padding: 8px;
+  color: #ff1900;
+  font-size: 18pxs;
 }
 
 .timestamp-container {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    width: 150px;
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  width: 150px;
 }
 
 .timestamp-info {
-    margin-bottom: 18px;
-    text-align: left;
-    font-family: 'Sarabun', sans-serif;
-    font-size: 20px;
+  margin-bottom: 18px;
+  text-align: left;
+  font-family: "Sarabun", sans-serif;
+  font-size: 20px;
 }
 
 .timestamp-info p {
-    margin: 5px 0;
-    color: #ff0000;
-    font-size: 14px;
+  margin: 5px 0;
+  color: #ff0000;
+  font-size: 14px;
 }
 
 .timestamp-info span {
-    color: #000000;
-    font-weight: bold;
-    margin-left: 5px;
+  color: #000000;
+  font-weight: bold;
+  margin-left: 5px;
 }
-
 
 /* ปรับแต่งส่วนแนบรูปภาพ */
 
 .form-group.image-upload {
-    margin-top: 0px;
+  margin-top: 0px;
 }
 
 .form-group.image-upload label {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .form-group.image-upload input[type="file"] {
-    padding: 8px;
-    border: 1px solid #e0b97d;
-    border-radius: 4px;
-    font-size: 16px;
-    background: #fff;
-    width: 100%;
-    cursor: pointer;
+  padding: 8px;
+  border: 1px solid #e0b97d;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #fff;
+  width: 100%;
+  cursor: pointer;
 }
 
 .form-group.image-upload input[type="file"]:hover {
-    border: 2px solid #f65916dd;
-    box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
+  border: 2px solid #f65916dd;
+  box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
 }
 
 .image-imageupload-stack {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: fit-content;
-    gap: 9px
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  gap: 9px;
 }
 
 .image-preview-box {
-    width: 180px;
-    height: 180px;
-    max-width: 100%;
-    max-height: 300px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8f8f8;
-    position: relative;
-    margin-bottom: 8px;
-    overflow: hidden;
+  width: 180px;
+  height: 180px;
+  max-width: 100%;
+  max-height: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  position: relative;
+  margin-bottom: 8px;
+  overflow: hidden;
 }
 
 #preview-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    background: #fff;
-    display: none;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  background: #fff;
+  display: none;
 }
 
 .form-group.image-upload {
-    margin-top: 0px;
+  margin-top: 0px;
 }
 
 .form-group.image-upload label {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .form-group.image-upload input[type="file"] {
-    padding: 8px;
-    border: 1px solid #e0b97d;
-    border-radius: 4px;
-    font-size: 16px;
-    background: #fff;
-    width: 100%;
-    cursor: pointer;
+  padding: 8px;
+  border: 1px solid #e0b97d;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #fff;
+  width: 100%;
+  cursor: pointer;
 }
 
 .form-group.image-upload input[type="file"]:hover {
-    border: 2px solid #f65916dd;
-    box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
+  border: 2px solid #f65916dd;
+  box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
 }
 
 .image-preview-box {
-    width: 180px;
-    height: 180px;
-    max-width: 100%;
-    max-height: 300px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background: #f8f8f8;
-    position: relative;
-    margin-bottom: 8px;
-    overflow: hidden;
-    cursor: zoom-in;
-    margin-top: 0px;
+  width: 180px;
+  height: 180px;
+  max-width: 100%;
+  max-height: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f8f8f8;
+  position: relative;
+  margin-bottom: 8px;
+  overflow: hidden;
+  cursor: zoom-in;
+  margin-top: 0px;
 }
 
 .image-preview-box:hover {
-    box-shadow: 0 0 0 4px #ffa14444;
+  box-shadow: 0 0 0 4px #ffa14444;
 }
 
 #preview-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #fff;
-    display: none;
-    transition: transform 0.2s;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  display: none;
+  transition: transform 0.2s;
 }
 
 .image-preview-box.enlarged {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 400px;
-    height: 400px;
-    z-index: 9999;
-    background: #fff;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
-    cursor: zoom-out;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  z-index: 9999;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
+  cursor: zoom-out;
 }
 
 .image-preview-box.enlarged #preview-image {
-    width: 100%;
-    height: 100%;
-    display: block;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .submit-btn {
-    background: #4eb31f;
-    color: #fff;
-    border: none;
-    padding: 10px 0;
-    border-radius: 4px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background 0.2s;
+  background: #4eb31f;
+  color: #fff;
+  border: none;
+  padding: 10px 0;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.2s;
 }
 
 .form-group-image-upload {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* ชิดขวา */
-    justify-content: flex-end;
-    margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* ชิดขวา */
+  justify-content: flex-end;
+  margin-top: 15px;
 }
 
 /* Animation keyframes สำหรับ navbar-text */
 @keyframes subtlePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes slideFromLeft {
-  0% { transform: translateX(-100%); opacity: 0; }
-  60% { transform: translateX(8%); opacity: 1; }
-  100% { transform: translateX(0); opacity: 1; }
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(8%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* ใช้ animation กับ .navbar-form แทน .navbar-text */
 .navbar-form {
-    will-change: transform, opacity;
-    animation: 
-        slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
-        subtlePulse 3.2s ease-in-out 640ms infinite;
+  will-change: transform, opacity;
+  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
 /* ถ้าไม่ต้องการให้ .navbar-text ซ้อน animation ให้ลบบรรทัด animation ออก */
 .navbar-text {
-    display: inline-block;
-    padding: 7px 16px;
-    border-radius: 4px;
-    color: #000000;
-    font-size: 31px;
-    margin-right: 10px;
-    min-width: 120px;
-    text-align: center;
-    will-change: transform, opacity;
-    animation: 
-        slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
-        subtlePulse 3.2s ease-in-out 640ms infinite;
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  color: #000000;
+  font-size: 31px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
+  will-change: transform, opacity;
+  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
 }

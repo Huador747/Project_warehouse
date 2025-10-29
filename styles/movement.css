@@ -21,6 +21,43 @@ label,
   height: 50px;
 }
 
+.logo-container {
+  margin-top: auto;
+  margin-bottom: 10px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 210px;
+  height: 210px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.logo {
+  opacity: 1;
+  animation: floatY 6s ease-in-out infinite;
+}
+
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+  flex: 1;
+  margin-top: 5rem; /* ขยายเต็มพื้นที่ sidebar */
+}
+
+.sidebar-nav-btn .nav-btn {
+  align-items: center;
+  margin-top: 15px;
+}
+
 /* Sidebar styles */
 .sidebar {
   position: fixed;
@@ -72,25 +109,6 @@ label,
   /* ขอบทองอ่อน */
 }
 
-.logo-container {
-  text-align: center;
-  padding: 0px;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-  margin-top: 1080px;
-}
-
 #search-code {
   width: 230px;
   background: #ffffff;
@@ -134,11 +152,6 @@ label,
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s ease;
-}
-
-.search-results-container.animate {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .search-item:hover {

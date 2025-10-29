@@ -1,139 +1,138 @@
-
 .navbar-text.active::before {
-    content: "🧾✏️";
-    margin-right: 8px;
-    font-size: 1.3em;
-    vertical-align: middle;
-    animation: bounceIn 0.7s;
+  content: "🧾✏️";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
 }
 /* ปรับตารางสินค้า */
 .product-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    margin-top: 32px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-    font-size: 16px;
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  margin-top: 32px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  font-size: 16px;
 }
 
 .product-table th,
 .product-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #f0f0f0;
-    text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
 }
 
 .product-table th {
-    background: #ffe0b2;
-    color: #333;
-    font-weight: bold;
+  background: #ffe0b2;
+  color: #333;
+  font-weight: bold;
 }
 
 .product-table tr:hover {
-    background: #fffbe9;
+  background: #fffbe9;
 }
 
 .product-table td:first-child,
 .product-table th:first-child {
-    width: 40px;
-    text-align: center;
+  width: 40px;
+  text-align: center;
 }
 
 .delete-checkbox {
-    width: 18px;
-    height: 18px;
-    accent-color: #e74c3c;
-    cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #e74c3c;
+  cursor: pointer;
 }
 
 /* ปุ่มลบสินค้าที่เลือก */
 .function-btn-delete {
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 12px 32px;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 32px 0 16px 0;
-    transition: background 0.2s;
-    box-shadow: 0 2px 8px rgba(254, 179, 104, 0.10);
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 32px 0 16px 0;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(254, 179, 104, 0.1);
 }
 
 .function-btn-delete:hover {
-    background: #c0392b;
+  background: #c0392b;
 }
 
 /* ปรับปุ่มออกจากระบบ */
 .logout-btn {
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    height: 50px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
 }
 
 /* ปรับ navbar */
 .navbar {
-    width: 100vw;
-    left: 0;
-    top: 0;
-    background: rgb(244, 224, 125);
-    color: #fff;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-    height: 120px;
-    position: fixed;
-    z-index: 3000;
-    gap: 20px;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background: rgb(244, 224, 125);
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 120px;
+  position: fixed;
+  z-index: 3000;
+  gap: 20px;
 }
 
 .navbar-text {
-    color: #000;
-    font-size: 28px;
-    font-weight: bold;
+  color: #000;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .main-content {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: unset;
-    height: auto;
-    overflow: unset;
-    padding-bottom: 32px;
-    box-sizing: border-box;
-    margin-top: 120px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: unset;
+  height: auto;
+  overflow: unset;
+  padding-bottom: 32px;
+  box-sizing: border-box;
+  margin-top: 120px;
 }
 
 .function-buttons {
-    display: flex;
-    justify-content: flex-end;
-    /* ชิดขวา */
-    align-items: center;
-    margin-top: 24px;
-    margin-bottom: 0;
-    width: 100%;
-    /* ให้กินพื้นที่เต็มแถว */
+  display: flex;
+  justify-content: flex-end;
+  /* ชิดขวา */
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 0;
+  width: 100%;
+  /* ให้กินพื้นที่เต็มแถว */
 }
 
 #delete-all-btn {
-    background: #b71c1c;
+  background: #b71c1c;
 }
 
 #delete-all-btn:hover {
-    background: #d32f2f;
+  background: #d32f2f;
 }
 /* ปรับแต่งช่องค้นหา */
 .search-product-input {
@@ -169,39 +168,123 @@
   margin-bottom: -45px;
 }
 
+.logo-container {
+  margin-top: auto;
+  margin-bottom: 10px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 210px;
+  height: 210px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.logo {
+  animation: floatY 6s ease-in-out infinite;
+}
+
 /* Animation keyframes สำหรับ navbar-text */
 @keyframes subtlePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes slideFromLeft {
-  0% { transform: translateX(-100%); opacity: 0; }
-  60% { transform: translateX(8%); opacity: 1; }
-  100% { transform: translateX(0); opacity: 1; }
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(8%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* ใช้ animation กับ .navbar-form แทน .navbar-text */
 .navbar-form {
-    will-change: transform, opacity;
-    animation: 
-        slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
-        subtlePulse 3.2s ease-in-out 640ms infinite;
+  will-change: transform, opacity;
+  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
 /* ถ้าไม่ต้องการให้ .navbar-text ซ้อน animation ให้ลบบรรทัด animation ออก */
 .navbar-text {
-    display: inline-block;
-    padding: 7px 16px;
-    border-radius: 4px;
-    color: #000000;
-    font-size: 31px;
-    margin-right: 10px;
-    min-width: 120px;
-    text-align: center;
-    will-change: transform, opacity;
-    animation: 
-        slideFromLeft 640ms cubic-bezier(.2,.9,.2,1) both,
-        subtlePulse 3.2s ease-in-out 640ms infinite;
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  color: #000000;
+  font-size: 31px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
+  will-change: transform, opacity;
+  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
+}
+
+/* Sidebar styles (ปรับเวลาให้ช้าลง +1s) */
+.sidebar {
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 3000;
+  /* เพิ่มเวลาเป็น 1.3s (เดิม 0.3s) */
+  transition: left 1.3s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+  flex: 1;
+  margin-top: 5rem; /* ขยายเต็มพื้นที่ sidebar */
+}
+
+.sidebar-nav-btn .nav-btn {
+  align-items: center;
+  margin-top: 15px;
+}
+
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+  flex: 1;
+  margin-top: 5rem; /* ขยายเต็มพื้นที่ sidebar */
+}
+
+.sidebar-nav-btn .nav-btn {
+  align-items: center;
+  margin-top: 15px;
 }

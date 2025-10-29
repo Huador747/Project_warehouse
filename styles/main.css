@@ -267,7 +267,8 @@ body {
 }
 
 .navbar-text {
-  font-size: 16px;
+  color: #a1650b;
+  font-size:16px;
   padding: 6px 12px;
   display: flex;
   align-items: center;
