@@ -27,8 +27,8 @@ body {
 }
 
 .logo-container {
-  text-align: center;
-  padding: 0px;
+  margin-top: auto;
+  margin-bottom: 10px;
   width: 120px;
   height: 120px;
   display: flex;
@@ -37,12 +37,30 @@ body {
 }
 
 .logo {
-  width: 200px;
-  height: 200px;
+  width: 210px;
+  height: 210px;
   object-fit: contain;
   display: block;
   margin: 0 auto;
-  margin-top: 1080px;
+}
+
+.logo {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+  flex: 1;
+  margin-top:5rem;                 /* ขยายเต็มพื้นที่ sidebar */
+}
+
+.sidebar-nav-btn .nav-btn {
+  align-items: center;
+  margin-top: 15px;
 }
 
 /* Sidebar styles (ปรับเวลาให้ช้าลง +1s) */
@@ -51,7 +69,7 @@ body {
   left: -270px;
   top: 0;
   height: 100vh;
-  z-index: 8000;
+  z-index: 3000;
   /* เพิ่มเวลาเป็น 1.3s (เดิม 0.3s) */
   transition: left 1.3s;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
@@ -108,10 +126,7 @@ body {
 
 /* Navbar styles */
 .navbar {
-  width: 100vw;
-  /* หรือ 100% */
-  left: 0;
-  top: 0;
+  width: 100%;
   background: rgb(244, 224, 125);
   color: #fff;
   padding: 15px 30px;
@@ -121,9 +136,14 @@ body {
   box-sizing: border-box;
   height: 120px;
   position: fixed;
-  z-index: 1200;
+  /* เพิ่มบรรทัดนี้ */
+  top: 0;
+  /* เพิ่มบรรทัดนี้ */
+  left: 0;
+  /* เพิ่มบรรทัดนี้ */
+  z-index: 3000;
+  /* เพิ่มหรือแก้ z-index ให้มากกว่า .sidebar */
 }
-
 .navbar-text {
   display: inline-block;
   padding: 7px 16px;
@@ -626,11 +646,6 @@ select:disabled {
     transform: translateY(0);
   }
 }
-
-.logo {
-  animation: floatY 6s ease-in-out infinite;
-}
-
 /* ปุ่ม navbar-text เล็ก ๆ พอง/ยุบ */
 @keyframes subtlePulse {
   0% {

@@ -26,8 +26,8 @@ body {
 }
 
 .logo {
-  width: 200px;
-  height: 200px;
+  width: 210px;
+  height: 210px;
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -42,11 +42,13 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;   /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
-  flex: 1;                   /* ขยายเต็มพื้นที่ sidebar */
+  flex: 1;
+  margin-top:5rem;                 /* ขยายเต็มพื้นที่ sidebar */
 }
 
 .sidebar-nav-btn .nav-btn {
-  margin: 10px 0;
+  align-items: center;
+  margin-top: 15px;
 }
 
 /* Product list styles */
@@ -85,10 +87,14 @@ body {
 
 /* Sidebar styles */
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* เพิ่มบรรทัดนี้ */
+  height: 100vh;
   position: fixed;
   left: -270px;
   top: 0;
-  height: 100vh;
   z-index: 3000;
   transition: left 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
@@ -97,10 +103,6 @@ body {
   color: #fff;
   padding: 30px 30px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* เพิ่มบรรทัดนี้ */
 }
 
 .sidebar.sidebar-open {
