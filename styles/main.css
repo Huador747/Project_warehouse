@@ -284,23 +284,6 @@ body {
   white-space: nowrap; /* ป้องกันขึ้นบรรทัดใหม่ */
 }
 
-/* Responsive: ปรับขนาด navbar-text เมื่อหน้าจอเล็กลง */
-@media (max-width: 900px) {
-  .navbar-text {
-    font-size: 14px;
-    padding: 4px 6px;
-    gap: 4px;
-  }
-}
-
-@media (max-width: 600px) {
-  .navbar-text {
-    font-size: 12px;
-    padding: 2px 2px;
-    gap: 2px;
-  }
-}
-
 .stat-icon {
   width: 30px; /* ลดจากค่าเริ่มต้น */
   height: 30px; /* ลดจากค่าเริ่มต้น */

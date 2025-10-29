@@ -1,5 +1,4 @@
 @media screen and (max-width: 1200px) and (min-width: 900px) {
-
   html,
   body {
     font-size: 16px;
@@ -73,7 +72,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 90px;
+    height: 80px;
     width: 100vw;
     display: flex;
     align-items: center;
@@ -87,6 +86,10 @@
     padding: 6px 10px;
   }
 
+  .sidebar-nav-btn {
+    margin-top: 14px;
+  }
+  
   .navbar-text.active {
     font-size: 1.5rem;
     font-weight: bold;
@@ -187,7 +190,7 @@
   .hamburger {
     position: fixed;
     left: 24px;
-    top: 45px;
+    top: 40px;
     /* 90px (navbar) / 2 = 45px */
     transform: translateY(-50%);
     z-index: 4000;
@@ -262,5 +265,4 @@
     border: 3px solid #8b7f7f;
     /* ขอบทองอ่อน */
   }
-
 }
