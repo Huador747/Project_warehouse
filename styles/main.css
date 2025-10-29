@@ -4,9 +4,16 @@ input,
 select,
 button,
 label,
+.product-table,
 .navbar-text {
   font-family: "Sarabun", sans-serif;
   font-weight: bold;
+}
+
+body {
+  margin: 0;
+  /* font-family: Arial, sans-serif;  <-- ลบบรรทัดนี้ */
+  display: flex;
 }
 
 body {
@@ -41,9 +48,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;   /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+  justify-content: center; /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
   flex: 1;
-  margin-top:5rem;                 /* ขยายเต็มพื้นที่ sidebar */
+  margin-top: 5rem; /* ขยายเต็มพื้นที่ sidebar */
 }
 
 .sidebar-nav-btn .nav-btn {
@@ -64,6 +71,7 @@ body {
   gap: 24px;
   overflow-x: auto;
   color: #000000;
+  font-family: "Sarabun", sans-serif;
 }
 
 .pagination-controls button {
@@ -268,7 +276,7 @@ body {
 
 .navbar-text {
   color: #a1650b;
-  font-size:16px;
+  font-size: 16px;
   padding: 6px 12px;
   display: flex;
   align-items: center;
@@ -393,7 +401,6 @@ body {
   padding: 20px;
   box-sizing: border-box;
 }
-
 
 #search-code {
   width: 230px;
@@ -609,14 +616,14 @@ tr:hover {
   margin-bottom: 2px;
 }
 
-.product-table th{
+.product-table th {
   font-size: 17.5px;
 }
 
 .product-table th,
 .product-table td {
-  text-align: center;      /* จัดข้อความให้อยู่ตรงกลางแนวนอน */
-  vertical-align: middle;  /* จัดข้อความให้อยู่ตรงกลางแนวตั้ง */
+  text-align: center; /* จัดข้อความให้อยู่ตรงกลางแนวนอน */
+  vertical-align: middle; /* จัดข้อความให้อยู่ตรงกลางแนวตั้ง */
 }
 
 /* ให้ Model กับ ชื่อสินค้า ยาวตามข้อความ */
@@ -672,8 +679,6 @@ tr:hover {
     transform: translateY(0);
   }
 }
-
-
 
 /* ปุ่ม navbar-text เล็ก ๆ พอง/ยุบ */
 @keyframes subtlePulse {

@@ -488,7 +488,7 @@ body {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 55px;
+  margin-top: 15px;
   transition: background 0.2s;
 }
 
@@ -654,8 +654,8 @@ label,
 
 /* ปรับแต่งส่วนแนบรูปภาพ */
 .form-group.image-upload {
-  margin-top: 50px;
-}
+  margin-top: 0px;
+} 
 
 .form-group.image-upload label {
   font-weight: bold;

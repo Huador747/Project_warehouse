@@ -145,6 +145,27 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('new-location').value = '';
         }
     });
+
+    const imageInput = document.getElementById("image");
+    const previewDiv = document.getElementById("image-preview");
+
+    imageInput.addEventListener("change", function () {
+        previewDiv.innerHTML = ""; // ล้างรูปเดิม
+        if (imageInput.files && imageInput.files[0]) {
+            const file = imageInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.style.maxWidth = "250px";
+                img.style.maxHeight = "250px";
+                img.style.borderRadius = "8px";
+                img.style.boxShadow = "0 2px 8px rgba(0,0,0,0.12)";
+                previewDiv.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 });
 
 document.addEventListener('DOMContentLoaded', () => {

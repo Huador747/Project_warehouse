@@ -18,11 +18,16 @@ async function fetchHistory() {
   }
 }
 
-function formatDate(dateStr) {
+function formatDateToAD(dateStr) {
   if (!dateStr) return "-";
   try {
     const date = new Date(dateStr);
-    return date.toLocaleDateString("th-TH");
+    if (isNaN(date)) return dateStr;
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear(); // ค.ศ.
+    // แสดงในรูปแบบ dd/mm/yyyy หรือปรับตามต้องการ
+    return `${day}/${month}/${year}`;
   } catch {
     return dateStr;
   }
@@ -111,7 +116,7 @@ function renderHistoryTablePaged(transactions, page = 1) {
   pagedTransactions.forEach((item) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-            <td>${formatDate(item.date)}</td>
+            <td>${formatDateToAD(item.date)}</td>
             <td>${item.type}</td>
             <td>${item.product_code || "-"}</td>
             <td>${item.product_name}</td>
@@ -167,9 +172,8 @@ function renderHistoryTable(
   type = "all",
   yearFilter = "all",
   monthFilter = "all"
-  ) 
-  
-  {const tbody = document.querySelector("#history-table tbody");
+) {
+  const tbody = document.querySelector("#history-table tbody");
   if (!tbody) return;
 
   tbody.innerHTML = "";
@@ -293,23 +297,24 @@ function renderHistoryTable(
 
   // Render pagination controls
   renderPagination(transactions, currentPage);
-  
 }
 
 function centerTableIfEmpty() {
-  const wrapper = document.querySelector('.history-table-wrapper');
-  const tbody = document.querySelector('#history-table tbody');
+  const wrapper = document.querySelector(".history-table-wrapper");
+  const tbody = document.querySelector("#history-table tbody");
   if (!wrapper || !tbody) return;
 
   // ตรวจสอบว่ามีแต่แถว "ไม่พบข้อมูล" หรือแถวว่าง
-  const rows = Array.from(tbody.querySelectorAll('tr'));
-  const onlyEmpty = rows.length === 1 && rows[0].textContent.includes('ไม่พบข้อมูล');
-  const allEmpty = rows.every(tr => tr.classList.contains('empty-row')) || onlyEmpty;
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const onlyEmpty =
+    rows.length === 1 && rows[0].textContent.includes("ไม่พบข้อมูล");
+  const allEmpty =
+    rows.every((tr) => tr.classList.contains("empty-row")) || onlyEmpty;
 
   if (allEmpty) {
-    wrapper.classList.add('center-when-empty');
+    wrapper.classList.add("center-when-empty");
   } else {
-    wrapper.classList.remove('center-when-empty');
+    wrapper.classList.remove("center-when-empty");
   }
 }
 
@@ -337,7 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 });
-
 
 //000000000000000000000000000000000000000000
 function renderPagination(transactions, page = 1) {
@@ -482,5 +486,3 @@ async function main() {
     console.error("Error in main:", err);
   }
 }
-
-
