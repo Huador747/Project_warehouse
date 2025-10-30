@@ -1,4 +1,5 @@
 @media screen and (max-width: 1200px) and (min-width: 900px) {
+
   html,
   body {
     font-size: 16px;
@@ -69,29 +70,41 @@
 
   /* Navbar */
   .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 80px;
-    width: 100vw;
-    display: flex;
     align-items: center;
-    z-index: 3000;
-    box-sizing: border-box;
+    height: 80px;
+    /* ลดความสูง navbar */
+    padding: 8px 16px;
+    /* ลด padding */
   }
 
-  .navbar-text {
-    font-size: 18px;
-    min-width: 80px;
-    padding: 6px 10px;
+  .navbar-form,
+  .search-logout-row {
+    gap: 6px;
   }
 
-  .sidebar-nav-btn {
-    margin-top: 14px;
+  .search-product-input {
+    height: 32px;
+    /* ลดความสูงช่องค้นหา */
+    font-size: 13px;
+    width: 140px;
+    padding: 4px 8px;
   }
-  
+
+  .logout-btn {
+    height: 32px;
+    /* ลดขนาดปุ่ม logout */
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+
+
+
+  .navbar-form {
+    top: 40px;
+  }
+
   .navbar-text.active {
-    font-size: 1.5rem;
+    font-size: 20px;
     font-weight: bold;
     color: #e67e22;
     letter-spacing: 1px;
@@ -141,11 +154,7 @@
     padding: 7px 4px;
   }
 
-  .sidebar {
-    width: 180px;
-    padding: 18px 10px;
-    font-size: 15px;
-  }
+
 
   .logo-container {
     text-align: center;
@@ -218,51 +227,32 @@
     margin-bottom: -5px;
   }
 
+
+
+
+
+  /* Sidebar */
   .sidebar {
-    position: fixed;
-    left: -270px;
-    top: 0;
-    height: 100vh;
-    z-index: 2000;
-    /* เพิ่มเวลาเป็น 1.3s (เดิม 0.3s) */
-    transition: left 1.3s;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-    width: 250px;
-    background: rgb(254, 179, 104);
-    color: #fff;
-    padding: 30px 30px;
-    box-sizing: border-box;
+    width: 180px;
+    /* ลดความกว้าง */
+    padding: 16px 10px;
+    gap: 8px;
+    z-index: 5000;
+  }
+
+  .sidebar-nav-btn {
+    margin-top: 11px;
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    margin-top: -20px;
+    justify-content: center;
+    /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    height: auto;
   }
 
-  .sidebar input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-
-  .sidebar .nav-btn {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    background: #fff;
-    color: #333;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .sidebar .nav-btn:hover {
-    background: #ffe0b2;
-    border: 3px solid #8b7f7f;
-    /* ขอบทองอ่อน */
+  .sidebar-nav-btn .nav-btn {
+    font-size: 11px;
+    margin-top: 20px;
+    padding: 6px 0;
   }
 }
