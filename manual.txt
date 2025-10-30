@@ -1,0 +1,12 @@
+เปิดเซิฟให้ใช้ npm run pm2
+firewall วิธีเปิดพอร์ต 3000:
+เปิด “Windows Defender Firewall with Advanced Security”
+เลือก “Inbound Rules” > “New Rule”
+เลือก “Port” > Next
+เลือก “TCP” และใส่ 3000
+เลือก “Allow the connection” > Next
+ตั้งชื่อ rule เช่น project_warehouse แล้ว Finish
+
+ใช่ ipconfig เพื่อดู ipv4 
+. ให้เครื่องลูกเข้าเว็บ
+เปิด browser ที่เครื่องลูก http://<ipv4-address>:3000/login/html

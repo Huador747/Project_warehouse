@@ -4,8 +4,9 @@
   "description": "A simple login form project",
   "main": "src/login.html",
   "scripts": {
-    "start": "open src/login.html"
-  },
+    "start": "node server.js",
+    "pm2": "pm2 start server.js --name project-warehouse"
+  }, 
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",

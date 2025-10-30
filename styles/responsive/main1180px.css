@@ -1,13 +1,17 @@
 /* Responsive for iPad 1200x900 */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
+
   /* Navbar */
   .navbar {
     height: 80px;
     position: fixed;
     top: 0;
-    left: 0; /* ลดความสูง navbar */
-    padding: 6px 8px; /* ลด padding */
-    font-size: 16px; /* ลดขนาดฟอนต์ */
+    left: 0;
+    /* ลดความสูง navbar */
+    padding: 6px 8px;
+    /* ลด padding */
+    font-size: 16px;
+    /* ลดขนาดฟอนต์ */
     display: flex;
     align-items: center;
     width: 100%;
@@ -32,12 +36,15 @@
     gap: 6px;
     cursor: pointer;
   }
+
   /* Navbar text */
   .navbar-text {
-    font-size: 11px; /* ลดขนาดฟอนต์ */
+    font-size: 11px;
+    /* ลดขนาดฟอนต์ */
     padding: 4px 4px;
     gap: 4px;
   }
+
   .navbar-text.active {
     font-size: 11px;
     margin-right: 8px;
@@ -50,6 +57,7 @@
     margin-left: 10px;
     padding: 6px 0 2px 0;
   }
+
   .navbar-form input[type="text"] {
     height: 28px;
     font-size: 14px;
@@ -58,19 +66,23 @@
 
   /* Sidebar */
   .sidebar {
-    width: 180px; /* ลดความกว้าง */
+    width: 180px;
+    /* ลดความกว้าง */
     padding: 16px 10px;
     gap: 8px;
-    z-index: 5000;
+    z-index: 2000;
   }
+
   .sidebar-nav-btn {
     margin-top: 11px;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    justify-content: center;
+    /* จัดให้อยู่กึ่งกลางแนวตั้ง */
     height: auto;
   }
+
   .sidebar-nav-btn .nav-btn {
     font-size: 11px;
     margin-top: 20px;
@@ -78,11 +90,12 @@
   }
 
 
-  
+
   /* Main content */
   .main-content {
     width: 100%;
-    max-width: 960px; /* ลด max-width */
+    max-width: 960px;
+    /* ลด max-width */
     position: relative;
   }
 
@@ -104,39 +117,56 @@
     padding: 10px;
     border-radius: 10px;
   }
+
   .product-table th,
   .product-table td {
-    font-size: 13px; /* ลดขนาดฟอนต์ในตาราง */
+    font-size: 13px;
+    /* ลดขนาดฟอนต์ในตาราง */
     padding: 4px 6px;
   }
 
   .function-buttons {
-    font-size: 12px; /* ลดขนาดฟอนต์ */
-    gap: 6px; /* ลดช่องว่างระหว่างปุ่ม */
-    padding: 2px 4px; /* ลด padding */
+    font-size: 12px;
+    /* ลดขนาดฟอนต์ */
+    gap: 6px;
+    /* ลดช่องว่างระหว่างปุ่ม */
+    padding: 2px 4px;
+    /* ลด padding */
     margin-top: -35px;
     margin-bottom: -10px;
     align-items: center;
   }
 
   .search-product-input {
-    width: 140px; /* ลดความกว้าง */
-    height: 28px; /* ลดความสูง */
-    font-size: 16px; /* ลดขนาดฟอนต์ */
-    padding: 4px 6px; /* ลด padding */
+    width: 140px;
+    /* ลดความกว้าง */
+    height: 28px;
+    /* ลดความสูง */
+    font-size: 16px;
+    /* ลดขนาดฟอนต์ */
+    padding: 4px 6px;
+    /* ลด padding */
   }
 
   .function-buttons input[type="text"] {
-    font-size: 12px; /* ลดขนาดฟอนต์ input */
-    height: 45px; /* ลดความสูง */
-    padding: 2px 8px; /* ลด padding */
-    width: 200px; /* ลดความกว้าง */
+    font-size: 12px;
+    /* ลดขนาดฟอนต์ input */
+    height: 45px;
+    /* ลดความสูง */
+    padding: 2px 8px;
+    /* ลด padding */
+    width: 200px;
+    /* ลดความกว้าง */
     border-radius: 10px;
   }
+
   .function-buttons button {
-    font-size: 12px; /* ลดขนาดฟอนต์ปุ่ม */
-    padding: 4px 8px; /* ลด padding */
-    min-width: 28px; /* ปรับขนาดปุ่ม */
+    font-size: 12px;
+    /* ลดขนาดฟอนต์ปุ่ม */
+    padding: 4px 8px;
+    /* ลด padding */
+    min-width: 28px;
+    /* ปรับขนาดปุ่ม */
     min-height: 28px;
     border-radius: 15px;
     display: flex;
@@ -151,6 +181,7 @@
     border-radius: 8px;
     font-size: 14px;
   }
+
   .pagination-controls button {
     padding: 6px 10px;
     font-size: 13px;
@@ -159,8 +190,8 @@
 
   /* Logo */
   .logo-container {
-    width: 150px;
-    height: 150px;
+    width: 50px;
+    height: 50px;
     margin-bottom: 100px;
   }
 
@@ -168,10 +199,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+    justify-content: center;
+    /* ให้ปุ่มอยู่กลางแนวตั้ง */
     flex: 1;
-    margin-top: 5rem; /* ขยายเต็มพื้นที่ sidebar */
+    margin-top: 40px;
+    /* หรือปรับตามต้องการ */
   }
+
 
   .sidebar-nav-btn .nav-btn {
     align-items: center;

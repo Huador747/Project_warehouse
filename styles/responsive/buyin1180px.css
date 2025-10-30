@@ -97,10 +97,21 @@
     padding: 4px 10px;
   }
 
+  .nav-btn {
+    height: 40px;
+    font-size: 18px;
 
+  }
 
-  .navbar-form {
-    top: 40px;
+  .sidebar-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* ให้ปุ่มอยู่กลางแนวตั้ง */
+    flex: 1;
+    margin-top: 40px;
+    /* หรือปรับตามต้องการ */
   }
 
   .navbar-text.active {
@@ -155,26 +166,6 @@
   }
 
 
-
-  .logo-container {
-    text-align: center;
-    padding: 0px;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .logo {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-    margin-top: 1080px;
-  }
-
   .monthly-summary {
     padding: 12px;
   }
@@ -227,32 +218,46 @@
     margin-bottom: -5px;
   }
 
-
-
-
-
   /* Sidebar */
   .sidebar {
     width: 180px;
     /* ลดความกว้าง */
     padding: 16px 10px;
     gap: 8px;
-    z-index: 5000;
-  }
-
-  .sidebar-nav-btn {
-    margin-top: 11px;
-    position: relative;
+    z-index: 2000;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    /* จัดให้อยู่กึ่งกลางแนวตั้ง */
-    height: auto;
+    /* จัดให้อยู่กลางแนวตั้ง */
+    height: 100vh;
   }
+
+
 
   .sidebar-nav-btn .nav-btn {
     font-size: 11px;
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 6px 0;
+    width: 100%;
+    align-items: center;
+  }
+
+
+  .logo {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .logo-container {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
