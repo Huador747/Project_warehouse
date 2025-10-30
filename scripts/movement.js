@@ -824,25 +824,93 @@ document
     .summary { font-size: 1.2rem; margin-bottom: 24px; }
     .summary div { margin-bottom: 12px; }
     .filter { margin-bottom: 18px; color: #555; }
+
+    /* ปรับให้ซ่อนเมื่อพิมพ์ (print preview / print) */
+    @media print {
+      .filter,
+      .action-buttons { display: none !important; }
+      /* ป้องกัน box หักคอลัมน์ตอนพิมพ์ */
+      .summary-totals, .monthly-summary, table { page-break-inside: avoid; }
+      body { margin: 8mm; } /* กระดาษขอบเล็กเมื่อพิมพ์ */
+      /* รักษาสีเมื่อพิมพ์ (browser support varies) */
+      * { -webkit-print-color-adjust: exact; color-adjust: exact; }
+    }
+
+    @media screen {
+      /* ปรับปุ่มให้ดูดีกว่าในหน้าจอ */
+      .action-buttons button { cursor: pointer; }
+    }
+
     @media print { body { margin: 0; } }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <h2>รายงานสรุปยอดขาย</h2>
-  <div class="filter">
-    <div>สินค้า: ${
-      productCode ? filtered[0]?.name || productCode : "ทั้งหมด"
-    }</div>
-    <div>ปี: ${selectedYear || "-"}</div>
-    <div>ช่วงเวลา: ${
-      periodType === "month"
-        ? "รายเดือน"
-        : periodType === "quarter"
-        ? "รายไตรมาส"
-        : "รายปี"
-    }</div>
+  <div class="filter" style="
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
+  margin: 24px 0;
+">
+  <h3 style="
+    color: #374151;
+    font-size: 1.1rem;
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #ffd336;
+  ">ตัวกรองรายงาน</h3>
+
+  <div style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  ">
+    <div style="
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    ">
+      <div style="color: #6b7280; font-size: 0.9rem; margin-bottom: 4px;">สินค้า</div>
+      <div style="color: #111827; font-weight: 500;">
+        ${productCode ? filtered[0]?.name || productCode : "ทั้งหมด"}
+      </div>
+    </div>
+
+    <div style="
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    ">
+      <div style="color: #6b7280; font-size: 0.9rem; margin-bottom: 4px;">ปี</div>
+      <div style="color: #111827; font-weight: 500;">
+        ${selectedYear || "-"}
+      </div>
+    </div>
+
+    <div style="
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    ">
+      <div style="color: #6b7280; font-size: 0.9rem; margin-bottom: 4px;">ช่วงเวลา</div>
+      <div style="color: #111827; font-weight: 500;">
+        ${
+          periodType === "month"
+            ? "รายเดือน"
+            : periodType === "quarter"
+            ? "รายไตรมาส"
+            : "รายปี"
+        }
+      </div>
+    </div>
   </div>
+</div>
   ${
     periodType === "month"
       ? (() => {
@@ -993,15 +1061,67 @@ document
                   </tr>
                 </tbody>
               </table>
-            </div>
-          `;
+              </table>
+ </table>
+  <div class="summary-totals" style="margin-top:24px;padding:16px;background:#f8fafc;border:1px solid #ffd336;box-shadow:0 2px 4px rgba(0,0,0,0.08);border-radius:8px;">
+    <div style="color:#e67e22;font-size:1.1rem;margin-bottom:12px;">
+      <b>ยอดขายรวม:</b> ${totalSales.toLocaleString("th-TH")} บาท
+    </div>
+    <div style="color:green;font-size:1.1rem;margin-bottom:12px;">
+      <b>กำไรรวม:</b> ${totalProfit.toLocaleString("th-TH")} บาท
+    </div>
+    <div style="color:#dc3545;font-size:1.1rem;">
+      <b>เงินจมรวม:</b> ${totalSunk.toLocaleString("th-TH")} บาท
+    </div>
+  </div>
+    `;
         })()
       : ""
   }
-  <button onclick="window.print()" style="padding:10px 24px;font-size:1rem;border-radius:8px;background:#ffd336;border:none;cursor:pointer;">Print</button>
-  <button id="download-pdf" style="padding:10px 24px;font-size:1rem;border-radius:8px;background:#ffd336;border:none;cursor:pointer;margin-left:12px;">Download PDF</button>
-  <script src="Sarabun-Regular-normal.js"></script>
+  <div class="action-buttons" style="
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+  justify-content: center;
+">
+  <button onclick="window.print()" style="
+    padding: 12px 32px;
+    font-size: 1rem;
+    border-radius: 8px;
+    background: #ffd336;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #333;
+    font-weight: 500;
+    min-width: 160px;
+    &:hover {
+      background: #ffc107;
+      transform: translateY(-1px);
+    }
+  ">Print</button>
+
+  <button id="download-pdf" style="
+    padding: 12px 32px;
+    font-size: 1rem;
+    border-radius: 8px;
+    background: #ffd336;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #333;
+    font-weight: 500;
+    min-width: 160px;
+    &:hover {
+      background: #ffc107;
+      transform: translateY(-1px);
+    }
+  ">Download PDF</button>
+</div>
   <script>
+    // ดูแลการดาวน์โหลด PDF (เดิม)
     document.getElementById("download-pdf").onclick = function() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
@@ -1022,6 +1142,52 @@ document
       doc.text(summaryText, 20, y);
       doc.save("report.pdf");
     };
+
+    // ซ่อน/คืนค่าก่อน-หลังการพิมพ์ (รองรับ beforeprint/afterprint)
+    (function() {
+      const HIDE_SEL = ".filter, .action-buttons";
+      const els = () => Array.from(document.querySelectorAll(HIDE_SEL));
+
+      function hideForPrint() {
+        els().forEach(el => {
+          // เก็บค่าเดิมไว้ใช้คืน
+          el.__displayCache = el.style.display || "";
+          el.style.display = "none";
+        });
+      }
+      function restoreAfterPrint() {
+        els().forEach(el => {
+          if (el.__displayCache !== undefined) el.style.display = el.__displayCache;
+          else el.style.display = "";
+          delete el.__displayCache;
+        });
+      }
+
+      // ใช้ event ของ browser (Chrome, Firefox บางเวอร์ชัน)
+      if ('onbeforeprint' in window) {
+        window.addEventListener('beforeprint', hideForPrint);
+        window.addEventListener('afterprint', restoreAfterPrint);
+      } else {
+        // fallback: ดักปุ่ม Print ในหน้ารายงาน
+        const printBtn = document.querySelector('button[onclick="window.print()"]');
+        if (printBtn) {
+          printBtn.addEventListener('click', function(evt) {
+            // hide, call print, restore after a delay
+            hideForPrint();
+            // ให้ browser เปิด dialog แล้วคืนค่าเมื่อกลับมาจาก dialog
+            setTimeout(() => {
+              try { window.print(); } catch(e) { console.error(e); }
+              // restore เล็กน้อยหลัง print (จำนวน ms ปรับได้)
+              setTimeout(restoreAfterPrint, 300);
+            }, 50);
+            // ป้องกัน default inline onclick เพื่อให้ใช้ flow นี้
+            evt.preventDefault();
+          });
+        }
+      }
+
+      // ปลอดภัย: ถ้าผู้ใช้ใช้ Ctrl+P, beforeprint จะทำงานบนบาง browser
+    })();
   </script>
 </body>
 </html>

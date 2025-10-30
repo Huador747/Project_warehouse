@@ -1,22 +1,13 @@
 /* Responsive for iPad 1200x900 */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
-
   /* Navbar */
   .navbar {
-    height: 80px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    /* ลดความสูง navbar */
-    padding: 6px 8px;
-    /* ลด padding */
-    font-size: 16px;
-    /* ลดขนาดฟอนต์ */
-    display: flex;
     align-items: center;
-    width: 100%;
+    height: 80px;
+    /* ลดความสูง navbar */
+    padding: 8px 16px;
+    /* ลด padding */
   }
-
   /* Hamburger */
   .hamburger {
     position: fixed;
@@ -39,7 +30,7 @@
 
   /* Navbar text */
   .navbar-text {
-    font-size: 11px;
+    font-size: 14px;
     /* ลดขนาดฟอนต์ */
     padding: 4px 4px;
     gap: 4px;
@@ -52,10 +43,11 @@
   }
 
   /* Navbar form */
+  .search-logout-row,
   .navbar-form {
-    gap: 6px;
-    margin-left: 10px;
-    padding: 6px 0 2px 0;
+    gap: 10px;
+    margin-left: 20px;
+    padding: 10px 0 4px 0;
   }
 
   .navbar-form input[type="text"] {
@@ -64,37 +56,10 @@
     padding: 4px;
   }
 
-  /* Sidebar */
-  .sidebar {
-    width: 180px;
-    /* ลดความกว้าง */
-    padding: 16px 10px;
-    gap: 8px;
-    z-index: 2000;
-  }
-
-  .sidebar-nav-btn {
-    margin-top: 11px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* จัดให้อยู่กึ่งกลางแนวตั้ง */
-    height: auto;
-  }
-
-  .sidebar-nav-btn .nav-btn {
-    font-size: 11px;
-    margin-top: 20px;
-    padding: 6px 0;
-  }
-
-
-
   /* Main content */
   .main-content {
     width: 100%;
-    max-width: 960px;
+    max-width: 1130px;
     /* ลด max-width */
     position: relative;
   }
@@ -102,19 +67,15 @@
   /* Content wrapper */
   .content-wrapper {
     gap: 12px;
-    padding: 10px;
     font-size: 50px;
   }
 
   /* Product table */
   .product-table {
-    margin-left: 8px;
-    margin-right: 8px;
     margin-top: 24px;
     width: 100%;
     max-width: 100%;
     min-width: 320px;
-    padding: 10px;
     border-radius: 10px;
   }
 
@@ -189,26 +150,13 @@
   }
 
   /* Logo */
-  .logo-container {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 100px;
-  }
 
-  .sidebar-nav-btn {
+  .logo-container {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 100px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* ให้ปุ่มอยู่กลางแนวตั้ง */
-    flex: 1;
-    margin-top: 40px;
-    /* หรือปรับตามต้องการ */
-  }
-
-
-  .sidebar-nav-btn .nav-btn {
-    align-items: center;
-    margin-top: 15px;
   }
 }
