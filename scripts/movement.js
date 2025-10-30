@@ -627,45 +627,51 @@ async function renderProductsTablePage(products, page) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const searchInput = document.querySelector('.search-product-input');
-  const productSelect = document.getElementById('product-select');
+  const searchInput = document.querySelector(".search-product-input");
+  const productSelect = document.getElementById("product-select");
   const productLabel = document.querySelector('label[for="product-select"]');
 
   // ระบบค้นหาแบบ buyin
-  searchInput.addEventListener('input', function () {
+  searchInput.addEventListener("input", function () {
     const query = this.value.trim();
-    document.getElementById('search-result')?.remove();
+    document.getElementById("search-result")?.remove();
 
     if (!query) return;
 
     fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
-      .then(res => res.json())
-      .then(products => {
-        const resultDiv = document.createElement('div');
-        resultDiv.id = 'search-result';
-        resultDiv.className = 'search-results-container';
-        resultDiv.style.position = 'absolute';
-        resultDiv.style.background = '#faf2b9ff';
-        resultDiv.style.border = '1px solid #ccc';
-        resultDiv.style.width = searchInput.offsetWidth + 'px';
+      .then((res) => res.json())
+      .then((products) => {
+        const resultDiv = document.createElement("div");
+        resultDiv.id = "search-result";
+        resultDiv.className = "search-results-container";
+        resultDiv.style.position = "absolute";
+        resultDiv.style.background = "#faf2b9ff";
+        resultDiv.style.border = "1px solid #ccc";
+        resultDiv.style.width = searchInput.offsetWidth + "px";
         resultDiv.style.zIndex = 9999;
-        resultDiv.style.maxHeight = '250px';
-        resultDiv.style.overflowY = 'auto';
+        resultDiv.style.maxHeight = "250px";
+        resultDiv.style.overflowY = "auto";
 
         if (products.length === 0) {
           resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
         } else {
-          resultDiv.innerHTML = products.map(p => `
-            <div class="search-item" style="padding:8px;cursor:pointer;" data-product='${JSON.stringify(p)}'>
-              <b class="product_code">${p.product_code || ''}</b>
-              <span class="product_name">${p.product_name || ''}</span>
+          resultDiv.innerHTML = products
+            .map(
+              (p) => `
+            <div class="search-item" style="padding:8px;cursor:pointer;" data-product='${JSON.stringify(
+              p
+            )}'>
+              <b class="product_code">${p.product_code || ""}</b>
+              <span class="product_name">${p.product_name || ""}</span>
               <small class="product_model">
-                ${p.model || ''} | 
-                <span class="maker">${p.maker || ''}</span> | 
-                <span class="category">${p.category || ''}</span>
+                ${p.model || ""} | 
+                <span class="maker">${p.maker || ""}</span> | 
+                <span class="category">${p.category || ""}</span>
               </small>
             </div>
-          `).join('');
+          `
+            )
+            .join("");
         }
 
         // แทรกผลลัพธ์ใต้ input
@@ -673,21 +679,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Animation
         requestAnimationFrame(() => {
-          resultDiv.classList.add('animate');
+          resultDiv.classList.add("animate");
         });
 
         // Event เลือกสินค้า
-        resultDiv.querySelectorAll('.search-item').forEach(item => {
-          item.addEventListener('click', function () {
+        resultDiv.querySelectorAll(".search-item").forEach((item) => {
+          item.addEventListener("click", function () {
             const product = JSON.parse(this.dataset.product);
 
             // เติมชื่อสินค้าใน select ถ้ายังไม่มี
             let found = false;
-            Array.from(productSelect.options).forEach(opt => {
-              if (opt.value === (product.product_code ?? product.code)) found = true;
+            Array.from(productSelect.options).forEach((opt) => {
+              if (opt.value === (product.product_code ?? product.code))
+                found = true;
             });
             if (!found) {
-              const opt = document.createElement('option');
+              const opt = document.createElement("option");
               opt.value = product.product_code ?? product.code ?? "";
               opt.textContent = product.product_name ?? "-";
               productSelect.appendChild(opt);
@@ -695,8 +702,8 @@ document.addEventListener("DOMContentLoaded", function () {
             productSelect.value = product.product_code ?? product.code ?? "";
 
             // ลบผลลัพธ์การค้นหา
-            document.getElementById('search-result')?.remove();
-            searchInput.value = '';
+            document.getElementById("search-result")?.remove();
+            searchInput.value = "";
 
             // เริ่มคำนวณและแสดงกราฟทันที
             const periodType = document.getElementById("period-type").value;
@@ -706,15 +713,320 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         });
       })
-      .catch(err => {
-        console.error('เกิดข้อผิดพลาดในการค้นหา:', err);
+      .catch((err) => {
+        console.error("เกิดข้อผิดพลาดในการค้นหา:", err);
       });
   });
 
   // ปิดผลลัพธ์เมื่อคลิกข้างนอก
-  document.addEventListener('click', function (e) {
-    if (!searchInput.contains(e.target) && !document.getElementById('search-result')?.contains(e.target)) {
-      document.getElementById('search-result')?.remove();
+  document.addEventListener("click", function (e) {
+    if (
+      !searchInput.contains(e.target) &&
+      !document.getElementById("search-result")?.contains(e.target)
+    ) {
+      document.getElementById("search-result")?.remove();
     }
   });
 });
+
+document
+  .getElementById("report-btn")
+  .addEventListener("click", async function (e) {
+    e.preventDefault();
+
+    // ดึงค่าตัวกรองปัจจุบัน
+    const productCode = document.getElementById("product-select").value;
+    const periodType = document.getElementById("period-type").value;
+    const selectedYear = document.getElementById("year-select").value;
+
+    // คำนวณข้อมูลสรุป
+    const { products, buyin, sale } = await fetchAll();
+    const map = computeInventory(products, buyin, sale);
+
+    // กรองข้อมูลตามปีที่เลือก (ถ้ามี)
+    let filteredBuyin = buyin,
+      filteredSale = sale;
+    if (selectedYear) {
+      filteredBuyin = buyin.filter((b) => {
+        const dt = new Date(b.buyindate ?? b.date);
+        return dt.getFullYear() === Number(selectedYear);
+      });
+      filteredSale = sale.filter((s) => {
+        const dt = new Date(s.saleoutdate ?? s.date);
+        return dt.getFullYear() === Number(selectedYear);
+      });
+    }
+
+    // สร้างข้อมูลสรุป
+    const saleMap = {};
+    (filteredSale || []).forEach((s) => {
+      const code = s.product_code ?? s.code ?? "";
+      if (!code) return;
+      const qty = toNumber(
+        s.salequantity ?? s.sale_quantity ?? s.quantity ?? s.qty ?? 0
+      );
+      const total = toNumber(
+        s.total ?? toNumber(s.sale_price ?? s.price) * qty
+      );
+      if (!saleMap[code]) saleMap[code] = { qty: 0, total: 0 };
+      saleMap[code].qty += qty;
+      saleMap[code].total += total;
+    });
+
+    const allEntries = Object.values(map).map((e) => {
+      const cost = estimateUnitCost(e, filteredBuyin);
+      const sunk = toNumber(e.qty) * toNumber(cost);
+      const saleInfo = saleMap[e.product_code] || { qty: 0, total: 0 };
+      const costOfSold = toNumber(saleInfo.qty) * toNumber(cost);
+      const profit = toNumber(saleInfo.total) - costOfSold;
+      const buyTotalCost = filteredBuyin
+        .filter((b) => (b.product_code ?? b.code ?? "") === e.product_code)
+        .reduce(
+          (sum, b) =>
+            sum +
+            toNumber(
+              b.total ??
+                toNumber(b.price ?? b.buy_price) *
+                  toNumber(b.quantity ?? b.buyquantity ?? b.qty ?? 0)
+            ),
+          0
+        );
+      const saleTotal = saleInfo.total ?? 0;
+      return {
+        code: e.product_code,
+        name: e.product_name || (e.productObj.product_name ?? "-"),
+        qty: toNumber(e.qty),
+        cost: toNumber(cost),
+        sunk: toNumber(sunk),
+        profit: toNumber(profit),
+        buyTotalCost: toNumber(buyTotalCost),
+        saleTotal: toNumber(saleTotal),
+      };
+    });
+
+    const filtered = productCode
+      ? allEntries.filter((x) => x.code === productCode)
+      : allEntries;
+
+    // สรุปยอดรวม
+    const totalSale = filtered.reduce((s, e) => s + toNumber(e.saleTotal), 0);
+    const totalProfit = filtered.reduce((s, e) => s + toNumber(e.profit), 0);
+    const totalSunk = filtered.reduce((s, e) => s + toNumber(e.sunk), 0);
+
+    // สร้าง HTML สำหรับ Report
+    const reportHtml = `
+<html>
+<head>
+  <title>รายงานสรุปยอดขาย</title>
+  <style>
+    body { font-family: "Sarabun", sans-serif; margin: 40px; }
+    h2 { color: #e67e22; }
+    .summary { font-size: 1.2rem; margin-bottom: 24px; }
+    .summary div { margin-bottom: 12px; }
+    .filter { margin-bottom: 18px; color: #555; }
+    @media print { body { margin: 0; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <h2>รายงานสรุปยอดขาย</h2>
+  <div class="filter">
+    <div>สินค้า: ${
+      productCode ? filtered[0]?.name || productCode : "ทั้งหมด"
+    }</div>
+    <div>ปี: ${selectedYear || "-"}</div>
+    <div>ช่วงเวลา: ${
+      periodType === "month"
+        ? "รายเดือน"
+        : periodType === "quarter"
+        ? "รายไตรมาส"
+        : "รายปี"
+    }</div>
+  </div>
+  ${
+    periodType === "month"
+      ? (() => {
+          const monthNames = [
+            "ม.ค.",
+            "ก.พ.",
+            "มี.ค.",
+            "เม.ย.",
+            "พ.ค.",
+            "มิ.ย.",
+            "ก.ค.",
+            "ส.ค.",
+            "ก.ย.",
+            "ต.ค.",
+            "พ.ย.",
+            "ธ.ค.",
+          ];
+          const monthlySales = Array(12).fill(0);
+          const monthlyBuyin = Array(12).fill(0);
+
+          filtered.forEach((e) => {
+            if (Array.isArray(e.salesByMonth)) {
+              e.salesByMonth.forEach((val, idx) => {
+                monthlySales[idx] += val;
+              });
+            }
+            if (Array.isArray(e.buyinByMonth)) {
+              e.buyinByMonth.forEach((val, idx) => {
+                monthlyBuyin[idx] += val;
+              });
+            }
+          });
+
+          if (
+            !filtered.some((e) => Array.isArray(e.salesByMonth)) ||
+            !filtered.some((e) => Array.isArray(e.buyinByMonth))
+          ) {
+            const year = Number(selectedYear);
+            filteredSale = filteredSale || [];
+            filteredBuyin = filteredBuyin || [];
+            filtered.forEach((e) => {
+              monthlySales.forEach((_, idx) => {
+                const sales = filteredSale.filter((s) => {
+                  const dt = new Date(s.saleoutdate ?? s.date);
+                  return (
+                    (s.product_code ?? s.code ?? "") === e.code &&
+                    dt.getFullYear() === year &&
+                    dt.getMonth() === idx
+                  );
+                });
+                monthlySales[idx] += sales.reduce((sum, s) => {
+                  const qty = toNumber(
+                    s.salequantity ??
+                      s.sale_quantity ??
+                      s.quantity ??
+                      s.qty ??
+                      0
+                  );
+                  return (
+                    sum +
+                    toNumber(s.total ?? toNumber(s.sale_price ?? s.price) * qty)
+                  );
+                }, 0);
+              });
+              monthlyBuyin.forEach((_, idx) => {
+                const buys = filteredBuyin.filter((b) => {
+                  const dt = new Date(b.buyindate ?? b.date);
+                  return (
+                    (b.product_code ?? b.code ?? "") === e.code &&
+                    dt.getFullYear() === year &&
+                    dt.getMonth() === idx
+                  );
+                });
+                monthlyBuyin[idx] += buys.reduce((sum, b) => {
+                  const qty = toNumber(
+                    b.quantity ?? b.buyquantity ?? b.buy_quantity ?? b.qty ?? 0
+                  );
+                  return (
+                    sum +
+                    toNumber(b.total ?? toNumber(b.price ?? b.buy_price) * qty)
+                  );
+                }, 0);
+              });
+            });
+          }
+
+          // สรุปยอดรวม
+          const totalBuyin = monthlyBuyin.reduce((a, b) => a + b, 0);
+          const totalSales = monthlySales.reduce((a, b) => a + b, 0);
+
+          return `
+            <div class="monthly-summary" style="margin-bottom:24px;">
+              <b style="font-size:1.1rem;color:#2d7be0;">ยอดซื้อแต่ละเดือน</b>
+              <table style="margin-top:8px;border-collapse:collapse;width:100%;background:#f8fafc;">
+                <thead>
+                  <tr>
+                    ${monthNames
+                      .map(
+                        (m) =>
+                          `<th style="padding:6px 8px;border:1px solid #ffd336;background:#ffe9a7;">${m}</th>`
+                      )
+                      .join("")}
+                    <th style="padding:6px 8px;border:1px solid #ffd336;background:#ffd336;">รวม</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    ${monthlyBuyin
+                      .map(
+                        (v) =>
+                          `<td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;color:#2d7be0;">${v.toLocaleString(
+                            "th-TH"
+                          )}</td>`
+                      )
+                      .join("")}
+                    <td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;font-weight:bold;color:#2d7be0;background:#eaf6ff;">${totalBuyin.toLocaleString(
+                      "th-TH"
+                    )}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <b style="font-size:1.1rem;color:#e67e22;display:block;margin-top:18px;">ยอดขายแต่ละเดือน</b>
+              <table style="margin-top:8px;border-collapse:collapse;width:100%;background:#f8fafc;">
+                <thead>
+                  <tr>
+                    ${monthNames
+                      .map(
+                        (m) =>
+                          `<th style="padding:6px 8px;border:1px solid #ffd336;background:#ffe9a7;">${m}</th>`
+                      )
+                      .join("")}
+                    <th style="padding:6px 8px;border:1px solid #ffd336;background:#ffd336;">รวม</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    ${monthlySales
+                      .map(
+                        (v) =>
+                          `<td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;color:#e67e22;">${v.toLocaleString(
+                            "th-TH"
+                          )}</td>`
+                      )
+                      .join("")}
+                    <td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;font-weight:bold;color:#e67e22;background:#fff6e9;">${totalSales.toLocaleString(
+                      "th-TH"
+                    )}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        })()
+      : ""
+  }
+  <button onclick="window.print()" style="padding:10px 24px;font-size:1rem;border-radius:8px;background:#ffd336;border:none;cursor:pointer;">Print</button>
+  <button id="download-pdf" style="padding:10px 24px;font-size:1rem;border-radius:8px;background:#ffd336;border:none;cursor:pointer;margin-left:12px;">Download PDF</button>
+  <script src="Sarabun-Regular-normal.js"></script>
+  <script>
+    document.getElementById("download-pdf").onclick = function() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.addFont("THSarabunNew.ttf", "THSarabunNew", "normal");
+      doc.setFont("THSarabunNew");
+      doc.setFontSize(18);
+      doc.text("รายงานสรุปยอดขาย", 20, 20);
+      doc.setFontSize(14);
+      let y = 35;
+      const filterText = Array.from(document.querySelectorAll(".filter div"))
+        .map(div => div.textContent)
+        .join("\\n");
+      const summaryText = Array.from(document.querySelectorAll(".summary div"))
+        .map(div => div.textContent)
+        .join("\\n");
+      doc.text(filterText, 20, y);
+      y += 20;
+      doc.text(summaryText, 20, y);
+      doc.save("report.pdf");
+    };
+  </script>
+</body>
+</html>
+`;
+    const reportWin = window.open("", "_blank", "width=900,height=1200");
+    reportWin.document.write(reportHtml);
+    reportWin.document.close();
+  });

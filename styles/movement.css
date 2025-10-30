@@ -219,6 +219,19 @@ label,
   height: 50px;
 }
 
+.report-btn {
+  background: #776e6d;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
+  width: 7vw;
+  font-size: 16px;
+}
+
 .nav-btn.active {
   background: #ffd336;
   color: #333;
