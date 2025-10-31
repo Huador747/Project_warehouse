@@ -30,7 +30,8 @@ const UserSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-    profileImage: String
+    profileImage: String,
+    role: { type: String, enum: ['admin', 'user'], default: 'user' } // เพิ่มบรรทัดนี้
 });
 
 const User = mongoose.model('User', UserSchema);
@@ -131,42 +132,16 @@ app.post('/register', async (req, res) => {
 
 // route สำหรับการ login
 app.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        console.log('Login attempt for username:', username);
-
-        // ตรวจสอบว่ามีข้อมูลครบหรือไม่
-        if (!username || !password) {
-            console.log('Missing username or password');
-            return res.status(400).json({ message: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
-        }
-
-        // ค้นหาผู้ใช้
-        const user = await User.findOne({ username });
-        console.log('Found user:', user ? 'Yes' : 'No');
-
-        if (!user) {
-            console.log('User not found:', username);
-            return res.status(401).json({ message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
-        }
-
-        // ตรวจสอบรหัสผ่าน
-        console.log('Checking password...');
-        if (user.password !== password) {
-            console.log('Invalid password for user:', username);
-            return res.status(401).json({ message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
-        }
-
-        console.log('Login successful for user:', username);
-        res.json({
-            message: 'เข้าสู่ระบบสำเร็จ',
-            username: user.username
-        });
-
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ' });
-    }
+  const { username, password } = req.body;
+  const user = await User.findOne({ username, password });
+  if (!user) {
+    return res.status(401).json({ message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
+  }
+  res.json({
+    message: 'เข้าสู่ระบบสำเร็จ',
+    username: user.username,
+    role: user.role // ต้องมีบรรทัดนี้!   
+  });
 });
 
 // เพิ่ม route สำหรับดึงข้อมูลสินค้า

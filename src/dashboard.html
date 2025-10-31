@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="../styles/dashboard.css" />
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <h2>Admin Panel</h2>
+        <nav>
+          <a href="#" class="active">Dashboard</a>
+          <a href="#" id="user-management">User Management</a>
+          <a href="main.html">Back to Main</a>
+        </nav>
+      </aside>
+      <main class="main-content">
+        <section class="overview">
+          <h3>Overview</h3>
+          <div class="stats">
+            <div class="stat-card">
+              <div class="stat-title">Total Users</div>
+              <div class="stat-value" id="total-users">-</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Admin Users</div>
+              <div class="stat-value" id="admin-users">-</div>
+            </div>
+          </div>
+        </section>
+        <section class="user-list-section">
+          <h3>User Management</h3>
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="user-list">
+              <!-- User rows will be rendered here -->
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    <script>
+      // ตัวอย่าง fetch user list (แก้ endpoint ตาม backend)
+      fetch('/users')
+        .then(res => res.json())
+        .then(users => {
+          document.getElementById('total-users').textContent = users.length;
+          document.getElementById('admin-users').textContent = users.filter(u => u.role === 'admin').length;
+          const tbody = document.getElementById('user-list');
+          tbody.innerHTML = '';
+          users.forEach(user => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${user.username}</td>
+              <td>${user.role}</td>
+              <td>
+                <button class="edit-btn" data-id="${user._id}">Edit</button>
+                <button class="delete-btn" data-id="${user._id}">Delete</button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        });
+      // เพิ่ม event สำหรับปุ่ม edit/delete ได้ตามต้องการ
+    </script>
+  </body>
+</html>

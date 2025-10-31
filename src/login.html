@@ -1,88 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/login.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/login.css" />
     <title>Login Form</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="login-container">
-        <div class="login-right">
-            <div class="logo-container">
-                <img src="../assets/logo.png" alt="Logo" class="logo">
-            </div>
-            <h2>กรุณาเข้าสู่ระบบ</h2>
-            <form id="login-form">
-                <div class="login-group">
-                    <input type="text" id="username" name="username" required placeholder=" " />
-                    <label for="username">ชื่อผู้ใช้</label>
-                </div>
-                <div class="login-group">
-                    <input type="password" id="password" name="password" required placeholder=" " />
-                    <label for="password">รหัสผ่าน</label>
-                </div>
-                <input type="submit" value="เข้าสู่ระบบ">
-                <button type="button" id="register-btn" style="margin-top:12px;">ลงทะเบียน</button>
-            </form>
-
-            <script>
-const BACKEND_URL = `http://${window.location.hostname}:3000`;
-
-// เพิ่ม event listener สำหรับการกด Enter
-document.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
-        
-        if (username && password) { // ตรวจสอบว่ามีการกรอกข้อมูลครบ
-            loginUser(username, password);
-        }
-    }
-});
-
-// แยกฟังก์ชัน login เพื่อใช้ซ้ำ
-async function loginUser(username, password) {
-    try {
-        const response = await fetch(`${BACKEND_URL}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.message === 'เข้าสู่ระบบสำเร็จ') {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('username', username);
-            window.location.href = 'main.html';
-        } else {
-            alert(data.message);
-        }
-    } catch (error) {
-        alert('เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ' + error.message);
-    }
-}
-
-// ปรับ submit event listener ให้ใช้ฟังก์ชัน loginUser
-document.getElementById('login-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    await loginUser(username, password);
-});
-
-// เพิ่ม event สำหรับปุ่มลงทะเบียน
-document.getElementById('register-btn').addEventListener('click', function() {
-    window.location.href = 'register.html';
-});
-</script>
+      <div class="login-right">
+        <div class="logo-container">
+          <img src="../assets/logo.png" alt="Logo" class="logo" />
         </div>
+        <h2>กรุณาเข้าสู่ระบบ</h2>
+        <form id="login-form">
+          <div class="login-group">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              placeholder=" "
+            />
+            <label for="username">ชื่อผู้ใช้</label>
+          </div>
+          <div class="login-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder=" "
+            />
+            <label for="password">รหัสผ่าน</label>
+          </div>
+          <input type="submit" value="เข้าสู่ระบบ" />
+          <button type="button" id="register-btn" style="margin-top: 12px">
+            ลงทะเบียน
+          </button>
+        </form>
+
+        <script>
+          const BACKEND_URL = `http://${window.location.hostname}:3000`;
+
+          // เพิ่ม event listener สำหรับการกด Enter
+          document.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              const username = document.getElementById("username").value.trim();
+              const password = document.getElementById("password").value.trim();
+
+              if (username && password) {
+                // ตรวจสอบว่ามีการกรอกข้อมูลครบ
+                loginUser(username, password);
+              }
+            }
+          });
+
+          // แยกฟังก์ชัน login เพื่อใช้ซ้ำ
+          async function loginUser(username, password) {
+            try {
+              const response = await fetch(`${BACKEND_URL}/login`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username, password }),
+              });
+
+              const data = await response.json();
+
+              if (response.ok && data.message === "เข้าสู่ระบบสำเร็จ") {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("username", username);
+                localStorage.setItem("role", data.role);
+                if (data.role === "admin") {
+                  window.location.href = "/dashboard.html";
+                } else {
+                  window.location.href = "/main.html";
+                }
+              } else {
+                alert(data.message);
+              }
+            } catch (error) {
+              alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ: " + error.message);
+            }
+          }
+
+          // ปรับ submit event listener ให้ใช้ฟังก์ชัน loginUser
+          document
+            .getElementById("login-form")
+            .addEventListener("submit", async function (e) {
+              e.preventDefault();
+              const username = document.getElementById("username").value.trim();
+              const password = document.getElementById("password").value.trim();
+              await loginUser(username, password);
+            });
+
+          // เพิ่ม event สำหรับปุ่มลงทะเบียน
+          document
+            .getElementById("register-btn")
+            .addEventListener("click", function () {
+              window.location.href = "register.html";
+            });
+        </script>
+      </div>
     </div>
-</body>
+  </body>
 </html>
