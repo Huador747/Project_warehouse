@@ -1,0 +1,139 @@
+/* ===== Sidebar & Hamburger Styles (Reusable) ===== */
+
+/* Sidebar container */
+.sidebar {
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 3000;
+  transition: left 0.8s, transform 1.36s cubic-bezier(.2, .9, .2, 1), box-shadow 1.36s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  pointer-events: auto;
+  transform: translateX(-8px);
+}
+
+/* Sidebar open (JS toggle or hover) */
+.sidebar.sidebar-open {
+  left: 0;
+  transform: translateX(0);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Sidebar input */
+.sidebar input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* Sidebar nav button */
+.sidebar .nav-btn {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar .nav-btn:hover {
+  background: #ffe0b2;
+  border: 3px solid #8b7f7f;
+}
+
+.sidebar .nav-btn.active {
+  background: #ffd336;
+  color: #222;
+  border: 3px solid #e0b97d;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px) scale(1.02);
+  position: relative;
+}
+
+/* Hamburger button */
+.hamburger {
+  display: flex !important;
+  position: fixed;
+  top: 40px;
+  left: 24px;
+  z-index: 4000;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: 6px;
+}
+
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 4px;
+  background: #050505;
+  border-radius: 2px;
+  margin: 3px 0;
+  transition: transform 0.35s, opacity 0.25s, width 0.35s, background 0.2s;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hamburger:hover span {
+  background: #ffa144;
+  width: 36px;
+  transition: 0.4s;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Sidebar hover interaction (optional, for hover-to-open) */
+.hamburger:hover + .sidebar,
+.sidebar:hover {
+  left: 0;
+  transform: translateX(0);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Responsive: stack nav-btn vertically and fill sidebar */
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin-top: 5rem;
+}
+
+.sidebar-nav-btn .nav-btn {
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* ===== END Sidebar & Hamburger Styles ===== */

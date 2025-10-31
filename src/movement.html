@@ -1,125 +1,118 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <title>กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../styles/movement.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
 
-  <body>
-    <!-- Hamburger button -->
-    <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <div class="sidebar" id="sidebar">
-      <div class="sidebar-nav-btn">
-        <button class="nav-btn" onclick="window.location.href='main.html'">
-          <span class="nav-icon">🏠</span> หน้าหลัก
-        </button>
-        <button class="nav-btn" onclick="window.location.href='buyin.html'">
-          <span class="nav-icon">🛒</span> รายการซื้อ
-        </button>
-        <button class="nav-btn" onclick="window.location.href='sale.html'">
-          <span class="nav-icon">💸</span> รายการขาย
-        </button>
-        <button class="nav-btn" onclick="window.location.href='history.html'">
-          <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
-        </button>
-        <button class="nav-btn" onclick="window.location.href='inventory.html'">
-          <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
-        </button>
-        <button class="nav-btn active" onclick="window.location.href='movement.html'">
-          <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <title>กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/responsive/sidebar1180.css" />
+  <link rel="stylesheet" href="../styles/movement.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <!-- Hamburger button -->
+  <button class="hamburger" id="hamburger-btn" aria-label="เมนูนำทาง">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-nav-btn">
+      <button class="nav-btn" onclick="window.location.href='main.html'">
+        <span class="nav-icon">🏠</span> หน้าหลัก
+      </button>
+      <button class="nav-btn" onclick="window.location.href='buyin.html'">
+        <span class="nav-icon">🛒</span> รายการซื้อ
+      </button>
+      <button class="nav-btn" onclick="window.location.href='sale.html'">
+        <span class="nav-icon">💸</span> รายการขาย
+      </button>
+      <button class="nav-btn" onclick="window.location.href='history.html'">
+        <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
+      </button>
+      <button class="nav-btn" onclick="window.location.href='inventory.html'">
+        <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
+      </button>
+      <button class="nav-btn active" onclick="window.location.href='movement.html'">
+        <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+      </button>
+    </div>
+    <div class="logo-container">
+      <img src="/assets/logo.png" alt="Logo" class="logo" />
+    </div>
+  </div>
+  <!-- ส่วน navbar -->
+  <div class="navbar">
+    <form class="navbar-form">
+      <span class="navbar-text active">หน้าการเคลื่อนไหวสินค้า</span>
+      <button class="report-btn" id="report-btn">Report</button>
+    </form>
+    <div class="search-logout-row">
+      <input type="text" class="search-product-input" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล..." />
+      <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="controls">
+      <div class="control-group">
+        <label for="product-select">เลือกดูเฉพาะสินค้า:</label>
+        <select id="product-select">
+          <option value="">ทั้งหมด</option>
+          <!-- เติม option ด้วย JS -->
+        </select>
       </div>
-      <div class="logo-container">
-        <img src="/assets/logo.png" alt="Logo" class="logo" />
+      <div class="control-group">
+        <label for="period-type">เลือกช่วงเวลา:</label>
+        <select id="period-type">
+          <option value="month">รายเดือน</option>
+          <option value="quarter">รายไตรมาส</option>
+          <option value="year">รายปี</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="year-select" id="year-label">เลือกปี:</label>
+        <select id="year-select"></select>
       </div>
     </div>
-    <!-- ส่วน navbar -->
-    <div class="navbar">
-      <form class="navbar-form">
-        <span class="navbar-text active">หน้าการเคลื่อนไหวสินค้า</span>
-        <button class="report-btn" id="report-btn">Report</button>
-      </form>
-      <div class="search-logout-row">
-        <input
-          type="text"
-          class="search-product-input"
-          placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล..."
-        />
-        <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
-      </div>
-    </div>
-    <div class="main-content">
-      <div class="controls">
-        <div class="control-group">
-          <label for="product-select">เลือกดูเฉพาะสินค้า:</label>
-          <select id="product-select">
-            <option value="">ทั้งหมด</option>
-            <!-- เติม option ด้วย JS -->
-          </select>
-        </div>
-        <div class="control-group">
-          <label for="period-type">เลือกช่วงเวลา:</label>
-          <select id="period-type">
-            <option value="month">รายเดือน</option>
-            <option value="quarter">รายไตรมาส</option>
-            <option value="year">รายปี</option>
-          </select>
-        </div>
+    <div id="inventory-info" style="margin-bottom: 24px; font-weight: bold; color: #d35400"></div>
+    <canvas id="movementChart" width="900" height="400"></canvas>
+  </div>
+  <script type="module" src="../scripts/movement.js"></script>
+  <script>
+    const yearSelect = document.getElementById("year-select");
+    const yearLabel = document.getElementById("year-label");
 
-        <div class="control-group">
-          <label for="year-select" id="year-label">เลือกปี:</label>
-          <select id="year-select"></select>
-        </div>
-      </div>
-      <div
-        id="inventory-info"
-        style="margin-bottom: 24px; font-weight: bold; color: #d35400"
-      ></div>
-      <canvas id="movementChart" width="900" height="400"></canvas>
-    </div>
-    <script type="module" src="../scripts/movement.js"></script>
-    <script>
-      const yearSelect = document.getElementById("year-select");
-      const yearLabel = document.getElementById("year-label");
+    async function populateYearSelect() {
+      const { buyin, sale } = await fetchAll();
+      const years = new Set();
+      const safeDate = (d) => {
+        try {
+          return new Date(d);
+        } catch {
+          return new Date(NaN);
+        }
+      };
+      (buyin || []).forEach((b) => {
+        const dt = safeDate(b.buyindate ?? b.date);
+        if (!isNaN(dt)) years.add(dt.getFullYear());
+      });
+      (sale || []).forEach((s) => {
+        const dt = safeDate(s.saleoutdate ?? s.date);
+        if (!isNaN(dt)) years.add(dt.getFullYear());
+      });
+      const sorted = Array.from(years).sort((a, b) => b - a);
+      yearSelect.innerHTML = "";
+      sorted.forEach((y) => {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+      });
+      if (sorted.length) yearSelect.value = sorted[0];
+    }
+  </script>
+</body>
 
-      async function populateYearSelect() {
-        const { buyin, sale } = await fetchAll();
-        const years = new Set();
-        const safeDate = (d) => {
-          try {
-            return new Date(d);
-          } catch {
-            return new Date(NaN);
-          }
-        };
-        (buyin || []).forEach((b) => {
-          const dt = safeDate(b.buyindate ?? b.date);
-          if (!isNaN(dt)) years.add(dt.getFullYear());
-        });
-        (sale || []).forEach((s) => {
-          const dt = safeDate(s.saleoutdate ?? s.date);
-          if (!isNaN(dt)) years.add(dt.getFullYear());
-        });
-        const sorted = Array.from(years).sort((a, b) => b - a);
-        yearSelect.innerHTML = "";
-        sorted.forEach((y) => {
-          const opt = document.createElement("option");
-          opt.value = y;
-          opt.textContent = y;
-          yearSelect.appendChild(opt);
-        });
-        if (sorted.length) yearSelect.value = sorted[0];
-      }
-    </script>
-  </body>
 </html>
