@@ -79,36 +79,54 @@
     animation: bounceIn 0.7s;
   }
 
+  /* Sidebar (เหมือน buyin ช่วง 900–1200px): ลดความกว้างและจัดวางกึ่งกลาง */
+  .sidebar {
+    width: 180px;
+    padding: 16px 10px;
+    gap: 8px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* จัดให้อยู่กลางแนวตั้ง */
+    height: 100vh;
+  }
+
+  /* โลโก้ใน sidebar: ปรับขนาดให้เหมาะกับความกว้าง 180px */
+  .sidebar .logo-container {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar .logo {
+    width: 200px;
+    height: 200px;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* คอนเทนเนอร์ปุ่มใน sidebar + ปุ่มย่อย ให้เหมือน buyin */
   .sidebar-nav-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
+    justify-content: center; /* ให้ปุ่มอยู่กลางแนวตั้ง */
     flex: 1;
-    margin-top: 5rem;
-    /* ขยายเต็มพื้นที่ sidebar */
+    margin-top: 40px;
   }
 
-  .sidebar .nav-btn.active {
-    background: #ffd336;
-    color: #222;
-    border: 3px solid #e0b97d;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
-      inset 0 -6px 12px rgba(0, 0, 0, 0.06);
-    transform: translateY(-4px) scale(1.02);
-    position: relative;
-  }
-
-  .sidebar .nav-btn:hover {
-    background: #ffe0b2;
-    border: 3px solid #8b7f7f;
-  }
-
-  .hamburger:hover + .sidebar,
-  .sidebar:hover {
-    left: 0;
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+  .sidebar-nav-btn .nav-btn {
+    font-size: 11px;
+    margin-top: 15px;
+    padding: 6px 0;
+    width: 100%;
+    align-items: center;
   }
 }
 
@@ -231,7 +249,6 @@
   box-sizing: border-box;
 }
 
-/* Hamburger hover: แสดง sidebar เมื่อ hover ที่ hamburger */
 .hamburger {
   display: flex !important;
   position: fixed;

@@ -19,6 +19,7 @@ body {
   box-sizing: border-box;
   overflow: auto;
 }
+
 body {
   display: block;
   min-height: 100vh;
@@ -47,12 +48,6 @@ body {
 .logo {
   animation: floatY 6s ease-in-out infinite;
 }
-
-
-
-
-
-
 
 /* Main content styles */
 .main-content {
@@ -182,6 +177,7 @@ body {
 .dropdown-btn.active+.dropdown-content {
   display: flex;
 }
+
 .dropdown-icon {
   margin-left: 8px;
   font-size: 18px;
@@ -189,6 +185,7 @@ body {
 }
 
 /* Hamburger styles */
+/* Sidebar: ปุ่ม Hamburger สำหรับเรียกใช้งาน/โต้ตอบกับ sidebar */
 .hamburger {
   display: flex !important;
   position: fixed;
@@ -206,6 +203,7 @@ body {
   gap: 6px;
 }
 
+/* Sidebar: แท่งเส้นของปุ่ม Hamburger (ควบคุมสี/ขนาด/transition) */
 .hamburger span {
   display: block;
   width: 28px;
@@ -216,12 +214,14 @@ body {
   transition: 0.4s;
 }
 
+/* Sidebar: เอฟเฟกต์เมื่อ hover บนปุ่ม Hamburger (ขยายความยาวแท่ง/เปลี่ยนสี) */
 .hamburger:hover span {
   background: #ffa144;
   width: 36px;
   transition: 0.4s;
 }
 
+/* Sidebar: แอนิเมชันเมื่อสถานะ active (แปลงเป็นกากบาท ใช้เมื่อ sidebar เปิดอยู่) */
 .hamburger.active span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
@@ -418,6 +418,7 @@ body {
   box-sizing: border-box;
 }
 
+/* Sidebar: ปุ่มเมนูภายใน sidebar เมื่ออยู่สถานะ active (ไฮไลต์เมนูที่เลือก) */
 .nav-btn.active {
   background: #ffd336;
   /* สีเหลืองสดใส */
@@ -544,6 +545,7 @@ body {
     transform: translateY(0);
   }
 }
+
 /* ปุ่ม navbar-text พอง/ยุบ */
 @keyframes subtlePulse {
   0% {
@@ -660,4 +662,107 @@ body {
 .search-item:hover {
   transform: translateY(-3px);
 }
-/* ========== จบส่วนเพิ่ม ========== */
+
+/* Sidebar (นำมาจาก buyin): ค่าเริ่มต้นซ่อนไว้ด้านซ้าย, เลเยอร์ต่ำกว่า navbar, และมี transition */
+.sidebar {
+  position: fixed;
+  left: -270px;
+  top: 0;
+  height: 100vh;
+  z-index: 2000;
+  /* ต่ำกว่า .navbar (3000) */
+  transition: left 0.8s, transform 0.8s cubic-bezier(.2, .9, .2, 1), box-shadow 0.8s;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  background: rgb(254, 179, 104);
+  color: #fff;
+  padding: 30px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  transform: translateX(-8px);
+  pointer-events: auto;
+}
+
+/* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar เอง (เหมือน buyin) */
+.hamburger:hover+.sidebar,
+.sidebar:hover {
+  left: 0;
+  transform: translateX(0);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+}
+
+/* รองรับกรณีเปิดด้วยคลาส .sidebar-open (ถ้ามีในอนาคต) */
+.sidebar.sidebar-open {
+  left: 0;
+  transform: translateX(0);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+}
+
+/* องค์ประกอบภายใน sidebar (เหมือน buyin) */
+.sidebar input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.sidebar .nav-btn {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar .nav-btn:hover {
+  background: #ffe0b2;
+  border: 3px solid #8b7f7f;
+}
+
+/* คอนเทนเนอร์ปุ่มใน sidebar ให้จัดกลางและเว้นระยะตาม buyin */
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin-top: 5rem;
+}
+
+.sidebar-nav-btn .nav-btn {
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* ปรับสไตล์โลโก้ใน sidebar ให้พอดีกับความกว้างของแถบ */
+.sidebar .logo-container {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin: 0 auto 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar .logo {
+  max-width: 100%;
+  width: 180px;
+  /* พอดีกับ sidebar 200–250px */
+  height: auto;
+  /* รักษาอัตราส่วนภาพ */
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  animation: floatY 6s ease-in-out infinite;
+  /* ให้แน่ใจว่ามีอนิเมชัน */
+}

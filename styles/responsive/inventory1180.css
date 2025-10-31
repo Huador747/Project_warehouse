@@ -1,0 +1,106 @@
+@media screen and (max-width: 1200px) and (min-width: 900px) {
+
+    
+
+  
+
+
+    /* Hamburger styles */
+    .hamburger {
+        position: fixed;
+        left: 24px;
+        /* 90px (navbar) / 2 = 45px */
+        transform: translateY(-50%);
+        z-index: 4000;
+        width: 40px;
+        height: 40px;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        gap: 6px;
+        cursor: pointer;
+    }
+
+    .hamburger span {
+        display: block;
+        width: 28px;
+        height: 4px;
+        background: #050505;
+        border-radius: 2px;
+        margin: 3px 0;
+        transition: 0.4s;
+    }
+
+    .hamburger:hover span {
+        background: #ffa144;
+        width: 36px;
+        transition: 0.4s;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Navbar styles */
+    .navbar {
+        height: 80px;
+        width: 100vw;
+        left: 0;
+        top: 0;
+        background: rgb(244, 224, 125);
+        color: #fff;
+        padding: 8px 16px; /* ลด padding */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        position: fixed;
+        z-index: 3000;
+    }
+
+    .navbar-form {
+        height: 40px;
+        gap: 10px;
+        margin-left: 20px;
+        padding: 6px 0 8px 0;
+    }
+
+    .navbar-form input[type="text"] {
+        padding: 4px 8px;
+        border: none;
+        border-radius: 4px;
+        height: 40px;
+        font-size: 15px;
+    }
+
+    .navbar-text.active {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1e4706;
+        letter-spacing: 1px;
+        margin-right: 12px;
+        text-shadow: 0 2px 8px #ffe0b2;
+        position: relative;
+        min-width: 100px;
+        padding: 4px 12px;
+    }
+
+    .navbar-text.active::before {
+        content: "🚛📦";
+        margin-right: 8px;
+        font-size: 1.3em;
+        vertical-align: middle;
+        animation: bounceIn 0.7s;
+    }
+}

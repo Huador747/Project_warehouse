@@ -1,5 +1,6 @@
 /* Responsive for iPad 1200x900 */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
+
   /* Sidebar */
   .sidebar {
     width: 180px;
@@ -14,6 +15,7 @@
     /* จัดให้อยู่กลางแนวตั้ง */
     height: 100vh;
   }
+
   .sidebar-nav-btn .nav-btn {
     font-size: 11px;
     margin-top: 15px;
@@ -21,6 +23,7 @@
     width: 100%;
     align-items: center;
   }
+
   .sidebar-nav-btn {
     display: flex;
     flex-direction: column;
@@ -31,6 +34,7 @@
     margin-top: 40px;
     /* หรือปรับตามต้องการ */
   }
+
   .sidebar .nav-btn:hover {
     background: #ffe0b2;
     border: 3px solid #8b7f7f;
@@ -42,20 +46,21 @@
     font-size: 18px;
   }
 
-  .logo {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .logo-container {
+  .sidebar .logo-container {
     width: 150px;
     height: 150px;
     margin-bottom: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .sidebar .logo {
+    width: 200px;
+    height: 200px;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
   }
 }

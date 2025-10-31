@@ -221,7 +221,6 @@
   /* Sidebar */
   .sidebar {
     width: 180px;
-    /* ลดความกว้าง */
     padding: 16px 10px;
     gap: 8px;
     z-index: 2000;
@@ -233,31 +232,44 @@
     height: 100vh;
   }
 
+  /* Sidebar: ปุ่ม Hamburger (ตำแหน่ง/ขนาด) สำหรับเรียกใช้งาน sidebar ในช่วงจอ 900–1200px */
+  .hamburger {
+    position: fixed;
+    left: 24px;
+    top: 40px;
+    /* 90px (navbar) / 2 = 45px */
+    transform: translateY(-50%);
+    z-index: 4000;
+    width: 40px;
+    height: 40px;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    gap: 6px;
+    cursor: pointer;
+  }
 
+  /* Sidebar: คอนเทนเนอร์รวมปุ่มเมนูภายใน sidebar (จัดวางปุ่มเป็นคอลัมน์และจัดกึ่งกลาง) */
+  .sidebar-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* ให้ปุ่มอยู่กลางแนวตั้ง */
+    flex: 1;
+    margin-top: 40px;
+    /* หรือปรับตามต้องการ */
+  }
 
+  /* Sidebar: ปุ่มเมนูในคอนเทนเนอร์ (ขนาดตัวอักษร/ระยะห่าง/ความกว้างเต็ม) */
   .sidebar-nav-btn .nav-btn {
     font-size: 11px;
     margin-top: 15px;
     padding: 6px 0;
     width: 100%;
     align-items: center;
-  }
-
-
-  .logo {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .logo-container {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
