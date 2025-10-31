@@ -818,11 +818,42 @@ document
   <html>
   <head>
     <style>
-    body { font-family: "Sarabun", sans-serif; margin: 40px; }
+    body { font-family: "Sarabun", sans-serif; margin: 40px; position: relative; }
     h2 { color: #e67e22; }
     .summary { font-size: 1.2rem; margin-bottom: 24px; }
     .summary div { margin-bottom: 12px; }
     .filter { margin-bottom: 18px; color: #555; }
+
+    /* นาฬิกาโลก */
+    .world-clock {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      text-align: center;
+      min-width: 200px;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .world-clock .city {
+      font-size: 0.85rem;
+      color: #c92617ff;
+      font-weight: 600;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .world-clock .date {
+      font-size: 0.95rem;
+      color: #111827;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .world-clock .time {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111827;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 1px;
+    }
 
     table { border-collapse: collapse; width: 100%; background: #f8fafc; }
     th, td { padding: 6px 8px; border: 1px solid #ffd336; }
@@ -833,9 +864,13 @@ document
 
     @media print {
       .action-buttons { display: none !important; }
+      .world-clock { 
+        position: absolute !important;
+        top: 20px !important;
+        right: 20px !important;
+      }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       
-      /* ซ่อน URL และ header/footer ของเบราว์เซอร์ */
       @page {
         margin: 0.5cm;
         size: A4;
@@ -853,7 +888,15 @@ document
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <body>
-  <div style="display:flex; justify-content:center; align-items:center; margin-top:-80px;">
+  
+  <!-- นาฬิกาโลก Bangkok -->
+  <div class="world-clock" id="bangkok-clock">
+    <div class="city">🇹🇭 Bangkok</div>
+    <div class="date" id="clock-date">-</div>
+    <div class="time" id="clock-time">--:--:--</div>
+  </div>
+
+  <div style="display:flex; justify-content:center; align-items:center; margin: 0 0 8px;">
     <img
       src="${location.origin}/assets/logo.png"
       alt="Logo"
@@ -862,6 +905,7 @@ document
     />
   </div>
     <h2>รายงานสรุปยอดขาย</h2>
+    
     <div class="filter" style="
     background: #ffdc50ff;
     padding: 20px 25px;
@@ -1092,75 +1136,7 @@ document
           </div>
           </div>
          </div>
-         
-          <!-- Timestamp (bottom-right) -->
-          <div id="print-timestamp" style="
-            position: fixed;
-            right: 12px;
-            bottom: 12px;
-            font-size: 12px;
-            color: #111827;
-            background: rgba(255, 211, 54, 0.95);
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
-            z-index: 99999;
-            display: none;
-            font-family: 'Sarabun', sans-serif;
-          ">
-
-          <style>
-            @media print {
-              #print-timestamp { display: block !important; }
-            }
-          </style>
-
-          <script>
-            (function () {
-              function formatThaiDateTime(d) {
-                try {
-                  return d.toLocaleString('th-TH', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                  });
-                } catch {
-                  return d.toISOString().replace('T', ' ').slice(0, 19);
-                }
-              }
-
-              function showTimestamp() {
-                const el = document.getElementById('print-timestamp');
-                if (!el) return;
-                el.textContent = 'พิมพ์เมื่อ: ' + formatThaiDateTime(new Date());
-                el.style.display = 'block';
-              }
-
-              window.addEventListener('DOMContentLoaded', function () {
-                // Override the inline Print button to inject timestamp first
-                const printBtn = document.querySelector('.action-buttons button[onclick]');
-                if (printBtn) {
-                  printBtn.onclick = function (e) {
-                    e.preventDefault();
-                    showTimestamp();
-                    requestAnimationFrame(() => window.print());
-                  };
-                }
-              });
-
-              // Support Ctrl+P or browser menu
-              window.addEventListener('beforeprint', showTimestamp);
-              window.addEventListener('afterprint', function () {
-                const el = document.getElementById('print-timestamp');
-                if (el) el.style.display = 'none';
-              });
-            })();
-          </script>
-
-          </div>
+        </div>
         `;
           })()
         : ""
@@ -1202,14 +1178,44 @@ document
     </div>
 
     <script>
-    // ดาวน์โหลด PDF (อย่างง่าย)
+    // นาฬิกาโลก Bangkok
+    function updateBangkokClock() {
+      const now = new Date();
+      
+      // แปลงเป็นเวลา Bangkok (UTC+7)
+      const bangkokTime = new Date(now.toLocaleString('en-US', { 
+        timeZone: 'Asia/Bangkok' 
+      }));
+      
+      // Format วันที่ (พ.ศ.)
+      const thaiYear = bangkokTime.getFullYear() + 543;
+      const thaiMonths = [
+        'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+        'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+      ];
+      const dateStr = bangkokTime.getDate() + ' ' + 
+                     thaiMonths[bangkokTime.getMonth()] + ' ' + 
+                     thaiYear;
+      
+      // Format เวลา (HH:MM:SS)
+      const hours = String(bangkokTime.getHours()).padStart(2, '0');
+      const minutes = String(bangkokTime.getMinutes()).padStart(2, '0');
+      const timeStr = hours + ':' + minutes;
+      document.getElementById('clock-date').textContent = dateStr;
+      document.getElementById('clock-time').textContent = timeStr;
+    }
+    
+    // อัปเดตทุก 1 วินาที
+    updateBangkokClock();
+    setInterval(updateBangkokClock, 1000);
+
+    // ดาวน์โหลด PDF
     document.getElementById("download-pdf").onclick = function() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       doc.setFontSize(18);
       doc.text("รายงานสรุปยอดขาย", 20, 20);
       doc.setFontSize(12);
-      // หมายเหตุ: การแปลงทั้งตารางเป็น PDF แนะนำให้ใช้ html2canvas + jsPDF ถ้าต้องการความเหมือนมากขึ้น
       doc.save("report.pdf");
     };
     </script>
@@ -1218,5 +1224,6 @@ document
   `;
     const reportWin = window.open("", "_blank", "width=900,height=1200");
     reportWin.document.write(reportHtml);
+    reportWin.document.title = "รายงานสรุปยอดขาย";
     reportWin.document.close();
   });

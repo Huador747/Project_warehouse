@@ -48,82 +48,11 @@ body {
   animation: floatY 6s ease-in-out infinite;
 }
 
-.sidebar-nav-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;   /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
-  flex: 1;
-  margin-top:5rem;                 /* ขยายเต็มพื้นที่ sidebar */
-}
 
-.sidebar-nav-btn .nav-btn {
-  align-items: center;
-  margin-top: 15px;
-}
 
-.sidebar {
-  position: fixed;
-  left: -270px;
-  top: 0;
-  height: 100vh;
-  z-index: 3000;
-  /* เพิ่มเวลาเป็น 1.3s (เดิม 0.3s) */
-  transition: left 1.3s;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  width: 250px;
-  background: rgb(254, 179, 104);
-  color: #fff;
-  padding: 30px 30px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
 
-.sidebar.sidebar-open {
-  left: 0;
-  transform: translateX(0);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
-}
 
-.sidebar input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
 
-.sidebar .nav-btn {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  background: #fff;
-  color: #333;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.sidebar .nav-btn:hover {
-  background: #ffe0b2;
-  border: 3px solid #8b7f7f;
-  /* ขอบทองอ่อน */
-}
-
-.sidebar .nav-btn.active {
-  background: #ffd336;
-  color: #222;
-  border: 3px solid #e0b97d;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
-    inset 0 -6px 12px rgba(0, 0, 0, 0.06);
-  transform: translateY(-4px) scale(1.02);
-  position: relative;
-}
 
 /* Main content styles */
 .main-content {
