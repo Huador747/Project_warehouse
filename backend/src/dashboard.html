@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="stylesheet" href="../styles/dashboard.css" />
+    <link rel="stylesheet" href="/backend/style/dashboard.css" />
     <title>Admin Dashboard</title>
   </head>
   <body>
@@ -13,7 +13,7 @@
         <nav>
           <a href="#" class="active">Dashboard</a>
           <a href="#" id="user-management">User Management</a>
-          <a href="main.html">Back to Main</a>
+          <a href="/main.html">Back to Main</a>
         </nav>
       </aside>
       <main class="main-content">
@@ -48,7 +48,7 @@
       </main>
     </div>
     <script>
-      // ตัวอย่าง fetch user list (แก้ endpoint ตาม backend)
+      // แก้ API endpoint ให้ถูกต้อง
       fetch('/users')
         .then(res => res.json())
         .then(users => {
@@ -68,8 +68,8 @@
             `;
             tbody.appendChild(tr);
           });
-        });
-      // เพิ่ม event สำหรับปุ่ม edit/delete ได้ตามต้องการ
+        })
+        .catch(err => console.error('Error loading users:', err));
     </script>
   </body>
 </html>

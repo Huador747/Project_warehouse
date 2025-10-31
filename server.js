@@ -206,11 +206,17 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
-// ใช้งาน static file
+// Serve static files - ต้องเรียงลำดับให้ถูกต้อง
 app.use(express.static(path.join(__dirname, 'src')));
-app.use('/styles', express.static(path.join(__dirname, 'styles')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
+app.use(express.static(path.join(__dirname, 'styles')));
+app.use(express.static(path.join(__dirname, 'scripts')));
+app.use(express.static(path.join(__dirname, 'assets')));
+
+// Serve backend static files
+app.use('/backend', express.static(path.join(__dirname, 'backend')));
+
+// เพิ่ม: Serve root directory เพื่อให้เข้าถึงไฟล์ทุกอย่างได้
+app.use(express.static(__dirname));
 
 // เพิ่ม route สำหรับลบสินค้า
 app.delete('/products/:id', async (req, res) => {

@@ -80,7 +80,7 @@
                 localStorage.setItem("username", username);
                 localStorage.setItem("role", data.role);
                 if (data.role === "admin") {
-                  window.location.href = "/dashboard.html";
+                  window.location.href = "/backend/src/dashboard.html"; // เปลี่ยนเป็น path ใหม่
                 } else {
                   window.location.href = "/main.html";
                 }

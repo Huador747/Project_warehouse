@@ -815,89 +815,92 @@ document
 
     // สร้าง HTML สำหรับ Report
     const reportHtml = `
-<html>
-<head>
-  <title>รายงานสรุปยอดขาย</title>
-  <style>
+  <html>
+  <head>
+    <style>
     body { font-family: "Sarabun", sans-serif; margin: 40px; }
     h2 { color: #e67e22; }
     .summary { font-size: 1.2rem; margin-bottom: 24px; }
     .summary div { margin-bottom: 12px; }
     .filter { margin-bottom: 18px; color: #555; }
 
-    /* ปรับให้ซ่อนเมื่อพิมพ์ (print preview / print) */
+    table { border-collapse: collapse; width: 100%; background: #f8fafc; }
+    th, td { padding: 6px 8px; border: 1px solid #ffd336; }
+    thead th { background: #ffe9a7; }
+    .total-cell { background: #ffd336; }
+    .buyin-sum { color: #2d7be0; background:#eaf6ff; }
+    .sale-sum { color: #e67e22; background:#fff6e9; }
+
     @media print {
-      .filter,
       .action-buttons { display: none !important; }
-      /* ป้องกัน box หักคอลัมน์ตอนพิมพ์ */
-      .summary-totals, .monthly-summary, table { page-break-inside: avoid; }
-      body { margin: 8mm; } /* กระดาษขอบเล็กเมื่อพิมพ์ */
-      /* รักษาสีเมื่อพิมพ์ (browser support varies) */
-      * { -webkit-print-color-adjust: exact; color-adjust: exact; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      
+      /* ซ่อน URL และ header/footer ของเบราว์เซอร์ */
+      @page {
+        margin: 0.5cm;
+        size: A4;
+      }
+      
+      body {
+        margin: 1cm;
+      }
     }
 
     @media screen {
-      /* ปรับปุ่มให้ดูดีกว่าในหน้าจอ */
       .action-buttons button { cursor: pointer; }
     }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+  <div style="display:flex; justify-content:center; align-items:center; margin-top:-80px;">
+    <img
+      src="${location.origin}/assets/logo.png"
+      alt="Logo"
+      onerror="this.style.display='none'"
+      style="width:250px; height:250px; display:block; object-fit:contain;"
+    />
+  </div>
+    <h2>รายงานสรุปยอดขาย</h2>
+    <div class="filter" style="
+    background: #ffdc50ff;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+    margin: 24px 0;
+    ">
+    <h3 style="
+      color: #374151;
+      font-size: 1.1rem;
+      margin: 0 0 16px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #ffd336;
+    ">ตัวกรองรายงาน</h3>
 
-    @media print { body { margin: 0; } }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
-<body>
-  <h2>รายงานสรุปยอดขาย</h2>
-  <div class="filter" style="
-  background: #ffffff;
-  padding: 20px 25px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  border: 1px solid #e5e7eb;
-  margin: 24px 0;
-">
-  <h3 style="
-    color: #374151;
-    font-size: 1.1rem;
-    margin: 0 0 16px 0;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #ffd336;
-  ">ตัวกรองรายงาน</h3>
-
-  <div style="
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-  ">
     <div style="
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      ">
+      <div style="
       padding: 12px 16px;
       background: #f8fafc;
       border-radius: 6px;
       border: 1px solid #e5e7eb;
-    ">
+      ">
       <div style="color: #6b7280; font-size: 0.9rem; margin-bottom: 4px;">สินค้า</div>
       <div style="color: #111827; font-weight: 500;">
         ${productCode ? filtered[0]?.name || productCode : "ทั้งหมด"}
       </div>
-    </div>
-
-    <div style="
-      padding: 12px 16px;
-      background: #f8fafc;
-      border-radius: 6px;
-      border: 1px solid #e5e7eb;
-    ">
-      <div style="color: #6b7280; font-size: 0.9rem; margin-bottom: 4px;">ปี</div>
-      <div style="color: #111827; font-weight: 500;">
-        ${selectedYear || "-"}
       </div>
-    </div>
 
-    <div style="
+      <div style="
       padding: 12px 16px;
       background: #f8fafc;
       border-radius: 6px;
       border: 1px solid #e5e7eb;
-    ">
+      ">
       <div style="color: #6b7280; font-size: 0.9rem; margin-bottom: 4px;">ช่วงเวลา</div>
       <div style="color: #111827; font-weight: 500;">
         ${
@@ -908,290 +911,311 @@ document
             : "รายปี"
         }
       </div>
+      </div>
+
+      <div style="
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      ">
+      <div style="color: #6b7280; font-size: 0.9rem; margin-bottom: 4px;">ปี</div>
+      <div style="color: #111827; font-weight: 500;">
+        ${selectedYear || "-"}
+      </div>
+      </div>
     </div>
-  </div>
-</div>
-  ${
-    periodType === "month"
-      ? (() => {
-          const monthNames = [
-            "ม.ค.",
-            "ก.พ.",
-            "มี.ค.",
-            "เม.ย.",
-            "พ.ค.",
-            "มิ.ย.",
-            "ก.ค.",
-            "ส.ค.",
-            "ก.ย.",
-            "ต.ค.",
-            "พ.ย.",
-            "ธ.ค.",
-          ];
-          const monthlySales = Array(12).fill(0);
-          const monthlyBuyin = Array(12).fill(0);
+    </div>
 
-          filtered.forEach((e) => {
-            if (Array.isArray(e.salesByMonth)) {
-              e.salesByMonth.forEach((val, idx) => {
-                monthlySales[idx] += val;
-              });
-            }
-            if (Array.isArray(e.buyinByMonth)) {
-              e.buyinByMonth.forEach((val, idx) => {
-                monthlyBuyin[idx] += val;
-              });
-            }
-          });
+    ${
+      periodType === "month"
+        ? (() => {
+            const monthNames = [
+              "ม.ค.",
+              "ก.พ.",
+              "มี.ค.",
+              "เม.ย.",
+              "พ.ค.",
+              "มิ.ย.",
+              "ก.ค.",
+              "ส.ค.",
+              "ก.ย.",
+              "ต.ค.",
+              "พ.ย.",
+              "ธ.ค.",
+            ];
+            const monthlySales = Array(12).fill(0);
+            const monthlyBuyin = Array(12).fill(0);
 
-          if (
-            !filtered.some((e) => Array.isArray(e.salesByMonth)) ||
-            !filtered.some((e) => Array.isArray(e.buyinByMonth))
-          ) {
-            const year = Number(selectedYear);
-            filteredSale = filteredSale || [];
-            filteredBuyin = filteredBuyin || [];
+            // รวมยอดตามเดือน
             filtered.forEach((e) => {
-              monthlySales.forEach((_, idx) => {
-                const sales = filteredSale.filter((s) => {
-                  const dt = new Date(s.saleoutdate ?? s.date);
-                  return (
-                    (s.product_code ?? s.code ?? "") === e.code &&
-                    dt.getFullYear() === year &&
-                    dt.getMonth() === idx
-                  );
+              if (Array.isArray(e.salesByMonth)) {
+                e.salesByMonth.forEach((val, idx) => {
+                  monthlySales[idx] += val;
                 });
-                monthlySales[idx] += sales.reduce((sum, s) => {
-                  const qty = toNumber(
-                    s.salequantity ??
-                      s.sale_quantity ??
-                      s.quantity ??
-                      s.qty ??
-                      0
-                  );
-                  return (
-                    sum +
-                    toNumber(s.total ?? toNumber(s.sale_price ?? s.price) * qty)
-                  );
-                }, 0);
-              });
-              monthlyBuyin.forEach((_, idx) => {
-                const buys = filteredBuyin.filter((b) => {
-                  const dt = new Date(b.buyindate ?? b.date);
-                  return (
-                    (b.product_code ?? b.code ?? "") === e.code &&
-                    dt.getFullYear() === year &&
-                    dt.getMonth() === idx
-                  );
+              }
+              if (Array.isArray(e.buyinByMonth)) {
+                e.buyinByMonth.forEach((val, idx) => {
+                  monthlyBuyin[idx] += val;
                 });
-                monthlyBuyin[idx] += buys.reduce((sum, b) => {
-                  const qty = toNumber(
-                    b.quantity ?? b.buyquantity ?? b.buy_quantity ?? b.qty ?? 0
-                  );
-                  return (
-                    sum +
-                    toNumber(b.total ?? toNumber(b.price ?? b.buy_price) * qty)
-                  );
-                }, 0);
-              });
+              }
             });
-          }
 
-          // สรุปยอดรวม
-          const totalBuyin = monthlyBuyin.reduce((a, b) => a + b, 0);
-          const totalSales = monthlySales.reduce((a, b) => a + b, 0);
+            // ถ้าไม่มี breakdown รายเดือนใน entries ให้คำนวณจากรายการจริง
+            const hasSalesByMonth = filtered.some((e) =>
+              Array.isArray(e.salesByMonth)
+            );
+            const hasBuyByMonth = filtered.some((e) =>
+              Array.isArray(e.buyinByMonth)
+            );
+            if (!hasSalesByMonth || !hasBuyByMonth) {
+              const year = Number(selectedYear);
+              filtered.forEach((e) => {
+                for (let idx = 0; idx < 12; idx++) {
+                  const sales = (filteredSale || []).filter((s) => {
+                    const dt = new Date(s.saleoutdate ?? s.date);
+                    return (
+                      (s.product_code ?? s.code ?? "") === e.code &&
+                      dt.getFullYear() === year &&
+                      dt.getMonth() === idx
+                    );
+                  });
+                  const salesSum = sales.reduce((sum, s) => {
+                    const qty = toNumber(
+                      s.salequantity ??
+                        s.sale_quantity ??
+                        s.quantity ??
+                        s.qty ??
+                        0
+                    );
+                    return (
+                      sum +
+                      toNumber(
+                        s.total ?? toNumber(s.sale_price ?? s.price) * qty
+                      )
+                    );
+                  }, 0);
+                  monthlySales[idx] += salesSum;
 
-          return `
-            <div class="monthly-summary" style="margin-bottom:24px;">
-              <b style="font-size:1.1rem;color:#2d7be0;">ยอดซื้อแต่ละเดือน</b>
-              <table style="margin-top:8px;border-collapse:collapse;width:100%;background:#f8fafc;">
-                <thead>
-                  <tr>
-                    ${monthNames
-                      .map(
-                        (m) =>
-                          `<th style="padding:6px 8px;border:1px solid #ffd336;background:#ffe9a7;">${m}</th>`
+                  const buys = (filteredBuyin || []).filter((b) => {
+                    const dt = new Date(b.buyindate ?? b.date);
+                    return (
+                      (b.product_code ?? b.code ?? "") === e.code &&
+                      dt.getFullYear() === year &&
+                      dt.getMonth() === idx
+                    );
+                  });
+                  const buySum = buys.reduce((sum, b) => {
+                    const qty = toNumber(
+                      b.quantity ??
+                        b.buyquantity ??
+                        b.buy_quantity ??
+                        b.qty ??
+                        0
+                    );
+                    return (
+                      sum +
+                      toNumber(
+                        b.total ?? toNumber(b.price ?? b.buy_price) * qty
                       )
-                      .join("")}
-                    <th style="padding:6px 8px;border:1px solid #ffd336;background:#ffd336;">รวม</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    ${monthlyBuyin
-                      .map(
-                        (v) =>
-                          `<td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;color:#2d7be0;">${v.toLocaleString(
-                            "th-TH"
-                          )}</td>`
-                      )
-                      .join("")}
-                    <td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;font-weight:bold;color:#2d7be0;background:#eaf6ff;">${totalBuyin.toLocaleString(
-                      "th-TH"
-                    )}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <b style="font-size:1.1rem;color:#e67e22;display:block;margin-top:18px;">ยอดขายแต่ละเดือน</b>
-              <table style="margin-top:8px;border-collapse:collapse;width:100%;background:#f8fafc;">
-                <thead>
-                  <tr>
-                    ${monthNames
-                      .map(
-                        (m) =>
-                          `<th style="padding:6px 8px;border:1px solid #ffd336;background:#ffe9a7;">${m}</th>`
-                      )
-                      .join("")}
-                    <th style="padding:6px 8px;border:1px solid #ffd336;background:#ffd336;">รวม</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    ${monthlySales
-                      .map(
-                        (v) =>
-                          `<td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;color:#e67e22;">${v.toLocaleString(
-                            "th-TH"
-                          )}</td>`
-                      )
-                      .join("")}
-                    <td style="padding:6px 8px;border:1px solid #ffd336;text-align:right;font-weight:bold;color:#e67e22;background:#fff6e9;">${totalSales.toLocaleString(
-                      "th-TH"
-                    )}</td>
-                  </tr>
-                </tbody>
-              </table>
-              </table>
- </table>
-  <div class="summary-totals" style="margin-top:24px;padding:16px;background:#f8fafc;border:1px solid #ffd336;box-shadow:0 2px 4px rgba(0,0,0,0.08);border-radius:8px;">
-    <div style="color:#e67e22;font-size:1.1rem;margin-bottom:12px;">
-      <b>ยอดขายรวม:</b> ${totalSales.toLocaleString("th-TH")} บาท
-    </div>
-    <div style="color:green;font-size:1.1rem;margin-bottom:12px;">
-      <b>กำไรรวม:</b> ${totalProfit.toLocaleString("th-TH")} บาท
-    </div>
-    <div style="color:#dc3545;font-size:1.1rem;">
-      <b>เงินจมรวม:</b> ${totalSunk.toLocaleString("th-TH")} บาท
-    </div>
-  </div>
-    `;
-        })()
-      : ""
-  }
-  <div class="action-buttons" style="
-  display: flex;
-  gap: 16px;
-  margin-top: 32px;
-  justify-content: center;
-">
-  <button onclick="window.print()" style="
-    padding: 12px 32px;
-    font-size: 1rem;
-    border-radius: 8px;
-    background: #ffd336;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    color: #333;
-    font-weight: 500;
-    min-width: 160px;
-    &:hover {
-      background: #ffc107;
-      transform: translateY(-1px);
+                    );
+                  }, 0);
+                  monthlyBuyin[idx] += buySum;
+                }
+              });
+            }
+
+            const totalBuyin = monthlyBuyin.reduce((a, b) => a + b, 0);
+            const totalSales = monthlySales.reduce((a, b) => a + b, 0);
+
+            return `
+        <div class="monthly-summary" style="margin-bottom:24px;">
+          <b style="font-size:1.1rem;color:#2d7be0;">ยอดซื้อแต่ละเดือน</b>
+          <table style="margin-top:8px;">
+          <thead>
+            <tr>
+            ${monthNames.map((m) => `<th>${m}</th>`).join("")}
+            <th class="total-cell">รวม</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            ${monthlyBuyin
+              .map(
+                (v) =>
+                  `<td style="text-align:right;color:#2d7be0;">${v.toLocaleString(
+                    "th-TH"
+                  )}</td>`
+              )
+              .join("")}
+            <td class="buyin-sum" style="text-align:right;font-weight:bold;">${totalBuyin.toLocaleString(
+              "th-TH"
+            )}</td>
+            </tr>
+          </tbody>
+          </table>
+
+          <b style="font-size:1.1rem;color:#e67e22;display:block;margin-top:18px;">ยอดขายแต่ละเดือน</b>
+          <table style="margin-top:8px;">
+          <thead>
+            <tr>
+            ${monthNames.map((m) => `<th>${m}</th>`).join("")}
+            <th class="total-cell">รวม</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            ${monthlySales
+              .map(
+                (v) =>
+                  `<td style="text-align:right;color:#e67e22;">${v.toLocaleString(
+                    "th-TH"
+                  )}</td>`
+              )
+              .join("")}
+            <td class="sale-sum" style="text-align:right;font-weight:bold;">${totalSales.toLocaleString(
+              "th-TH"
+            )}</td>
+            </tr>
+          </tbody>
+          </table>
+
+          <div class="summary-totals" style="margin-top:24px;padding:16px;background:#f8fafc;border:1px solid #ffd336;box-shadow:0 2px 4px rgba(0,0,0,0.08);border-radius:8px;">
+          <div style="color:#e67e22;font-size:1.1rem;margin-bottom:12px;">
+            <b>ยอดขายรวม:</b> ${totalSales.toLocaleString("th-TH")} บาท
+          </div>
+          <div style="color:green;font-size:1.1rem;margin-bottom:12px;">
+            <b>กำไรรวม:</b> ${totalProfit.toLocaleString("th-TH")} บาท
+          </div>
+          <div style="color:#dc3545;font-size:1.1rem;">
+            <b>เงินจมรวม:</b> ${totalSunk.toLocaleString("th-TH")} บาท
+          </div>
+          </div>
+         </div>
+         
+          <!-- Timestamp (bottom-right) -->
+          <div id="print-timestamp" style="
+            position: fixed;
+            right: 12px;
+            bottom: 12px;
+            font-size: 12px;
+            color: #111827;
+            background: rgba(255, 211, 54, 0.95);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            z-index: 99999;
+            display: none;
+            font-family: 'Sarabun', sans-serif;
+          ">
+
+          <style>
+            @media print {
+              #print-timestamp { display: block !important; }
+            }
+          </style>
+
+          <script>
+            (function () {
+              function formatThaiDateTime(d) {
+                try {
+                  return d.toLocaleString('th-TH', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                  });
+                } catch {
+                  return d.toISOString().replace('T', ' ').slice(0, 19);
+                }
+              }
+
+              function showTimestamp() {
+                const el = document.getElementById('print-timestamp');
+                if (!el) return;
+                el.textContent = 'พิมพ์เมื่อ: ' + formatThaiDateTime(new Date());
+                el.style.display = 'block';
+              }
+
+              window.addEventListener('DOMContentLoaded', function () {
+                // Override the inline Print button to inject timestamp first
+                const printBtn = document.querySelector('.action-buttons button[onclick]');
+                if (printBtn) {
+                  printBtn.onclick = function (e) {
+                    e.preventDefault();
+                    showTimestamp();
+                    requestAnimationFrame(() => window.print());
+                  };
+                }
+              });
+
+              // Support Ctrl+P or browser menu
+              window.addEventListener('beforeprint', showTimestamp);
+              window.addEventListener('afterprint', function () {
+                const el = document.getElementById('print-timestamp');
+                if (el) el.style.display = 'none';
+              });
+            })();
+          </script>
+
+          </div>
+        `;
+          })()
+        : ""
     }
-  ">Print</button>
 
-  <button id="download-pdf" style="
-    padding: 12px 32px;
-    font-size: 1rem;
-    border-radius: 8px;
-    background: #ffd336;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    color: #333;
-    font-weight: 500;
-    min-width: 160px;
-    &:hover {
-      background: #ffc107;
-      transform: translateY(-1px);
-    }
-  ">Download PDF</button>
-</div>
-  <script>
-    // ดูแลการดาวน์โหลด PDF (เดิม)
+    <div class="action-buttons" style="
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+    justify-content: center;
+    ">
+    <button onclick="window.print()" style="
+      padding: 12px 32px;
+      font-size: 1rem;
+      border-radius: 8px;
+      background: #ffd336;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #333;
+      font-weight: 500;
+      min-width: 160px;
+    ">Print</button>
+
+    <button id="download-pdf" style="
+      padding: 12px 32px;
+      font-size: 1rem;
+      border-radius: 8px;
+      background: #ffd336;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #333;
+      font-weight: 500;
+      min-width: 160px;
+    ">Download PDF</button>
+    </div>
+
+    <script>
+    // ดาวน์โหลด PDF (อย่างง่าย)
     document.getElementById("download-pdf").onclick = function() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      doc.addFont("THSarabunNew.ttf", "THSarabunNew", "normal");
-      doc.setFont("THSarabunNew");
       doc.setFontSize(18);
       doc.text("รายงานสรุปยอดขาย", 20, 20);
-      doc.setFontSize(14);
-      let y = 35;
-      const filterText = Array.from(document.querySelectorAll(".filter div"))
-        .map(div => div.textContent)
-        .join("\\n");
-      const summaryText = Array.from(document.querySelectorAll(".summary div"))
-        .map(div => div.textContent)
-        .join("\\n");
-      doc.text(filterText, 20, y);
-      y += 20;
-      doc.text(summaryText, 20, y);
+      doc.setFontSize(12);
+      // หมายเหตุ: การแปลงทั้งตารางเป็น PDF แนะนำให้ใช้ html2canvas + jsPDF ถ้าต้องการความเหมือนมากขึ้น
       doc.save("report.pdf");
     };
-
-    // ซ่อน/คืนค่าก่อน-หลังการพิมพ์ (รองรับ beforeprint/afterprint)
-    (function() {
-      const HIDE_SEL = ".filter, .action-buttons";
-      const els = () => Array.from(document.querySelectorAll(HIDE_SEL));
-
-      function hideForPrint() {
-        els().forEach(el => {
-          // เก็บค่าเดิมไว้ใช้คืน
-          el.__displayCache = el.style.display || "";
-          el.style.display = "none";
-        });
-      }
-      function restoreAfterPrint() {
-        els().forEach(el => {
-          if (el.__displayCache !== undefined) el.style.display = el.__displayCache;
-          else el.style.display = "";
-          delete el.__displayCache;
-        });
-      }
-
-      // ใช้ event ของ browser (Chrome, Firefox บางเวอร์ชัน)
-      if ('onbeforeprint' in window) {
-        window.addEventListener('beforeprint', hideForPrint);
-        window.addEventListener('afterprint', restoreAfterPrint);
-      } else {
-        // fallback: ดักปุ่ม Print ในหน้ารายงาน
-        const printBtn = document.querySelector('button[onclick="window.print()"]');
-        if (printBtn) {
-          printBtn.addEventListener('click', function(evt) {
-            // hide, call print, restore after a delay
-            hideForPrint();
-            // ให้ browser เปิด dialog แล้วคืนค่าเมื่อกลับมาจาก dialog
-            setTimeout(() => {
-              try { window.print(); } catch(e) { console.error(e); }
-              // restore เล็กน้อยหลัง print (จำนวน ms ปรับได้)
-              setTimeout(restoreAfterPrint, 300);
-            }, 50);
-            // ป้องกัน default inline onclick เพื่อให้ใช้ flow นี้
-            evt.preventDefault();
-          });
-        }
-      }
-
-      // ปลอดภัย: ถ้าผู้ใช้ใช้ Ctrl+P, beforeprint จะทำงานบนบาง browser
-    })();
-  </script>
-</body>
-</html>
-`;
+    </script>
+  </body>
+  </html>
+  `;
     const reportWin = window.open("", "_blank", "width=900,height=1200");
     reportWin.document.write(reportHtml);
     reportWin.document.close();
