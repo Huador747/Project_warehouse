@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการผู้ใช้งาน - Project Warehouse</title>
+     <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/backend/style/management.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>📦 Warehouse</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="icon">👥</span>
+                    <span>แอดมินแดชบอร์ด </span>
+                </a>
+                 <a href="management.html" class="nav-item active">
+                    <span class="icon">👥</span>
+                    <span>จัดการผู้ใช้งาน</span>
+                </a>
+                <a href="../../src/inventory.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>คลังสินค้า</span>
+                </a>
+                <a href="../../src/buyin.html" class="nav-item">
+                    <span class="icon">📥</span>
+                    <span>รับสินค้าเข้า</span>
+                </a>
+                <a href="../../src/sale.html" class="nav-item">
+                    <span class="icon">💰</span>
+                    <span>ขายสินค้า</span>
+                </a>
+                <a href="../../src/history.html" class="nav-item">
+                    <span class="icon">📜</span>
+                    <span>ประวัติการทำรายการ</span>
+                </a>
+                <a href="../../src/movement.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>รายงานความเคลื่อนไหว</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>จัดการผู้ใช้งาน</h1>
+                    <p class="breadcrumb">หน้าหลัก / จัดการผู้ใช้งาน</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span id="currentUser">ผู้ใช้งาน</span>
+                        <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Control Panel -->
+            <section class="control-panel">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 ค้นหาผู้ใช้งาน (ชื่อ, อีเมล, บทบาท)">
+                </div>
+                <div class="control-actions">
+                    <select id="filterRole" class="filter-select">
+                        <option value="">ทุกบทบาท</option>
+                        <option value="admin">ผู้ดูแลระบบ</option>
+                        <option value="manager">ผู้จัดการ</option>
+                        <option value="staff">พนักงาน</option>
+                    </select>
+                    <select id="filterStatus" class="filter-select">
+                        <option value="">ทุกสถานะ</option>
+                        <option value="active">ใช้งาน</option>
+                        <option value="inactive">ระงับการใช้งาน</option>
+                    </select>
+                    <button class="btn-primary" onclick="openAddUserModal()">
+                        ➕ เพิ่มผู้ใช้งานใหม่
+                    </button>
+                </div>
+            </section>
+
+            <!-- Users Table -->
+            <section class="table-section">
+                <div class="table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th width="5%">#</th>
+                                <th width="20%">ชื่อผู้ใช้งาน</th>
+                                <th width="25%">อีเมล</th>
+                                <th width="15%">บทบาท</th>
+                                <th width="10%">สถานะ</th>
+                                <th width="15%">วันที่สร้าง</th>
+                                <th width="10%">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="7" class="loading">กำลังโหลดข้อมูล...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <div class="pagination" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                    <button id="prevPage" class="btn-page" disabled>‹ ก่อนหน้า</button>
+                    <span id="pageInfo" style="margin: 0 15px;">หน้า 1 จาก 1</span>
+                    <button id="nextPage" class="btn-page" disabled>ถัดไป ›</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">เพิ่มผู้ใช้งานใหม่</h2>
+                <button class="close-btn" onclick="closeUserModal()">&times;</button>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="userId">
+                
+                <div class="form-group">
+                    <label for="userName">ชื่อผู้ใช้งาน <span class="required">*</span></label>
+                    <input type="text" id="userName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userEmail">อีเมล <span class="required">*</span></label>
+                    <input type="email" id="userEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">รหัสผ่าน <span class="required" id="passwordRequired">*</span></label>
+                    <input type="password" id="userPassword">
+                    <small id="passwordHint">สำหรับแก้ไข: เว้นว่างหากไม่ต้องการเปลี่ยน</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="userRole">บทบาท <span class="required">*</span></label>
+                    <select id="userRole" required>
+                        <option value="">-- เลือกบทบาท --</option>
+                        <option value="admin">ผู้ดูแลระบบ (Admin)</option>
+                        <option value="manager">ผู้จัดการ (Manager)</option>
+                        <option value="staff">พนักงาน (Staff)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="userStatus">สถานะ</label>
+                    <select id="userStatus">
+                        <option value="active">ใช้งาน</option>
+                        <option value="inactive">ระงับการใช้งาน</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeUserModal()">ยกเลิก</button>
+                    <button type="submit" class="btn-primary">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>ยืนยันการลบ</h2>
+            </div>
+            <div class="modal-body">
+                <p>คุณแน่ใจหรือไม่ที่จะลบผู้ใช้งาน <strong id="deleteUserName"></strong>?</p>
+                <p class="warning">⚠️ การลบจะไม่สามารถกู้คืนได้</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeDeleteModal()">ยกเลิก</button>
+                <button class="btn-danger" onclick="confirmDelete()">ลบ</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html></div>

@@ -21,18 +21,14 @@ mongoose.connect('mongodb://localhost:27017/project_warehouse', {
 
 // สร้าง Schema และ Model
 const UserSchema = new mongoose.Schema({
-    username: { 
-        type: String, 
-        required: true, 
-        unique: true 
-    },
-    password: { 
-        type: String, 
-        required: true 
-    },
-    profileImage: String,
-    role: { type: String, enum: ['admin', 'user'], default: 'user' } // เพิ่มบรรทัดนี้
-});
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  profileImage: String,
+  role: { type: String, enum: ['admin', 'user'], default: 'user' },
+  isActive: { type: Boolean, default: true },
+  lastLogin: Date,
+  lastSeen: Date
+}, { timestamps: true });  // สร้าง createdAt/updatedAt อัตโนมัติ
 
 const User = mongoose.model('User', UserSchema);
 
@@ -101,47 +97,67 @@ const BuyinProductSchema = new mongoose.Schema({
 });
 const BuyinProduct = mongoose.model('BuyinProduct', BuyinProductSchema, 'buyin_product');
 
+// รายชื่อผู้ใช้ (ซ่อนรหัสผ่าน)
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({})
+      .select('username role createdAt lastLogin') // ลบ profileImage ออก
+      .sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    console.error('load users error:', err);
+    res.status(500).json({ message: 'Failed to load users' });
+  }
+});
+
+app.get('/api/users/stats', async (req, res) => {
+  try {
+    const [total, admins] = await Promise.all([
+      User.countDocuments({}),
+      User.countDocuments({ role: 'admin' }),
+    ]);
+    res.json({ total, admins });
+  } catch (err) {
+    console.error('load stats error:', err);
+    res.status(500).json({ message: 'Failed to load stats' });
+  }
+});
+
 // เพิ่ม route สำหรับการลงทะเบียน
 app.post('/register', async (req, res) => {
-    try {
-        console.log('Register attempt:', req.body);
-        const { username, password, profileImage } = req.body;
+  try {
+    console.log('Register attempt:', req.body);
+    const { username, password } = req.body; // ตัด profileImage ออก
 
-        // ตรวจสอบว่ามีผู้ใช้นี้แล้วหรือไม่
-        const existingUser = await User.findOne({ username });
-        if (existingUser) {
-            return res.status(400).json({ message: 'ชื่อผู้ใช้นี้มีอยู่แล้ว' });
-        }
-
-        // สร้างผู้ใช้ใหม่
-        const user = new User({
-            username,
-            password,
-            profileImage
-        });
-
-        await user.save();
-        console.log('User registered successfully:', username);
-        res.status(201).json({ message: 'ลงทะเบียนสำเร็จ' });
-
-    } catch (err) {
-        console.error('Registration error:', err);
-        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลงทะเบียน' });
+    // ตรวจสอบว่ามีผู้ใช้นี้แล้วหรือไม่
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: 'ชื่อผู้ใช้นี้มีอยู่แล้ว' });
     }
+
+    // สร้างผู้ใช้ใหม่ (ไม่เก็บรูป)
+    const user = new User({ username, password });
+
+    await user.save();
+    console.log('User registered successfully:', username);
+    res.status(201).json({ message: 'ลงทะเบียนสำเร็จ' });
+
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลงทะเบียน' });
+  }
 });
 
 // route สำหรับการ login
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username, password });
-  if (!user) {
-    return res.status(401).json({ message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
-  }
-  res.json({
-    message: 'เข้าสู่ระบบสำเร็จ',
-    username: user.username,
-    role: user.role // ต้องมีบรรทัดนี้!   
-  });
+  if (!user) return res.status(401).json({ message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
+
+  user.lastLogin = new Date();
+  await user.save();
+
+  res.json({ message: 'เข้าสู่ระบบสำเร็จ', username: user.username, role: user.role });
 });
 
 // เพิ่ม route สำหรับดึงข้อมูลสินค้า
@@ -206,16 +222,41 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
-// Serve static files - ต้องเรียงลำดับให้ถูกต้อง
+// === Presence API ต้องวาง "ก่อน" express.static ===
+app.post('/api/presence/heartbeat', express.json(), async (req, res) => {
+  try {
+    const { userId } = req.body || {};
+    if (!userId) return res.status(400).json({ ok: false, error: 'missing userId' });
+    await User.findByIdAndUpdate(userId, { lastSeen: new Date() });
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('heartbeat error:', e);
+    res.status(500).json({ ok: false });
+  }
+});
+
+// ใช้ค่า ONLINE_WINDOW_MS จาก ENV ได้
+const ONLINE_WINDOW_MS = Number(process.env.PRESENCE_WINDOW_MS || 60_000);
+
+app.get('/api/presence', async (_req, res) => {
+  const now = Date.now();
+  const users = await User.find({}, 'username role isActive createdAt lastLogin lastSeen').lean();
+  res.json(users.map(u => ({
+    username: u.username,
+    role: u.role,
+    isActive: u.isActive !== false,
+    createdAt: u.createdAt,
+    lastLogin: u.lastLogin,
+    isOnline: !!u.lastSeen && (now - new Date(u.lastSeen).getTime() <= ONLINE_WINDOW_MS)
+  })));
+});
+
+// Serve static files
 app.use(express.static(path.join(__dirname, 'src')));
 app.use(express.static(path.join(__dirname, 'styles')));
 app.use(express.static(path.join(__dirname, 'scripts')));
 app.use(express.static(path.join(__dirname, 'assets')));
-
-// Serve backend static files
 app.use('/backend', express.static(path.join(__dirname, 'backend')));
-
-// เพิ่ม: Serve root directory เพื่อให้เข้าถึงไฟล์ทุกอย่างได้
 app.use(express.static(__dirname));
 
 // เพิ่ม route สำหรับลบสินค้า

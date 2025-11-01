@@ -3,30 +3,65 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/backend/style/dashboard.css" />
     <title>Admin Dashboard</title>
   </head>
   <body>
     <div class="dashboard-container">
       <aside class="sidebar">
-        <h2>Admin Panel</h2>
-        <nav>
-          <a href="#" class="active">Dashboard</a>
-          <a href="#" id="user-management">User Management</a>
-          <a href="/main.html">Back to Main</a>
-        </nav>
-      </aside>
+            <div class="logo">
+                <h2>📦 Admin-panel</h2>
+            </div>
+            <nav class="nav-menu">
+               <a href="dashboard.html" class="nav-item active">
+                    <span class="icon">👥</span>
+                    <span>แอดมินแดชบอร์ด</span>
+                </a>
+                 <a href="management.html" class="nav-item">
+                    <span class="icon">👥</span>
+                    <span>จัดการผู้ใช้งาน</span>
+                </a>
+                <a href="../../src/inventory.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>คลังสินค้า</span>
+                </a>
+                <a href="../../src/buyin.html" class="nav-item">
+                    <span class="icon">📥</span>
+                    <span>รับสินค้าเข้า</span>
+                </a>
+                <a href="../../src/sale.html" class="nav-item">
+                    <span class="icon">💰</span>
+                    <span>ขายสินค้า</span>
+                </a>
+                <a href="../../src/history.html" class="nav-item">
+                    <span class="icon">📜</span>
+                    <span>ประวัติการทำรายการ</span>
+                </a>
+                <a href="../../src/movement.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>รายงานความเคลื่อนไหว</span>
+                </a>
+            </nav>
+        </aside>
       <main class="main-content">
         <section class="overview">
           <h3>Overview</h3>
           <div class="stats">
             <div class="stat-card">
               <div class="stat-title">Total Users</div>
-              <div class="stat-value" id="total-users">-</div>
+              <div class="stat-value" id="total-users" style="color: #25a106">
+                -
+              </div>
             </div>
             <div class="stat-card">
               <div class="stat-title">Admin Users</div>
-              <div class="stat-value" id="admin-users">-</div>
+              <div class="stat-value" id="admin-users" style="color: #e74c3c">
+                -
+              </div>
             </div>
           </div>
         </section>
@@ -35,9 +70,13 @@
           <table class="user-table">
             <thead>
               <tr>
+                <th>Profile</th>
                 <th>Username</th>
                 <th>Role</th>
-                <th>Actions</th>
+                <th>สร้างบัญชีเมื่อ</th>
+                <th>การใช้งาน เปิด/ปิด</th>
+                <th>สถานะ</th>
+                <th>เข้าสู่ระบบล่าสุด</th>
               </tr>
             </thead>
             <tbody id="user-list">
@@ -47,29 +86,8 @@
         </section>
       </main>
     </div>
-    <script>
-      // แก้ API endpoint ให้ถูกต้อง
-      fetch('/users')
-        .then(res => res.json())
-        .then(users => {
-          document.getElementById('total-users').textContent = users.length;
-          document.getElementById('admin-users').textContent = users.filter(u => u.role === 'admin').length;
-          const tbody = document.getElementById('user-list');
-          tbody.innerHTML = '';
-          users.forEach(user => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${user.username}</td>
-              <td>${user.role}</td>
-              <td>
-                <button class="edit-btn" data-id="${user._id}">Edit</button>
-                <button class="delete-btn" data-id="${user._id}">Delete</button>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        })
-        .catch(err => console.error('Error loading users:', err));
-    </script>
+    <script src="/scripts/config.js"></script>
+    <!-- เอา inline script เดิมออก -->
   </body>
+  <script src="/backend/script/dashboard.js"></script>
 </html>
