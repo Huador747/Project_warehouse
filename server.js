@@ -19,12 +19,13 @@ mongoose.connect('mongodb://localhost:27017/project_warehouse', {
     console.error('MongoDB connection error:', err);
 });
 
-// สร้าง Schema และ Model
+// อัปเดต User Schema ให้รองรับ email
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  email: { type: String },
   profileImage: String,
-  role: { type: String, enum: ['admin', 'user'], default: 'user' },
+  role: { type: String, enum: ['admin', 'manager', 'staff', 'user'], default: 'user' },
   isActive: { type: Boolean, default: true },
   lastLogin: Date,
   lastSeen: Date
@@ -240,13 +241,14 @@ const ONLINE_WINDOW_MS = Number(process.env.PRESENCE_WINDOW_MS || 60_000);
 
 app.get('/api/presence', async (_req, res) => {
   const now = Date.now();
-  const users = await User.find({}, 'username role isActive createdAt lastLogin lastSeen').lean();
+  const users = await User.find({}, 'username role isActive createdAt lastLogin lastSeen profileImage').lean();
   res.json(users.map(u => ({
     username: u.username,
     role: u.role,
     isActive: u.isActive !== false,
     createdAt: u.createdAt,
     lastLogin: u.lastLogin,
+    profileImage: u.profileImage,
     isOnline: !!u.lastSeen && (now - new Date(u.lastSeen).getTime() <= ONLINE_WINDOW_MS)
   })));
 });
@@ -306,6 +308,90 @@ app.get('/buyin_product', async (req, res) => {
 app.get('/sale_product', async (req, res) => {
     const items = await SaleProduct.find();
     res.json(items);
+});
+
+// ดึงรายการผู้ใช้ทั้งหมด (สำหรับหน้า management)
+app.get('/api/users/all', async (req, res) => {
+  try {
+    const users = await User.find({})
+      .select('username email role isActive createdAt lastLogin')
+      .sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    console.error('load all users error:', err);
+    res.status(500).json({ message: 'Failed to load users' });
+  }
+});
+
+// สร้างผู้ใช้ใหม่
+app.post('/api/users', async (req, res) => {
+  try {
+    const { username, email, password, role, isActive } = req.body;
+    
+    // ตรวจสอบว่ามีผู้ใช้นี้แล้วหรือไม่
+    const existing = await User.findOne({ username });
+    if (existing) {
+      return res.status(400).json({ message: 'ชื่อผู้ใช้นี้มีอยู่แล้ว' });
+    }
+    
+    const user = new User({
+      username,
+      email,
+      password,
+      role: role || 'user',
+      isActive: isActive !== false
+    });
+    
+    await user.save();
+    res.status(201).json({ message: 'สร้างผู้ใช้สำเร็จ', user });
+  } catch (err) {
+    console.error('create user error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการสร้างผู้ใช้' });
+  }
+});
+
+// อัปเดตผู้ใช้
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const { username, email, password, role, isActive } = req.body;
+    const updateData = { username, email, role, isActive };
+    
+    // ถ้ามีการส่ง password มา ให้อัปเดต
+    if (password && password.trim() !== '') {
+      updateData.password = password;
+    }
+    
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+    
+    if (!user) {
+      return res.status(404).json({ message: 'ไม่พบผู้ใช้' });
+    }
+    
+    res.json({ message: 'อัปเดตผู้ใช้สำเร็จ', user });
+  } catch (err) {
+    console.error('update user error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการอัปเดตผู้ใช้' });
+  }
+});
+
+// ลบผู้ใช้
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'ไม่พบผู้ใช้' });
+    }
+    
+    res.json({ message: 'ลบผู้ใช้สำเร็จ' });
+  } catch (err) {
+    console.error('delete user error:', err);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลบผู้ใช้' });
+  }
 });
 
 // เริ่ม server

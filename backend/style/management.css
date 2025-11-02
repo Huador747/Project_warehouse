@@ -198,6 +198,67 @@ small#passwordHint{color:var(--muted);margin-top:4px}
 .warning{color:var(--warning);font-weight:600}
 .table-section{margin-top:12px}
 
+/* ปุ่มไอคอน */
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    margin: 0 2px;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    transform: scale(1.2);
+}
+
+.btn-edit:hover {
+    filter: brightness(1.2);
+}
+
+.btn-delete:hover {
+    filter: brightness(1.2);
+}
+
+/* Badge สำหรับบทบาท */
+.badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge.admin {
+    background: #e74c3c;
+    color: white;
+}
+
+.badge.warning {
+    background: #f39c12;
+    color: white;
+}
+
+.badge.info {
+    background: #3498db;
+    color: white;
+}
+
+.badge.neutral {
+    background: #95a5a6;
+    color: white;
+}
+
+.badge.success {
+    background: #27ae60;
+    color: white;
+}
+
+.badge.danger {
+    background: #e74c3c;
+    color: white;
+}
+
 /* ========== Responsive ========== */
 @media (max-width: 1024px){
   .container{grid-template-columns:220px 1fr}

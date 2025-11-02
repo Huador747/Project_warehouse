@@ -20,6 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const tbody = document.getElementById('user-list');
       tbody.innerHTML = '';
 
+      // คำนวณสถิติ
+      const totalUsers = users.length;
+      const adminCount = users.filter(u => u.role === 'admin').length;
+
+      // อัปเดตการ์ดสถิติ
+      document.getElementById('total-users').textContent = totalUsers.toLocaleString('th-TH');
+      document.getElementById('admin-users').textContent = adminCount.toLocaleString('th-TH');
+
       const formatDate = (val) => {
         if (!val) return '-';
         const d = new Date(val); if (isNaN(d)) return '-';
@@ -40,8 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
           ? '<span class="badge online">อยู่ในระบบ</span>'
           : '<span class="badge offline">ออฟไลน์</span>';
 
+        // สร้าง HTML สำหรับรูปโปรไฟล์
+        const profileHtml = u.profileImage
+          ? `<img src="${esc(u.profileImage)}" alt="${esc(u.username)}" class="profile-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23fff%22 font-size=%2220%22%3E${esc(u.username).charAt(0).toUpperCase()}%3C/text%3E%3C/svg%3E'">`
+          : `<div class="profile-placeholder">${esc(u.username).charAt(0).toUpperCase()}</div>`;
+
         tr.innerHTML = `
-          <td>${'' /* รูป/ไอคอนถ้ามี */}</td>
+          <td>${profileHtml}</td>
           <td>${esc(u.username)}</td>
           <td>${roleHtml}</td>
           <td>${formatDate(u.createdAt)}</td>
