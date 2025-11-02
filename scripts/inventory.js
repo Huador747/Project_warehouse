@@ -190,4 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             navbarText.classList.add('slide-in');
         });
     }
+
+    
 });

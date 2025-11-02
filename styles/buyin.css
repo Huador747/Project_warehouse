@@ -1,3 +1,4 @@
+/* ========== Global Styles ========== */
 body,
 html,
 input,
@@ -26,6 +27,7 @@ body {
   overflow-y: auto;
 }
 
+/* ========== Logo Section ========== */
 .logo-container {
   margin-top: auto;
   margin-bottom: 10px;
@@ -42,46 +44,184 @@ body {
   object-fit: contain;
   display: block;
   margin: 0 auto;
-}
-
-.logo {
   animation: floatY 6s ease-in-out infinite;
 }
 
+@keyframes floatY {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 
-.sidebar-nav-btn {
+/* ========== User Profile Section ========== */
+.user-profile-section {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;   /* ให้ปุ่มอยู่กลางแนวตั้งในกล่องของตัวเอง */
-  flex: 1;
-  margin-top:5rem;                 /* ขยายเต็มพื้นที่ sidebar */
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.sidebar-nav-btn .nav-btn {
+.user-avatar-wrapper {
+  position: relative;
+  margin-bottom: 14px;
+  display: flex;
   align-items: center;
-  margin-top: 15px;
+  justify-content: center;
 }
 
-/* Sidebar styles (ปรับเวลาให้ช้าลง +1s) */
+.user-avatar {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+}
+
+.user-avatar:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.user-avatar-placeholder {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+}
+
+.online-indicator {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  background: #10b981;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
+  animation: pulse-indicator 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes pulse-indicator {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.12);
+  }
+}
+
+.user-info-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.user-name {
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.4px;
+  line-height: 1.3;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.user-role {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 18px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.role-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.role-badge.admin {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.role-badge.user {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+/* ========== Sidebar Section ========== */
 .sidebar {
-  position: fixed;
-  left: -270px;
-  top: 0;
+  width: 300px;
+  left: -305px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100vh;
-  z-index: 3000;
-  /* เพิ่มเวลาเป็น 1.3s (เดิม 0.3s) */
-  transition: left 1.3s;
+  position: fixed;
+  top: 0;
+  z-index: 5000;
+  transition: left 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  width: 250px;
   background: rgb(254, 179, 104);
   color: #fff;
   padding: 30px 30px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
+}
+
+.sidebar.sidebar-open {
+  left: 0;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
 }
 
 .sidebar input[type="text"] {
@@ -108,72 +248,6 @@ body {
 .sidebar .nav-btn:hover {
   background: #ffe0b2;
   border: 3px solid #8b7f7f;
-  /* ขอบทองอ่อน */
-}
-
-/* Main content styles */
-.main-content {
-  margin-left: 0 !important;
-  flex: unset;
-  display: flex;
-  flex-direction: column;
-  min-height: unset;
-  height: auto;
-  overflow: unset;
-  padding-bottom: 32px;
-  box-sizing: border-box;
-}
-
-/* Navbar styles */
-.navbar {
-  width: 100%;
-  background: rgb(244, 224, 125);
-  color: #fff;
-  padding: 15px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  height: 120px;
-  position: fixed;
-  /* เพิ่มบรรทัดนี้ */
-  top: 0;
-  /* เพิ่มบรรทัดนี้ */
-  left: 0;
-  /* เพิ่มบรรทัดนี้ */
-  z-index: 3000;
-  /* เพิ่มหรือแก้ z-index ให้มากกว่า .sidebar */
-}
-.navbar-text {
-  display: inline-block;
-  padding: 7px 16px;
-  border-radius: 4px;
-  background: #ffd336;
-  color: #333;
-  font-size: 30px;
-  margin-right: 10px;
-  min-width: 120px;
-  text-align: center;
-}
-
-.navbar-form {
-  gap: 30px;
-  margin: 0 0 0px 75px;
-}
-
-.navbar-form input[type="text"] {
-  padding: 7px;
-  border: none;
-  border-radius: 4px;
-  height: 50px;
-}
-
-.navbar-text.active::before {
-  content: "📦";
-  margin-right: 8px;
-  font-size: 1.3em;
-  vertical-align: middle;
-  animation: bounceIn 0.7s;
 }
 
 .sidebar .nav-btn.active {
@@ -186,54 +260,29 @@ body {
   position: relative;
 }
 
-#search-code {
-  width: 230px;
-  background: #ffffff;
-  color: #000000;
-  border: none;
-  padding: 0px 18px;
-  border-radius: 4px;
-  font-weight: bold;
-  font-family: "Sarabun", sans-serif;
-  font-size: 18px;
-  height: 50px;
-  margin-right: 16px;
-  /* เพิ่มระยะห่างจากปุ่ม logout */
-}
-
-/* ปรับแต่งช่องค้นหา */
-.search-product-input {
-  height: 50px;
-  width: 300px;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 16px;
-  box-sizing: border-box;
-  margin-right: 35px;
-}
-
-.logout-btn {
-  background: #e74c3c;
-  color: #fff;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 4px;
+.sidebar .nav-btn.active:hover {
+  background: #ffe0b2;
+  color: #333;
+  border: 3px solid #8b7f7f;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.09);
+  transform: translateY(-2px) scale(1.04);
   cursor: pointer;
-  font-weight: bold;
-  height: 50px;
-  font-size: 14;
-  align-items: center;
-  justify-content: center;
 }
-/* Hamburger styles */
+
+.hamburger:hover + .sidebar,
+.sidebar:hover {
+  left: 0;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+}
+
+/* ========== Hamburger Button ========== */
 .hamburger {
   display: flex !important;
   position: fixed;
-  top: 130px;
+  top: 40px;
   left: 24px;
   z-index: 4000;
-  /* เพิ่ม z-index ให้สูงกว่า navbar */
   width: 40px;
   height: 40px;
   background: transparent;
@@ -257,107 +306,254 @@ body {
   margin-right: auto;
 }
 
-/* เมื่อ hover ที่ปุ่ม hamburger */
 .hamburger:hover span {
   background: #ffa144;
   width: 36px;
   transition: 0.4s;
 }
 
-/* Sidebar: hidden by default, show when .sidebar-open */
-.sidebar {
-  position: fixed;
-  left: -270px;
-  top: 0;
-  height: 100vh;
-  z-index: 2000;
-  transition: left 0.3s;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  width: 250px;
-  background: rgb(254, 179, 104);
-  color: #fff;
-  padding: 30px 30px;
-  box-sizing: border-box;
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ========== Navigation Buttons ========== */
+.sidebar-nav-btn {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
-
-.sidebar.sidebar-open {
-  left: 0;
-}
-
-/* Hamburger styles */
-.hamburger {
-  display: flex !important;
-  position: fixed;
-  top: 40px;
-  /* ปรับให้ตรงกับ addproduct.css */
-  left: 24px;
-  z-index: 4000;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: none;
-  flex-direction: column;
-  justify-content: center;
-  /* สำคัญ: จัดแนวกลางแนวตั้ง */
-  align-items: center;
-  /* สำคัญ: จัดแนวกลางแนวนอน */
-  cursor: pointer;
+  flex: 1;
+  width: 100%;
+  padding: 8px 12px;
   gap: 6px;
+  margin-top: 0;
 }
 
-/* ปรับ sidebar ให้แสดงเมื่อ hover ที่ hamburger */
-.hamburger:hover+.sidebar,
-.sidebar:hover {
-  left: 0;
-}
-
-/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
-.sidebar {
-  pointer-events: auto;
-}
-
-/* Hamburger: always show */
-.hamburger {
-  display: flex !important;
-  position: fixed;
-  top: 40px;
-  left: 24px;
-  z-index: 4000;
-  /* เพิ่ม z-index ให้สูงกว่า navbar */
-  width: 40px;
-  height: 40px;
-  background: transparent;
+.sidebar-nav-btn .nav-btn {
+  width: 100%;
+  padding: 12px 16px;
   border: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  gap: 6px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  margin-top: 6px;
 }
 
-/* Sidebar: hidden by default */
-.sidebar {
-  left: -270px;
-  /* เปลี่ยนระยะเวลาเป็น 0.36s (ตัวอย่าง) */
-  transition: left 0.8s;
-}
-
-/* แสดง sidebar เมื่อ hover ที่ hamburger หรือ hover ที่ sidebar */
-.hamburger:hover+.sidebar,
-.sidebar:hover {
+.sidebar-nav-btn .nav-btn::before {
+  content: "";
+  position: absolute;
   left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: #fff;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
 }
 
-/* ป้องกัน sidebar หายเมื่อเลื่อนเมาส์จาก hamburger ไป sidebar */
-.sidebar {
-  pointer-events: auto;
+.sidebar-nav-btn .nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(3px);
 }
 
-/* ไม่ต้องใช้ .sidebar.sidebar-open และ JS toggle อีกต่อไป */
+.sidebar-nav-btn .nav-btn:hover::before {
+  transform: scaleY(1);
+}
+
+.sidebar-nav-btn .nav-btn.active {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+  transform: translateX(6px);
+}
+
+.sidebar-nav-btn .nav-btn.active::before {
+  transform: scaleY(1);
+}
+
+.nav-icon {
+  font-size: 20px;
+  min-width: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== Navbar ========== */
+.navbar {
+  width: 100%;
+  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease-in-out infinite;
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  height: 120px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3000;
+  transition: box-shadow 0.3s;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.navbar-text {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 4px;
+  background: #ffd336;
+  color: #333;
+  font-size: 30px;
+  margin-right: 10px;
+  min-width: 120px;
+  text-align: center;
+  animation: subtlePulse 3.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes subtlePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideFromLeft {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(6%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.navbar-text.slide-in {
+  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+    subtlePulse 3.2s ease-in-out 640ms infinite;
+}
+
+.navbar-text.active::before {
+  content: "📦";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
+}
+
+.navbar-form {
+  gap: 30px;
+  margin: 0 0 0px 75px;
+}
+
+.navbar-form input[type="text"] {
+  padding: 7px;
+  border: none;
+  border-radius: 4px;
+  height: 50px;
+}
+
+#search-code {
+  width: 230px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0px 18px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: "Sarabun", sans-serif;
+  font-size: 18px;
+  height: 50px;
+  margin-right: 16px;
+}
+
+.search-product-input {
+  height: 50px;
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-right: 0px;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-logout-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ========== Main Content ========== */
+.main-content {
+  margin-left: 0 !important;
+  margin-top: 120px;
+  flex: unset;
+  display: flex;
+  flex-direction: column;
+  min-height: unset;
+  height: auto;
+  overflow: unset;
+  padding-bottom: 32px;
+  box-sizing: border-box;
+}
+
+/* ========== Product Form ========== */
 .product-form {
   width: 100%;
   max-width: 1300px;
@@ -372,13 +568,59 @@ body {
   border: #fff83c 2px solid;
 }
 
+.product-form.animate {
+  animation: cardIn 520ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes cardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.product-form-row {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  justify-content: center;
+}
+
+.product-form-col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0;
-  /* ปรับ gap ให้เป็น 0 */
   width: 100%;
   height: auto;
+}
+
+.form-group.stagger {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: staggerUp 360ms ease forwards;
+}
+
+@keyframes staggerUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form-group label {
@@ -387,7 +629,6 @@ body {
   color: #333;
 }
 
-/* วางโค้ดนี้ต่อจาก .form-group label */
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"],
@@ -423,6 +664,7 @@ select,
   appearance: none;
   outline: none;
   cursor: pointer;
+  height: 100%;
 }
 
 select:focus,
@@ -445,6 +687,16 @@ select:disabled {
   cursor: not-allowed;
 }
 
+input:focus,
+select:focus,
+.search-product-input:focus {
+  outline: none;
+  box-shadow: 0 6px 20px rgba(255, 161, 68, 0.12),
+    0 0 0 3px rgba(255, 208, 128, 0.12);
+  border-color: #ffa144;
+  transition: box-shadow 0.22s, border-color 0.22s;
+}
+
 .function-btn-add {
   background: #4eb31f;
   color: #fff;
@@ -455,87 +707,18 @@ select:disabled {
   font-weight: bold;
   cursor: pointer;
   margin-top: 16px;
-  transition: background 0.2s;
+  transition: transform 0.14s ease, box-shadow 0.14s, background 0.2s;
 }
 
 .function-btn-add:hover {
   background: #77e146;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(78, 179, 31, 0.16);
 }
 
-.product-form-row {
-  display: flex;
-  gap: 32px;
-  width: 100%;
-  justify-content: center;
-}
-
-.product-form-col {
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  min-width: 0;
-}
-
-@media (max-width: 900px) {
-  .product-form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .product-form-col {
-    width: 100%;
-  }
-}
-
-.main-content {
-  margin-top: 120px;
-  /* ให้เท่ากับ .navbar height */
-}
-
-.form-group select {
-  padding: 8px 12px;
-  border: 1px solid #e0b97d;
-  border-radius: 4px;
-  font-size: 16px;
-  background: #fff;
-  color: #333;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.hamburger.active span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-.nav-btn.active {
-  background: #ffd336;
-  /* สีเหลืองสดใส */
-  color: #333;
-  /* ตัวอักษรสีเข้ม อ่านง่าย */
-  font-weight: bold;
-  border: 2.5px solid #e0b97d;
-  /* ขอบทองอ่อน */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  /* เงาเพิ่มมิติ */
-  transform: scale(1.06);
-  /* ขยายเล็กน้อย */
-  z-index: 1;
-  position: relative;
-  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s,
-    transform 0.2s;
-}
-
-/* เพิ่มใน buyin.css */
-#search-result-list {
+/* ========== Search Results ========== */
+#search-result-list,
+.search-results-container {
   position: absolute;
   background: #fff;
   border: 1px solid #ddd;
@@ -546,36 +729,48 @@ select:disabled {
   z-index: 100;
 }
 
-.search-results-container {
-  position: absolute;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 350px;
-  max-height: 220px;
-  overflow-y: auto;
-  z-index: 100;
+.search-results-container.animate .search-item {
+  opacity: 0;
+  animation: slideIn 220ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
 }
 
-/* .search-item:hover {
-  background: #ffe0b2;
-} */
-.no-results {
-  padding: 8px;
-  color: #ff1900;
-  font-size: 18px;
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* สไตล์สำหรับแต่ละรายการในผลการค้นหา */
+.search-results-container.animate .search-item:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.search-results-container.animate .search-item:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.search-results-container.animate .search-item:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.search-results-container.animate .search-item:nth-child(4) {
+  animation-delay: 160ms;
+}
+
 .search-item {
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.18s, transform 0.14s;
 }
 
 .search-item:hover {
   background-color: #f5e0c0;
+  transform: translateY(-3px);
 }
 
 .search-item:last-child {
@@ -605,235 +800,550 @@ select:disabled {
   color: #21f116;
 }
 
-/* สไตล์สำหรับข้อมูลในแต่ละรายการ */
+.no-results {
+  padding: 8px;
+  color: #ff1900;
+  font-size: 18px;
+}
 
-/* ========== เพิ่มอนิเมชัน และการเคลื่อนไหว ========== */
+/* ========== RESPONSIVE DESIGN ========== */
 
-/* ไล่สีพื้นหลัง navbar เบา ๆ */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
+/* ========== Tablet & iPad (900px - 1200px) ========== */
+@media screen and (max-width: 1200px) and (min-width: 900px) {
+  /* Sidebar - ลดจาก 300px เหลือ 200px */
+  .sidebar {
+    width: 200px;
+    left: -201px;
+    padding: 10px 6px;
+    z-index: 5000;
   }
 
-  50% {
-    background-position: 100% 50%;
+  .sidebar.sidebar-open {
+    left: 0;
   }
 
-  100% {
-    background-position: 0% 50%;
+  /* User Profile - ลดขนาดลง 40% */
+  .user-profile-section {
+    margin-bottom: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+  }
+
+  /* Avatar - ลดจาก 85px เหลือ 45px */
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+    border-width: 2px;
+  }
+
+  /* Online Indicator - ลดจาก 16px เหลือ 8px */
+  .online-indicator {
+    width: 8px;
+    height: 8px;
+    border-width: 1.5px;
+    bottom: 2px;
+    right: 2px;
+  }
+
+  /* Username - ลดจาก 19px เหลือ 16px */
+  .user-name {
+    font-size: 16px;
+    letter-spacing: 0.2px;
+  }
+
+  /* Role Badge - ลดจาก 12px เหลือ 11px */
+  .role-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    letter-spacing: 0.6px;
+  }
+
+  /* Navigation Buttons */
+  .sidebar-nav-btn {
+    padding: 4px 6px;
+    gap: 3px;
+  }
+
+  /* Nav Button */
+  .sidebar-nav-btn .nav-btn {
+    padding: 7px 8px;
+    font-size: 14px;
+    margin-top: 3px;
+    gap: 5px;
+    border-radius: 6px;
+  }
+
+  /* Nav Icon */
+  .nav-icon {
+    font-size: 11px;
+    min-width: 14px;
+  }
+
+  /* Logo Container - ลดจาก 120px เหลือ 72px */
+  .logo-container {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 36px;
+    padding: 7px;
+  }
+
+  /* Logo - ลดจาก 210px เหลือ 90px */
+  .logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  /* Hamburger - ลดขนาด */
+  .hamburger {
+    top: 24px;
+    left: 14px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .hamburger span {
+    width: 17px;
+    height: 2.4px;
+    gap: 4px;
+  }
+
+  /* Navbar */
+  .navbar {
+    height: 80px;
+    padding: 8px 14px;
+  }
+
+  /* Navbar text */
+  .navbar-text {
+    font-size: 24px;
+    padding: 4px 7px;
+    gap: 4px;
+  }
+
+  .navbar-text.active {
+    font-size: 24px;
+    margin-right: 12px;
+    margin-left: 48px;
+  }
+
+  /* Navbar form */
+  .navbar-form {
+    gap: 10px;
+    margin-left: 16px;
+  }
+
+  /* Main content */
+  .main-content {
+    margin-top: 80px;
+  }
+
+  /* Product Form */
+  .product-form {
+    padding: 24px 18px;
+    margin: 24px auto;
+    max-width: 1000px;
+  }
+
+  .product-form-row {
+    gap: 24px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .function-btn-add {
+    font-size: 16px;
+    padding: 8px 0;
+  }
+
+  .search-product-input {
+    width: 200px;
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .logout-btn {
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .search-logout-row {
+    gap: 12px;
   }
 }
 
-.navbar {
-  /* ใช้ background-image แทนเพื่อไม่ไปทับสีเดิมมาก */
-  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
-  background-size: 300% 300%;
-  animation: gradientShift 8s ease-in-out infinite;
-  transition: box-shadow 0.3s;
-}
-
-/* โลโก้ลอยเบา ๆ */
-@keyframes floatY {
-  0% {
-    transform: translateY(0);
+/* ========== Tablet Small (768px - 900px) ========== */
+@media screen and (max-width: 900px) and (min-width: 768px) {
+  /* Sidebar */
+  .sidebar {
+    width: 180px;
+    left: -200px;
+    padding: 12px 8px;
   }
 
-  50% {
-    transform: translateY(-8px);
+  /* User Profile */
+  .user-profile-section {
+    padding: 16px 9px 12px;
+    margin-bottom: 9px;
   }
 
-  100% {
-    transform: translateY(0);
-  }
-}
-/* ปุ่ม navbar-text เล็ก ๆ พอง/ยุบ */
-@keyframes subtlePulse {
-  0% {
-    transform: scale(1);
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    border-width: 2px;
   }
 
-  50% {
-    transform: scale(1.03);
+  .online-indicator {
+    width: 12px;
+    height: 12px;
+    border-width: 2px;
   }
 
-  100% {
-    transform: scale(1);
-  }
-}
-
-.navbar-text {
-  animation: subtlePulse 3.2s ease-in-out infinite;
-}
-
-/* เพิ่ม keyframes สำหรับ slide-in ของ navbar-text */
-@keyframes slideFromLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
+  .user-name {
+    font-size: 14px;
   }
 
-  60% {
-    transform: translateX(8%);
-    opacity: 1;
+  .role-badge {
+    font-size: 9px;
+    padding: 4px 10px;
   }
 
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* เมื่อเพิ่มคลาส .slide-in จะสไลด์จากซ้ายเข้ามา แล้วตามด้วย subtlePulse เดิม */
-.navbar-text.slide-in {
-  animation:
-    slideFromLeft 640ms cubic-bezier(.2, .9, .2, 1) both,
-    subtlePulse 3.2s ease-in-out 640ms infinite;
-  /* ให้แน่ใจว่า visible ก่อน animation (preflight) */
-  will-change: transform, opacity;
-}
-
-/* sidebar slide-in (รองรับ toggle via JS) */
-/* ถ้ามีการใช้ transform ให้เพิ่มเวลาเป็น 1.36s (เดิม 0.36s) */
-.sidebar {
-  transform: translateX(-8px);
-  transition: transform 1.36s cubic-bezier(.2, .9, .2, 1), box-shadow 1.36s;
-}
-
-.sidebar.sidebar-open {
-  transform: translateX(0);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
-}
-
-/* hamburger animation transitions */
-.hamburger span {
-  transition: transform 0.35s, opacity 0.25s, width 0.35s, background 0.2s;
-}
-
-/* ฟอร์มการเพิ่มสินค้า: card entrance */
-@keyframes cardIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(.995);
+  /* Navigation Buttons */
+  .sidebar-nav-btn {
+    padding: 5px 7px;
+    gap: 3px;
   }
 
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.product-form.animate {
-  animation: cardIn 520ms cubic-bezier(.2, .9, .2, 1) forwards;
-}
-
-/* stagger สำหรับแต่ละ .form-group (จะกำหนด delay ด้วย JS) */
-@keyframes staggerUp {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
+  .sidebar-nav-btn .nav-btn {
+    padding: 9px 11px;
+    font-size: 12px;
+    margin-top: 4px;
+    gap: 7px;
   }
 
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  .nav-icon {
+    font-size: 16px;
+    min-width: 20px;
+  }
+
+  /* Logo */
+  .logo-container {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 45px;
+    padding: 9px;
+  }
+
+  .logo {
+    width: 115px;
+    height: 115px;
+  }
+
+  /* Navbar */
+  .navbar {
+    height: 70px;
+    padding: 7px 11px;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .navbar-text {
+    font-size: 24px;
+  }
+
+  .main-content {
+    margin-top: 70px;
+  }
+
+  /* Product Form */
+  .product-form {
+    padding: 20px 14px;
+    margin: 20px auto;
+    max-width: 600px;
+  }
+
+  .product-form-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 13px;
   }
 }
 
-.form-group.stagger {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: staggerUp 360ms ease forwards;
-}
-
-/* ปรับปรุงปุ่มให้มีเงาและยกเมื่อ hover */
-.function-btn-add {
-  transition: transform 0.14s ease, box-shadow 0.14s;
-}
-
-.function-btn-add:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 22px rgba(78, 179, 31, 0.16);
-}
-
-/* input / select focus glow */
-input:focus,
-select:focus,
-.search-product-input:focus {
-  outline: none;
-  box-shadow: 0 6px 20px rgba(255, 161, 68, 0.12), 0 0 0 3px rgba(255, 208, 128, 0.12);
-  border-color: #ffa144;
-  transition: box-shadow 0.22s, border-color 0.22s;
-}
-
-/* ผลลัพธ์การค้นหา: slide + fade รายการ */
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-8px);
+/* ========== Mobile (< 768px) ========== */
+@media screen and (max-width: 768px) {
+  /* Hamburger */
+  .hamburger {
+    top: 20px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
   }
 
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  .hamburger span {
+    width: 20px;
+    height: 2.5px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 85%;
+    max-width: 220px;
+    left: -100%;
+    padding: 14px 10px;
+  }
+
+  .sidebar.sidebar-open {
+    left: 0;
+  }
+
+  /* User profile */
+  .user-profile-section {
+    padding: 14px 8px 12px;
+    margin-bottom: 10px;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+    border-width: 2px;
+  }
+
+  .online-indicator {
+    width: 11px;
+    height: 11px;
+    border-width: 2px;
+  }
+
+  .user-name {
+    font-size: 14px;
+  }
+
+  .role-badge {
+    font-size: 9px;
+    padding: 3px 9px;
+  }
+
+  /* Navigation buttons */
+  .sidebar-nav-btn {
+    padding: 5px 7px;
+    gap: 4px;
+  }
+
+  .sidebar-nav-btn .nav-btn {
+    font-size: 12px;
+    padding: 9px 10px;
+    margin-top: 4px;
+    gap: 7px;
+  }
+
+  .nav-icon {
+    font-size: 16px;
+    min-width: 20px;
+  }
+
+  /* Logo */
+  .logo-container {
+    width: 85px;
+    height: 85px;
+    margin-bottom: 35px;
+    padding: 8px;
+  }
+
+  .logo {
+    width: 105px;
+    height: 105px;
+  }
+
+  /* Navbar */
+  .navbar {
+    height: auto;
+    min-height: 60px;
+    padding: 7px 9px;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .navbar-text {
+    font-size: 24px;
+  }
+
+  .main-content {
+    margin-top: 60px;
+  }
+
+  /* Product Form */
+  .product-form {
+    padding: 16px 12px;
+    margin: 16px 10px;
+  }
+
+  .product-form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-logout-row {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-product-input,
+  .logout-btn {
+    width: 100%;
   }
 }
 
-.search-results-container.animate .search-item {
-  opacity: 0;
-  animation: slideIn 220ms cubic-bezier(.2, .9, .2, 1) forwards;
+/* ========== Small Mobile (< 480px) ========== */
+@media screen and (max-width: 480px) {
+  .hamburger {
+    top: 18px;
+    left: 9px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .hamburger span {
+    width: 18px;
+    height: 2px;
+  }
+
+  .sidebar {
+    width: 90%;
+    max-width: 100%;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+  }
+
+  .online-indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .user-name {
+    font-size: 13px;
+  }
+
+  .role-badge {
+    font-size: 8px;
+    padding: 2px 8px;
+  }
+
+  .sidebar-nav-btn .nav-btn {
+    font-size: 11px;
+    padding: 8px 9px;
+  }
+
+  .nav-icon {
+    font-size: 14px;
+    min-width: 18px;
+  }
+
+  .logo-container {
+    width: 75px;
+    height: 75px;
+  }
+
+  .logo {
+    width: 95px;
+    height: 95px;
+  }
+
+  .navbar {
+    min-height: 50px;
+    padding: 5px 7px;
+  }
+
+  .main-content {
+    margin-top: 50px;
+  }
+
+  .navbar-text {
+    font-size: 24px;
+  }
 }
 
-.search-results-container.animate .search-item:nth-child(1) {
-  animation-delay: 40ms;
-}
+/* ========== Landscape Mobile ========== */
+@media (max-height: 600px) and (orientation: landscape) {
+  .sidebar {
+    overflow-y: auto;
+  }
 
-.search-results-container.animate .search-item:nth-child(2) {
-  animation-delay: 80ms;
-}
+  .user-profile-section {
+    padding: 10px 7px 8px;
+  }
 
-.search-results-container.animate .search-item:nth-child(3) {
-  animation-delay: 120ms;
-}
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+  }
 
-.search-results-container.animate .search-item:nth-child(4) {
-  animation-delay: 160ms;
-}
+  .online-indicator {
+    width: 10px;
+    height: 10px;
+  }
 
-/* เพิ่ม transition เล็กน้อยเมื่อ hover บน .search-item */
-.search-item {
-  transition: background-color 0.18s, transform 0.14s;
-}
+  .user-name {
+    font-size: 12px;
+  }
 
-.search-item:hover {
-  transform: translateY(-3px);
-}
+  .role-badge {
+    font-size: 8px;
+    padding: 3px 7px;
+  }
 
-/* ========== จบส่วนเพิ่ม ========== */
+  .sidebar-nav-btn .nav-btn {
+    padding: 7px 9px;
+    font-size: 11px;
+  }
 
-/* ปรับเวลาให้ตรงกับ main.css (left 0.8s) */
-.sidebar {
-  position: fixed;
-  left: -270px;
-  top: 0;
-  height: 100vh;
-  z-index: 2000;
-  /* ใช้เวลาเดียวกับ main.css */
-  transition: left 0.8s, transform 0.8s cubic-bezier(.2,.9,.2,1), box-shadow 0.8s;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  width: 250px;
-  background: rgb(254, 179, 104);
-  color: #fff;
-  padding: 30px 30px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
+  .nav-icon {
+    font-size: 14px;
+  }
 
-/* ลบ .sidebar ที่ซ้ำออก แล้วเหลือแค่ .sidebar.sidebar-open */
-.sidebar.sidebar-open {
-  left: 0;
-  transform: translateX(0);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
+  .logo-container {
+    padding: 7px;
+    margin-bottom: 10px;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .navbar {
+    min-height: 45px;
+  }
+
+  .main-content {
+    margin-top: 45px;
+  }
 }

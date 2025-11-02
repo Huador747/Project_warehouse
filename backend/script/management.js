@@ -48,9 +48,45 @@ function setupEventListeners() {
 // Load Data
 // =========================
 async function loadCurrentUser() {
+    const userId = localStorage.getItem('userId');
     const username = localStorage.getItem('username');
+    
     if (username) {
-        document.getElementById('currentUser').textContent = username;
+        document.getElementById('currentUserName').textContent = username;
+    }
+    
+    // โหลดรูปโปรไฟล์จาก API
+    if (userId) {
+        try {
+            const response = await fetch(`${api}/api/users/all`);
+            if (response.ok) {
+                const users = await response.json();
+                const currentUser = users.find(u => u._id === userId);
+                
+                if (currentUser) {
+                    const avatarElement = document.getElementById('currentUserAvatar');
+                    
+                    if (currentUser.profileImage) {
+                        avatarElement.src = currentUser.profileImage;
+                        avatarElement.style.display = 'block';
+                    } else {
+                        // ใช้ placeholder ถ้าไม่มีรูป
+                        avatarElement.style.display = 'none';
+                        const userProfile = document.querySelector('.user-profile');
+                        const existingPlaceholder = userProfile.querySelector('.user-avatar-placeholder');
+                        
+                        if (!existingPlaceholder) {
+                            const placeholder = document.createElement('div');
+                            placeholder.className = 'user-avatar-placeholder';
+                            placeholder.textContent = username.charAt(0).toUpperCase();
+                            userProfile.insertBefore(placeholder, userProfile.firstChild);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Load current user error:', error);
+        }
     }
 }
 

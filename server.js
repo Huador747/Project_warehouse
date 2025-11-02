@@ -57,13 +57,13 @@ mongoose.connect('mongodb://localhost:27017/project_warehouse', {
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  email: { type: String },
-  profileImage: String,
-  role: { type: String, enum: ['admin', 'manager', 'staff', 'user'], default: 'user' },
+  role: { type: String, enum: ['admin', 'user'], default: 'user' },
+  profileImage: { type: String, default: null }, // ← เก็บ Base64 string
   isActive: { type: Boolean, default: true },
-  lastLogin: Date,
-  lastSeen: Date
-}, { timestamps: true });  // สร้าง createdAt/updatedAt อัตโนมัติ
+  createdAt: { type: Date, default: Date.now },
+  lastLogin: { type: Date, default: Date.now },
+  lastSeen: { type: Date, default: Date.now }
+});
 
 const User = mongoose.model('User', UserSchema);
 
@@ -158,28 +158,64 @@ app.get('/api/users/stats', async (req, res) => {
   }
 });
 
-// เพิ่ม route สำหรับการลงทะเบียน
+// route สำหรับการ register - ไม่ใช้ Multer
 app.post('/register', async (req, res) => {
   try {
-    console.log('Register attempt:', req.body);
-    const { username, password } = req.body; // ตัด profileImage ออก
+    const { username, password, profileImage } = req.body;
 
-    // ตรวจสอบว่ามีผู้ใช้นี้แล้วหรือไม่
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
+    console.log('📥 Register request:', {
+      username,
+      password: '***',
+      hasProfileImage: !!profileImage,
+      imageSize: profileImage ? `${(profileImage.length / 1024).toFixed(2)} KB` : 'N/A'
+    });
+
+    // ตรวจสอบว่ามีชื่อผู้ใช้นี้แล้วหรือไม่
+    const existing = await User.findOne({ username });
+    if (existing) {
+      console.log('❌ Username already exists:', username);
       return res.status(400).json({ message: 'ชื่อผู้ใช้นี้มีอยู่แล้ว' });
     }
 
-    // สร้างผู้ใช้ใหม่ (ไม่เก็บรูป)
-    const user = new User({ username, password });
+    // Validate Base64 image format (ถ้ามีรูป)
+    if (profileImage) {
+      if (!profileImage.startsWith('data:image/')) {
+        console.log('❌ Invalid image format');
+        return res.status(400).json({ message: 'รูปภาพไม่ถูกต้อง' });
+      }
+      
+      // ตรวจสอบขนาด Base64 (ไม่เกิน ~7MB = 5MB file * 1.33)
+      if (profileImage.length > 7 * 1024 * 1024) {
+        console.log('❌ Image too large');
+        return res.status(400).json({ message: 'รูปภาพใหญ่เกินไป' });
+      }
+    }
+
+    // สร้าง user ใหม่
+    const user = new User({
+      username,
+      password,
+      role: 'user',
+      profileImage: profileImage || null, // Base64 string หรือ null
+      isActive: true,
+      lastLogin: new Date(),
+      lastSeen: new Date()
+    });
 
     await user.save();
-    console.log('User registered successfully:', username);
-    res.status(201).json({ message: 'ลงทะเบียนสำเร็จ' });
+    console.log('✅ User registered successfully:', username, '| Image:', profileImage ? 'Yes' : 'No');
 
+    res.status(201).json({ 
+      message: 'ลงทะเบียนสำเร็จ',
+      username: user.username,
+      role: user.role
+    });
   } catch (err) {
-    console.error('Registration error:', err);
-    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลงทะเบียน' });
+    console.error('❌ Register error:', err);
+    res.status(500).json({ 
+      message: 'เกิดข้อผิดพลาดในการลงทะเบียน',
+      error: err.message 
+    });
   }
 });
 
@@ -190,9 +226,15 @@ app.post('/login', async (req, res) => {
   if (!user) return res.status(401).json({ message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
 
   user.lastLogin = new Date();
+  user.lastSeen = new Date(); // ++ เพิ่ม lastSeen ตอน login
   await user.save();
 
-  res.json({ message: 'เข้าสู่ระบบสำเร็จ', username: user.username, role: user.role });
+  res.json({ 
+    message: 'เข้าสู่ระบบสำเร็จ', 
+    username: user.username, 
+    role: user.role,
+    userId: user._id // ++ เพิ่ม userId
+  });
 });
 
 // เพิ่ม route สำหรับดึงข้อมูลสินค้า

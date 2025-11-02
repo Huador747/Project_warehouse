@@ -9,8 +9,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../styles/buyin.css" />
-    <link rel="stylesheet" href="../styles/responsive/buyin1180px.css" />
-    <link rel="stylesheet" href="../styles/responsive/sidebar1180.css" />
+    <link rel="stylesheet" href="../styles/sidebar.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
@@ -19,11 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0
-"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
     <!-- Hamburger button -->
@@ -32,15 +27,37 @@
       <span></span>
       <span></span>
     </button>
+
     <div class="sidebar" id="sidebar">
       <div class="sidebar-nav-btn">
-        <button
-          class="nav-btn"
-          onclick="window.location.href='main.html'"
-        >
+        <!-- User Profile Section -->
+        <div class="user-profile-section">
+          <div class="user-avatar-wrapper">
+            <img
+              id="userAvatar"
+              src=""
+              alt="User Avatar"
+              class="user-avatar"
+              style="display: none"
+            />
+            <div class="online-indicator"></div>
+          </div>
+          <div class="user-info-text">
+            <div id="userName" class="user-name">ผู้ใช้งาน</div>
+            <div id="userRole" class="user-role">
+              <span class="role-badge">User</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button class="nav-btn" onclick="window.location.href='main.html'">
           <span class="nav-icon">🏠</span> หน้าหลัก
         </button>
-        <button class="nav-btn active" onclick="window.location.href='buyin.html'">
+        <button
+          class="nav-btn active"
+          onclick="window.location.href='buyin.html'"
+        >
           <span class="nav-icon">🛒</span> รายการซื้อ
         </button>
         <button class="nav-btn" onclick="window.location.href='sale.html'">
@@ -59,7 +76,8 @@
       <div class="logo-container">
         <img src="/assets/logo.png" alt="Logo" class="logo" />
       </div>
-    </div>    pm2 start server.js --name project-warehouse
+    </div>
+
     <div class="navbar">
       <form class="navbar-form">
         <span class="navbar-text active">หน้าซื้อสินค้า</span>
@@ -73,6 +91,7 @@
         <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
       </div>
     </div>
+
     <div class="main-content">
       <!-- เริ่มเขียนส่วนเนื้อหา -->
       <form class="product-form">
@@ -137,6 +156,119 @@
         <button type="submit" class="function-btn-add">บันทึก</button>
       </form>
     </div>
+
+    <!-- เพิ่ม script สำหรับโหลด user profile -->
+    <script>
+      // ฟังก์ชันโหลดข้อมูล user profile
+      async function loadUserProfile() {
+        const userId = localStorage.getItem("userId");
+        const username = localStorage.getItem("username");
+        const role = localStorage.getItem("role");
+
+        console.log("🔍 Loading user profile:", { userId, username, role });
+
+        // แสดงชื่อและ role จาก localStorage
+        if (username) {
+          document.getElementById("userName").textContent = username;
+        }
+
+        if (role) {
+          const roleBadge = document.querySelector(".role-badge");
+          roleBadge.textContent =
+            role === "admin" ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน";
+          roleBadge.className =
+            role === "admin" ? "role-badge admin" : "role-badge user";
+        }
+
+        // โหลดรูปโปรไฟล์จาก database
+        if (userId) {
+          try {
+            const BACKEND_URL = `http://${window.location.hostname}:3000`;
+            const response = await fetch(`${BACKEND_URL}/api/users/all`);
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const users = await response.json();
+            const currentUser = users.find((u) => u._id === userId);
+
+            if (currentUser) {
+              const avatarElement = document.getElementById("userAvatar");
+              const avatarWrapper = document.querySelector(
+                ".user-avatar-wrapper"
+              );
+
+              // ลบ placeholder เดิม (ถ้ามี)
+              const existingPlaceholder = avatarWrapper.querySelector(
+                ".user-avatar-placeholder"
+              );
+              if (existingPlaceholder) {
+                existingPlaceholder.remove();
+              }
+
+              if (currentUser.profileImage) {
+                avatarElement.src = currentUser.profileImage;
+                avatarElement.style.display = "block";
+
+                avatarElement.onerror = function () {
+                  console.error("❌ Failed to load profile image");
+                  this.style.display = "none";
+                  createPlaceholder(avatarWrapper, username);
+                };
+              } else {
+                avatarElement.style.display = "none";
+                createPlaceholder(avatarWrapper, username);
+              }
+            } else {
+              createPlaceholder(
+                document.querySelector(".user-avatar-wrapper"),
+                username
+              );
+            }
+          } catch (error) {
+            console.error("❌ Load user profile error:", error);
+            createPlaceholder(
+              document.querySelector(".user-avatar-wrapper"),
+              username
+            );
+          }
+        }
+      }
+
+      // ฟังก์ชันสร้าง placeholder
+      function createPlaceholder(wrapper, username) {
+        const avatar = wrapper.querySelector("#userAvatar");
+        if (avatar) avatar.style.display = "none";
+
+        const existingPlaceholder = wrapper.querySelector(
+          ".user-avatar-placeholder"
+        );
+        if (existingPlaceholder) return;
+
+        const placeholder = document.createElement("div");
+        placeholder.className = "user-avatar-placeholder";
+        placeholder.textContent = username
+          ? username.charAt(0).toUpperCase()
+          : "U";
+
+        const indicator = wrapper.querySelector(".online-indicator");
+        wrapper.insertBefore(placeholder, indicator);
+      }
+
+      // โหลด user profile เมื่อหน้าโหลดเสร็จ
+      document.addEventListener("DOMContentLoaded", function () {
+        loadUserProfile();
+
+        // Hamburger menu
+        const hamburger = document.getElementById("hamburger-btn");
+        const sidebar = document.getElementById("sidebar");
+        hamburger?.addEventListener("click", () => {
+          sidebar.classList.toggle("sidebar-open");
+        });
+      });
+    </script>
+
     <script type="module" src="../scripts/buyin.js"></script>
   </body>
 </html>

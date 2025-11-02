@@ -19,6 +19,25 @@
       <span></span>
     </button>
     <div class="sidebar" id="sidebar">
+      <!-- User Profile Section -->
+      <div class="user-profile-section">
+        <div class="user-avatar-wrapper">
+          <img
+            id="userAvatar"
+            src=""
+            alt="User Avatar"
+            class="user-avatar"
+            style="display: none"
+          />
+          <div class="online-indicator"></div>
+        </div>
+        <div class="user-info-text">
+          <div id="userName" class="user-name">ผู้ใช้งาน</div>
+          <div id="userRole" class="user-role">
+            <span class="role-badge">User</span>
+          </div>
+        </div>
+      </div>
       <div class="sidebar-nav-btn">
         <button class="nav-btn" onclick="window.location.href='main.html'">
           <span class="nav-icon">🏠</span> หน้าหลัก
@@ -35,7 +54,10 @@
         <button class="nav-btn" onclick="window.location.href='inventory.html'">
           <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
         </button>
-        <button class="nav-btn active" onclick="window.location.href='movement.html'">
+        <button
+          class="nav-btn active"
+          onclick="window.location.href='movement.html'"
+        >
           <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
         </button>
       </div>
@@ -47,7 +69,11 @@
     <div class="navbar">
       <form class="navbar-form">
         <span class="navbar-text active">หน้าการเคลื่อนไหวสินค้า</span>
-        <button class="report-btn" id="report-btn">Report</button>
+        <button class="report-btn" id="report-btn" style="width: auto">
+          <span class="btn-icon">📊</span>
+          <span class="btn-text">Report</span>
+          <span class="btn-glow"></span>
+        </button>
       </form>
       <div class="search-logout-row">
         <input
@@ -62,7 +88,7 @@
       <div class="controls">
         <div class="control-group">
           <label for="product-select">เลือกดูเฉพาะสินค้า:</label>
-          <select id="product-select">
+          <select id="product-select" class="product-select-input">
             <option value="">ทั้งหมด</option>
             <!-- เติม option ด้วย JS -->
           </select>
@@ -88,6 +114,118 @@
       <canvas id="movementChart" width="900" height="400"></canvas>
     </div>
     <script type="module" src="../scripts/movement.js"></script>
+
+    <script>
+      // ฟังก์ชันโหลดข้อมูล user profile
+      async function loadUserProfile() {
+        const userId = localStorage.getItem("userId");
+        const username = localStorage.getItem("username");
+        const role = localStorage.getItem("role");
+
+        console.log("🔍 Loading user profile:", { userId, username, role });
+
+        // แสดงชื่อและ role จาก localStorage
+        if (username) {
+          document.getElementById("userName").textContent = username;
+        }
+
+        if (role) {
+          const roleBadge = document.querySelector(".role-badge");
+          roleBadge.textContent =
+            role === "admin" ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน";
+          roleBadge.className =
+            role === "admin" ? "role-badge admin" : "role-badge user";
+        }
+
+        // โหลดรูปโปรไฟล์จาก database
+        if (userId) {
+          try {
+            const BACKEND_URL = `http://${window.location.hostname}:3000`;
+            const response = await fetch(`${BACKEND_URL}/api/users/all`);
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const users = await response.json();
+            const currentUser = users.find((u) => u._id === userId);
+
+            if (currentUser) {
+              const avatarElement = document.getElementById("userAvatar");
+              const avatarWrapper = document.querySelector(
+                ".user-avatar-wrapper"
+              );
+
+              // ลบ placeholder เดิม (ถ้ามี)
+              const existingPlaceholder = avatarWrapper.querySelector(
+                ".user-avatar-placeholder"
+              );
+              if (existingPlaceholder) {
+                existingPlaceholder.remove();
+              }
+
+              if (currentUser.profileImage) {
+                avatarElement.src = currentUser.profileImage;
+                avatarElement.style.display = "block";
+
+                avatarElement.onerror = function () {
+                  console.error("❌ Failed to load profile image");
+                  this.style.display = "none";
+                  createPlaceholder(avatarWrapper, username);
+                };
+              } else {
+                avatarElement.style.display = "none";
+                createPlaceholder(avatarWrapper, username);
+              }
+            } else {
+              createPlaceholder(
+                document.querySelector(".user-avatar-wrapper"),
+                username
+              );
+            }
+          } catch (error) {
+            console.error("❌ Load user profile error:", error);
+            createPlaceholder(
+              document.querySelector(".user-avatar-wrapper"),
+              username
+            );
+          }
+        }
+      }
+
+      // ฟังก์ชันสร้าง placeholder
+      function createPlaceholder(wrapper, username) {
+        const avatar = wrapper.querySelector("#userAvatar");
+        if (avatar) avatar.style.display = "none";
+
+        const existingPlaceholder = wrapper.querySelector(
+          ".user-avatar-placeholder"
+        );
+        if (existingPlaceholder) return;
+
+        const placeholder = document.createElement("div");
+        placeholder.className = "user-avatar-placeholder";
+        placeholder.textContent = username
+          ? username.charAt(0).toUpperCase()
+          : "U";
+
+        const indicator = wrapper.querySelector(".online-indicator");
+        wrapper.insertBefore(placeholder, indicator);
+      }
+
+      // โหลด user profile เมื่อหน้าโหลดเสร็จ
+      document.addEventListener("DOMContentLoaded", function () {
+        loadUserProfile();
+
+        // Hamburger menu
+        const hamburger = document.getElementById("hamburger-btn");
+        const sidebar = document.getElementById("sidebar");
+        hamburger?.addEventListener("click", () => {
+          sidebar.classList.toggle("sidebar-open");
+        });
+      });
+    </script>
+
     <script>
       const yearSelect = document.getElementById("year-select");
       const yearLabel = document.getElementById("year-label");

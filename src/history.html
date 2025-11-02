@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>ประวัติซื้อ-ขาย</title>
     <link rel="stylesheet" href="../styles/history.css">
-    <link rel="stylesheet" href="../styles/responsive/history1180px.css">
-    <link rel="stylesheet" href="../styles/responsive/sidebar1180.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
@@ -20,6 +18,19 @@
     </button>
     <div class="sidebar" id="sidebar">
       <div class="sidebar-nav-btn">
+         <!-- User Profile Section -->
+        <div class="user-profile-section">
+          <div class="user-avatar-wrapper">
+            <img id="userAvatar" src="" alt="User Avatar" class="user-avatar" style="display: none;" />
+            <div class="online-indicator"></div>
+          </div>
+          <div class="user-info-text">
+            <div id="userName" class="user-name">ผู้ใช้งาน</div>
+            <div id="userRole" class="user-role">
+              <span class="role-badge">User</span>
+            </div>
+          </div>
+        </div>
         <button
           class="nav-btn"
           onclick="window.location.href='main.html'"
@@ -51,17 +62,17 @@
         <div class="navbar">
             <form class="navbar-form">
                 <span class="navbar-text active">ประวัติการซื้อ-ขาย</span>
-                <select id="history-type">
+                <select id="history-type" class="compact-select">
                     <option value="all">ทั้งหมด</option>
                     <option value="buyin">รายการซื้อ</option>
                     <option value="sale">รายการขาย</option>
                 </select>
                 <!-- เพิ่มดรอปดาวน์แยกปีและเดือน -->
                 <select id="month-select">
-                    <option value="all">ทุกเดือน</option>
+                    <option value="all" class="compact-select">ทุกเดือน</option>
                 </select>
                 <select id="year-select">
-                    <option value="all">ทุกปี</option>
+                    <option value="all" class="compact-select">ทุกปี</option>
                 </select>
             </form>
             <div class="search-logout-row">
@@ -179,6 +190,117 @@
     </div>
     </div>
     </div>
+<script>
+      // ฟังก์ชันโหลดข้อมูล user profile
+      async function loadUserProfile() {
+        const userId = localStorage.getItem("userId");
+        const username = localStorage.getItem("username");
+        const role = localStorage.getItem("role");
+
+        console.log("🔍 Loading user profile:", { userId, username, role });
+
+        // แสดงชื่อและ role จาก localStorage
+        if (username) {
+          document.getElementById("userName").textContent = username;
+        }
+
+        if (role) {
+          const roleBadge = document.querySelector(".role-badge");
+          roleBadge.textContent =
+            role === "admin" ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน";
+          roleBadge.className =
+            role === "admin" ? "role-badge admin" : "role-badge user";
+        }
+
+        // โหลดรูปโปรไฟล์จาก database
+        if (userId) {
+          try {
+            const BACKEND_URL = `http://${window.location.hostname}:3000`;
+            const response = await fetch(`${BACKEND_URL}/api/users/all`);
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const users = await response.json();
+            const currentUser = users.find((u) => u._id === userId);
+
+            if (currentUser) {
+              const avatarElement = document.getElementById("userAvatar");
+              const avatarWrapper = document.querySelector(
+                ".user-avatar-wrapper"
+              );
+
+              // ลบ placeholder เดิม (ถ้ามี)
+              const existingPlaceholder = avatarWrapper.querySelector(
+                ".user-avatar-placeholder"
+              );
+              if (existingPlaceholder) {
+                existingPlaceholder.remove();
+              }
+
+              if (currentUser.profileImage) {
+                avatarElement.src = currentUser.profileImage;
+                avatarElement.style.display = "block";
+
+                avatarElement.onerror = function () {
+                  console.error("❌ Failed to load profile image");
+                  this.style.display = "none";
+                  createPlaceholder(avatarWrapper, username);
+                };
+              } else {
+                avatarElement.style.display = "none";
+                createPlaceholder(avatarWrapper, username);
+              }
+            } else {
+              createPlaceholder(
+                document.querySelector(".user-avatar-wrapper"),
+                username
+              );
+            }
+          } catch (error) {
+            console.error("❌ Load user profile error:", error);
+            createPlaceholder(
+              document.querySelector(".user-avatar-wrapper"),
+              username
+            );
+          }
+        }
+      }
+
+      // ฟังก์ชันสร้าง placeholder
+      function createPlaceholder(wrapper, username) {
+        const avatar = wrapper.querySelector("#userAvatar");
+        if (avatar) avatar.style.display = "none";
+
+        const existingPlaceholder = wrapper.querySelector(
+          ".user-avatar-placeholder"
+        );
+        if (existingPlaceholder) return;
+
+        const placeholder = document.createElement("div");
+        placeholder.className = "user-avatar-placeholder";
+        placeholder.textContent = username
+          ? username.charAt(0).toUpperCase()
+          : "U";
+
+        const indicator = wrapper.querySelector(".online-indicator");
+        wrapper.insertBefore(placeholder, indicator);
+      }
+
+      // โหลด user profile เมื่อหน้าโหลดเสร็จ
+      document.addEventListener("DOMContentLoaded", function () {
+        loadUserProfile();
+
+        // Hamburger menu
+        const hamburger = document.getElementById("hamburger-btn");
+        const sidebar = document.getElementById("sidebar");
+        hamburger?.addEventListener("click", () => {
+          sidebar.classList.toggle("sidebar-open");
+        });
+      });
+    </script>
+
     <script type="module" src="../scripts/history.js"></script>
 </body>
 

@@ -8,12 +8,10 @@
       href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles/main.css" />
-    <link rel="stylesheet" href="/styles/responsive/sidebar1180.css" />
-    <link rel="stylesheet" href="/styles/responsive/main1180px.css" />
+    <link rel="stylesheet" href="../styles/main.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <metaname ="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
     <!-- Hamburger button -->
@@ -24,6 +22,21 @@
     </button>
     <div class="sidebar" id="sidebar">
       <div class="sidebar-nav-btn">
+        <!-- User Profile Section -->
+        <div class="user-profile-section">
+          <div class="user-avatar-wrapper">
+            <img id="userAvatar" src="" alt="User Avatar" class="user-avatar" style="display: none;" />
+            <div class="online-indicator"></div>
+          </div>
+          <div class="user-info-text">
+            <div id="userName" class="user-name">ผู้ใช้งาน</div>
+            <div id="userRole" class="user-role">
+              <span class="role-badge">User</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
         <button
           class="nav-btn active"
           onclick="window.location.href='main.html'"
@@ -50,6 +63,8 @@
         <img src="/assets/logo.png" alt="Logo" class="logo" />
       </div>
     </div>
+
+    <!-- Main Content -->
     <div class="main-content">
       <div class="navbar">
         <form class="navbar-form">
@@ -231,7 +246,7 @@
       <img id="modal-img" src="" alt="รูปสินค้า" />
     </div>
 
-    <!--- ใช้งานsciptsภายใน --->
+    <!--- ใช้งาน scripts ภายใน --->
     <script>
       function checkLogin() {
         const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -243,6 +258,8 @@
       // เรียกใช้ฟังก์ชันตรวจสอบเมื่อโหลดหน้า
       document.addEventListener("DOMContentLoaded", function () {
         checkLogin();
+        loadUserProfile(); // โหลดข้อมูล user
+        
         // Hamburger menu
         const hamburger = document.getElementById("hamburger-btn");
         const sidebar = document.getElementById("sidebar");
@@ -253,7 +270,7 @@
         // แยก logout handler ออกมา
         const logoutBtn = document.querySelector(".logout-btn");
         logoutBtn?.addEventListener("click", function (e) {
-          e.preventDefault(); // ป้องกันการทำงานซ้ำซ้อน
+          e.preventDefault();
           localStorage.clear();
           sessionStorage.clear();
           window.location.replace("login.html");
@@ -278,9 +295,796 @@
           window.location.href = "delete.html";
         });
       });
+
+      // ฟังก์ชันโหลดข้อมูล user profile จาก database
+      async function loadUserProfile() {
+        const userId = localStorage.getItem('userId');
+        const username = localStorage.getItem('username');
+        const role = localStorage.getItem('role');
+
+        console.log('🔍 Loading user profile:', { userId, username, role });
+
+        // แสดงชื่อและ role จาก localStorage
+        if (username) {
+          document.getElementById('userName').textContent = username;
+        }
+
+        if (role) {
+          const roleBadge = document.querySelector('.role-badge');
+          roleBadge.textContent = role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้งาน';
+          roleBadge.className = role === 'admin' ? 'role-badge admin' : 'role-badge user';
+        }
+
+        // โหลดรูปโปรไฟล์จาก database
+        if (userId) {
+          try {
+            const BACKEND_URL = `http://${window.location.hostname}:3000`;
+            const response = await fetch(`${BACKEND_URL}/api/users/all`);
+            
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const users = await response.json();
+            console.log('📥 Users loaded:', users.length);
+            
+            const currentUser = users.find(u => u._id === userId);
+
+            if (currentUser) {
+              console.log('✅ Current user found:', currentUser.username);
+              
+              const avatarElement = document.getElementById('userAvatar');
+              const avatarWrapper = document.querySelector('.user-avatar-wrapper');
+              
+              // ลบ placeholder เดิม (ถ้ามี)
+              const existingPlaceholder = avatarWrapper.querySelector('.user-avatar-placeholder');
+              if (existingPlaceholder) {
+                existingPlaceholder.remove();
+              }
+
+              if (currentUser.profileImage) {
+                // แสดงรูปจาก database (Base64)
+                console.log('🖼️ Profile image found, size:', (currentUser.profileImage.length / 1024).toFixed(2), 'KB');
+                avatarElement.src = currentUser.profileImage;
+                avatarElement.style.display = 'block';
+                
+                // Handle image load error
+                avatarElement.onerror = function() {
+                  console.error('❌ Failed to load profile image');
+                  this.style.display = 'none';
+                  createPlaceholder(avatarWrapper, username);
+                };
+              } else {
+                // ไม่มีรูป - ใช้ placeholder
+                console.log('ℹ️ No profile image, using placeholder');
+                avatarElement.style.display = 'none';
+                createPlaceholder(avatarWrapper, username);
+              }
+            } else {
+              console.warn('⚠️ User not found in database');
+              createPlaceholder(document.querySelector('.user-avatar-wrapper'), username);
+            }
+          } catch (error) {
+            console.error('❌ Load user profile error:', error);
+            // Fallback to placeholder on error
+            createPlaceholder(document.querySelector('.user-avatar-wrapper'), username);
+          }
+        } else {
+          console.warn('⚠️ No userId in localStorage');
+        }
+      }
+
+      // ฟังก์ชันสร้าง placeholder
+      function createPlaceholder(wrapper, username) {
+        const avatar = wrapper.querySelector('#userAvatar');
+        if (avatar) avatar.style.display = 'none';
+        
+        const existingPlaceholder = wrapper.querySelector('.user-avatar-placeholder');
+        if (existingPlaceholder) return; // มีอยู่แล้ว
+        
+        const placeholder = document.createElement('div');
+        placeholder.className = 'user-avatar-placeholder';
+        placeholder.textContent = username ? username.charAt(0).toUpperCase() : 'U';
+        
+        // ใส่ก่อน online indicator
+        const indicator = wrapper.querySelector('.online-indicator');
+        wrapper.insertBefore(placeholder, indicator);
+      }
     </script>
-    <!--- ใช้งานsciptsภายนอก --->
+    <!--- ใช้งาน scripts ภายนอก --->
     <script type="module" src="../scripts/mainpage.js"></script>
-    <!-- เพิ่มท้ายไฟล์ main.html -->
   </body>
 </html>
+
+<style>
+/* filepath: c:\Users\teera\Project_warehouse\styles\main.css */
+/* ...existing code... */
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* ========== Tablet & iPad (900px - 1200px) ========== */
+@media screen and (max-width: 1200px) and (min-width: 900px) {
+  /* Navbar */
+  .navbar {
+    align-items: center;
+    height: 80px;
+    padding: 8px 16px;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    position: fixed;
+    left: 24px;
+    top: 40px;
+    transform: translateY(-50%);
+    z-index: 4000;
+    width: 40px;
+    height: 40px;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  /* Navbar text */
+  .navbar-text {
+    font-size: 14px;
+    padding: 4px 4px;
+    gap: 4px;
+  }
+
+  .navbar-text.active {
+    font-size: 11px;
+    margin-right: 8px;
+    margin-left: 24px;
+  }
+
+  .stat-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Navbar form */
+  .navbar-form {
+    gap: 10px;
+    margin-left: 20px;
+    padding: 10px 0 4px 0;
+  }
+
+  .navbar-form input[type="text"] {
+    height: 28px;
+    font-size: 14px;
+    padding: 4px;
+  }
+
+  /* Main content */
+  .main-content {
+    width: 100%;
+    max-width: 1130px;
+    position: relative;
+    margin-top: 80px;
+  }
+
+  /* Function buttons */
+  .function-buttons {
+    font-size: 12px;
+    gap: 6px;
+    padding: 2px 4px;
+    margin-top: 7px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  .search-product-input {
+    width: 200px;
+    height: 42px;
+    font-size: 15px;
+    padding: 6px 10px;
+  }
+
+  .function-buttons button {
+    font-size: 12px;
+    padding: 4px 8px;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Product table */
+  .product-table {
+    margin-top: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: calc(100% - 20px);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .product-table th,
+  .product-table td {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  .product-table td img {
+    width: 250px;
+    height: 250px;
+  }
+
+  /* Pagination controls */
+  
+  /* Logo */
+  .logo-container {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    width: 180px;
+    height: 180px;
+  }
+
+  /* Logout button */
+  .logout-btn {
+    height: 42px;
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+}
+
+/* ========== Tablet Small (768px - 900px) ========== */
+@media screen and (max-width: 900px) and (min-width: 768px) {
+  .navbar {
+    height: 70px;
+    padding: 6px 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hamburger {
+    top: 35px;
+    left: 16px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .main-content {
+    margin-top: 70px;
+  }
+
+  .navbar-form {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    justify-content: center;
+  }
+
+  .navbar-text {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .stat-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .function-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    justify-content: center;
+  }
+
+  .search-product-input {
+    width: 100%;
+    max-width: 300px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .function-buttons button {
+    flex: 1;
+    min-width: 80px;
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .product-table {
+    margin: 16px 8px;
+    padding: 16px;
+  }
+
+  .product-table th,
+  .product-table td {
+    font-size: 12px;
+    padding: 6px 4px;
+    min-width: 80px;
+  }
+
+  .product-table td img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .sidebar {
+    width: 220px;
+    left: -240px;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+  }
+
+  .user-name {
+    font-size: 17px;
+  }
+
+  .logo {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* ========== Mobile (< 768px) ========== */
+@media screen and (max-width: 768px) {
+  /* Navbar */
+  .navbar {
+    height: auto;
+    min-height: 60px;
+    padding: 8px 10px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    top: 30px;
+    left: 12px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .hamburger span {
+    width: 24px;
+    height: 3px;
+  }
+
+  /* Main content */
+  .main-content {
+    margin-top: 60px;
+  }
+
+  /* Navbar form */
+  .navbar-form {
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .navbar-text {
+    font-size: 11px;
+    padding: 4px 6px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stat-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Logout button */
+  .logout-btn {
+    width: 100%;
+    height: 38px;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  /* Function buttons */
+  .function-buttons {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .search-product-input {
+    width: 100%;
+    height: 38px;
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .function-btn-add,
+  .function-btn-edit,
+  .function-btn-delete {
+    width: 100%;
+    height: 42px;
+    font-size: 14px;
+    padding: 8px 12px;
+    justify-content: center;
+  }
+
+  /* Product table */
+  .product-table {
+    margin: 12px 8px;
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    width: calc(100% - 16px);
+  }
+
+  .product-table table {
+    min-width: 600px;
+    font-size: 11px;
+  }
+
+  .product-table th,
+  .product-table td {
+    font-size: 11px;
+    padding: 6px 4px;
+    min-width: 60px;
+    max-width: 120px;
+    height: auto;
+  }
+
+  .product-table td img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .product-table td:last-child {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+  }
+
+  /* Pagination */
+  .pagination-controls {
+    flex-direction: row;
+    gap: 8px;
+    padding: 10px 16px;
+    margin: 16px 8px;
+    width: calc(100% - 16px);
+  }
+
+  .pagination-controls button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 70px;
+    flex: 1;
+  }
+
+  #page-info {
+    font-size: 0.9rem;
+    min-width: 80px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 85%;
+    max-width: 280px;
+    left: -100%;
+  }
+
+  .sidebar.sidebar-open {
+    left: 0;
+  }
+
+  /* User profile */
+  .user-profile-section {
+    padding: 16px 12px;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 65px;
+    height: 65px;
+    font-size: 26px;
+    border-width: 2px;
+  }
+
+  .online-indicator {
+    width: 14px;
+    height: 14px;
+    border-width: 2px;
+  }
+
+  .user-name {
+    font-size: 16px;
+  }
+
+  .role-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  /* Navigation buttons */
+  .sidebar-nav-btn .nav-btn {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+
+  .nav-icon {
+    font-size: 20px;
+    min-width: 24px;
+  }
+
+  /* Logo */
+  .logo-container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 60px;
+  }
+
+  .logo {
+    width: 120px;
+    height: 120px;
+  }
+
+  /* Image modal */
+  .image-modal img {
+    max-width: 90vw;
+    max-height: 70vh;
+  }
+
+  .close-modal {
+    top: 16px;
+    right: 16px;
+    font-size: 2rem;
+  }
+}
+
+/* ========== Small Mobile (< 480px) ========== */
+@media screen and (max-width: 480px) {
+  .navbar {
+    min-height: 50px;
+    padding: 6px 8px;
+  }
+
+  .hamburger {
+    top: 25px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .hamburger span {
+    width: 20px;
+    height: 2.5px;
+  }
+
+  .main-content {
+    margin-top: 50px;
+  }
+
+  .navbar-text {
+    font-size: 10px;
+    padding: 3px 5px;
+  }
+
+  .stat-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .logout-btn {
+    height: 36px;
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  .function-buttons {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .search-product-input {
+    height: 36px;
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .function-btn-add,
+  .function-btn-edit,
+  .function-btn-delete {
+    height: 38px;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .product-table {
+    margin: 10px 6px;
+    padding: 10px;
+  }
+
+  .product-table table {
+    min-width: 500px;
+    font-size: 10px;
+  }
+
+  .product-table th,
+  .product-table td {
+    font-size: 10px;
+    padding: 4px 2px;
+    min-width: 50px;
+  }
+
+  .product-table td img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .product-table td:last-child {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .pagination-controls {
+    padding: 8px 12px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pagination-controls button {
+    padding: 5px 8px;
+    font-size: 11px;
+    min-width: 60px;
+  }
+
+  #page-info {
+    font-size: 0.85rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .sidebar {
+    width: 90%;
+    max-width: 100%;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  .user-name {
+    font-size: 15px;
+  }
+
+  .role-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .sidebar-nav-btn .nav-btn {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .logo {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* ========== Landscape Mobile ========== */
+@media (max-height: 600px) and (orientation: landscape) {
+  .sidebar {
+    overflow-y: auto;
+  }
+
+  .user-profile-section {
+    padding: 12px 10px;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+  }
+
+  .sidebar-nav-btn .nav-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .logo-container {
+    padding: 10px;
+    margin-bottom: 40px;
+  }
+
+  .logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .navbar {
+    min-height: 50px;
+  }
+
+  .main-content {
+    margin-top: 50px;
+  }
+}
+
+/* ========== Print Styles ========== */
+@media print {
+  .hamburger,
+  .sidebar,
+  .navbar,
+  .function-buttons,
+  .pagination-controls {
+    display: none !important;
+  }
+
+  .main-content {
+    margin: 0;
+  }
+
+  .product-table {
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .product-table th,
+  .product-table td {
+    border: 1px solid #000;
+  }
+}
+
+/* ========== Accessibility ========== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========== High Contrast Mode ========== */
+@media (prefers-contrast: high) {
+  .sidebar {
+    border-right: 2px solid #000;
+  }
+
+  .sidebar-nav-btn .nav-btn {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+
+  .navbar {
+    border-bottom: 2px solid #000;
+  }
+
+  .product-table th,
+  .product-table td {
+    border: 2px solid #000;
+  }
+}
+
+/* ========== END RESPONSIVE ========== */

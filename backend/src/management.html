@@ -61,7 +61,16 @@
                 </div>
                 <div class="header-right">
                     <div class="user-info">
-                        <span id="currentUser">ผู้ใช้งาน</span>
+                        <div class="user-profile">
+                            <img id="currentUserAvatar" src="" alt="User Avatar" class="user-avatar">
+                            <div class="user-details">
+                                <span id="currentUserName" class="user-name">ผู้ใช้งาน</span>
+                                <span class="user-status">
+                                    <span class="status-dot online"></span>
+                                    <span class="status-text">ออนไลน์</span>
+                                </span>
+                            </div>
+                        </div>
                         <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
                     </div>
                 </div>
@@ -100,7 +109,7 @@
                                 <th width="25%">ชื่อผู้ใช้งาน</th>
                                 <th width="15%">บทบาท</th>
                                 <th width="12%">การใช้งาน</th>
-                                <th width="18%">วันที่สร้าง</th>
+                                <th width="18%">สร้างบัญชีเมื่อ</th>
                                 <th width="15%">จัดการ</th>
                             </tr>
                         </thead>
@@ -121,6 +130,7 @@
         </main>
     </div>
 
+    <!-- Modals remain unchanged -->
     <!-- Add/Edit User Modal -->
     <div id="userModal" class="modal">
         <div class="modal-content">
@@ -189,26 +199,5 @@
     </div>
 </body>
 <script src="/scripts/config.js"></script>
-<script>
-function previewImage(input) {
-    const container = document.getElementById('imagePreviewContainer');
-    container.innerHTML = '';
-    
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const preview = document.createElement('div');
-            preview.style.cssText = 'margin-top: 10px; text-align: center;';
-            preview.innerHTML = `
-                <img src="${e.target.result}" alt="Preview" 
-                     style="max-width: 150px; max-height: 150px; border-radius: 50%; border: 2px solid #ddd;">
-                <p style="font-size: 12px; color: #666; margin-top: 5px;">Preview รูปใหม่</p>
-            `;
-            container.appendChild(preview);
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-</script>
 <script src="/backend/script/management.js"></script>
 </html>
