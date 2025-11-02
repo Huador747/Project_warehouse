@@ -76,8 +76,7 @@
                     <select id="filterRole" class="filter-select">
                         <option value="">ทุกบทบาท</option>
                         <option value="admin">ผู้ดูแลระบบ</option>
-                        <option value="manager">ผู้จัดการ</option>
-                        <option value="staff">พนักงาน</option>
+                        <option value="user">ผู้ใช้งาน</option>
                     </select>
                     <select id="filterStatus" class="filter-select">
                         <option value="">ทุกสถานะ</option>
@@ -97,25 +96,25 @@
                         <thead>
                             <tr>
                                 <th width="5%">#</th>
-                                <th width="15%">รูปโปรไฟล์</th>
-                                <th width="30%">ชื่อผู้ใช้งาน</th>
-                                <th width="20%">บทบาท</th>
-                                <th width="15%">สถานะ</th>
-                                <th width="20%">วันที่สร้าง</th>
-                                <th width="10%">จัดการ</th>
+                                <th width="10%">รูปโปรไฟล์</th>
+                                <th width="25%">ชื่อผู้ใช้งาน</th>
+                                <th width="15%">บทบาท</th>
+                                <th width="12%">การใช้งาน</th>
+                                <th width="18%">วันที่สร้าง</th>
+                                <th width="15%">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody id="usersTableBody">
                             <tr>
-                                <td colspan="7" class="loading">ไม่มีข้อมูลผู้ใช้งาน</td>
+                                <td colspan="7" class="loading">กำลังโหลดข้อมูล...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <!-- Pagination -->
-                <div class="pagination" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                <div class="pagination">
                     <button id="prevPage" class="btn-page" disabled>‹ ก่อนหน้า</button>
-                    <span id="pageInfo" style="margin: 0 15px;">หน้า 1 จาก 1</span>
+                    <span id="pageInfo">หน้า 1 จาก 1</span>
                     <button id="nextPage" class="btn-page" disabled>ถัดไป ›</button>
                 </div>
             </section>
@@ -152,8 +151,7 @@
                     <select id="userRole" required>
                         <option value="">-- เลือกบทบาท --</option>
                         <option value="admin">ผู้ดูแลระบบ (Admin)</option>
-                        <option value="manager">ผู้จัดการ (Manager)</option>
-                        <option value="staff">พนักงาน (Staff)</option>
+                        <option value="user">ผู้ใช้งาน (User)</option>
                     </select>
                 </div>
 
@@ -191,5 +189,26 @@
     </div>
 </body>
 <script src="/scripts/config.js"></script>
+<script>
+function previewImage(input) {
+    const container = document.getElementById('imagePreviewContainer');
+    container.innerHTML = '';
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const preview = document.createElement('div');
+            preview.style.cssText = 'margin-top: 10px; text-align: center;';
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview" 
+                     style="max-width: 150px; max-height: 150px; border-radius: 50%; border: 2px solid #ddd;">
+                <p style="font-size: 12px; color: #666; margin-top: 5px;">Preview รูปใหม่</p>
+            `;
+            container.appendChild(preview);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 <script src="/backend/script/management.js"></script>
 </html>

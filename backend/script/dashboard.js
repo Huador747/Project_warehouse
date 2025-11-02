@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tr = document.createElement('tr');
         const roleHtml = u.role === 'admin'
           ? '<span class="badge admin">ผู้ดูแลระบบ</span>'
-          : '<span class="badge neutral">ผู้ใช้</span>';
+          : '<span class="badge neutral">ผู้ใชงาน</span>';
 
         const onlineHtml = u.isOnline
           ? '<span class="badge online">อยู่ในระบบ</span>'
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${roleHtml}</td>
           <td>${formatDate(u.createdAt)}</td>
           <td>${u.isActive
-              ? '<span class="badge success">เปิดใช้งาน</span>'
-              : '<span class="badge danger">ปิดใช้งาน</span>'}</td>
+              ? '<span class="badge success">ใช้งาน</span>'
+              : '<span class="badge danger">ระงับการใช้งาน</span>'}</td>
           <td>${onlineHtml}</td>
           <td>${formatDate(u.lastLogin)}</td>
         `;

@@ -77,15 +77,12 @@ function filterUsers() {
     const statusFilter = document.getElementById('filterStatus').value;
     
     filteredUsers = allUsers.filter(user => {
-        // ค้นหา (ลบการค้นหาอีเมล)
         const matchSearch = !searchText || 
             user.username.toLowerCase().includes(searchText) ||
             user.role.toLowerCase().includes(searchText);
         
-        // กรองบทบาท
         const matchRole = !roleFilter || user.role === roleFilter;
         
-        // กรองสถานะ
         const matchStatus = !statusFilter || 
             (statusFilter === 'active' && user.isActive) ||
             (statusFilter === 'inactive' && !user.isActive);
@@ -121,9 +118,8 @@ function renderUsers() {
             ? '<span class="badge success">ใช้งาน</span>' 
             : '<span class="badge danger">ระงับการใช้งาน</span>';
         
-        // สร้าง HTML สำหรับรูปโปรไฟล์
         const profileHtml = user.profileImage
-            ? `<img src="${escapeHtml(user.profileImage)}" alt="${escapeHtml(user.username)}" class="profile-img" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Ccircle cx=%2225%22 cy=%2225%22 r=%2225%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23fff%22 font-size=%2222%22%3E${escapeHtml(user.username).charAt(0).toUpperCase()}%3C/text%3E%3C/svg%3E'">`
+            ? `<img src="${escapeHtml(user.profileImage)}" alt="${escapeHtml(user.username)}" class="profile-img" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2245%22 height=%2245%22%3E%3Ccircle cx=%2222.5%22 cy=%2222.5%22 r=%2222.5%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23fff%22 font-size=%2220%22 font-weight=%22700%22%3E${escapeHtml(user.username).charAt(0).toUpperCase()}%3C/text%3E%3C/svg%3E'">`
             : `<div class="profile-placeholder">${escapeHtml(user.username).charAt(0).toUpperCase()}</div>`;
         
         return `
@@ -135,10 +131,10 @@ function renderUsers() {
                 <td>${statusBadge}</td>
                 <td>${createdDate}</td>
                 <td>
-                    <button class="btn-icon btn-edit" onclick="openEditUserModal('${user._id}')" title="แก้ไข">
+                    <button class="btn-icon btn-edit" onclick="window.openEditUserModal('${user._id}')" title="แก้ไข">
                         ✏️
                     </button>
-                    <button class="btn-icon btn-delete" onclick="openDeleteModal('${user._id}', '${escapeHtml(user.username)}')" title="ลบ">
+                    <button class="btn-icon btn-delete" onclick="window.openDeleteModal('${user._id}', '${escapeHtml(user.username)}')" title="ลบ">
                         🗑️
                     </button>
                 </td>
@@ -182,6 +178,13 @@ function openAddUserModal() {
     document.getElementById('passwordRequired').style.display = 'inline';
     document.getElementById('passwordHint').style.display = 'none';
     document.getElementById('userPassword').required = true;
+    
+    // ล้าง preview รูปเดิม
+    const previewContainer = document.getElementById('profileImagePreview');
+    if (previewContainer) {
+        previewContainer.innerHTML = '';
+    }
+    
     document.getElementById('userModal').style.display = 'flex';
 }
 
@@ -201,6 +204,26 @@ async function openEditUserModal(userId) {
         document.getElementById('passwordHint').style.display = 'block';
         document.getElementById('userPassword').required = false;
         
+        // แสดงรูปปัจจุบัน
+        const previewContainer = document.getElementById('profileImagePreview');
+        if (user.profileImage) {
+            previewContainer.innerHTML = `
+                <div class="current-profile-image">
+                    <img src="${escapeHtml(user.profileImage)}" alt="Current profile">
+                    <div class="image-info">
+                        <span class="image-label">รูปปัจจุบัน</span>
+                    </div>
+                </div>
+            `;
+        } else {
+            previewContainer.innerHTML = `
+                <div class="no-profile-image">
+                    <div class="profile-placeholder-large">${escapeHtml(user.username).charAt(0).toUpperCase()}</div>
+                    <span class="image-label">ยังไม่มีรูปโปรไฟล์</span>
+                </div>
+            `;
+        }
+        
         document.getElementById('userModal').style.display = 'flex';
     } catch (error) {
         console.error('Load user error:', error);
@@ -211,6 +234,10 @@ async function openEditUserModal(userId) {
 function closeUserModal() {
     document.getElementById('userModal').style.display = 'none';
     document.getElementById('userForm').reset();
+    const previewContainer = document.getElementById('profileImagePreview');
+    if (previewContainer) {
+        previewContainer.innerHTML = '';
+    }
 }
 
 function openDeleteModal(userId, username) {
@@ -225,22 +252,78 @@ function closeDeleteModal() {
 }
 
 // =========================
+// Image Preview Function
+// =========================
+function previewProfileImage(input) {
+    const previewContainer = document.getElementById('profileImagePreview');
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const fileSize = (file.size / 1024 / 1024).toFixed(2);
+        
+        if (file.size > 5 * 1024 * 1024) {
+            showError('ขนาดไฟล์ใหญ่เกินไป (สูงสุด 5MB)');
+            input.value = '';
+            previewContainer.innerHTML = '';
+            return;
+        }
+        
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            showError('รองรับเฉพาะไฟล์ JPG, PNG, GIF เท่านั้น');
+            input.value = '';
+            previewContainer.innerHTML = '';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewContainer.innerHTML = `
+                <div class="new-profile-image">
+                    <img src="${e.target.result}" alt="Preview">
+                    <div class="image-info">
+                        <span class="image-label">🆕 รูปใหม่</span>
+                        <span class="image-size">${fileSize} MB</span>
+                        <button type="button" class="btn-remove-image" onclick="window.clearImagePreview()">
+                            ❌ ลบ
+                        </button>
+                    </div>
+                </div>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function clearImagePreview() {
+    const fileInput = document.getElementById('userProfileImage');
+    const previewContainer = document.getElementById('profileImagePreview');
+    
+    fileInput.value = '';
+    previewContainer.innerHTML = '';
+}
+
+// =========================
 // CRUD Operations
 // =========================
 async function handleUserSubmit(e) {
     e.preventDefault();
     
     const userId = document.getElementById('userId').value;
-    const userData = {
-        username: document.getElementById('userName').value.trim(),
-        password: document.getElementById('userPassword').value,
-        role: document.getElementById('userRole').value,
-        isActive: document.getElementById('userStatus').value === 'active'
-    };
+    const formData = new FormData();
     
-    // ถ้าเป็นการแก้ไขและไม่ได้กรอกรหัสผ่านใหม่ ให้ลบ password ออก
-    if (userId && !userData.password) {
-        delete userData.password;
+    formData.append('username', document.getElementById('userName').value.trim());
+    formData.append('role', document.getElementById('userRole').value);
+    formData.append('isActive', document.getElementById('userStatus').value === 'active');
+    
+    const password = document.getElementById('userPassword').value;
+    if (password) {
+        formData.append('password', password);
+    }
+    
+    const fileInput = document.getElementById('userProfileImage');
+    if (fileInput.files.length > 0) {
+        formData.append('profileImage', fileInput.files[0]);
     }
     
     try {
@@ -249,8 +332,7 @@ async function handleUserSubmit(e) {
         
         const response = await fetch(url, {
             method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData)
+            body: formData
         });
         
         const result = await response.json();
@@ -345,3 +427,16 @@ function logout() {
     localStorage.clear();
     window.location.href = '/login.html';
 }
+
+// =========================
+// Export ทุกฟังก์ชันไปยัง Global Scope
+// =========================
+window.openAddUserModal = openAddUserModal;
+window.openEditUserModal = openEditUserModal;
+window.closeUserModal = closeUserModal;
+window.openDeleteModal = openDeleteModal;
+window.closeDeleteModal = closeDeleteModal;
+window.confirmDelete = confirmDelete;
+window.previewProfileImage = previewProfileImage;
+window.clearImagePreview = clearImagePreview;
+window.logout = logout;
