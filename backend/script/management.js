@@ -77,10 +77,9 @@ function filterUsers() {
     const statusFilter = document.getElementById('filterStatus').value;
     
     filteredUsers = allUsers.filter(user => {
-        // ค้นหา
+        // ค้นหา (ลบการค้นหาอีเมล)
         const matchSearch = !searchText || 
             user.username.toLowerCase().includes(searchText) ||
-            (user.email && user.email.toLowerCase().includes(searchText)) ||
             user.role.toLowerCase().includes(searchText);
         
         // กรองบทบาท
@@ -122,11 +121,16 @@ function renderUsers() {
             ? '<span class="badge success">ใช้งาน</span>' 
             : '<span class="badge danger">ระงับการใช้งาน</span>';
         
+        // สร้าง HTML สำหรับรูปโปรไฟล์
+        const profileHtml = user.profileImage
+            ? `<img src="${escapeHtml(user.profileImage)}" alt="${escapeHtml(user.username)}" class="profile-img" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Ccircle cx=%2225%22 cy=%2225%22 r=%2225%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23fff%22 font-size=%2222%22%3E${escapeHtml(user.username).charAt(0).toUpperCase()}%3C/text%3E%3C/svg%3E'">`
+            : `<div class="profile-placeholder">${escapeHtml(user.username).charAt(0).toUpperCase()}</div>`;
+        
         return `
             <tr>
                 <td>${rowNumber}</td>
+                <td>${profileHtml}</td>
                 <td>${escapeHtml(user.username)}</td>
-                <td>${escapeHtml(user.email || '-')}</td>
                 <td><span class="badge ${getRoleBadgeClass(user.role)}">${roleText}</span></td>
                 <td>${statusBadge}</td>
                 <td>${createdDate}</td>
@@ -189,7 +193,6 @@ async function openEditUserModal(userId) {
         document.getElementById('modalTitle').textContent = 'แก้ไขข้อมูลผู้ใช้งาน';
         document.getElementById('userId').value = user._id;
         document.getElementById('userName').value = user.username;
-        document.getElementById('userEmail').value = user.email || '';
         document.getElementById('userPassword').value = '';
         document.getElementById('userRole').value = user.role;
         document.getElementById('userStatus').value = user.isActive ? 'active' : 'inactive';
@@ -230,7 +233,6 @@ async function handleUserSubmit(e) {
     const userId = document.getElementById('userId').value;
     const userData = {
         username: document.getElementById('userName').value.trim(),
-        email: document.getElementById('userEmail').value.trim(),
         password: document.getElementById('userPassword').value,
         role: document.getElementById('userRole').value,
         isActive: document.getElementById('userStatus').value === 'active'

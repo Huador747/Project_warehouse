@@ -314,7 +314,7 @@ app.get('/sale_product', async (req, res) => {
 app.get('/api/users/all', async (req, res) => {
   try {
     const users = await User.find({})
-      .select('username email role isActive createdAt lastLogin')
+      .select('username profileImage role isActive createdAt lastLogin')
       .sort({ createdAt: -1 });
     res.json(users);
   } catch (err) {

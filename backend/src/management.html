@@ -70,7 +70,7 @@
             <!-- Control Panel -->
             <section class="control-panel">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="🔍 ค้นหาผู้ใช้งาน (ชื่อ, อีเมล, บทบาท)">
+                    <input type="text" id="searchInput" placeholder="🔍 ค้นหาผู้ใช้งาน (ชื่อ, บทบาท)">
                 </div>
                 <div class="control-actions">
                     <select id="filterRole" class="filter-select">
@@ -97,17 +97,17 @@
                         <thead>
                             <tr>
                                 <th width="5%">#</th>
-                                <th width="20%">ชื่อผู้ใช้งาน</th>
-                                <th width="25%">อีเมล</th>
-                                <th width="15%">บทบาท</th>
-                                <th width="10%">สถานะ</th>
-                                <th width="15%">วันที่สร้าง</th>
+                                <th width="15%">รูปโปรไฟล์</th>
+                                <th width="30%">ชื่อผู้ใช้งาน</th>
+                                <th width="20%">บทบาท</th>
+                                <th width="15%">สถานะ</th>
+                                <th width="20%">วันที่สร้าง</th>
                                 <th width="10%">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody id="usersTableBody">
                             <tr>
-                                <td colspan="7" class="loading">กำลังโหลดข้อมูล...</td>
+                                <td colspan="7" class="loading">ไม่มีข้อมูลผู้ใช้งาน</td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,16 +138,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="userEmail">อีเมล <span class="required">*</span></label>
-                    <input type="email" id="userEmail" required>
-                </div>
-
-                <div class="form-group">
                     <label for="userPassword">รหัสผ่าน <span class="required" id="passwordRequired">*</span></label>
                     <input type="password" id="userPassword">
                     <small id="passwordHint">สำหรับแก้ไข: เว้นว่างหากไม่ต้องการเปลี่ยน</small>
                 </div>
-
+                <div class="form-group">
+                    <label for="userProfileImage">รูปโปรไฟล์</label>
+                    <input type="file" id="userProfileImage" accept="image/*" onchange="previewProfileImage(this)">
+                    <div id="profileImagePreview" class="image-preview-container"></div>
+                </div>
                 <div class="form-group">
                     <label for="userRole">บทบาท <span class="required">*</span></label>
                     <select id="userRole" required>

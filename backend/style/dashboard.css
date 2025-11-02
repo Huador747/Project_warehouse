@@ -136,16 +136,18 @@ body {
 
 /* Profile image styles */
 .profile-img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #e0e0e0;
+  display: block;
+  margin: 0 auto;
 }
 
 .profile-placeholder {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -153,6 +155,19 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   margin: 0 auto;
+  text-transform: uppercase;
+}
+
+/* จัดตำแหน่งคอลัมน์ Profile ให้อยู่ตรงกลาง */
+.user-table td:first-child,
+.user-table th:first-child {
+  text-align: center;
+  width: 80px;
+}
+
+/* ปรับ padding ให้รูปดูสวยขึ้น */
+.user-table td:first-child {
+  padding: 8px;
 }
