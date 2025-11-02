@@ -2,12 +2,46 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer'); // ++ เพิ่ม
+const fs = require('fs');         // ++ เพิ่ม
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); // เพิ่ม limit สำหรับรูปภาพ
 
 /*http://127.0.0.1:5500/src/main.html*/
+
+// ++ สร้างโฟลเดอร์สำหรับเก็บรูป
+const uploadDir = path.join(__dirname, 'uploads', 'profiles');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// ++ ตั้งค่า multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, 'profile-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = /jpeg|jpg|png|gif/;
+        const mimetype = allowedTypes.test(file.mimetype);
+        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+        
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+        cb(new Error('รองรับเฉพาะไฟล์รูปภาพ (JPEG, PNG, GIF)'));
+    }
+});
 
 // เชื่อมต่อ MongoDB
 mongoose.connect('mongodb://localhost:27017/project_warehouse', {
@@ -261,6 +295,9 @@ app.use(express.static(path.join(__dirname, 'assets')));
 app.use('/backend', express.static(path.join(__dirname, 'backend')));
 app.use(express.static(__dirname));
 
+// ++ เพิ่มก่อน express.static
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // เพิ่ม route สำหรับลบสินค้า
 app.delete('/products/:id', async (req, res) => {
     try {
@@ -323,12 +360,14 @@ app.get('/api/users/all', async (req, res) => {
   }
 });
 
-// สร้างผู้ใช้ใหม่
-app.post('/api/users', async (req, res) => {
+// สร้างผู้ใช้ใหม่ (รองรับรูปโปรไฟล์)
+app.post('/api/users', upload.single('profileImage'), async (req, res) => {
   try {
-    const { username, email, password, role, isActive } = req.body;
+    console.log('POST /api/users - Body:', req.body);
+    console.log('POST /api/users - File:', req.file);
     
-    // ตรวจสอบว่ามีผู้ใช้นี้แล้วหรือไม่
+    const { username, password, role, isActive } = req.body;
+    
     const existing = await User.findOne({ username });
     if (existing) {
       return res.status(400).json({ message: 'ชื่อผู้ใช้นี้มีอยู่แล้ว' });
@@ -336,27 +375,47 @@ app.post('/api/users', async (req, res) => {
     
     const user = new User({
       username,
-      email,
       password,
       role: role || 'user',
-      isActive: isActive !== false
+      isActive: isActive === 'true' || isActive === true,
+      profileImage: req.file ? `/uploads/profiles/${req.file.filename}` : null
     });
     
     await user.save();
+    console.log('User created successfully:', user.username);
     res.status(201).json({ message: 'สร้างผู้ใช้สำเร็จ', user });
   } catch (err) {
     console.error('create user error:', err);
-    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการสร้างผู้ใช้' });
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการสร้างผู้ใช้', error: err.message });
   }
 });
 
-// อัปเดตผู้ใช้
-app.put('/api/users/:id', async (req, res) => {
+// อัปเดตผู้ใช้ (รองรับรูปโปรไฟล์)
+app.put('/api/users/:id', upload.single('profileImage'), async (req, res) => {
   try {
-    const { username, email, password, role, isActive } = req.body;
-    const updateData = { username, email, role, isActive };
+    console.log('PUT /api/users/:id - Body:', req.body);
+    console.log('PUT /api/users/:id - File:', req.file);
     
-    // ถ้ามีการส่ง password มา ให้อัปเดต
+    const { username, password, role, isActive } = req.body;
+    const updateData = { 
+      username, 
+      role, 
+      isActive: isActive === 'true' || isActive === true 
+    };
+    
+    // อัปเดตรูปถ้ามีการอัปโหลดใหม่
+    if (req.file) {
+      const oldUser = await User.findById(req.params.id);
+      if (oldUser && oldUser.profileImage) {
+        const oldPath = path.join(__dirname, oldUser.profileImage);
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+      updateData.profileImage = `/uploads/profiles/${req.file.filename}`;
+    }
+    
+    // อัปเดต password ถ้ามี
     if (password && password.trim() !== '') {
       updateData.password = password;
     }
@@ -371,26 +430,37 @@ app.put('/api/users/:id', async (req, res) => {
       return res.status(404).json({ message: 'ไม่พบผู้ใช้' });
     }
     
+    console.log('User updated successfully:', user.username);
     res.json({ message: 'อัปเดตผู้ใช้สำเร็จ', user });
   } catch (err) {
     console.error('update user error:', err);
-    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการอัปเดตผู้ใช้' });
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการอัปเดตผู้ใช้', error: err.message });
   }
 });
 
-// ลบผู้ใช้
+// ลบผู้ใช้ (ลบรูปด้วย)
 app.delete('/api/users/:id', async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findById(req.params.id);
     
     if (!user) {
       return res.status(404).json({ message: 'ไม่พบผู้ใช้' });
     }
     
+    // ลบรูปโปรไฟล์
+    if (user.profileImage) {
+      const imagePath = path.join(__dirname, user.profileImage);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+    
+    await User.findByIdAndDelete(req.params.id);
+    console.log('User deleted successfully:', user.username);
     res.json({ message: 'ลบผู้ใช้สำเร็จ' });
   } catch (err) {
     console.error('delete user error:', err);
-    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลบผู้ใช้' });
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลบผู้ใช้', error: err.message });
   }
 });
 

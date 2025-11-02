@@ -10,3 +10,7 @@ firewall วิธีเปิดพอร์ต 3000:
 ใช่ ipconfig เพื่อดู ipv4 
 . ให้เครื่องลูกเข้าเว็บ
 เปิด browser ที่เครื่องลูก http://<ipv4-address>:3000/login/html
+
+------ถ้าเว็บเปิดไม่ได้
+npm install multer
+pm2 list
