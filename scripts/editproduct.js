@@ -35,6 +35,29 @@ document.addEventListener("DOMContentLoaded", function () {
         // --- จบการเพิ่ม option ---
 
         document.getElementById('condition').value = product.condition || '';
+        // เพิ่มเติม
+        document.getElementById('sale_status').value = product.sale_status || '';
+        // ตั้งค่าฟิลด์ "การควบคุม"
+        const controlsSelect = document.getElementById('controls');
+
+        // ให้เลือกเป็นค่าว่างได้ (ไม่บังคับ)
+        if (controlsSelect && ![...controlsSelect.options].some(o => o.value === '')) {
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = '— ไม่ระบุ —';
+            controlsSelect.insertBefore(placeholder, controlsSelect.firstChild);
+        }
+        controlsSelect?.removeAttribute('required');
+
+        // ตั้งค่าตามข้อมูลสินค้า ถ้าไม่ชัดเจนให้เว้นว่าง
+        const rawControls = (product.controls ?? product.co ?? '').toString().trim().toLowerCase();
+        let mapped = '';
+        if (['ควบคุม', 'control', 'controlled', 'yes', 'true', '1'].includes(rawControls)) {
+            mapped = 'ควบคุม';
+        } else if (['ไม่ควบคุม', 'no control', 'not controlled', 'no', 'false', '0'].includes(rawControls)) {
+            mapped = 'ไม่ควบคุม';
+        }
+        controlsSelect.value = mapped || '';
         document.getElementById('price').value = product.price || '';
         document.getElementById('sale_price').value = product.sale_price || '';
        
@@ -66,8 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
             img.id = 'preview-image';
             img.src = product.image;
             img.alt = 'รูปสินค้าเดิม';
-            img.style.maxWidth = '180px';
-            img.style.maxHeight = '180px';
+            img.style.maxWidth = '220x';
+            img.style.maxHeight = '220px';
             img.style.display = 'block';
             img.style.margin = '0 auto';
             previewBox.appendChild(img);

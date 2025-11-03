@@ -1,9 +1,9 @@
 import { BACKEND_URL } from './config.js';
 
-const rowsPerPage = 10;
-let currentPage = 1;
-let filteredStock = [];
+let allProducts = [];
+let filteredProducts = [];
 
+// ฟังก์ชันดึงข้อมูลทั้งหมด
 async function fetchAll() {
     const [productsRes, buyinRes, saleRes] = await Promise.all([
         fetch(`${BACKEND_URL}/products`).then(r => r.json()),
@@ -18,172 +18,241 @@ function toNumber(v) {
     return Number.isFinite(n) ? n : 0;
 }
 
-function computeStock(products, buyin, sale) {
-    const map = {};
+// ฟังก์ชันคำนวณจำนวนคงเหลือจริง (ซื้อ - ขาย)
+function computeRealStock(products, buyin, sale) {
+    const stockMap = {};
+
     products.forEach(p => {
-        const code = p.product_code ?? (p._id ? String(p._id) : '');
-        map[code] = {
+        const code = p.product_code || '';
+        if (!code) return;
+        
+        stockMap[code] = {
+            _id: p._id,
             product_code: code,
-            product_name: p.product_name ?? p.name ?? '',
-            model: p.model ?? '',
-            category: p.category ?? p.cat ?? '',
-            quantity: typeof p.quantity === 'number' ? p.quantity : toNumber(p.quantity),
-            unit: p.unit ?? '',
-            location: p.location ?? ''
+            product_name: p.product_name || '',
+            model: p.model || '',
+            maker: p.maker || '',
+            category: p.category || '',
+            sale_status: p.sale_status || 'ขายปกติ',
+            unit: p.unit || '',
+            location: p.location || '',
+            controls: p.controls || '', // ✅ เก็บค่า controls
+            totalBuyin: 0,
+            totalSale: 0,
+            quantity: 0
         };
     });
 
     buyin.forEach(b => {
-        const code = b.product_code ?? '';
-        if (!map[code]) {
-            map[code] = {
+        const code = b.product_code || '';
+        if (!code) return;
+
+        if (!stockMap[code]) {
+            stockMap[code] = {
                 product_code: code,
-                product_name: b.product_name ?? b.name ?? '',
-                model: b.model ?? '',
-                category: b.category ?? '',
-                quantity: 0,
-                unit: b.unit ?? '',
-                location: ''
+                product_name: b.product_name || '',
+                model: b.model || '',
+                maker: b.maker || '',
+                category: b.category || '',
+                sale_status: 'ขายปกติ',
+                unit: b.unit || '',
+                location: '',
+                controls: '',
+                totalBuyin: 0,
+                totalSale: 0,
+                quantity: 0
             };
         }
-        const qty = toNumber(b.quantity ?? b.buyquantity ?? b.buy_quantity);
-        map[code].quantity = toNumber(map[code].quantity) + qty;
-        if (!map[code].product_name) map[code].product_name = b.product_name ?? b.name ?? '';
-        if (!map[code].category) map[code].category = b.category ?? '';
-    });
 
-    // Logout
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn?.addEventListener('click', function(e) {
-        e.preventDefault();
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.replace("login.html");
+        const qty = toNumber(b.quantity || b.buyin_quantity || b.buy_quantity);
+        stockMap[code].totalBuyin += qty;
     });
 
     sale.forEach(s => {
-        const code = s.product_code ?? '';
-        if (!map[code]) {
-            map[code] = {
+        const code = s.product_code || '';
+        if (!code) return;
+
+        if (!stockMap[code]) {
+            stockMap[code] = {
                 product_code: code,
-                product_name: s.product_name ?? s.name ?? '',
-                model: s.model ?? '',
-                category: s.category ?? '',
-                quantity: 0,
-                unit: s.unit ?? '',
-                location: ''
+                product_name: s.product_name || '',
+                model: s.model || '',
+                maker: s.maker || '',
+                category: s.category || '',
+                sale_status: 'ขายปกติ',
+                unit: s.unit || '',
+                location: '',
+                controls: '',
+                totalBuyin: 0,
+                totalSale: 0,
+                quantity: 0
             };
         }
-        const qty = toNumber(s.salequantity ?? s.sale_quantity ?? s.quantity ?? s.sell_quantity ?? s.sellqty);
-        map[code].quantity = toNumber(map[code].quantity) - qty;
-        if (!map[code].product_name) map[code].product_name = s.product_name ?? s.name ?? '';
-        if (!map[code].category) map[code].category = s.category ?? '';
+
+        const qty = toNumber(s.salequantity || s.sale_quantity || s.quantity);
+        stockMap[code].totalSale += qty;
     });
 
-    return Object.values(map);
-}
-
-function renderStockPaged(stockList, page = 1, search = '') {
-    const tbody = document.querySelector('#stock-table tbody');
-    tbody.innerHTML = '';
-    const q = (search || '').toLowerCase();
-    filteredStock = stockList
-        .filter(item => {
-            if (!q) return true;
-            return (
-                (item.product_code || '').toLowerCase().includes(q) ||
-                (item.product_name || '').toLowerCase().includes(q) ||
-                (item.model || '').toLowerCase().includes(q) ||
-                (item.category || '').toLowerCase().includes(q)
-            );
-        })
-        .sort((a, b) => (a.product_code || '').localeCompare(b.product_code || ''));
-
-    const totalPages = Math.ceil(filteredStock.length / rowsPerPage);
-    if (page < 1) page = 1;
-    if (page > totalPages) page = totalPages || 1;
-    currentPage = page;
-
-    const startIdx = (page - 1) * rowsPerPage;
-    const pageItems = filteredStock.slice(startIdx, startIdx + rowsPerPage);
-
-    pageItems.forEach(item => {
-        const tr = document.createElement('tr');
-        const qty = Number.isFinite(Number(item.quantity)) ? Number(item.quantity) : 0;
-        const qtyTxt = qty.toString();
-        tr.innerHTML = `
-            <td>${item.product_code || '-'}</td>
-            <td>${item.product_name || '-'}</td>
-            <td>${item.model || '-'}</td>
-            <td>${item.category || '-'}</td>
-            <td class="${qty < 0 ? 'negative' : ''}">${qtyTxt}</td>
-        `;
-        tbody.appendChild(tr);
+    Object.values(stockMap).forEach(item => {
+        item.quantity = item.totalBuyin - item.totalSale;
     });
 
-    // เพิ่มแถวว่างให้ครบ 10 แถว
-    const emptyRows = rowsPerPage - pageItems.length;
-    if (emptyRows > 0) {
-        for (let i = 0; i < emptyRows; i++) {
-            const tr = document.createElement('tr');
-            tr.className = 'empty-row';
-            tr.innerHTML = `
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            `;
-            tbody.appendChild(tr);
-        }
-    }
-
-    // อัพเดท pagination
-    renderPagination(filteredStock.length, currentPage, rowsPerPage);
+    return Object.values(stockMap);
 }
 
-function renderPagination(totalItems, page, perPage) {
-    const totalPages = Math.ceil(totalItems / perPage);
-    const prevBtn = document.getElementById('prev-page');
-    const nextBtn = document.getElementById('next-page');
-    const pageInfo = document.getElementById('page-info');
-
-    if (pageInfo) pageInfo.textContent = `หน้า ${page} / ${totalPages || 1}`;
-    if (prevBtn) prevBtn.disabled = page <= 1;
-    if (nextBtn) nextBtn.disabled = page >= totalPages;
-
-    if (prevBtn) {
-        prevBtn.onclick = () => {
-            if (page > 1) renderStockPaged(filteredStock, page - 1, document.getElementById('search-input')?.value || '');
-        };
-    }
-    if (nextBtn) {
-        nextBtn.onclick = () => {
-            if (page < totalPages) renderStockPaged(filteredStock, page + 1, document.getElementById('search-input')?.value || '');
-        };
-    }
-}
-
-async function main() {
+// ฟังก์ชันโหลดสินค้าและคำนวณจำนวนคงเหลือ
+async function loadProducts() {
     try {
         const { products, buyin, sale } = await fetchAll();
-        const stock = computeStock(products || [], buyin || [], sale || []);
-        renderStockPaged(stock, 1);
-
-        const input = document.getElementById('search-input');
-        if (input) {
-            input.addEventListener('input', function() {
-                renderStockPaged(stock, 1, this.value.trim());
-            });
-        }
-    } catch (err) {
-        console.error('inventory error', err);
+        allProducts = computeRealStock(products || [], buyin || [], sale || []);
+        applyFilters();
+    } catch (error) {
+        console.error('❌ Error loading products:', error);
     }
 }
 
-main();
+// ✅ ฟังก์ชันกรองแบบรวม (สถานะ + controls + คำค้นหา)
+function applyFilters() {
+    const statusFilter = document.getElementById('status-filter')?.value || '';
+    const searchQuery = document.getElementById('search-input')?.value.toLowerCase().trim() || '';
+    
+    // ✅ ดึงค่าจาก checkbox controls
+    const controlsYes = document.getElementById('cb-controls-yes')?.checked;
+    const controlsNo = document.getElementById('cb-controls-no')?.checked;
 
-document.addEventListener('DOMContentLoaded', () => {
+    filteredProducts = allProducts.filter(p => {
+        // กรองสถานะการขาย
+        if (statusFilter && p.sale_status !== statusFilter) {
+            return false;
+        }
+
+        // กรองคำค้นหา
+        if (searchQuery) {
+            const matches = 
+                (p.product_code && p.product_code.toLowerCase().includes(searchQuery)) ||
+                (p.product_name && p.product_name.toLowerCase().includes(searchQuery)) ||
+                (p.model && p.model.toLowerCase().includes(searchQuery));
+            
+            if (!matches) return false;
+        }
+
+        // ✅ กรองการควบคุม
+        const controls = p.controls || ''; // ถ้าไม่มี controls ให้เป็น ''
+
+        // เงื่อนไข: 
+        // - ถ้าทั้ง 2 ช่อง checked → แสดงทั้งหมด
+        // - ถ้าเฉพาะ "ควบคุม" checked → แสดง controls === "ควบคุม" หรือ controls === ''
+        // - ถ้าเฉพาะ "ไม่ควบคุม" checked → แสดง controls === "ไม่ควบคุม"
+        // - ถ้าไม่มีช่องไหน checked → ไม่แสดงเลย
+
+        if (!controlsYes && !controlsNo) {
+            return false; // ไม่มีช่องไหน checked → ไม่แสดงอะไรเลย
+        }
+
+        if (controlsYes && controlsNo) {
+            return true; // แสดงทั้งหมด
+        }
+
+        if (controlsYes && !controlsNo) {
+            // แสดงเฉพาะ "ควบคุม" หรือไม่มีค่า
+            return controls === 'ควบคุม' || controls === '';
+        }
+
+        if (!controlsYes && controlsNo) {
+            // แสดงเฉพาะ "ไม่ควบคุม"
+            return controls === 'ไม่ควบคุม';
+        }
+
+        return true;
+    });
+
+    renderTable();
+}
+
+// ฟังก์ชันกรองตามสถานะ (เรียก applyFilters แทน)
+function filterByStatus(status) {
+    applyFilters();
+}
+
+// ฟังก์ชันกรองตามคำค้นหา (เรียก applyFilters แทน)
+function filterBySearch(query) {
+    applyFilters();
+}
+
+// ฟังก์ชันสร้าง badge จำนวนคงเหลือ
+function createQuantityBadge(quantity, unit = '') {
+    const qty = Number(quantity) || 0;
+    let badgeClass = 'quantity-badge';
+    let icon = '📦';
+
+    if (qty === 0) {
+        badgeClass += ' quantity-empty';
+        icon = '';
+    } else if (qty < 0) {
+        badgeClass += ' quantity-negative';
+        icon = '';
+    } else if (qty <= 5) {
+        badgeClass += ' quantity-low';
+        icon = '';
+    } else if (qty <= 20) {
+        badgeClass += ' quantity-medium';
+        icon = '';
+    } else {
+        badgeClass += ' quantity-high';
+        icon = '';
+    }
+
+    return `<span class="${badgeClass}">${icon} ${qty}</span>`;
+}
+
+// ฟังก์ชันแสดงตาราง
+function renderTable() {
+    const tbody = document.querySelector('#inventory-table tbody');
+    if (!tbody) return;
+
+    if (filteredProducts.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="11" style="text-align: center; padding: 40px; color: #999;">
+                    ไม่พบข้อมูลสินค้า
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = filteredProducts.map((product, index) => {
+        const statusBadge = product.sale_status === 'ขายปกติ' 
+            ? `<span class="status-badge status-active">ขายปกติ</span>`
+            : `<span class="status-badge status-paused">พักการขาย</span>`;
+
+        const quantityBadge = createQuantityBadge(product.quantity, product.unit);
+        
+        const controlsBadge = product.controls === 'ควบคุม'
+            ? `<span class="controls-badge controls-yes">ควบคุม</span>`
+            : product.controls === 'ไม่ควบคุม'
+            ? `<span class="controls-badge controls-no">ไม่ควบคุม</span>`
+            : `<span class="controls-badge controls-default">-</span>`;
+
+        return `
+            <tr data-sale-status="${product.sale_status || ''}">
+                <td>${index + 1}</td>
+                <td>${product.product_code || '-'}</td>
+                <td>${product.model || '-'}</td>
+                <td>${product.product_name || '-'}</td>
+                <td>${product.maker || '-'}</td>
+                <td>${product.category || '-'}</td>
+                <td>${statusBadge}</td>
+                <td>${quantityBadge}</td>
+                <td>${product.unit || '-'}</td>
+                <td>${product.location || '-'}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', function() {
     const navbarText = document.querySelector('.navbar-text');
     if (navbarText) {
         requestAnimationFrame(() => {
@@ -191,5 +260,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    loadProducts();
+
+    // Status filter
+    const statusFilter = document.getElementById('status-filter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', applyFilters);
+    }
+
+    // Search filter
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    // ✅ Controls checkbox listeners
+    const cbControlsYes = document.getElementById('cb-controls-yes');
+    const cbControlsNo = document.getElementById('cb-controls-no');
     
+    if (cbControlsYes) {
+        cbControlsYes.addEventListener('change', applyFilters);
+    }
+    
+    if (cbControlsNo) {
+        cbControlsNo.addEventListener('change', applyFilters);
+    }
+
+    // Logout
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn?.addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace('login.html');
+    });
 });

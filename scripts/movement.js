@@ -5,8 +5,6 @@ let chart;
 
 const productSelect = document.getElementById("product-select");
 const inventoryInfo = document.getElementById("inventory-info");
-
-// เพิ่มด้านบน
 const yearSelect = document.getElementById("year-select");
 const yearLabel = document.getElementById("year-label");
 
@@ -14,6 +12,7 @@ function toNumber(v) {
   const n = Number(v);
   return Number.isFinite(n) ? n : 0;
 }
+
 // Logout
 const logoutBtn = document.getElementById("logout-btn");
 logoutBtn?.addEventListener("click", function (e) {
@@ -47,12 +46,62 @@ async function fetchAll() {
   }
 }
 
-// คำนวณสต็อกจาก products + ประวัติซื้อ/ขาย และเก็บข้อมูลต้นทุนจากการซื้อ
+// ✅ ฟังก์ชันกรองสินค้าตาม checkbox
+function filterProductsByControls(products) {
+  const includeControlled = document.getElementById("cb-include-controlled")?.checked;
+  const includeUncontrolled = document.getElementById("cb-include-uncontrolled")?.checked;
+
+  return (products || []).filter((p) => {
+    const controls = (p.controls || "").trim();
+    
+    // ถ้าไม่เลือกอะไรเลย → ไม่แสดงอะไร
+    if (!includeControlled && !includeUncontrolled) {
+      return false;
+    }
+    
+    // ถ้าเลือกทั้งสองอัน → แสดงทั้งหมด
+    if (includeControlled && includeUncontrolled) {
+      return true;
+    }
+    
+    // ถ้าเลือกเฉพาะ "ควบคุม" → แสดงสินค้าที่ไม่ใช่ "ไม่ควบคุม"
+    if (includeControlled && !includeUncontrolled) {
+      return controls !== "ไม่ควบคุม";
+    }
+    
+    // ถ้าเลือกเฉพาะ "ไม่ควบคุม" → แสดงเฉพาะ "ไม่ควบคุม"
+    if (!includeControlled && includeUncontrolled) {
+      return controls === "ไม่ควบคุม";
+    }
+    
+    return true;
+  });
+}
+
+// ✅ กรอง buyin/sale ตาม product_code ที่ผ่านการกรอง
+function filterTransactionsByProducts(transactions, productCodes) {
+  return (transactions || []).filter((t) => {
+    const code = t.product_code ?? t.code ?? "";
+    return productCodes.has(code);
+  });
+}
+
+// คำนวณสต็อกจาก products + ประวัติซื้อ/ขาย
 function computeInventory(products, buyin, sale) {
+  // ✅ กรองสินค้าตาม checkbox
+  const filteredProducts = filterProductsByControls(products);
+  const productCodes = new Set(
+    filteredProducts.map((p) => p.product_code ?? p.code ?? "")
+  );
+
+  // ✅ กรอง buyin/sale ตามสินค้าที่ผ่านการกรอง
+  const filteredBuyin = filterTransactionsByProducts(buyin, productCodes);
+  const filteredSale = filterTransactionsByProducts(sale, productCodes);
+
   const map = {};
 
-  // init จาก products
-  (products || []).forEach((p) => {
+  // init จาก filtered products
+  filteredProducts.forEach((p) => {
     const code = p.product_code ?? p.code ?? (p._id ? String(p._id) : "");
     if (!code) return;
     map[code] = {
@@ -65,8 +114,8 @@ function computeInventory(products, buyin, sale) {
     };
   });
 
-  // accumulate buyin (เพิ่มจำนวน และรวมต้นทุนเพื่อคำนวณ average cost)
-  (buyin || []).forEach((b) => {
+  // accumulate buyin
+  filteredBuyin.forEach((b) => {
     const code = b.product_code ?? b.code ?? "";
     if (!code) return;
     if (!map[code])
@@ -81,7 +130,6 @@ function computeInventory(products, buyin, sale) {
     const q = toNumber(
       b.quantity ?? b.buyquantity ?? b.buy_quantity ?? b.qty ?? 0
     );
-    // หา cost per unit ในรายการซื้อ
     const price = toNumber(b.price ?? b.buy_price ?? b.unit_price ?? 0);
     const total = toNumber(b.total ?? 0) || q * price;
     map[code].qty += q;
@@ -90,7 +138,7 @@ function computeInventory(products, buyin, sale) {
   });
 
   // subtract sale
-  (sale || []).forEach((s) => {
+  filteredSale.forEach((s) => {
     const code = s.product_code ?? s.code ?? "";
     if (!code) return;
     if (!map[code])
@@ -108,10 +156,28 @@ function computeInventory(products, buyin, sale) {
     map[code].qty -= q;
   });
 
+  const includeControlled = document.getElementById("cb-include-controlled")?.checked;
+  const includeUncontrolled = document.getElementById("cb-include-uncontrolled")?.checked;
+  
+  let filterText = "";
+  if (includeControlled && includeUncontrolled) {
+    filterText = "(รวมทั้งหมด)";
+  } else if (includeControlled) {
+    filterText = "(เฉพาะสินค้าควบคุม)";
+  } else if (includeUncontrolled) {
+    filterText = "(เฉพาะสินค้าไม่ควบคุม)";
+  } else {
+    filterText = "(ไม่มีข้อมูล)";
+  }
+
+  console.log(
+    `📊 คำนวณสต็อกเสร็จ: ${Object.keys(map).length} สินค้า ${filterText}`
+  );
+
   return map;
 }
 
-// ประเมินต้นทุนต่อหน่วย: ใช้จาก product field ถ้ามี มิฉะนั้นใช้ average buy price หากมี
+// ประเมินต้นทุนต่อหน่วย
 function estimateUnitCost(mapEntry, buyinList) {
   const p = mapEntry.productObj || {};
   const priceKeys = [
@@ -125,11 +191,9 @@ function estimateUnitCost(mapEntry, buyinList) {
   for (const k of priceKeys) {
     if (k in p && p[k] != null && p[k] !== "") return toNumber(p[k]);
   }
-  // ถ้ามีข้อมูลรวมจาก computeInventory
   if (mapEntry.buyTotalQty && mapEntry.buyTotalQty > 0) {
     return mapEntry.buyTotalCost / mapEntry.buyTotalQty;
   }
-  // fallback: ค้นหาในรายการซื้อแยก (ถ้ากรณี mapEntry ไม่มี buys)
   if (buyinList && buyinList.length) {
     const buys = buyinList.filter(
       (b) => (b.product_code ?? b.code ?? "") === mapEntry.product_code
@@ -149,20 +213,30 @@ function estimateUnitCost(mapEntry, buyinList) {
 }
 
 function renderInventorySummary(entries) {
-  // คำนวณเงินจมรวม
   const totalSunk = (entries || []).reduce((s, e) => s + toNumber(e.sunk), 0);
-  // คำนวณกำไรรวม
   const totalProfit = (entries || []).reduce(
     (s, e) => s + toNumber(e.profit),
     0
   );
-  // คำนวณยอดขายรวม
   const totalSale = (entries || []).reduce(
     (s, e) => s + toNumber(e.saleTotal),
     0
   );
 
-  // แสดงผลรวม
+  const includeControlled = document.getElementById("cb-include-controlled")?.checked;
+  const includeUncontrolled = document.getElementById("cb-include-uncontrolled")?.checked;
+  
+  let noteText = "";
+  if (includeControlled && includeUncontrolled) {
+    noteText = "* รวมสินค้าทั้งหมด";
+  } else if (includeControlled) {
+    noteText = "* เฉพาะสินค้าควบคุม";
+  } else if (includeUncontrolled) {
+    noteText = "* เฉพาะสินค้าไม่ควบคุม";
+  } else {
+    noteText = "* ไม่มีข้อมูล";
+  }
+
   inventoryInfo.innerHTML = `
     <div style="color:orange;">ยอดขายรวม: ${totalSale.toLocaleString(
       "th-TH"
@@ -173,6 +247,9 @@ function renderInventorySummary(entries) {
     <div style="color:red;">เงินจมรวม: ${totalSunk.toLocaleString(
       "th-TH"
     )} บาท</div>
+    <div style="color:#6b7280;font-size:0.9rem;margin-top:8px;">
+      ${noteText}
+    </div>
   `;
 }
 
@@ -181,21 +258,25 @@ async function showInventoryInfo(productCode = "", selectedYear = null) {
   const { products, buyin, sale } = await fetchAll();
   const map = computeInventory(products, buyin, sale);
 
-  // กรองข้อมูลตามปีที่เลือก (ถ้ามี)
-  let filteredBuyin = buyin,
-    filteredSale = sale;
+  const filteredProducts = filterProductsByControls(products);
+  const productCodes = new Set(
+    filteredProducts.map((p) => p.product_code ?? p.code ?? "")
+  );
+
+  let filteredBuyin = filterTransactionsByProducts(buyin, productCodes);
+  let filteredSale = filterTransactionsByProducts(sale, productCodes);
+
   if (selectedYear) {
-    filteredBuyin = buyin.filter((b) => {
+    filteredBuyin = filteredBuyin.filter((b) => {
       const dt = new Date(b.buyindate ?? b.date);
       return dt.getFullYear() === Number(selectedYear);
     });
-    filteredSale = sale.filter((s) => {
+    filteredSale = filteredSale.filter((s) => {
       const dt = new Date(s.saleoutdate ?? s.date);
       return dt.getFullYear() === Number(selectedYear);
     });
   }
 
-  // สร้างแผนที่ยอดขายต่อสินค้า
   const saleMap = {};
   (filteredSale || []).forEach((s) => {
     const code = s.product_code ?? s.code ?? "";
@@ -210,17 +291,11 @@ async function showInventoryInfo(productCode = "", selectedYear = null) {
   });
 
   const allEntries = Object.values(map).map((e) => {
-    // ต้นทุนเฉลี่ยจากปีที่เลือก
     const cost = estimateUnitCost(e, filteredBuyin);
-    // เงินจม = จำนวนคงเหลือในปีนั้น * ต้นทุนเฉลี่ย
     const sunk = toNumber(e.qty) * toNumber(cost);
-
-    // กำไร = ยอดขาย - ต้นทุนขายออก (เฉพาะที่ขายออกในปีนั้น)
     const saleInfo = saleMap[e.product_code] || { qty: 0, total: 0 };
     const costOfSold = toNumber(saleInfo.qty) * toNumber(cost);
     const profit = toNumber(saleInfo.total) - costOfSold;
-
-    // ยอดรวมซื้อของสินค้าแต่ละตัว (ปีนั้น)
     const buyTotalCost = filteredBuyin
       .filter((b) => (b.product_code ?? b.code ?? "") === e.product_code)
       .reduce(
@@ -233,8 +308,6 @@ async function showInventoryInfo(productCode = "", selectedYear = null) {
           ),
         0
       );
-
-    // ยอดรวมขายของสินค้าแต่ละตัว (ปีนั้น)
     const saleTotal = saleInfo.total ?? 0;
 
     return {
@@ -258,26 +331,38 @@ async function showInventoryInfo(productCode = "", selectedYear = null) {
 // สร้าง dropdown สินค้า (เติมเมื่อมีข้อมูล)
 async function populateProductSelect() {
   const { products } = await fetchAll();
-  // เก็บตัวเลือกเดิม (index 0 = "ทั้งหมด")
-  const existingFirst = productSelect.options.length
-    ? productSelect.options[0].outerHTML
-    : null;
+  const filteredProducts = filterProductsByControls(products);
+
   productSelect.innerHTML = "";
   const optAll = document.createElement("option");
   optAll.value = "";
   optAll.textContent = "ทั้งหมด";
   productSelect.appendChild(optAll);
-  (products || []).forEach((p) => {
+
+  filteredProducts.forEach((p) => {
     const opt = document.createElement("option");
     opt.value = p.product_code ?? p.code ?? (p._id ? String(p._id) : "");
     opt.textContent = `${opt.value} - ${p.product_name ?? p.name ?? "-"}`;
     productSelect.appendChild(opt);
   });
+
+  console.log(
+    `📦 โหลด dropdown: ${filteredProducts.length} สินค้า`
+  );
 }
 
 // เพิ่มเติม: สร้าง dropdown ปี
 async function populateYearSelect() {
-  const { buyin, sale } = await fetchAll();
+  const { products, buyin, sale } = await fetchAll();
+
+  const filteredProducts = filterProductsByControls(products);
+  const productCodes = new Set(
+    filteredProducts.map((p) => p.product_code ?? p.code ?? "")
+  );
+
+  const filteredBuyin = filterTransactionsByProducts(buyin, productCodes);
+  const filteredSale = filterTransactionsByProducts(sale, productCodes);
+
   const years = new Set();
   const safeDate = (d) => {
     try {
@@ -286,14 +371,17 @@ async function populateYearSelect() {
       return new Date(NaN);
     }
   };
-  (buyin || []).forEach((b) => {
+
+  filteredBuyin.forEach((b) => {
     const dt = safeDate(b.buyindate ?? b.date);
     if (!isNaN(dt)) years.add(dt.getFullYear());
   });
-  (sale || []).forEach((s) => {
+
+  filteredSale.forEach((s) => {
     const dt = safeDate(s.saleoutdate ?? s.date);
     if (!isNaN(dt)) years.add(dt.getFullYear());
   });
+
   const sorted = Array.from(years).sort((a, b) => b - a);
   yearSelect.innerHTML = "";
   sorted.forEach((y) => {
@@ -311,6 +399,15 @@ async function fetchStats(
   selectedYear = null
 ) {
   const { products, buyin, sale } = await fetchAll();
+
+  const filteredProducts = filterProductsByControls(products);
+  const productCodes = new Set(
+    filteredProducts.map((p) => p.product_code ?? p.code ?? "")
+  );
+
+  const filteredBuyin = filterTransactionsByProducts(buyin, productCodes);
+  const filteredSale = filterTransactionsByProducts(sale, productCodes);
+
   if (productSelect.options.length <= 1) await populateProductSelect();
 
   const now = new Date();
@@ -327,11 +424,10 @@ async function fetchStats(
   };
 
   if (type === "year") {
-    // ใช้ปีที่เลือกจาก yearSelect
     const year = Number(selectedYear);
     labels = [year.toString()];
     buyinSummary = [
-      buyin
+      filteredBuyin
         .filter((b) => {
           const dt = safeDate(b.buyindate ?? b.date);
           return (
@@ -352,7 +448,7 @@ async function fetchStats(
         ),
     ];
     saleSummary = [
-      sale
+      filteredSale
         .filter((s) => {
           const dt = safeDate(s.saleoutdate ?? s.date);
           return (
@@ -373,7 +469,6 @@ async function fetchStats(
         ),
     ];
   } else if (type === "quarter") {
-    // ใช้ปีที่เลือกจาก yearSelect (ถ้าไม่มีให้ใช้ปีปัจจุบัน)
     const year = Number(yearSelect?.value) || new Date().getFullYear();
     labels = [
       `ไตรมาสที่ 1\nมกราคม - มีนาคม ${year}`,
@@ -382,7 +477,7 @@ async function fetchStats(
       `ไตรมาสที่ 4\nตุลาคม - ธันวาคม ${year}`,
     ];
     buyinSummary = [1, 2, 3, 4].map((q) =>
-      buyin
+      filteredBuyin
         .filter((b) => {
           const dt = safeDate(b.buyindate ?? b.date);
           return (
@@ -404,7 +499,7 @@ async function fetchStats(
         )
     );
     saleSummary = [1, 2, 3, 4].map((q) =>
-      sale
+      filteredSale
         .filter((s) => {
           const dt = safeDate(s.saleoutdate ?? s.date);
           return (
@@ -426,7 +521,6 @@ async function fetchStats(
         )
     );
   } else {
-    // รายเดือน: ใช้ปีที่เลือกจาก yearSelect
     const year = Number(selectedYear) || now.getFullYear();
     labels = [
       "ม.ค.",
@@ -443,7 +537,7 @@ async function fetchStats(
       "ธ.ค.",
     ];
     buyinSummary = Array.from({ length: 12 }, (_, i) =>
-      buyin
+      filteredBuyin
         .filter((b) => {
           const dt = safeDate(b.buyindate ?? b.date);
           return (
@@ -465,7 +559,7 @@ async function fetchStats(
         )
     );
     saleSummary = Array.from({ length: 12 }, (_, i) =>
-      sale
+      filteredSale
         .filter((s) => {
           const dt = safeDate(s.saleoutdate ?? s.date);
           return (
@@ -536,7 +630,6 @@ async function renderChart(
             autoSkip: false,
             maxRotation: 0,
             callback: function (val) {
-              // แยกข้อความตาม \n และคืนค่าเป็น array เพื่อให้แสดงหลายบรรทัด
               const label = this.getLabelForValue(val);
               return label.split("\n");
             },
@@ -547,39 +640,25 @@ async function renderChart(
   });
 }
 
-// event listeners
-document
-  .getElementById("period-type")
-  .addEventListener("change", async function () {
-    // ให้รายเดือนก็แสดงดรอปดาวน์ปีด้วย
-    if (["month", "quarter", "year"].includes(this.value)) {
-      await populateYearSelect();
-      yearSelect.style.display = "";
-      yearLabel.style.display = "";
-    } else {
-      yearSelect.style.display = "none";
-      yearLabel.style.display = "none";
-    }
-    const selectedYear = yearSelect.value;
-    renderChart(this.value, productSelect.value, selectedYear);
-    showInventoryInfo(productSelect.value, selectedYear);
-  });
-
-productSelect.addEventListener("change", function () {
-  const periodType = document.getElementById("period-type").value;
-  const selectedYear = yearSelect.value;
-  renderChart(periodType, this.value, selectedYear);
-  showInventoryInfo(this.value, selectedYear);
-});
-
-yearSelect.addEventListener("change", function () {
-  const periodType = document.getElementById("period-type").value;
-  renderChart(periodType, productSelect.value, yearSelect.value);
-  showInventoryInfo(productSelect.value, yearSelect.value);
-});
-
-//กดให้sidebarค้างไว้
+// ✅ เพิ่ม event listeners สำหรับ checkbox
 document.addEventListener("DOMContentLoaded", function () {
+  const cbControlled = document.getElementById("cb-include-controlled");
+  const cbUncontrolled = document.getElementById("cb-include-uncontrolled");
+
+  // เมื่อเปลี่ยนสถานะ checkbox → refresh ทั้งหมด
+  const handleCheckboxChange = async () => {
+    await populateProductSelect();
+    await populateYearSelect();
+    const periodType = document.getElementById("period-type")?.value || "month";
+    const selectedYear = yearSelect.value;
+    renderChart(periodType, productSelect.value, selectedYear);
+    showInventoryInfo(productSelect.value, selectedYear);
+  };
+
+  cbControlled?.addEventListener("change", handleCheckboxChange);
+  cbUncontrolled?.addEventListener("change", handleCheckboxChange);
+
+  // กดให้sidebarค้างไว้
   const hamburger = document.getElementById("hamburger-btn");
   const sidebar = document.getElementById("sidebar");
 

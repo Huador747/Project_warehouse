@@ -60,41 +60,109 @@
           <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
         </button>
       </div>
-      <div class="logo-container">
+      <!--<div class="logo-container">
         <img src="/assets/logo.png" alt="Logo" class="logo" />
-      </div>
+      </div>-->
     </div>
 
     <div class="main-content">
       <div class="navbar">
         <form class="navbar-form">
           <span class="navbar-text active">สรุปจำนวนคงเหลือสินค้า</span>
-          <div class="search-row"></div>
         </form>
         <div class="search-logout-row">
           <input
-            id="search-input"
             type="text"
             class="search-product-input"
+            id="search-input"
             placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล..."
           />
+          <!-- เพิ่ม dropdown กรองสถานะ -->
+          <select id="status-filter" class="status-filter-dropdown">
+            <option value="">ทุกสถานะ</option>
+            <option value="ขายปกติ">ขายปกติ</option>
+            <option value="พักการขาย">พักการขาย</option>
+          </select>
           <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
         </div>
       </div>
       <div class="history-summary">
-        <h2>สรุปจำนวนคงเหลือสินค้า</h2>
-        <table id="stock-table">
+        <h2>สรุปจำนวนคงเหลือสินค้า</h2>  
+        <!-- ✅ เพิ่มกรองการควบคุม -->
+        <div class="controls-checkbox-group" aria-label="กรองการควบคุม">
+          <label><input type="checkbox" id="cb-controls-yes" checked> ควบคุม</label>
+          <label><input type="checkbox" id="cb-controls-no" checked> ไม่ควบคุม</label>
+        </div>
+
+        <script>
+          (function () {
+            function syncFromSelect() {
+              const select = document.getElementById('status-filter');
+              const normal = document.getElementById('cb-status-normal');
+              const paused = document.getElementById('cb-status-paused');
+              if (!select || !normal || !paused) return;
+
+              if (select.value === 'ขายปกติ') {
+                normal.checked = true; paused.checked = false;
+              } else if (select.value === 'พักการขาย') {
+                normal.checked = false; paused.checked = true;
+              } else {
+                normal.checked = true; paused.checked = true;
+              }
+            }
+
+            function syncToSelect() {
+              const select = document.getElementById('status-filter');
+              const normal = document.getElementById('cb-status-normal');
+              const paused = document.getElementById('cb-status-paused');
+              if (!select || !normal || !paused) return;
+
+              let value = '';
+              if (normal.checked && !paused.checked) value = 'ขายปกติ';
+              else if (!normal.checked && paused.checked) value = 'พักการขาย';
+              else value = '';
+
+              select.value = value;
+              select.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            function init() {
+              const normal = document.getElementById('cb-status-normal');
+              const paused = document.getElementById('cb-status-paused');
+              const select = document.getElementById('status-filter');
+              if (!normal || !paused || !select) return;
+
+              normal.addEventListener('change', syncToSelect);
+              paused.addEventListener('change', syncToSelect);
+              select.addEventListener('change', syncFromSelect);
+              syncFromSelect();
+            }
+
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', init);
+            } else {
+              init();
+            }
+          })();
+        </script>
+        <table id="inventory-table">
           <thead>
             <tr>
+              <th>ลำดับ</th>
               <th>รหัสสินค้า</th>
-              <th>ชื่อสินค้า</th>
               <th>โมเดล</th>
-              <th>หมวดหมู่</th>
-              <th>จำนวนคงเหลือ</th>
+              <th>ชื่อสินค้า</th>
+              <th>ผู้ผลิต</th>
+              <th>ประเภท</th>
+              <th>สถานะการขาย</th>
+              <!-- เพิ่มคอลัมน์นี้ -->
+              <th>จำนวน</th>
+              <th>หน่วย</th>
+              <th>ตำแหน่ง</th>
             </tr>
           </thead>
           <tbody>
-            <!-- เติมข้อมูลด้วย JS -->
+            <!-- Data will be rendered by JS -->
           </tbody>
         </table>
       </div>

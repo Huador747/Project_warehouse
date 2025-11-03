@@ -56,9 +56,11 @@ body {
   0% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-8px);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -133,11 +135,13 @@ body {
 }
 
 @keyframes pulse-indicator {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.12);
@@ -275,7 +279,7 @@ body {
   cursor: pointer;
 }
 
-.hamburger:hover + .sidebar,
+.hamburger:hover+.sidebar,
 .sidebar:hover {
   left: 0;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
@@ -425,9 +429,11 @@ body {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -451,9 +457,11 @@ body {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.03);
   }
+
   100% {
     transform: scale(1);
   }
@@ -464,10 +472,12 @@ body {
     transform: translateX(-120%);
     opacity: 0;
   }
+
   60% {
     transform: translateX(6%);
     opacity: 1;
   }
+
   100% {
     transform: translateX(0);
     opacity: 1;
@@ -503,10 +513,12 @@ body {
     transform: scale(0.7);
     opacity: 0.2;
   }
+
   60% {
     transform: scale(1.2);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
   }
@@ -595,6 +607,27 @@ body {
 .history-list h2 {
   margin-top: 0;
   color: #000000;
+}
+
+.controls-checkbox-group {
+  display: flex;
+  justify-content: flex-end;
+  /* ชิดขวา */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  width: 100%;
+  min-width: 900px;
+  /* ความยาวเท่ากับ table */
+  box-sizing: border-box;
+  padding: 12px 16px;
+  margin: 8px 0 16px 0;
+  /* เอา margin-right ออกให้ชิดเท่ากับ table */
+  border: 1px solid rgba(224, 185, 125, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(6px);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 /* ========== Table Styles ========== */
@@ -749,10 +782,69 @@ tr:hover {
   letter-spacing: 1px;
 }
 
+/* ========== STATUS FILTER DROPDOWN ========== */
+.status-filter-dropdown {
+  padding: 10px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 12px;
+  min-width: 150px;
+}
+
+.status-filter-dropdown:hover {
+  border-color: #667eea;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.status-filter-dropdown:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ========== STATUS BADGE ========== */
+.status-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.status-badge:hover {
+  transform: translateY(-1px);
+}
+
+.status-badge.status-active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.status-badge.status-paused {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
 /* ========== RESPONSIVE DESIGN ========== */
 
 /* ========== Tablet & iPad (900px - 1200px) ========== */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
+
+  .controls-checkbox-group {
+    min-width: 700px;
+    /* เท่ากับ table ใน breakpoint นี้ */
+  }
+
   /* Sidebar - ลดจาก 300px เหลือ 200px */
   .sidebar {
     width: 200px;
@@ -924,6 +1016,7 @@ tr:hover {
 
 /* ========== Tablet Small (768px - 900px) ========== */
 @media screen and (max-width: 900px) and (min-width: 768px) {
+
   /* Sidebar */
   .sidebar {
     width: 180px;
@@ -1008,6 +1101,7 @@ tr:hover {
 
 /* ========== Mobile (< 768px) ========== */
 @media screen and (max-width: 768px) {
+
   /* Hamburger */
   .hamburger {
     top: 20px;

@@ -69,9 +69,9 @@
       </div>
 
       <!-- Logo -->
-      <div class="logo-container">
+      <!--<div class="logo-container">
         <img src="/assets/logo.png" alt="Logo" class="logo" />
-      </div>
+      </div>-->
     </div>
 
     <!-- Navbar -->
@@ -154,6 +154,22 @@
                 <option value="">-- เลือกสถานะ --</option>
                 <option value="มือ1">มือ 1</option>
                 <option value="มือ2">มือ 2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sale_status">สถานะการขาย</label>
+              <select id="sale_status" name="sale_status" required>
+                <option value="">-- เลือกสถานะ --</option>
+                <option value="ขายปกติ">ขายปกติ</option>
+                <option value="พักการขาย">พักการขาย</option>
+              </select>
+            </div>
+             <div class="form-group">
+              <label for="controls">การควบคุม</label> <!-- แก้จาก "หน่วยนับ" เป็น "การควบคุม" -->
+              <select id="controls" name="controls" required>
+                <option value="">-- เลือกการควบคุม --</option>
+                <option value="ควบคุม">ควบคุม</option>
+                <option value="ไม่ควบคุม">ไม่ควบคุม</option>
               </select>
             </div>
           </div>

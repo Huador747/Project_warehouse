@@ -1,6 +1,8 @@
 import { BACKEND_URL } from "./config.js";
 
 let currentProductId = null;
+
+// ฟังก์ชันแปลงวันที่เป็นรูปแบบไทย
 function isoToThaiDate(isoString) {
   if (!isoString) return "";
   const date = new Date(isoString);
@@ -11,6 +13,148 @@ function isoToThaiDate(isoString) {
   return `${day}/${month}/${year}`;
 }
 
+// ฟังก์ชันคำนวณจำนวนคงเหลือจริง (ซื้อ - ขาย)
+async function calculateRealStock(productCode) {
+  try {
+    const [buyinRes, saleRes] = await Promise.all([
+      fetch(`${BACKEND_URL}/buyin_product`).then((r) => r.json()),
+      fetch(`${BACKEND_URL}/sale_product`).then((r) => r.json()),
+    ]);
+
+    // รวมยอดซื้อ
+    const totalBuyin = buyinRes
+      .filter((b) => b.product_code === productCode)
+      .reduce(
+        (sum, b) =>
+          sum +
+          (Number(b.quantity) ||
+            Number(b.buyin_quantity) ||
+            Number(b.buy_quantity) ||
+            0),
+        0
+      );
+
+    // รวมยอดขาย
+    const totalSale = saleRes
+      .filter((s) => s.product_code === productCode)
+      .reduce(
+        (sum, s) =>
+          sum +
+          (Number(s.salequantity) ||
+            Number(s.sale_quantity) ||
+            Number(s.quantity) ||
+            0),
+        0
+      );
+
+    // คำนวณคงเหลือ
+    const realStock = totalBuyin - totalSale;
+
+    return {
+      totalBuyin,
+      totalSale,
+      realStock,
+    };
+  } catch (error) {
+    console.error("❌ Error calculating stock:", error);
+    return {
+      totalBuyin: 0,
+      totalSale: 0,
+      realStock: 0,
+    };
+  }
+}
+
+// ฟังก์ชันตรวจสอบสถานะสินค้า (แก้ไขให้คำนวณจำนวนคงเหลือจริง)
+async function checkProductStatus(productCode) {
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/products/search?q=${encodeURIComponent(productCode)}`
+    );
+    const products = await response.json();
+
+    if (products.length === 0) {
+      return { valid: false, message: "ไม่พบสินค้า" };
+    }
+
+    const product = products[0];
+
+    // คำนวณจำนวนคงเหลือจริง
+    const stockData = await calculateRealStock(productCode);
+    product.realQuantity = stockData.realStock;
+    product.totalBuyin = stockData.totalBuyin;
+    product.totalSale = stockData.totalSale;
+
+    // ตรวจสอบสถานะการขาย
+    if (product.sale_status === "พักการขาย") {
+      return {
+        valid: false,
+        message: `⚠️ ไม่สามารถขายสินค้านี้ได้\nสินค้ารหัส "${productCode}" อยู่ในสถานะ "พักการขาย"`,
+        product: product,
+      };
+    }
+
+    // ตรวจสอบจำนวนคงเหลือจริง
+    if (product.realQuantity <= 0) {
+      return {
+        valid: false,
+        message: `⚠️ สินค้าหมด\nสินค้ารหัส "${productCode}"\nซื้อ: ${stockData.totalBuyin} | ขาย: ${stockData.totalSale} | คงเหลือ: ${stockData.realStock}`,
+        product: product,
+      };
+    }
+
+    return {
+      valid: true,
+      message: "ตรวจสอบสำเร็จ",
+      product: product,
+    };
+  } catch (error) {
+    console.error("❌ Error checking product status:", error);
+    return {
+      valid: false,
+      message: "เกิดข้อผิดพลาดในการตรวจสอบสถานะสินค้า",
+    };
+  }
+}
+
+// ฟังก์ชันสร้าง badge สถานะ
+function createStatusBadge(saleStatus) {
+  if (saleStatus === "ขายปกติ") {
+    return '<span class="status-badge status-active">ขายปกติ</span>';
+  } else if (saleStatus === "พักการขาย") {
+    return '<span class="status-badge status-paused">พักการขาย</span>';
+  }
+  return "";
+}
+
+// ฟังก์ชันสร้าง badge จำนวนคงเหลือ
+function createQuantityBadge(quantity, unit = "") {
+  const qty = Number(quantity) || 0;
+  let badgeClass = "quantity-badge";
+  let icon = "📦";
+
+  // กำหนดสีและไอคอนตามจำนวน
+  if (qty === 0) {
+    badgeClass += " quantity-empty";
+    icon = "❌";
+  } else if (qty < 0) {
+    badgeClass += " quantity-negative";
+    icon = "⚠️";
+  } else if (qty <= 5) {
+    badgeClass += " quantity-low";
+    icon = "⚠️";
+  } else if (qty <= 20) {
+    badgeClass += " quantity-medium";
+    icon = "📊";
+  } else {
+    badgeClass += " quantity-high";
+    icon = "✅";
+  }
+
+  return `<span class="${badgeClass}">${icon} ${qty} ${unit}</span>`;
+}
+
+// ฟังก์ชันเติมข้อมูลในฟอร์ม
 function fillForm(product) {
   currentProductId = product._id;
   document.getElementById("product_name").value = product.product_name || "";
@@ -18,14 +162,20 @@ function fillForm(product) {
   document.getElementById("unit").value = product.unit || "";
   document.getElementById("condition").value = product.condition || "";
   document.getElementById("price").value = product.price || "";
-  document.getElementById("salequantity").value = product.salequantity || "";
-  document.getElementById("total_vat").value = product.total_vat || "";
-  document.getElementById("profit").value = product.profit || "";
-  document.getElementById("customerName").value = product.customerName || "";
-  document.getElementById("saleoutdate").value = isoToThaiDate(
-    product.saleoutdate
-  );
-  //เติมข้อมูลลงฟอร์ม
+  document.getElementById("sale_price").value = product.sale_price || "";
+  document.getElementById("salequantity").value = "";
+
+  // ตั้งค่า max ให้กับ input จำนวนขาย (ใช้จำนวนคงเหลือจริง)
+  const salequantityInput = document.getElementById("salequantity");
+  if (salequantityInput) {
+    salequantityInput.max = product.realQuantity || 0;
+  }
+
+  // แสดงจำนวนคงเหลือจริง
+  const availableQty = document.getElementById("available-qty");
+  if (availableQty) {
+    availableQty.textContent = `${product.realQuantity || 0} ${product.unit || ""}`;
+  }
 
   if (typeof updateTotal === "function") updateTotal();
 
@@ -35,71 +185,115 @@ function fillForm(product) {
 
 const searchInput = document.querySelector(".search-product-input");
 
-// ระบบค้นหา
-searchInput.addEventListener("input", function () {
+// ระบบค้นหา - พร้อมแสดงจำนวนคงเหลือจริง
+searchInput.addEventListener("input", async function () {
   const query = this.value.trim();
   document.getElementById("search-result")?.remove();
 
   if (!query) return;
 
-  fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`) // ใช้ BACKEND_URL
-    .then((res) => res.json())
-    .then((products) => {
-      const resultDiv = document.createElement("div");
-      resultDiv.id = "search-result";
-      resultDiv.className = "search-results-container";
-      resultDiv.style.position = "absolute";
-      resultDiv.style.background = "#faf2b9ff";
-      resultDiv.style.border = "1px solid #ccc";
-      resultDiv.style.width = searchInput.offsetWidth + "px";
-      resultDiv.style.zIndex = 9999;
-      resultDiv.style.maxHeight = "250px";
-      resultDiv.style.overflowY = "auto";
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`
+    );
+    const products = await response.json();
 
-      if (products.length === 0) {
-        resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
-      } else {
-        resultDiv.innerHTML = products
-          .map(
-            (p) => `
-                        <div class="search-item" style="padding:8px;cursor:pointer;" data-product='${JSON.stringify(
-                          p
-                        )}'>
-                            <b class="product_code">${p.product_code || ""}</b>
-                            <span class="product_name">${
-                              p.product_name || ""
-                            }</span>
-                            <small class="product_model">
-                                ${p.model || ""} | 
-                                <span class="maker">${p.maker || ""}</span> | 
-                                <span class="category">${
-                                  p.category || ""
-                                }</span>
-                            </small>
-                        </div>
-                    `
-          )
-          .join("");
-      }
+    // คำนวณจำนวนคงเหลือจริงสำหรับทุกสินค้า
+    const productsWithStock = await Promise.all(
+      products.map(async (p) => {
+        const stockData = await calculateRealStock(p.product_code);
+        return {
+          ...p,
+          realQuantity: stockData.realStock,
+          totalBuyin: stockData.totalBuyin,
+          totalSale: stockData.totalSale,
+        };
+      })
+    );
 
-      // แทรกผลลัพธ์ใต้ input
-      searchInput.parentNode.insertBefore(resultDiv, searchInput.nextSibling);
+    const resultDiv = document.createElement("div");
+    resultDiv.id = "search-result";
+    resultDiv.className = "search-results-container";
 
-      // Event เลือกสินค้า
-      resultDiv.querySelectorAll(".search-item").forEach((item) => {
-        item.addEventListener("click", function () {
-          const product = JSON.parse(this.dataset.product);
-          fillForm(product);
-        });
-      });
+    if (productsWithStock.length === 0) {
+      resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
+    } else {
+      resultDiv.innerHTML = productsWithStock
+        .map((p) => {
+          const statusBadge = createStatusBadge(p.sale_status);
+          const quantityBadge = createQuantityBadge(p.realQuantity, p.unit);
+          const statusClass =
+            p.sale_status === "พักการขาย" ? "item-paused" : "";
 
-      requestAnimationFrame(() => {
-        document.getElementById("search-result")?.classList.add("animate");
-      });
-    })
-    .catch((err) => {
-      console.error("เกิดข้อผิดพลาดในการค้นหา:", err);
+          return `
+            <div class="search-item ${statusClass}" data-product='${JSON.stringify(
+            p
+          )}'>
+                <div class="search-item-header">
+                    <b class="product_code">${p.product_code || ""}</b>
+                    ${quantityBadge}
+                </div>
+                <span class="product_name">${p.product_name || ""}</span>
+                <small class="product_model">
+                    ${p.model || ""} | 
+                    <span class="maker">${p.maker || ""}</span> | 
+                    <span class="category">${p.category || ""}</span>
+                </small>
+                <div class="product_status">${statusBadge}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    // แทรกผลลัพธ์ใต้ parent
+    const parent = this.closest(".search-logout-row");
+    if (parent) {
+      parent.appendChild(resultDiv);
+    } else {
+      this.parentNode.appendChild(resultDiv);
+    }
+
+    // ให้ CSS animation ทำงาน
+    requestAnimationFrame(() => {
+      resultDiv.classList.add("animate");
     });
+
+    // Event เลือกสินค้า
+    resultDiv.querySelectorAll(".search-item").forEach((item) => {
+      item.addEventListener("click", async function () {
+        const product = JSON.parse(this.dataset.product);
+
+        const statusCheck = await checkProductStatus(product.product_code);
+
+        if (!statusCheck.valid) {
+          alert(statusCheck.message);
+          return;
+        }
+
+        fillForm(statusCheck.product);
+      });
+    });
+  } catch (err) {
+    console.error("❌ เกิดข้อผิดพลาดในการค้นหา:", err);
+  }
+});
+
+// ตรวจสอบจำนวนขายไม่เกินจำนวนคงเหลือ
+document.getElementById("salequantity")?.addEventListener("input", function () {
+  const max = parseInt(this.max) || 0;
+  const value = parseInt(this.value) || 0;
+
+  if (value > max) {
+    this.value = max;
+    alert(
+      `⚠️ จำนวนขายต้องไม่เกิน ${max} ${
+        document.getElementById("unit").value || "ชิ้น"
+      }`
+    );
+  }
+
+  if (typeof updateTotal === "function") updateTotal();
 });
 
 // ปิดผลลัพธ์เมื่อคลิกข้างนอก
@@ -111,7 +305,8 @@ document.addEventListener("click", function (e) {
     document.getElementById("search-result")?.remove();
   }
 });
-// เพิ่ม flatpickr สำหรับ saleoutdate
+
+// เพิ่ม flatpickr สำหรับวันที่
 if (window.flatpickr) {
   flatpickr("#saleoutdate", {
     dateFormat: "d/m/Y",
@@ -147,20 +342,66 @@ if (window.flatpickr) {
   });
 }
 
- // Logout
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn?.addEventListener('click', function(e) {
-        e.preventDefault();
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.replace("login.html");
-    });
+// Logout
+const logoutBtn = document.getElementById("logout-btn");
+logoutBtn?.addEventListener("click", function (e) {
+  e.preventDefault();
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.replace("login.html");
+});
 
-// ดัก event submit ฟอร์ม ขายสินค้า
+// ฟังก์ชันคำนวณยอดรวม
+function updateTotal() {
+  const price = parseFloat(document.getElementById("sale_price").value) || 0;
+  const quantity = parseInt(document.getElementById("salequantity").value) || 0;
+  const cost = parseFloat(document.getElementById("price").value) || 0;
+  const shipping = parseFloat(document.getElementById("shipping").value) || 0;
+
+  const total = price * quantity + shipping;
+  document.getElementById("total").value = total.toFixed(2);
+
+  const vat = total * 0.07;
+  document.getElementById("vat").value = vat.toFixed(2);
+
+  const total_vat = total + vat;
+  document.getElementById("total_vat").value = total_vat.toFixed(2);
+
+  const profit = total_vat - cost * quantity - shipping;
+  document.getElementById("profit").value = profit.toFixed(2);
+}
+
+// Event listeners สำหรับคำนวณ
+document.getElementById("sale_price")?.addEventListener("input", updateTotal);
+document.getElementById("salequantity")?.addEventListener("input", updateTotal);
+document.getElementById("price")?.addEventListener("input", updateTotal);
+document.getElementById("shipping")?.addEventListener("input", updateTotal);
+
+// ตั้งค่าเริ่มต้นค่าขนส่ง
+if (document.getElementById("shipping")) {
+  document.getElementById("shipping").value = 100;
+}
+
+// ดัก event submit ฟอร์ม - ไม่ต้องอัปเดต product.quantity อีกต่อไป
 document
   .querySelector(".product-form")
-  .addEventListener("submit", async function (e) {
+  ?.addEventListener("submit", async function (e) {
     e.preventDefault();
+
+    const productCode = document.getElementById("product_code")?.value.trim();
+
+    if (!productCode) {
+      alert("กรุณาระบุรหัสสินค้า");
+      return;
+    }
+
+    // ตรวจสอบสถานะสินค้าก่อนบันทึก
+    const statusCheck = await checkProductStatus(productCode);
+
+    if (!statusCheck.valid) {
+      alert(statusCheck.message);
+      return;
+    }
 
     const formData = new FormData(this);
     let saleData = Object.fromEntries(formData.entries());
@@ -187,85 +428,37 @@ document
         } else {
           delete saleData.saleoutdate;
           alert("รูปแบบวันที่ไม่ถูกต้อง");
+          return;
         }
       } else {
         delete saleData.saleoutdate;
         alert("กรุณากรอกวันที่ให้ถูกต้อง");
+        return;
       }
     }
 
-    // ส่งข้อมูลไป sale_product
     try {
-      const res = await fetch(`${BACKEND_URL}/sale_product`, {
+      // บันทึกข้อมูลการขาย (ไม่ต้องอัปเดต product.quantity)
+      const response = await fetch(`${BACKEND_URL}/sale_product`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(saleData),
       });
-      if (res.ok) {
-        alert("บันทึกข้อมูลสำเร็จ");
-        this.reset();
-      } else {
-        const data = await res.json();
-        alert(data.message || "เกิดข้อผิดพลาด");
+
+      if (!response.ok) {
+        throw new Error("Failed to save sale");
       }
-    } catch (err) {
-      alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
+
+      alert("✅ บันทึกการขายสำเร็จ");
+      this.reset();
+      document.getElementById("shipping").value = 100;
+    } catch (error) {
+      console.error("❌ Save error:", error);
+      alert("เกิดข้อผิดพลาดในการบันทึก");
     }
   });
 
-function updateTotal() {
-  const price = parseFloat(document.getElementById("sale_price").value) || 0;
-  const quantity = parseInt(document.getElementById("salequantity").value) || 0;
-  const cost = parseFloat(document.getElementById("price").value) || 0;
-  const shipping = parseFloat(document.getElementById("shipping").value) || 0;
-
-  // คำนวณยอดรวม (รวมค่าขนส่ง)
-  const total = (price * quantity) + shipping;
-  document.getElementById("total").value = total.toFixed(2);
-
-  // คำนวณ VAT 7%
-  const vat = total * 0.07;
-  document.getElementById("vat").value = vat.toFixed(2);
-
-  // คำนวณยอดรวม VAT
-  const total_vat = total + vat;
-  document.getElementById("total_vat").value = total_vat.toFixed(2);
-
-  // คำนวณกำไร (ราคารวมภาษี - ต้นทุน*จำนวน - ค่าขนส่ง)
-  const profit = total_vat - (cost * quantity) - shipping;
-  document.getElementById("profit").value = profit.toFixed(2);
-}
-
-// เรียกใช้เมื่อกรอกหรือเปลี่ยนราคาขาย, จำนวนที่ขาย, หรือต้นทุน
-document.getElementById("sale_price").addEventListener("input", updateTotal);
-document.getElementById("salequantity").addEventListener("input", updateTotal);
-document.getElementById("price").addEventListener("input", updateTotal);
-document.getElementById("shipping").addEventListener("input", updateTotal);
-document.getElementById("shipping").value = 100;
-
-app.post("/sale_product", async (req, res) => {
-  // ...
-});
-
-const SaleProductSchema = new mongoose.Schema({
-  saleoutdate: Date,
-  productName: String,
-  productCode: String,
-  unit: String,
-  condition: String,
-  price: Number,
-  sale_price: Number,
-  vat: Number, 
-  salequantity: Number,
-  total: Number,
-  total_vat: Number,
-  profit: Number,
-  customerName: String,
-  notesale: String,
-  shipping: Number,
-});
-
-// เพิ่มการสไลด์ navbar-text, entrance ฟอร์ม, hamburger toggle และ animation ให้ผลลัพธ์การค้นหา
+// Hamburger menu และ animations
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger-btn");
   const sidebar = document.getElementById("sidebar");
@@ -284,13 +477,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-    const navbarText = document.querySelector('.navbar-text');
-    if (navbarText) {
-        requestAnimationFrame(() => {
-            navbarText.classList.add('slide-in');
-        });
-    }
+  // Navbar text animation
+  const navbarText = document.querySelector(".navbar-text");
+  if (navbarText) {
+    requestAnimationFrame(() => {
+      navbarText.classList.add("slide-in");
+    });
+  }
 });

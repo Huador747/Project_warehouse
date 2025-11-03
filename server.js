@@ -75,10 +75,12 @@ const ProductSchema = new mongoose.Schema({
     maker: String,
     category: String,
     condition: String,
+    sale_status: { type: String, default: "ขายปกติ" }, // เพิ่มบรรทัดนี้
     price: Number,
     sale_price: Number, 
     unit: String,
     location: String,
+    controls: String,
     image: String,
     updatedDate: String,
     updatedTime: String,

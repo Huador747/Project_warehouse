@@ -537,6 +537,7 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
+  position: relative; /* เพิ่มบรรทัดนี้ */
 }
 
 /* ========== Main Content ========== */
@@ -720,57 +721,45 @@ select:focus,
 #search-result-list,
 .search-results-container {
   position: absolute;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  width: 350px;
-  max-height: 220px;
+  top: 100%;              /* วางใต้ parent (input) ทันที */
+  left: 0;                /* ชิดซ้ายกับ parent */
+  width: 100%;            /* กว้างเท่า parent (search input) */
+  max-height: 400px;      /* เพิ่มความสูงเพื่อแสดงผลได้มากขึ้น */
   overflow-y: auto;
-  z-index: 100;
+  background: #faf2b9ff;  /* สีพื้นหลังตามเดิม */
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;          /* เพิ่ม z-index ให้สูงขึ้น */
+  margin-top: 4px;        /* เว้นระยะจาก input เล็กน้อย */
 }
 
-.search-results-container.animate .search-item {
-  opacity: 0;
-  animation: slideIn 220ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
-}
-
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.search-results-container.animate .search-item:nth-child(1) {
-  animation-delay: 40ms;
-}
-
-.search-results-container.animate .search-item:nth-child(2) {
-  animation-delay: 80ms;
-}
-
-.search-results-container.animate .search-item:nth-child(3) {
-  animation-delay: 120ms;
-}
-
-.search-results-container.animate .search-item:nth-child(4) {
-  animation-delay: 160ms;
+/* ========== Search Results Container ========== */
+.search-results-container {
+  position: absolute;
+  top: 100%;              /* วางใต้ parent ทันที */
+  left: 0;                /* ชิดซ้ายกับ parent */
+  width: 100%;            /* กว้างเท่า parent */
+  max-height: 400px;      /* จำกัดความสูง */
+  overflow-y: auto;
+  background: white;      /* เปลี่ยนจาก #faf2b9ff เป็น white เหมือน sale */
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 4px;        /* เว้นระยะจาก input เล็กน้อย */
 }
 
 .search-item {
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
-  transition: background-color 0.18s, transform 0.14s;
+  transition: all 0.2s ease;
 }
 
-.search-item:hover {
-  background-color: #f5e0c0;
-  transform: translateY(-3px);
+.search-item:hover:not(.item-paused) {
+  background: #f8f9fa;
+  transform: translateX(4px);
 }
 
 .search-item:last-child {
@@ -778,18 +767,25 @@ select:focus,
 }
 
 .search-item .product_code {
-  color: red;
-  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .search-item .product_name {
-  color: rgb(0, 0, 0);
-  font-size: 16px;
+  color: #666;
+  font-size: 13px;
+  margin-top: 2px;
+  display: block;
 }
 
 .search-item .product_model {
-  color: rgb(255, 149, 28);
-  font-size: 16px;
+  color: #999;
+  font-size: 12px;
+  margin-top: 2px;
+  display: block;
 }
 
 .maker {
@@ -801,549 +797,119 @@ select:focus,
 }
 
 .no-results {
-  padding: 8px;
+  padding: 12px 16px;
   color: #ff1900;
-  font-size: 18px;
+  font-size: 16px;
+  text-align: center;
 }
 
-/* ========== RESPONSIVE DESIGN ========== */
-
-/* ========== Tablet & iPad (900px - 1200px) ========== */
-@media screen and (max-width: 1200px) and (min-width: 900px) {
-  /* Sidebar - ลดจาก 300px เหลือ 200px */
-  .sidebar {
-    width: 200px;
-    left: -201px;
-    padding: 10px 6px;
-    z-index: 5000;
-  }
-
-  .sidebar.sidebar-open {
-    left: 0;
-  }
-
-  /* User Profile - ลดขนาดลง 40% */
-  .user-profile-section {
-    margin-bottom: 7px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-  }
-
-  /* Avatar - ลดจาก 85px เหลือ 45px */
-  .user-avatar,
-  .user-avatar-placeholder {
-    width: 45px;
-    height: 45px;
-    font-size: 18px;
-    border-width: 2px;
-  }
-
-  /* Online Indicator - ลดจาก 16px เหลือ 8px */
-  .online-indicator {
-    width: 8px;
-    height: 8px;
-    border-width: 1.5px;
-    bottom: 2px;
-    right: 2px;
-  }
-
-  /* Username - ลดจาก 19px เหลือ 16px */
-  .user-name {
-    font-size: 16px;
-    letter-spacing: 0.2px;
-  }
-
-  /* Role Badge - ลดจาก 12px เหลือ 11px */
-  .role-badge {
-    font-size: 11px;
-    padding: 3px 8px;
-    letter-spacing: 0.6px;
-  }
-
-  /* Navigation Buttons */
-  .sidebar-nav-btn {
-    padding: 4px 6px;
-    gap: 3px;
-  }
-
-  /* Nav Button */
-  .sidebar-nav-btn .nav-btn {
-    padding: 7px 8px;
-    font-size: 14px;
-    margin-top: 3px;
-    gap: 5px;
-    border-radius: 6px;
-  }
-
-  /* Nav Icon */
-  .nav-icon {
-    font-size: 11px;
-    min-width: 14px;
-  }
-
-  /* Logo Container - ลดจาก 120px เหลือ 72px */
-  .logo-container {
-    width: 72px;
-    height: 72px;
-    margin-bottom: 36px;
-    padding: 7px;
-  }
-
-  /* Logo - ลดจาก 210px เหลือ 90px */
-  .logo {
-    width: 90px;
-    height: 90px;
-  }
-
-  /* Hamburger - ลดขนาด */
-  .hamburger {
-    top: 24px;
-    left: 14px;
-    width: 24px;
-    height: 24px;
-  }
-
-  .hamburger span {
-    width: 17px;
-    height: 2.4px;
-    gap: 4px;
-  }
-
-  /* Navbar */
-  .navbar {
-    height: 80px;
-    padding: 8px 14px;
-  }
-
-  /* Navbar text */
-  .navbar-text {
-    font-size: 24px;
-    padding: 4px 7px;
-    gap: 4px;
-  }
-
-  .navbar-text.active {
-    font-size: 24px;
-    margin-right: 12px;
-    margin-left: 48px;
-  }
-
-  /* Navbar form */
-  .navbar-form {
-    gap: 10px;
-    margin-left: 16px;
-  }
-
-  /* Main content */
-  .main-content {
-    margin-top: 80px;
-  }
-
-  /* Product Form */
-  .product-form {
-    padding: 24px 18px;
-    margin: 24px auto;
-    max-width: 1000px;
-  }
-
-  .product-form-row {
-    gap: 24px;
-  }
-
-  .form-group label {
-    font-size: 14px;
-  }
-
-  .form-group input,
-  .form-group select {
-    font-size: 14px;
-    padding: 6px 10px;
-  }
-
-  .function-btn-add {
-    font-size: 16px;
-    padding: 8px 0;
-  }
-
-  .search-product-input {
-    width: 200px;
-    height: 42px;
-    font-size: 14px;
-  }
-
-  .logout-btn {
-    height: 42px;
-    font-size: 13px;
-  }
-
-  .search-logout-row {
-    gap: 12px;
-  }
+/* ========== Status Badge ========== */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+  margin-left: 8px;
 }
 
-/* ========== Tablet Small (768px - 900px) ========== */
-@media screen and (max-width: 900px) and (min-width: 768px) {
-  /* Sidebar */
-  .sidebar {
-    width: 180px;
-    left: -200px;
-    padding: 12px 8px;
-  }
-
-  /* User Profile */
-  .user-profile-section {
-    padding: 16px 9px 12px;
-    margin-bottom: 9px;
-  }
-
-  .user-avatar,
-  .user-avatar-placeholder {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    border-width: 2px;
-  }
-
-  .online-indicator {
-    width: 12px;
-    height: 12px;
-    border-width: 2px;
-  }
-
-  .user-name {
-    font-size: 14px;
-  }
-
-  .role-badge {
-    font-size: 9px;
-    padding: 4px 10px;
-  }
-
-  /* Navigation Buttons */
-  .sidebar-nav-btn {
-    padding: 5px 7px;
-    gap: 3px;
-  }
-
-  .sidebar-nav-btn .nav-btn {
-    padding: 9px 11px;
-    font-size: 12px;
-    margin-top: 4px;
-    gap: 7px;
-  }
-
-  .nav-icon {
-    font-size: 16px;
-    min-width: 20px;
-  }
-
-  /* Logo */
-  .logo-container {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 45px;
-    padding: 9px;
-  }
-
-  .logo {
-    width: 115px;
-    height: 115px;
-  }
-
-  /* Navbar */
-  .navbar {
-    height: 70px;
-    padding: 7px 11px;
-    flex-direction: column;
-    gap: 7px;
-  }
-
-  .navbar-text {
-    font-size: 24px;
-  }
-
-  .main-content {
-    margin-top: 70px;
-  }
-
-  /* Product Form */
-  .product-form {
-    padding: 20px 14px;
-    margin: 20px auto;
-    max-width: 600px;
-  }
-
-  .product-form-row {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .form-group label {
-    font-size: 13px;
-  }
-
-  .form-group input,
-  .form-group select {
-    font-size: 13px;
-  }
+.status-badge:hover {
+  transform: translateY(-1px);
 }
 
-/* ========== Mobile (< 768px) ========== */
-@media screen and (max-width: 768px) {
-  /* Hamburger */
-  .hamburger {
-    top: 20px;
-    left: 10px;
-    width: 32px;
-    height: 32px;
-  }
-
-  .hamburger span {
-    width: 20px;
-    height: 2.5px;
-  }
-
-  /* Sidebar */
-  .sidebar {
-    width: 85%;
-    max-width: 220px;
-    left: -100%;
-    padding: 14px 10px;
-  }
-
-  .sidebar.sidebar-open {
-    left: 0;
-  }
-
-  /* User profile */
-  .user-profile-section {
-    padding: 14px 8px 12px;
-    margin-bottom: 10px;
-  }
-
-  .user-avatar,
-  .user-avatar-placeholder {
-    width: 56px;
-    height: 56px;
-    font-size: 22px;
-    border-width: 2px;
-  }
-
-  .online-indicator {
-    width: 11px;
-    height: 11px;
-    border-width: 2px;
-  }
-
-  .user-name {
-    font-size: 14px;
-  }
-
-  .role-badge {
-    font-size: 9px;
-    padding: 3px 9px;
-  }
-
-  /* Navigation buttons */
-  .sidebar-nav-btn {
-    padding: 5px 7px;
-    gap: 4px;
-  }
-
-  .sidebar-nav-btn .nav-btn {
-    font-size: 12px;
-    padding: 9px 10px;
-    margin-top: 4px;
-    gap: 7px;
-  }
-
-  .nav-icon {
-    font-size: 16px;
-    min-width: 20px;
-  }
-
-  /* Logo */
-  .logo-container {
-    width: 85px;
-    height: 85px;
-    margin-bottom: 35px;
-    padding: 8px;
-  }
-
-  .logo {
-    width: 105px;
-    height: 105px;
-  }
-
-  /* Navbar */
-  .navbar {
-    height: auto;
-    min-height: 60px;
-    padding: 7px 9px;
-    flex-direction: column;
-    gap: 7px;
-  }
-
-  .navbar-text {
-    font-size: 24px;
-  }
-
-  .main-content {
-    margin-top: 60px;
-  }
-
-  /* Product Form */
-  .product-form {
-    padding: 16px 12px;
-    margin: 16px 10px;
-  }
-
-  .product-form-row {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .search-logout-row {
-    width: 100%;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .search-product-input,
-  .logout-btn {
-    width: 100%;
-  }
+.status-badge.status-active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
 }
 
-/* ========== Small Mobile (< 480px) ========== */
-@media screen and (max-width: 480px) {
-  .hamburger {
-    top: 18px;
-    left: 9px;
-    width: 28px;
-    height: 28px;
-  }
-
-  .hamburger span {
-    width: 18px;
-    height: 2px;
-  }
-
-  .sidebar {
-    width: 90%;
-    max-width: 100%;
-  }
-
-  .user-avatar,
-  .user-avatar-placeholder {
-    width: 52px;
-    height: 52px;
-    font-size: 20px;
-  }
-
-  .online-indicator {
-    width: 10px;
-    height: 10px;
-  }
-
-  .user-name {
-    font-size: 13px;
-  }
-
-  .role-badge {
-    font-size: 8px;
-    padding: 2px 8px;
-  }
-
-  .sidebar-nav-btn .nav-btn {
-    font-size: 11px;
-    padding: 8px 9px;
-  }
-
-  .nav-icon {
-    font-size: 14px;
-    min-width: 18px;
-  }
-
-  .logo-container {
-    width: 75px;
-    height: 75px;
-  }
-
-  .logo {
-    width: 95px;
-    height: 95px;
-  }
-
-  .navbar {
-    min-height: 50px;
-    padding: 5px 7px;
-  }
-
-  .main-content {
-    margin-top: 50px;
-  }
-
-  .navbar-text {
-    font-size: 24px;
-  }
+.status-badge.status-paused {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
 }
 
-/* ========== Landscape Mobile ========== */
-@media (max-height: 600px) and (orientation: landscape) {
-  .sidebar {
-    overflow-y: auto;
-  }
+/* ========== Search Results - Paused Item Style ========== */
+.search-item.item-paused {
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  opacity: 0.75;
+  cursor: not-allowed !important;
+}
 
-  .user-profile-section {
-    padding: 10px 7px 8px;
-  }
+.search-item.item-paused:hover {
+  background: rgba(239, 68, 68, 0.12);
+  transform: none;
+}
 
-  .user-avatar,
-  .user-avatar-placeholder {
-    width: 48px;
-    height: 48px;
-    font-size: 19px;
-  }
+.search-item .product_status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
 
-  .online-indicator {
-    width: 10px;
-    height: 10px;
-  }
+/* ========== Search Item Header ========== */
+.search-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
 
-  .user-name {
-    font-size: 12px;
-  }
+/* ========== Quantity Badge ========== */
+.quantity-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
 
-  .role-badge {
-    font-size: 8px;
-    padding: 3px 7px;
-  }
+.quantity-badge:hover {
+  transform: translateY(-1px);
+}
 
-  .sidebar-nav-btn .nav-btn {
-    padding: 7px 9px;
-    font-size: 11px;
-  }
+.quantity-high {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
 
-  .nav-icon {
-    font-size: 14px;
-  }
+.quantity-medium {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
 
-  .logo-container {
-    padding: 7px;
-    margin-bottom: 10px;
-  }
+.quantity-low {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: white;
+  animation: pulse 2s ease-in-out infinite;
+}
 
-  .logo {
-    width: 70px;
-    height: 70px;
-  }
+.quantity-empty {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: white;
+  animation: pulse 2s ease-in-out infinite;
+}
 
-  .navbar {
-    min-height: 45px;
-  }
+.quantity-negative {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  animation: pulse 2s ease-in-out infinite;
+}
 
-  .main-content {
-    margin-top: 45px;
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
   }
 }
