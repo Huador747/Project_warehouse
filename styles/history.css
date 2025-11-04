@@ -218,12 +218,12 @@ body {
   z-index: 5000;
   transition: left 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  background: rgb(254, 179, 104);
+  /* ✅ เปลี่ยนสีพื้นหลังเป็นสีเข้มพร้อม Gradient น้ำเงิน */
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   color: #fff;
   padding: 30px 30px;
   box-sizing: border-box;
 }
-
 .sidebar.sidebar-open {
   left: 0;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
@@ -406,7 +406,7 @@ body {
   width: 100vw;
   left: 0;
   top: 0;
-  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   color: #fff;
@@ -445,6 +445,7 @@ body {
   text-align: center;
   animation: subtlePulse 3.2s ease-in-out infinite;
   will-change: transform, opacity;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 @keyframes subtlePulse {
@@ -536,6 +537,7 @@ body {
   font-size: 16px;
   box-sizing: border-box;
   margin-right: 13px;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .logout-btn {
@@ -550,6 +552,7 @@ body {
   font-size: 14px;
   align-items: center;
   justify-content: center;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 /* ========== Main Content ========== */
@@ -636,9 +639,9 @@ body {
   margin: 32px auto 24px auto;
   padding: 15px 30px;
   width: fit-content;
-  background: rgba(255, 251, 235, 0.95);
+  background: rgba(255, 241, 187, 0.95);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: #000000 0px 4px 8px -2px;
   border: 1px solid rgba(224, 185, 125, 0.3);
   z-index: 100;
 }
@@ -696,6 +699,7 @@ body {
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 24px 24px;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 #history-type:focus,
@@ -775,6 +779,7 @@ body {
 .history-table-wrapper {
   width: 100%;
   overflow-x: auto;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .history-list {
@@ -813,6 +818,7 @@ body {
   background-color: #d5cdcd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .monthly-summary h3 {
@@ -836,21 +842,25 @@ body {
 .summary-buyin {
   background: #ffeaea;
   border-left: 6px solid #e74c3c;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .summary-sale {
   background: #eaffea;
   border-left: 6px solid #2ecc71;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .summary-count-buyin {
   background: #fff8e1;
   border-left: 6px solid #ff9800;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .summary-count-sale {
   background: #e3f2fd;
   border-left: 6px solid #2196f3;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .summary-label {
@@ -879,6 +889,73 @@ body {
 
 /* ========== Tablet & iPad (900px - 1200px) ========== */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
+  /* Hamburger Button */
+  .hamburger {
+    display: flex !important;
+    position: fixed;
+    top: 30px;
+    left: 18px;
+    z-index: 4000;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 5px;
+    padding: 0;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 3.5px;
+    background: #050505;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+  }
+
+  .hamburger:hover span {
+    background: #ffa144;
+    width: 32px;
+    transition: all 0.4s ease;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+  }
+
+  /* Hover Effect Animation */
+  .hamburger span:nth-child(1) { transition-delay: 0s; }
+  .hamburger span:nth-child(2) { transition-delay: 0.05s; }
+  .hamburger span:nth-child(3) { transition-delay: 0.1s; }
+
+  .hamburger:hover span:nth-child(1) { transition-delay: 0.1s; }
+  .hamburger:hover span:nth-child(2) { transition-delay: 0.05s; }
+  .hamburger:hover span:nth-child(3) { transition-delay: 0s; }
+
+  /* Active State */
+  .hamburger:active { transform: scale(0.95); }
+
+  /* Focus Style for Accessibility */
+  .hamburger:focus {
+    outline: 2px solid #ffa144;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
   /* Sidebar - ลดจาก 300px เหลือ 200px */
   .sidebar {
     width: 200px;
@@ -964,20 +1041,6 @@ body {
     height: 90px;
   }
 
-  /* Hamburger - ลดขนาด */
-  .hamburger {
-    top: 24px;
-    left: 14px;
-    width: 24px;
-    height: 24px;
-  }
-
-  .hamburger span {
-    width: 17px;
-    height: 2.4px;
-    gap: 4px;
-  }
-
   /* Navbar */
   .navbar {
     height: 90px;
@@ -1036,16 +1099,15 @@ body {
     padding: 6px 12px;
   }
 
-.history-table-wrapper{
-  padding-left: 10px;
-  padding-right: 10px;
+  .history-table-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
     padding: 10px;
     max-width: 1200px;
     margin-top: 50px;
     font-size: 13px;
     background-color: rgb(81, 79, 82);
-}
-
+  }
 
   /* Monthly summary */
   .monthly-summary {

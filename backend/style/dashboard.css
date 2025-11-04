@@ -51,7 +51,9 @@ body {
   position: sticky;
   top: 0;
   height: 100vh;
-  background: #0b1220;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+  /* ✅ เปลี่ยนสีพื้นหลังเป็นสีเข้มพร้อม Gradient น้ำเงิน */
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   color: #e5edff;
   padding: 24px 18px;
   border-right: 1px solid rgba(255, 255, 255, 0.06);
@@ -209,11 +211,13 @@ body {
 }
 
 @keyframes pulse-dot {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: scale(1.1);
@@ -421,7 +425,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: center; /* เปลี่ยนจาก flex-end เป็น center */
+  justify-content: center;
+  /* เปลี่ยนจาก flex-end เป็น center */
   padding: 12px;
   margin-top: 10px;
   color: var(--muted);
@@ -524,17 +529,17 @@ body {
   .stats {
     grid-template-columns: 1fr;
   }
-  
+
   .pagination {
     padding: 8px;
     gap: 8px;
   }
-  
+
   .btn-page {
     padding: 8px 12px;
     font-size: 13px;
   }
-  
+
   #pageInfo {
     font-size: 13px;
     min-width: 80px;

@@ -70,6 +70,13 @@
         <form class="navbar-form">
           <span class="navbar-text active">สรุปจำนวนคงเหลือสินค้า</span>
         </form>
+        <select id="status-filter" class="status-filter-dropdown">
+            <option value="" selected>🌐 แสดงทุกสถานะ</option>
+            <optgroup label="สถานะการขาย">
+              <option value="ขายปกติ">✅ ขายปกติ • พร้อมขาย</option>
+              <option value="พักการขาย">⏸️ พักการขาย • ปิดชั่วคราว</option>
+            </optgroup>
+          </select>
         <div class="search-logout-row">
           <input
             type="text"
@@ -78,11 +85,6 @@
             placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล..."
           />
           <!-- เพิ่ม dropdown กรองสถานะ -->
-          <select id="status-filter" class="status-filter-dropdown">
-            <option value="">ทุกสถานะ</option>
-            <option value="ขายปกติ">ขายปกติ</option>
-            <option value="พักการขาย">พักการขาย</option>
-          </select>
           <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
         </div>
       </div>
@@ -145,7 +147,7 @@
             }
           })();
         </script>
-        <table id="inventory-table">
+        <table id="inventory-table" class="inventory-table">
           <thead>
             <tr>
               <th>ลำดับ</th>

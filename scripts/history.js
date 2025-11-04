@@ -102,9 +102,68 @@ const rowsPerPage = 10;
 let currentPage = 1;
 let currentTransactions = [];
 
+// ปรับความกว้างคอลัมน์เป็น % ได้ โดยตั้งค่า window.HISTORY_TABLE_COL_WIDTHS = [..10 ค่า..]
+// ถ้าผลรวม > 100% ตารางจะกว้างเกินหน้าจอและเลื่อนแนวนอนได้
+const DEFAULT_COL_WIDTHS = [5, 4, 10, 30, 30, 8, 10, 10, 15, 15]; // 10 คอลัมน์
+
+// ตั้งค่าสำหรับบังคับให้กว้างเกินหน้าจอ
+// สามารถตั้งค่าในหน้า HTML ก่อนโหลดสคริปต์นี้ได้ เช่น:
+// <script>window.HISTORY_TABLE_FORCE_OVERFLOW = true; window.HISTORY_TABLE_OVERFLOW_EXTRA_PERCENT = 40;</script>
+const FORCE_OVERFLOW =
+  typeof window.HISTORY_TABLE_FORCE_OVERFLOW === "boolean"
+    ? window.HISTORY_TABLE_FORCE_OVERFLOW
+    : true; // ค่าเริ่มต้น: บังคับให้กว้างเกินหน้าจอ
+const OVERFLOW_EXTRA_PERCENT = Number(
+  window.HISTORY_TABLE_OVERFLOW_EXTRA_PERCENT ?? 40
+); // เพิ่มความกว้างจาก 100% อีกกี่ %
+
+function ensureColumnLayout() {
+  const table = document.getElementById("history-table");
+  if (!table) return;
+
+  const widths =
+    Array.isArray(window.HISTORY_TABLE_COL_WIDTHS) &&
+    window.HISTORY_TABLE_COL_WIDTHS.length === 10
+      ? window.HISTORY_TABLE_COL_WIDTHS
+      : DEFAULT_COL_WIDTHS;
+
+  // สร้าง/อัปเดต colgroup สำหรับกำหนดความกว้างเป็น %
+  table.querySelector("colgroup")?.remove();
+  const colgroup = document.createElement("colgroup");
+  widths.forEach((w) => {
+    const col = document.createElement("col");
+    col.style.width = `${w}%`;
+    colgroup.appendChild(col);
+  });
+  table.insertBefore(colgroup, table.firstChild);
+
+  // ถ้าผลรวม > 100% ให้ตารางกว้างเกินและเลื่อนได้
+  const total = widths.reduce((a, b) => a + b, 0);
+  let widthPercent = Math.max(250, total);
+
+  // บังคับให้กว้างเกินหน้าจอเสมอ
+  if (FORCE_OVERFLOW) {
+    widthPercent = Math.max(widthPercent, 100 + OVERFLOW_EXTRA_PERCENT);
+  }
+
+  table.style.tableLayout = "fixed";
+  table.style.minWidth = "100%";
+  table.style.width = `${widthPercent}%`;
+
+  // ทำให้ container เลื่อนแกน X ได้
+  const wrapper = document.querySelector(".history-table-wrapper");
+  if (wrapper) {
+    wrapper.style.overflowX = "auto";
+    wrapper.style.webkitOverflowScrolling = "touch";
+  }
+}
+
 function renderHistoryTablePaged(transactions, page = 1) {
   const tbody = document.querySelector("#history-table tbody");
   if (!tbody) return;
+
+  // กำหนดเลย์เอาต์คอลัมน์ตาม %
+  ensureColumnLayout();
 
   tbody.innerHTML = "";
   const startIdx = (page - 1) * rowsPerPage;
@@ -116,17 +175,17 @@ function renderHistoryTablePaged(transactions, page = 1) {
   pagedTransactions.forEach((item) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-            <td>${formatDateToAD(item.date)}</td>
-            <td>${item.type}</td>
-            <td>${item.product_code || "-"}</td>
-            <td>${item.product_name}</td>
-            <td>${item.model}</td>
-            <td>${formatNumber(item.quantity)}</td>
-            <td>${formatNumber(item.price)}</td>
-            <td>${formatNumber(item.total)}</td>
-            <td>${item.partner}</td>
-            <td>${item.note}</td>
-        `;
+        <td>${formatDateToAD(item.date)}</td>
+        <td>${item.type}</td>
+        <td>${item.product_code || "-"}</td>
+        <td style="text-align: left;">-${item.product_name}</td>
+        <td style="text-align: left;">-${item.model}</td>
+        <td>${formatNumber(item.quantity)}</td>
+        <td>${formatNumber(item.price)}</td>
+        <td>${formatNumber(item.total)}</td>
+        <td style="text-align: left;">-${item.partner}</td>
+        <td style="text-align: left;">${item.note}</td>
+      `;
     tbody.appendChild(tr);
   });
 

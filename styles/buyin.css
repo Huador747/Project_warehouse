@@ -51,9 +51,11 @@ body {
   0% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-8px);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -128,11 +130,13 @@ body {
 }
 
 @keyframes pulse-indicator {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.12);
@@ -213,7 +217,8 @@ body {
   z-index: 5000;
   transition: left 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  background: rgb(254, 179, 104);
+  /* ✅ เปลี่ยนสีพื้นหลังเป็นสีเข้มพร้อม Gradient น้ำเงิน */
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   color: #fff;
   padding: 30px 30px;
   box-sizing: border-box;
@@ -270,7 +275,7 @@ body {
   cursor: pointer;
 }
 
-.hamburger:hover + .sidebar,
+.hamburger:hover+.sidebar,
 .sidebar:hover {
   left: 0;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
@@ -399,7 +404,7 @@ body {
 /* ========== Navbar ========== */
 .navbar {
   width: 100%;
-  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
+   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   color: #fff;
@@ -420,9 +425,11 @@ body {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -440,15 +447,18 @@ body {
   text-align: center;
   animation: subtlePulse 3.2s ease-in-out infinite;
   will-change: transform, opacity;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 @keyframes subtlePulse {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.03);
   }
+
   100% {
     transform: scale(1);
   }
@@ -459,10 +469,12 @@ body {
     transform: translateX(-120%);
     opacity: 0;
   }
+
   60% {
     transform: translateX(6%);
     opacity: 1;
   }
+
   100% {
     transform: translateX(0);
     opacity: 1;
@@ -517,6 +529,7 @@ body {
   font-size: 16px;
   box-sizing: border-box;
   margin-right: 0px;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .logout-btn {
@@ -531,13 +544,15 @@ body {
   font-size: 14px;
   align-items: center;
   justify-content: center;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .search-logout-row {
   display: flex;
   align-items: center;
   gap: 16px;
-  position: relative; /* เพิ่มบรรทัดนี้ */
+  position: relative;
+  /* เพิ่มบรรทัดนี้ */
 }
 
 /* ========== Main Content ========== */
@@ -565,7 +580,7 @@ body {
   background: #fffbe9;
   padding: 32px 24px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: #000000 0px 4px 8px -2px;
   border: #fff83c 2px solid;
 }
 
@@ -578,6 +593,7 @@ body {
     opacity: 0;
     transform: translateY(20px) scale(0.995);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -618,6 +634,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -709,6 +726,7 @@ select:focus,
   cursor: pointer;
   margin-top: 16px;
   transition: transform 0.14s ease, box-shadow 0.14s, background 0.2s;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-add:hover {
@@ -721,33 +739,46 @@ select:focus,
 #search-result-list,
 .search-results-container {
   position: absolute;
-  top: 100%;              /* วางใต้ parent (input) ทันที */
-  left: 0;                /* ชิดซ้ายกับ parent */
-  width: 100%;            /* กว้างเท่า parent (search input) */
-  max-height: 400px;      /* เพิ่มความสูงเพื่อแสดงผลได้มากขึ้น */
+  top: 100%;
+  /* วางใต้ parent (input) ทันที */
+  left: 0;
+  /* ชิดซ้ายกับ parent */
+  width: 100%;
+  /* กว้างเท่า parent (search input) */
+  max-height: 400px;
+  /* เพิ่มความสูงเพื่อแสดงผลได้มากขึ้น */
   overflow-y: auto;
-  background: #faf2b9ff;  /* สีพื้นหลังตามเดิม */
+  background: #faf2b9ff;
+  /* สีพื้นหลังตามเดิม */
   border: 2px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  z-index: 1000;          /* เพิ่ม z-index ให้สูงขึ้น */
-  margin-top: 4px;        /* เว้นระยะจาก input เล็กน้อย */
+  z-index: 1000;
+  /* เพิ่ม z-index ให้สูงขึ้น */
+  margin-top: 4px;
+  /* เว้นระยะจาก input เล็กน้อย */
 }
 
 /* ========== Search Results Container ========== */
 .search-results-container {
   position: absolute;
-  top: 100%;              /* วางใต้ parent ทันที */
-  left: 0;                /* ชิดซ้ายกับ parent */
-  width: 100%;            /* กว้างเท่า parent */
-  max-height: 400px;      /* จำกัดความสูง */
+  top: 100%;
+  /* วางใต้ parent ทันที */
+  left: 0;
+  /* ชิดซ้ายกับ parent */
+  width: 100%;
+  /* กว้างเท่า parent */
+  max-height: 400px;
+  /* จำกัดความสูง */
   overflow-y: auto;
-  background: white;      /* เปลี่ยนจาก #faf2b9ff เป็น white เหมือน sale */
+  background: white;
+  /* เปลี่ยนจาก #faf2b9ff เป็น white เหมือน sale */
   border: 2px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  margin-top: 4px;        /* เว้นระยะจาก input เล็กน้อย */
+  margin-top: 4px;
+  /* เว้นระยะจาก input เล็กน้อย */
 }
 
 .search-item {
@@ -904,12 +935,38 @@ select:focus,
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.85;
     transform: scale(1.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    min-height: 80px;
+    /* เดิม 60px */
+    padding: 12px 10px;
+    /* เดิม 8px 10px */
+    gap: 12px;
+    /* เดิม 10px */
+  }
+
+  .navbar-text {
+    font-size: 13px;
+    /* เดิม 11px */
+    padding: 6px 8px;
+    /* เดิม 4px 6px */
+  }
+
+  .logout-btn {
+    height: 42px;
+    /* เดิม 38px */
   }
 }

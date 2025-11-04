@@ -38,28 +38,55 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (totalCategoriesElem)
       animateCounter(totalCategoriesElem, categories.length, 800);
 
-    // 3. พร้อมขาย: เฉพาะสินค้าที่ condition == "พร้อมขาย" และ stock > 0
-    const available = products.filter((p) => {
-      const code = p.product_code ?? p.code ?? "";
-      return (stockMap[code] ?? 0) > 0;
-    }).length;
-    const totalAvailableElem = document.getElementById("total-available");
-    if (totalAvailableElem) animateCounter(totalAvailableElem, available, 800);
+    // ✅ 3. พร้อมขาย: นับจากฟิลด์ sale_status ที่ไม่ใช่ "พักการขาย"
+    // ✅ 3. พร้อมขาย: นำ "พร้อมขาย (ไม่พักการขาย)" ไปลบกับ "ไม่พร้อมขาย (พักการขาย ∪ หมดสต็อก)" แล้วค่อยแสดงผล
+    const availableSet = new Set(
+      products
+      .filter((p) => ((p.sale_status ?? "").trim() !== "พักการขาย"))
+      .map((p) => p.product_code ?? p.code ?? "")
+    );
 
-    // 4. ไม่พร้อมขาย: เฉพาะสินค้าที่ condition == "ไม่พร้อมขาย" หรือ stock <= 0
-    const unavailable = products.filter((p) => {
-      const code = p.product_code ?? p.code ?? "";
-      return p.condition === "ไม่พร้อมขาย" || (stockMap[code] ?? 0) <= 0;
-    }).length;
+    const pausedSet = new Set(
+      products
+      .filter((p) => ((p.sale_status ?? "").trim() === "พักการขาย"))
+      .map((p) => p.product_code ?? p.code ?? "")
+    );
+
+    const outOfStockSet = new Set(
+      products
+      .filter((p) => {
+        const code = p.product_code ?? p.code ?? "";
+        const qty = Number(stockMap[code] ?? 0);
+        return qty <= 0;
+      })
+      .map((p) => p.product_code ?? p.code ?? "")
+    );
+
+    const combinedSet = new Set([...pausedSet, ...outOfStockSet]);
+    const notAvailableCount = combinedSet.size;
+
+    // พร้อมขายสุดท้าย = พร้อมขาย (ไม่พัก) - ไม่พร้อมขาย (พัก ∪ หมดสต็อก) แบบหักเฉพาะที่ซ้ำกันจริง
+    let finalAvailableCount = 0;
+    availableSet.forEach((code) => {
+      if (!combinedSet.has(code)) finalAvailableCount++;
+    });
+
+    const totalAvailableElem = document.getElementById("total-available");
+    if (totalAvailableElem) animateCounter(totalAvailableElem, finalAvailableCount, 800);
+
     const totalUnavailableElem = document.getElementById("total-unavailable");
-    if (totalUnavailableElem)
-      animateCounter(totalUnavailableElem, unavailable, 800);
-  } catch (err) {
+    if (totalUnavailableElem) animateCounter(totalUnavailableElem, notAvailableCount, 800);
+
+    // ถ้ายังมี tile แสดง "หมดสต็อก" อยู่ ให้แสดงค่ารวมเดียวกัน
+    const totalOutOfStockElem = document.getElementById("total-outofstock");
+    if (totalOutOfStockElem) animateCounter(totalOutOfStockElem, notAvailableCount, 800);
+    } catch (err) {
+    console.error("❌ Error loading products:", err);
     document.getElementById("product-list").innerHTML =
       '<div class="error">เกิดข้อผิดพลาดในการโหลดข้อมูลสินค้า</div>';
   }
 
-  // ช่องค้นหาแบบrealtime
+  // ช่องค้นหาแบบ realtime
   const searchInput = document.getElementById("search-input");
   const searchBtn = document.getElementById("search-btn");
   function doSearch() {
@@ -108,8 +135,6 @@ function goToPage(products, page) {
   renderProductsTablePage(products, currentPage);
 }
 
-// ปัญหานี้เกิดจากการที่ event listeners
-// ถูกเพิ่มซ้ำๆ ทุกครั้งที่มีการ render ตาราง ทำให้เกิดการทำงานซ้ำซ้อน
 let prevPageListener = null;
 let nextPageListener = null;
 
@@ -129,6 +154,17 @@ async function renderProductsTablePage(products, page) {
     .map((product) => {
       const code = product.product_code ?? product.code ?? "";
       const stockQty = stockMap[code] ?? 0;
+      
+      // ✅ แสดงสถานะการขายตามฟิลด์ sale_status
+      const saleStatus = (product.sale_status ?? "").trim();
+      let statusDisplay = saleStatus;
+      
+      if (saleStatus === "พักการขาย") {
+        statusDisplay = '<span style="color: #ef4444; font-weight: 700;">พักการขาย ⏸</span>';
+      } else if (saleStatus === "ขายปกติ" || !saleStatus) {
+        statusDisplay = '<span style="color: #10b981; font-weight: 700;">ขายปกติ ✓</span>';
+      }
+
       return `
                 <tr>
                     <td>${product.product_code || "-"}</td>
@@ -137,7 +173,7 @@ async function renderProductsTablePage(products, page) {
                     <td>${product.maker || "-"}</td>
                     <td>${product.category || "-"}</td>
                     <td>${stockQty}</td>
-                    <td>${product.condition || "-"}</td>
+                    <td>${statusDisplay}</td>
                     <td>${product.price ?? "-"}</td>
                     <td>${product.sale_price || "-"}</td>
                     <td>${product.unit || "-"}</td>
@@ -166,7 +202,7 @@ async function renderProductsTablePage(products, page) {
     })
     .join("");
 
-  // จะแก้ไขให้ตารางมีขนาดคงที่แม้ข้อมูลไม่ครบ 5 แถว โดยการเพิ่มแถวว่างเข้าไปให้ครบ 5 แถว
+  // เพิ่มแถวว่างให้ครบ 5 แถว
   const emptyRows = perPage - pageProducts.length;
   if (emptyRows > 0) {
     const emptyRowHtml = `

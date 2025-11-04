@@ -113,11 +113,13 @@ body {
 }
 
 @keyframes pulse-indicator {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.12);
@@ -184,21 +186,22 @@ body {
   color: white;
 }
 
-/* Sidebar styles */
+/* ========== Sidebar Section ========== */
 .sidebar {
   width: 300px;
   left: -305px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* เพิ่มบรรทัดนี้ */
+  justify-content: center;
   height: 100vh;
   position: fixed;
   top: 0;
   z-index: 5000;
   transition: left 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  background: rgb(254, 179, 104);
+  /* ✅ เปลี่ยนสีพื้นหลังเป็นสีเข้มพร้อม Gradient น้ำเงิน */
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   color: #fff;
   padding: 30px 30px;
   box-sizing: border-box;
@@ -261,7 +264,7 @@ body {
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
 }
 
-/* Hamburger styles */
+/* ========== Hamburger Button ========== */
 .hamburger {
   display: flex !important;
   position: fixed;
@@ -309,7 +312,79 @@ body {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Main content styles */
+/* ========== Navigation Buttons ========== */
+.sidebar-nav-btn {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  padding: 8px 12px;
+  gap: 6px;
+  margin-top: 0;
+}
+
+.sidebar-nav-btn .nav-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.sidebar-nav-btn .nav-btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: #fff;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-nav-btn .nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(3px);
+}
+
+.sidebar-nav-btn .nav-btn:hover::before {
+  transform: scaleY(1);
+}
+
+.sidebar-nav-btn .nav-btn.active {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+  transform: translateX(6px);
+}
+
+.sidebar-nav-btn .nav-btn.active::before {
+  transform: scaleY(1);
+}
+
+.nav-icon {
+  font-size: 20px;
+  min-width: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== Main content styles */
 .main-content {
   margin-left: 0 !important;
   flex: 1;
@@ -319,10 +394,9 @@ body {
   /* เพิ่มบรรทัดนี้ เพื่อเว้นพื้นที่ navbar */
 }
 
-/* Navbar styles */
+/* ========== Navbar styles ========== */
 .navbar {
   width: 100%;
-  background: rgb(244, 224, 125);
   color: #fff;
   padding: 15px 30px;
   display: flex;
@@ -366,20 +440,25 @@ body {
 }
 
 .navbar-text {
-  color: #a1650b;
+  color: #f5d821;
   font-size: 16px;
   padding: 6px 12px;
   display: flex;
   align-items: center;
   gap: 6px;
-  white-space: nowrap; /* ป้องกันขึ้นบรรทัดใหม่ */
+  white-space: nowrap;
+  /* ป้องกันขึ้นบรรทัดใหม่ */
 }
 
 .stat-icon {
-  width: 30px; /* ลดจากค่าเริ่มต้น */
-  height: 30px; /* ลดจากค่าเริ่มต้น */
-  margin-right: 6px; /* เพิ่มระยะห่างจากข้อความ */
-  vertical-align: middle; /* จัดให้อยู่กึ่งกลางกับข้อความ */
+  width: 30px;
+  /* ลดจากค่าเริ่มต้น */
+  height: 30px;
+  /* ลดจากค่าเริ่มต้น */
+  margin-right: 6px;
+  /* เพิ่มระยะห่างจากข้อความ */
+  vertical-align: middle;
+  /* จัดให้อยู่กึ่งกลางกับข้อความ */
 }
 
 .dropdown-content {
@@ -429,8 +508,8 @@ body {
   display: flex;
 }
 
-.dropdown-btn:focus + .dropdown-content,
-.dropdown-btn.active + .dropdown-content {
+.dropdown-btn:focus+.dropdown-content,
+.dropdown-btn.active+.dropdown-content {
   display: flex;
 }
 
@@ -459,7 +538,8 @@ body {
   justify-content: flex-end;
   align-items: center;
   padding: 8px 18px;
-  width: 100%; /* เปลี่ยนจาก max-content เป็น 100% */
+  width: 100%;
+  /* เปลี่ยนจาก max-content เป็น 100% */
   margin-left: 0;
   margin-right: 0;
   margin-top: 7px;
@@ -494,7 +574,8 @@ body {
 /* ปรับแต่งช่องค้นหา */
 .search-product-input {
   height: 50px;
-  width: 500px; /* เพิ่มความกว้างจาก 300px */
+  width: 500px;
+  /* เพิ่มความกว้างจาก 300px */
   padding: 8px 15px;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -502,6 +583,7 @@ body {
   box-sizing: border-box;
   margin-right: 35px;
   transition: all 0.3s ease;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 /* ปุ่มเพิ่ม สินค้า */
@@ -510,6 +592,7 @@ body {
   border: none;
   background-color: #25c12a;
   padding: 2px 1px;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-add.active::before {
@@ -525,6 +608,7 @@ body {
   color: #000;
   border: 2px solid #0fe825;
 }
+
 /* ปุ่มเพิ่ม สินค้า */
 
 /* ปุ่มแก้ไข สินค้า */
@@ -533,6 +617,7 @@ body {
   border: none;
   background-color: #f8ae0e;
   padding: 2px 1px;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-edit.active::before {
@@ -548,6 +633,7 @@ body {
   color: #000;
   border: 2px solid #fab31a;
 }
+
 /* ปุ่มแก้ไข สินค้า */
 
 /* ปุ่มลบ สินค้า */
@@ -556,6 +642,7 @@ body {
   border: none;
   background-color: #f13f27;
   padding: 2px 1px;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-delete.active:before {
@@ -571,6 +658,7 @@ body {
   color: #000;
   border: 2px solid #fab31a;
 }
+
 /* ปุ่มลบ สินค้า */
 
 /* เพิ่ม styles สำหรับตาราง */
@@ -585,7 +673,8 @@ body {
   min-width: 380px;
   background: #b1a9a9;
   border-radius: 15px;
-  box-sizing: border-box; /* สำคัญ! */
+  box-sizing: border-box;
+  /* สำคัญ! */
   padding: 25px;
   position: relative;
 }
@@ -595,7 +684,7 @@ body {
   width: max-content;
   border-collapse: collapse;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: #000000 0px 4px 8px -2px;
   border-radius: 8px;
 }
 
@@ -696,8 +785,10 @@ tr:hover {
 
 .product-table th,
 .product-table td {
-  text-align: center; /* จัดข้อความให้อยู่ตรงกลางแนวนอน */
-  vertical-align: middle; /* จัดข้อความให้อยู่ตรงกลางแนวตั้ง */
+  text-align: center;
+  /* จัดข้อความให้อยู่ตรงกลางแนวนอน */
+  vertical-align: middle;
+  /* จัดข้อความให้อยู่ตรงกลางแนวตั้ง */
 }
 
 /* ให้ Model กับ ชื่อสินค้า ยาวตามข้อความ */
@@ -715,6 +806,7 @@ tr:hover {
   word-break: break-word;
   /* ตัดคำถ้ายาวมาก */
 }
+
 /* ========== เพิ่มลูกเล่นจาก buyin ========== */
 
 /* ไล่สีพื้นหลัง navbar เบา ๆ */
@@ -733,7 +825,7 @@ tr:hover {
 }
 
 .navbar {
-  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
+  background-image: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   transition: box-shadow 0.3s;
@@ -855,6 +947,7 @@ tr:hover {
 .product-card.animate {
   animation: cardIn 520ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
 }
+
 /* ========== จบส่วนเพิ่ม ========== */
 
 .search-product-input,
@@ -864,15 +957,28 @@ tr:hover {
   height: 40px;
   margin-right: 10px;
 }
+
 .logout-btn {
-  height: 40px;
-  font-size: 13px;
-  padding: 6px 12px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
+
 table {
   min-width: 700px;
   font-size: 15px;
 }
+
 th,
 td {
   padding: 7px 4px;
@@ -881,15 +987,19 @@ td {
 .monthly-summary {
   padding: 12px;
 }
+
 .summary-grid {
   gap: 8px;
 }
+
 .summary-box {
   padding: 8px;
 }
+
 .summary-label {
   font-size: 12px;
 }
+
 .summary-value {
   font-size: 15px;
 }
@@ -897,228 +1007,138 @@ td {
 /* ปรับขนาด cell ในตารางให้คงที่ */
 .product-table td,
 .product-table th {
-  min-width: 120px; /* ความกว้างขั้นต่ำ */
-  max-width: 200px; /* ความกว้างสูงสุด */
-  height: 90px; /* ความสูงคงที่ */
-  padding: 8px 12px; /* padding เท่ากันทุก cell */
-  vertical-align: middle; /* จัดเนื้อหาตรงกลางแนวตั้ง */
+  min-width: 120px;
+  /* ความกว้างขั้นต่ำ */
+  max-width: 200px;
+  /* ความกว้างสูงสุด */
+  height: 90px;
+  /* ความสูงคงที่ */
+  padding: 8px 12px;
+  /* padding เท่ากันทุก cell */
+  vertical-align: middle;
+  /* จัดเนื้อหาตรงกลางแนวตั้ง */
   box-sizing: border-box;
 }
 
 /* กำหนดขนาดคงที่สำหรับ cell ที่มีรูปภาพ */
 .product-table td:last-child {
-  width: 120px; /* ความกว้างคงที่สำหรับคอลัมน์รูป */
+  width: 120px;
+  /* ความกว้างคงที่สำหรับคอลัมน์รูป */
   min-width: 120px;
   max-width: 120px;
-  height: 60px; /* ความสูงคงที่ */
-  padding: 4px; /* padding น้อยลงสำหรับรูป */
+  height: 60px;
+  /* ความสูงคงที่ */
+  padding: 4px;
+  /* padding น้อยลงสำหรับรูป */
 }
 
 /* จัดการรูปภาพในตาราง */
 .product-table td img {
-  width: 300px; /* ขนาดรูปคงที่ */
+  width: 300px;
+  /* ขนาดรูปคงที่ */
   height: 300px;
-  object-fit: contain; /* รักษาอัตราส่วนภาพ */
-  display: block; /* จัดกึ่งกลาง */
+  object-fit: contain;
+  /* รักษาอัตราส่วนภาพ */
+  display: block;
+  /* จัดกึ่งกลาง */
   margin: 0 auto;
 }
+
 /*และเพิ่ม CSS สำหรับแถวว่าง:*/
 .product-table tr.empty-row {
-  height: 60px; /* กำหนดความสูงเท่ากับแถวปกติ */
-  background-color: #f5f5f5; /* สีพื้นหลังอ่อนๆ */
+  height: 60px;
+  /* กำหนดความสูงเท่ากับแถวปกติ */
+  background-color: #f5f5f5;
+  /* สีพื้นหลังอ่อนๆ */
   opacity: 0.6;
 }
 
 .product-table tr.empty-row td {
-  color: #999; /* สีข้อความจางๆ */
+  color: #999;
+  /* สีข้อความจางๆ */
   border-bottom: 1px solid #ddd;
 }
-/* ========== Pagination Controls ========== */
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  padding: 20px;
-  margin: 24px auto;
-  max-width: fit-content;
-  background: linear-gradient(135deg, #ffe0b2 0%, #ffd336 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
+/* ========== Pagination Controls ========== */
 .pagination-controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
+  padding: 16px 28px;
+  margin: 28px auto;
+  max-width: fit-content;
+  background: linear-gradient(135deg, #ffd336 0%, #ffb836 100%);
+  border-radius: 20px;
+   box-shadow: #000000 0px 4px 8px -2px;
+  border: 3px solid #e8b92e;
 }
 
 .pagination-controls button,
 #prev-page,
 #next-page {
-  padding: 10px 20px;
+  padding: 12px 24px;
   background: #fff;
   color: #333;
-  border: 2px solid #ffd336;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
+  border: 3px solid #e8b92e;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 100px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  min-width: 120px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  text-transform: none;
+  letter-spacing: 0.3px;
 }
 
 .pagination-controls button:hover,
 #prev-page:hover:not(:disabled),
 #next-page:hover:not(:disabled) {
   background: #ffd336;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  border-color: #d9a827;
+}
+
+.pagination-controls button:active,
+#prev-page:active:not(:disabled),
+#next-page:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 .pagination-controls button:disabled,
 #prev-page:disabled,
 #next-page:disabled {
-  background: #e0e0e0;
+  background: #e5e5e5;
   color: #999;
   cursor: not-allowed;
   border-color: #ccc;
-  opacity: 0.6;
+  opacity: 0.5;
+  transform: none;
+  box-shadow: none;
 }
 
 #page-info {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 6px;
-  min-width: 120px;
-  text-align: center;
-}
-
-/* Modal styles */
-.image-modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  justify-content: center;
-  align-items: center;
-}
-
-.image-modal img {
-  max-width: 80vw;
-  max-height: 80vh;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  background: #fff;
-  padding: 12px;
-}
-
-.close-modal {
-  position: absolute;
-  top: 32px;
-  right: 48px;
-  font-size: 3rem;
-  color: #fff;
-  cursor: pointer;
-  z-index: 10001;
-  font-weight: bold;
-}
-
-.no-image-text {
-  color: #ff0000;
-  font-weight: bold;
-  font-size: 1rem;
-  font-style: italic;
-  letter-spacing: 1px;
-  opacity: 0.7;
-  background-color: #efb85f;
-  border-radius: 5px;
-}
-
-/* ========== Navigation ========== */
-.sidebar-nav-btn {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  padding: 8px 12px;
-  gap: 6px;
-  margin-top: 0; /* ลบ margin-top ที่เป็น 5rem */
-}
-
-.sidebar-nav-btn .nav-btn {
-  width: 100%;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-  margin-top: 6px;
-}
-
-.sidebar-nav-btn .nav-btn::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 3px;
-  height: 100%;
-  background: #fff;
-  transform: scaleY(0);
-  transition: transform 0.3s ease;
-}
-
-.sidebar-nav-btn .nav-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateX(3px);
-}
-
-.sidebar-nav-btn .nav-btn:hover::before {
-  transform: scaleY(1);
-}
-
-.sidebar-nav-btn .nav-btn.active {
-  background: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12),
-    inset 0 -2px 6px rgba(0, 0, 0, 0.08);
+  font-size: 1.1rem;
   font-weight: 700;
-  transform: translateX(6px);
-}
-
-.sidebar-nav-btn .nav-btn.active::before {
-  transform: scaleY(1);
-}
-
-.nav-icon {
-  font-size: 20px;
-  min-width: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #fff;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  min-width: 140px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 /* ========== RESPONSIVE DESIGN ========== */
+
+/* ========== Tablet & iPad (900px - 1200px) ========== */
 @media screen and (max-width: 1200px) and (min-width: 900px) {
-  /* Sidebar - ลดจาก 220px เหลือ 132px (60%) */
+  /* Sidebar - ลดจาก 300px เหลือ 200px */
   .sidebar {
     width: 200px;
     left: -201px;
@@ -1130,14 +1150,14 @@ td {
     left: 0;
   }
 
-  /* User Profile - ลดขนาดลง 40% */
+  /* User Profile - ลดขนาดลง */
   .user-profile-section {
     margin-bottom: 7px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 8px;
   }
 
-  /* Avatar - ลดจาก 75px เหลือ 45px (60%) */
+  /* Avatar - ลดจาก 85px เหลือ 45px */
   .user-avatar,
   .user-avatar-placeholder {
     width: 45px;
@@ -1146,7 +1166,7 @@ td {
     border-width: 2px;
   }
 
-  /* Online Indicator - ลดจาก 14px เหลือ 8px (60%) */
+  /* Online Indicator - ลดจาก 16px เหลือ 8px */
   .online-indicator {
     width: 8px;
     height: 8px;
@@ -1155,13 +1175,13 @@ td {
     right: 2px;
   }
 
-  /* Username - ลดจาก 17px เหลือ 10px (60%) */
+  /* Username - ลดขนาด */
   .user-name {
     font-size: 16px;
     letter-spacing: 0.2px;
   }
 
-  /* Role Badge - ลดจาก 11px เหลือ 7px (60%) */
+  /* Role Badge - ลดขนาด */
   .role-badge {
     font-size: 11px;
     padding: 3px 8px;
@@ -1174,7 +1194,7 @@ td {
     gap: 3px;
   }
 
-  /* Nav Button - ลดจาก 14px เหลือ 8px (60%) */
+  /* Nav Button - ลดขนาด */
   .sidebar-nav-btn .nav-btn {
     padding: 7px 8px;
     font-size: 14px;
@@ -1183,13 +1203,13 @@ td {
     border-radius: 6px;
   }
 
-  /* Nav Icon - ลดจาก 19px เหลือ 11px (60%) */
+  /* Nav Icon - ลดขนาด */
   .nav-icon {
     font-size: 11px;
     min-width: 14px;
   }
 
-  /* Logo Container - ลดจาก 120px เหลือ 72px (60%) */
+  /* Logo Container - ลดขนาด */
   .logo-container {
     width: 72px;
     height: 72px;
@@ -1197,7 +1217,7 @@ td {
     padding: 7px;
   }
 
-  /* Logo - ลดจาก 150px เหลือ 90px (60%) */
+  /* Logo - ลดขนาด */
   .logo {
     width: 90px;
     height: 90px;
@@ -1271,12 +1291,6 @@ td {
     border-radius: 8px;
   }
 
-  .function-btn-add.active::before,
-  .function-btn-edit.active::before,
-  .function-btn-delete.active:before {
-    font-size: 1.3rem;
-  }
-
   /* Logout button */
   .logout-btn {
     height: 38px;
@@ -1310,279 +1324,29 @@ td {
   }
 
   /* Pagination controls */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    padding: 20px;
-    margin: 24px auto;
-    max-width: fit-content;
-    background: linear-gradient(135deg, #ffe0b2 0%, #ffd336 100%);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
   .pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 14px 24px;
     gap: 16px;
+    margin: 24px auto;
+    border-radius: 18px;
+    border-width: 2.5px;
   }
 
   .pagination-controls button,
   #prev-page,
   #next-page {
     padding: 10px 20px;
-    background: #fff;
-    color: #333;
-    border: 2px solid #ffd336;
-    border-radius: 8px;
     font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 100px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  }
-
-  .pagination-controls button:hover,
-  #prev-page:hover:not(:disabled),
-  #next-page:hover:not(:disabled) {
-    background: #ffd336;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
-
-  .pagination-controls button:disabled,
-  #prev-page:disabled,
-  #next-page:disabled {
-    background: #e0e0e0;
-    color: #999;
-    cursor: not-allowed;
-    border-color: #ccc;
-    opacity: 0.6;
+    min-width: 110px;
+    border-radius: 12px;
+    border-width: 2.5px;
   }
 
   #page-info {
     font-size: 1rem;
-    font-weight: 600;
-    color: #333;
-    padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 6px;
-    min-width: 120px;
-    text-align: center;
-  }
-}
-
-@media screen and (max-width: 1200px) and (min-width: 900px) {
-  .sidebar {
-    width: 200px;
-    left: -201px;
-    padding: 10px 6px;
-    z-index: 5000;
-  }
-
-  .sidebar.sidebar-open {
-    left: 0;
-  }
-
-  /* User Profile - ลดขนาดลง 40% */
-  .user-profile-section {
-    margin-bottom: 7px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-  }
-
-  /* Avatar - ลดจาก 75px เหลือ 45px (60%) */
-  .user-avatar,
-  .user-avatar-placeholder {
-    width: 45px;
-    height: 45px;
-    font-size: 18px;
+    padding: 9px 18px;
+    min-width: 130px;
     border-width: 2px;
-  }
-
-  /* Online Indicator - ลดจาก 14px เหลือ 8px (60%) */
-  .online-indicator {
-    width: 8px;
-    height: 8px;
-    border-width: 1.5px;
-    bottom: 2px;
-    right: 2px;
-  }
-
-  /* Username - ลดจาก 17px เหลือ 10px (60%) */
-  .user-name {
-    font-size: 16px;
-    letter-spacing: 0.2px;
-  }
-
-  /* Role Badge - ลดจาก 11px เหลือ 7px (60%) */
-  .role-badge {
-    font-size: 11px;
-    padding: 3px 8px;
-    letter-spacing: 0.6px;
-  }
-
-  /* Navigation Buttons */
-  .sidebar-nav-btn {
-    padding: 4px 6px;
-    gap: 3px;
-  }
-
-  /* Nav Button - ลดจาก 14px เหลือ 8px (60%) */
-  .sidebar-nav-btn .nav-btn {
-    padding: 7px 8px;
-    font-size: 14px;
-    margin-top: 3px;
-    gap: 5px;
-    border-radius: 6px;
-  }
-
-  /* Nav Icon - ลดจาก 19px เหลือ 11px (60%) */
-  .nav-icon {
-    font-size: 11px;
-    min-width: 14px;
-  }
-
-  /* Logo Container - ลดจาก 120px เหลือ 72px (60%) */
-  .logo-container {
-    width: 72px;
-    height: 72px;
-    margin-bottom: 36px;
-    padding: 7px;
-  }
-
-  /* Logo - ลดจาก 150px เหลือ 90px (60%) */
-  .logo {
-    width: 90px;
-    height: 90px;
-  }
-
-  /* Hamburger - ลดขนาด */
-  .hamburger {
-    top: 24px;
-    left: 14px;
-    width: 24px;
-    height: 24px;
-  }
-
-  .hamburger span {
-    width: 17px;
-    height: 2.4px;
-    gap: 4px;
-  }
-
-  /* Navbar */
-  .navbar {
-    height: 80px;
-    padding: 8px 14px;
-  }
-
-  /* Navbar text */
-  .navbar-text {
-    font-size: 13px;
-    padding: 4px 7px;
-    gap: 4px;
-  }
-
-  .stat-icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* Navbar form */
-  .navbar-form {
-    gap: 10px;
-    margin-left: 16px;
-  }
-
-  /* Main content */
-  .main-content {
-    margin-top: 80px;
-  }
-
-  /* Function buttons */
-  .function-buttons {
-    gap: 8px;
-    padding: 8px 12px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
-  .search-product-input {
-    width: 180px;
-    height: 38px;
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-
-  .function-btn-add,
-  .function-btn-edit,
-  .function-btn-delete {
-    min-width: 80px;
-    height: 38px;
-    font-size: 13px;
-    padding: 7px 10px;
-    border-radius: 8px;
-  }
-
-  .function-btn-add.active::before,
-  .function-btn-edit.active::before,
-  .function-btn-delete.active:before {
-    font-size: 1.3rem;
-  }
-
-  /* Logout button */
-  .logout-btn {
-    height: 38px;
-    font-size: 13px;
-    padding: 7px 12px;
-  }
-
-  /* Product table */
-  .product-table {
-    margin: 18px 10px;
-    padding: 16px;
-    border-radius: 10px;
-  }
-
-  .product-table th,
-  .product-table td {
-    font-size: 12px;
-    padding: 7px 5px;
-    min-width: 90px;
-  }
-
-  .product-table td img {
-    width: 180px;
-    height: 180px;
-  }
-
-  .product-table td:last-child {
-    width: 90px;
-    min-width: 90px;
-    max-width: 90px;
-  }
-
-  /* Pagination controls */
-  .pagination-controls {
-    padding: 10px 16px;
-    gap: 8px;
-    margin: 18px auto;
-    border-radius: 10px;
-  }
-
-  .pagination-controls button {
-    padding: 7px 12px;
-    font-size: 13px;
-    border-radius: 7px;
-  }
-
-  #page-info {
-    font-size: 0.95rem;
   }
 }
 
@@ -1730,6 +1494,32 @@ td {
     width: 80px;
     min-width: 80px;
     max-width: 80px;
+  }
+
+  /* Pagination controls */
+  .pagination-controls {
+    padding: 12px 20px;
+    gap: 14px;
+    margin: 20px auto;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+
+  .pagination-controls button,
+  #prev-page,
+  #next-page {
+    padding: 9px 18px;
+    font-size: 14px;
+    min-width: 100px;
+    border-radius: 11px;
+    border-width: 2px;
+  }
+
+  #page-info {
+    font-size: 0.95rem;
+    padding: 8px 16px;
+    min-width: 120px;
+    border-width: 2px;
   }
 }
 
@@ -1924,34 +1714,31 @@ td {
   /* Pagination */
   .pagination-controls {
     flex-direction: row;
-    gap: 7px;
-    padding: 9px 14px;
-    margin: 14px 7px;
-    width: calc(100% - 14px);
+    gap: 12px;
+    padding: 12px 16px;
+    margin: 16px auto;
+    width: calc(100% - 20px);
+    max-width: 450px;
+    border-radius: 14px;
+    border-width: 2px;
   }
 
-  .pagination-controls button {
-    padding: 5px 9px;
-    font-size: 11px;
-    min-width: 65px;
+  .pagination-controls button,
+  #prev-page,
+  #next-page {
+    padding: 8px 14px;
+    font-size: 13px;
+    min-width: 90px;
     flex: 1;
+    border-radius: 10px;
+    border-width: 2px;
   }
 
   #page-info {
-    font-size: 0.85rem;
-    min-width: 75px;
-  }
-
-  /* Image modal */
-  .image-modal img {
-    max-width: 90vw;
-    max-height: 70vh;
-  }
-
-  .close-modal {
-    top: 14px;
-    right: 14px;
-    font-size: 2rem;
+    font-size: 0.9rem;
+    min-width: 100px;
+    padding: 7px 14px;
+    border-width: 1.5px;
   }
 }
 
@@ -2015,6 +1802,7 @@ td {
     height: 95px;
   }
 
+  /* Navbar */
   .navbar {
     min-height: 50px;
     padding: 5px 7px;
@@ -2086,8 +1874,9 @@ td {
     min-width: 65px;
   }
 
+  /* Pagination */
   .pagination-controls {
-    padding: 7px 10px;
+    padding: 10px 14px;
     gap: 5px;
     flex-wrap: wrap;
   }
@@ -2156,6 +1945,7 @@ td {
     height: 70px;
   }
 
+  /* Navbar */
   .navbar {
     min-height: 45px;
   }
@@ -2167,6 +1957,7 @@ td {
 
 /* ========== Print Styles ========== */
 @media print {
+
   .hamburger,
   .sidebar,
   .navbar,

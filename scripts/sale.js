@@ -306,41 +306,95 @@ document.addEventListener("click", function (e) {
   }
 });
 
-// เพิ่ม flatpickr สำหรับวันที่
-if (window.flatpickr) {
-  flatpickr("#saleoutdate", {
-    dateFormat: "d/m/Y",
-    altInput: true,
-    altFormat: "d/m/Y",
-    allowInput: true,
-    defaultDate: "today",
-    locale: "th",
-    onReady: function (selectedDates, dateStr, instance) {
-      const fp = instance;
-      const calendarContainer = fp.calendarContainer;
-      if (calendarContainer) {
-        let todayBtn = calendarContainer.querySelector(".flatpickr-today-btn");
-        if (!todayBtn) {
-          todayBtn = document.createElement("button");
-          todayBtn.type = "button";
-          todayBtn.className = "flatpickr-today-btn";
-          todayBtn.textContent = "วันนี้";
-          todayBtn.style.margin = "8px";
-          todayBtn.style.padding = "6px 16px";
-          todayBtn.style.background = "#ffe0b2";
-          todayBtn.style.border = "1px solid #e0b97d";
-          todayBtn.style.borderRadius = "4px";
-          todayBtn.style.cursor = "pointer";
-          todayBtn.onclick = function () {
-            fp.setDate(new Date());
-            fp.close();
-          };
-          calendarContainer.appendChild(todayBtn);
-        }
-      }
-    },
-  });
-}
+// เพิ่ม flatpickr สำหรับวันที่พร้อมตั้งค่าวันที่อัตโนมัติ
+(function () {
+  function formatDMY(date) {
+    const day = ("0" + date.getDate()).slice(-2);
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear(); // ใช้ ค.ศ. สำหรับค่าที่จะส่งไป backend
+    return `${day}/${month}/${year}`;
+  }
+
+  function ensureTodayIfEmpty(inputEl) {
+    if (inputEl && !inputEl.value) {
+      inputEl.value = formatDMY(new Date());
+    }
+  }
+
+  function setupDatePicker() {
+    const input = document.querySelector("#saleoutdate");
+    if (!input) return;
+
+    if (window.flatpickr) {
+      flatpickr("#saleoutdate", {
+        dateFormat: "d/m/Y",
+        altInput: true,
+        altFormat: "d/m/Y",
+        allowInput: true,
+        defaultDate: new Date(), // ตั้งค่า default เป็นวันนี้
+        locale: "th",
+        onReady: function (selectedDates, dateStr, instance) {
+          // ถ้า input ยังว่าง ให้ตั้งค่าเป็นวันนี้ทันที
+          if (!instance.input.value) {
+            instance.setDate(new Date(), true);
+          }
+          ensureTodayIfEmpty(instance.input);
+
+          // ปุ่ม "วันนี้"
+          const fp = instance;
+          const calendarContainer = fp.calendarContainer;
+          if (calendarContainer) {
+            let todayBtn = calendarContainer.querySelector(".flatpickr-today-btn");
+            if (!todayBtn) {
+              todayBtn = document.createElement("button");
+              todayBtn.type = "button";
+              todayBtn.className = "flatpickr-today-btn";
+              todayBtn.textContent = "วันนี้";
+              todayBtn.style.margin = "8px";
+              todayBtn.style.padding = "6px 16px";
+              todayBtn.style.background = "#ffe0b2";
+              todayBtn.style.border = "1px solid #e0b97d";
+              todayBtn.style.borderRadius = "4px";
+              todayBtn.style.cursor = "pointer";
+              todayBtn.onclick = function () {
+                fp.setDate(new Date(), true);
+                fp.close();
+              };
+              calendarContainer.appendChild(todayBtn);
+            }
+          }
+        },
+        onOpen: function (selectedDates, dateStr, instance) {
+          // กันกรณีเปิดปฏิทินครั้งแรกแล้วยังว่าง
+          ensureTodayIfEmpty(instance.input);
+        },
+        onChange: function (selectedDates) {
+          if (selectedDates.length > 0) {
+            const date = selectedDates[0];
+            const buddhistYear = date.getFullYear() + 543;
+            const day = ("0" + date.getDate()).slice(-2);
+            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+            const thaiDate = day + "/" + month + "/" + buddhistYear;
+            // นำ thaiDate ไปใช้ต่อได้หากต้องการ (แสดงผล)
+          }
+        },
+      });
+    } else {
+      // กรณีไม่มี flatpickr ให้เติมค่าวันนี้ลง input
+      ensureTodayIfEmpty(input);
+    }
+
+    // Fallback ตอนส่งฟอร์ม: ถ้ายังว่างให้ใส่ "วันนี้" อัตโนมัติ
+    const form = document.querySelector(".product-form");
+    form?.addEventListener("submit", () => ensureTodayIfEmpty(document.querySelector("#saleoutdate")));
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupDatePicker);
+  } else {
+    setupDatePicker();
+  }
+})();
 
 // Logout
 const logoutBtn = document.getElementById("logout-btn");

@@ -218,7 +218,8 @@ body {
   z-index: 5000;
   transition: left 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  background: rgb(254, 179, 104);
+  /* ✅ เปลี่ยนสีพื้นหลังเป็นสีเข้มพร้อม Gradient น้ำเงิน */
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   color: #fff;
   padding: 30px 30px;
   box-sizing: border-box;
@@ -464,7 +465,7 @@ body {
   width: 100vw;
   left: 0;
   top: 0;
-  background-image: linear-gradient(90deg, #f4e07d, #ffd336, #ffe0b2);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   color: #fff;
@@ -511,6 +512,7 @@ body {
   text-align: center;
   animation: subtlePulse 3.2s ease-in-out infinite;
   will-change: transform, opacity;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 @keyframes subtlePulse {
@@ -587,6 +589,7 @@ body {
   font-size: 14px;
   align-items: center;
   justify-content: center;
+   box-shadow: #000000 0px 4px 8px -2px;
 }
 
 /* ========== Main Content ========== */
@@ -614,7 +617,7 @@ body {
   background: #fffbe9;
   padding: 32px 24px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: #000000 0px 4px 8px -2px;
   border: #fff83c 2px solid;
 }
 
@@ -667,6 +670,7 @@ body {
   cursor: pointer;
   margin-top: 15px;
   transition: background 0.2s;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-add:hover {

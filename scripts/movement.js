@@ -1225,7 +1225,7 @@ document
     display: flex;
     gap: 16px;
     margin-top: 32px;
-    justify-content: center;
+    justify-content: flex-end;
     ">
     <button onclick="window.print()" style="
       padding: 12px 32px;
@@ -1240,21 +1240,6 @@ document
       font-weight: 500;
       min-width: 160px;
     ">Print</button>
-
-    <button id="download-pdf" style="
-      padding: 12px 32px;
-      font-size: 1rem;
-      border-radius: 8px;
-      background: #ffd336;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      color: #333;
-      font-weight: 500;
-      min-width: 160px;
-    ">Download PDF</button>
-    </div>
 
     <script>
     // นาฬิกาโลก Bangkok

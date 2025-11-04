@@ -206,9 +206,65 @@ function createQuantityBadge(quantity, unit = '') {
 }
 
 // ฟังก์ชันแสดงตาราง
+// Pagination state
+const PAGE_SIZE = 10;
+let currentPage = 1;
+let lastFilterCount = -1;
+
+function getTotalPages() {
+    return Math.max(1, Math.ceil((filteredProducts?.length || 0) / PAGE_SIZE));
+}
+
+function goToPage(page) {
+    const total = getTotalPages();
+    const newPage = Math.min(Math.max(1, page), total);
+    if (newPage !== currentPage) {
+        currentPage = newPage;
+    }
+    renderTable();
+}
+
+function renderPagination() {
+    const container =
+        document.getElementById('pagination') ||
+        document.getElementById('inventory-pagination') ||
+        document.querySelector('.pagination');
+
+    if (!container) return;
+
+    const prevBtn = container.querySelector('#prev-page');
+    const nextBtn = container.querySelector('#next-page');
+    const pageInfo = container.querySelector('#page-info');
+
+    if (!prevBtn || !nextBtn || !pageInfo) return;
+
+    const hasData = (filteredProducts?.length || 0) > 0;
+    const total = getTotalPages();
+    const current = hasData ? currentPage : 1;
+    const totalDisplay = hasData ? total : 1;
+
+    pageInfo.textContent = `หน้า ${current} / ${totalDisplay}`;
+
+    prevBtn.disabled = !hasData || currentPage <= 1;
+    nextBtn.disabled = !hasData || currentPage >= total;
+
+    prevBtn.onclick = () => {
+        if (!prevBtn.disabled) goToPage(currentPage - 1);
+    };
+    nextBtn.onclick = () => {
+        if (!nextBtn.disabled) goToPage(currentPage + 1);
+    };
+}
+
 function renderTable() {
     const tbody = document.querySelector('#inventory-table tbody');
     if (!tbody) return;
+
+    // Reset to first page when filter result count changes
+    if (lastFilterCount !== filteredProducts.length) {
+        currentPage = 1;
+        lastFilterCount = filteredProducts.length;
+    }
 
     if (filteredProducts.length === 0) {
         tbody.innerHTML = `
@@ -218,16 +274,24 @@ function renderTable() {
                 </td>
             </tr>
         `;
+        renderPagination();
         return;
     }
 
-    tbody.innerHTML = filteredProducts.map((product, index) => {
+    const totalPages = getTotalPages();
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = filteredProducts.slice(startIndex, startIndex + PAGE_SIZE);
+
+    tbody.innerHTML = pageItems.map((product, index) => {
         const statusBadge = product.sale_status === 'ขายปกติ' 
             ? `<span class="status-badge status-active">ขายปกติ</span>`
             : `<span class="status-badge status-paused">พักการขาย</span>`;
 
         const quantityBadge = createQuantityBadge(product.quantity, product.unit);
         
+        // (Optional) controls badge if you later add it to the table
         const controlsBadge = product.controls === 'ควบคุม'
             ? `<span class="controls-badge controls-yes">ควบคุม</span>`
             : product.controls === 'ไม่ควบคุม'
@@ -236,7 +300,7 @@ function renderTable() {
 
         return `
             <tr data-sale-status="${product.sale_status || ''}">
-                <td>${index + 1}</td>
+                <td>${startIndex + index + 1}</td>
                 <td>${product.product_code || '-'}</td>
                 <td>${product.model || '-'}</td>
                 <td>${product.product_name || '-'}</td>
@@ -249,6 +313,8 @@ function renderTable() {
             </tr>
         `;
     }).join('');
+
+    renderPagination();
 }
 
 // Event Listeners
