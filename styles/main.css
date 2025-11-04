@@ -113,7 +113,6 @@ body {
 }
 
 @keyframes pulse-indicator {
-
   0%,
   100% {
     opacity: 1;
@@ -508,8 +507,8 @@ body {
   display: flex;
 }
 
-.dropdown-btn:focus+.dropdown-content,
-.dropdown-btn.active+.dropdown-content {
+.dropdown-btn:focus + .dropdown-content,
+.dropdown-btn.active + .dropdown-content {
   display: flex;
 }
 
@@ -583,7 +582,7 @@ body {
   box-sizing: border-box;
   margin-right: 35px;
   transition: all 0.3s ease;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 /* ปุ่มเพิ่ม สินค้า */
@@ -592,7 +591,7 @@ body {
   border: none;
   background-color: #25c12a;
   padding: 2px 1px;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-add.active::before {
@@ -617,7 +616,7 @@ body {
   border: none;
   background-color: #f8ae0e;
   padding: 2px 1px;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-edit.active::before {
@@ -642,7 +641,7 @@ body {
   border: none;
   background-color: #f13f27;
   padding: 2px 1px;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .function-btn-delete.active:before {
@@ -825,7 +824,12 @@ tr:hover {
 }
 
 .navbar {
-  background-image: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+  background-image: linear-gradient(
+    135deg,
+    #0f172a 0%,
+    #1e3a8a 50%,
+    #1e293b 100%
+  );
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   transition: box-shadow 0.3s;
@@ -1070,7 +1074,7 @@ td {
   max-width: fit-content;
   background: linear-gradient(135deg, #ffd336 0%, #ffb836 100%);
   border-radius: 20px;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
   border: 3px solid #e8b92e;
 }
 
@@ -1123,7 +1127,7 @@ td {
 #page-info {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: oklab(43.602000000000004% -0.01533 0.06507);
   padding: 10px 20px;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 12px;
@@ -1225,16 +1229,37 @@ td {
 
   /* Hamburger - ลดขนาด */
   .hamburger {
-    top: 24px;
-    left: 14px;
-    width: 24px;
-    height: 24px;
+    display: flex !important;
+    position: fixed;
+    top: 30px;
+    left: 18px;
+    z-index: 4000;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 5px;
+    padding: 0;
   }
 
   .hamburger span {
-    width: 17px;
-    height: 2.4px;
-    gap: 4px;
+    display: block;
+    width: 26px;
+    height: 3.5px;
+    background: #050505;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+  }
+
+  .hamburger:hover span {
+    background: #ffa144;
+    width: 32px;
+    transition: all 0.4s ease;
   }
 
   /* Navbar */
@@ -1957,7 +1982,6 @@ td {
 
 /* ========== Print Styles ========== */
 @media print {
-
   .hamburger,
   .sidebar,
   .navbar,

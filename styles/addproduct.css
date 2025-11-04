@@ -465,7 +465,7 @@ body {
   width: 100vw;
   left: 0;
   top: 0;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   color: #fff;
@@ -512,8 +512,17 @@ body {
   text-align: center;
   animation: subtlePulse 3.2s ease-in-out infinite;
   will-change: transform, opacity;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
+
+.navbar-text.active::before {
+  content: "➕📦";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
+}
+
 
 @keyframes subtlePulse {
   0% {
@@ -545,14 +554,6 @@ body {
 .navbar-text.slide-in {
   animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
     subtlePulse 3.2s ease-in-out 640ms infinite;
-}
-
-.navbar-text.active::before {
-  content: "➕📦";
-  margin-right: 8px;
-  font-size: 1.3em;
-  vertical-align: middle;
-  animation: bounceIn 0.7s;
 }
 
 @keyframes bounceIn {
@@ -589,7 +590,7 @@ body {
   font-size: 14px;
   align-items: center;
   justify-content: center;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 /* ========== Main Content ========== */
@@ -841,21 +842,19 @@ body {
 
   /* Apply hamburger styles for this breakpoint */
   .hamburger {
-    display: flex !important;
     position: fixed;
     top: 28px;
     left: 16px;
-    z-index: 6000;
     width: 34px;
     height: 34px;
     padding: 6px;
-    background: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     gap: 6px;
     cursor: pointer;
-    transition: box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+    transition: box-shadow 0.25s ease, transform 0.25s ease,
+      background 0.25s ease;
     backdrop-filter: blur(4px);
   }
 
@@ -869,7 +868,6 @@ body {
   }
 
   .hamburger:hover {
-    background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     transform: translateY(-1px);
   }
@@ -912,6 +910,21 @@ body {
     padding: 5px 12px;
   }
 
+  .navbar-text.active::before {
+  content: "➕📦";
+  margin-right: 8px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  animation: bounceIn 0.7s;
+}
+
+  .navbar-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+  
   .navbar-form {
     gap: 16px;
     margin-left: 50px;
@@ -942,10 +955,6 @@ body {
     padding: 6px 14px;
     height: 45px;
   }
-
-
-
-  
 }
 
 /* ========== Tablet Small (768px - 900px) ========== */
@@ -1022,7 +1031,7 @@ body {
     font-size: 18px;
   }
 
-  .nav-btn.active{
+  .nav-btn.active {
     font-size: 18px;
   }
 

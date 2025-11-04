@@ -760,11 +760,10 @@ h2 {
   .hamburger {
     display: flex !important;
     position: fixed;
-    top: 30px;
+    top: 20px;
     left: 18px;
     z-index: 4000;
     width: 36px;
-    height: 36px;
     background: transparent;
     border: none;
     flex-direction: column;
@@ -922,7 +921,7 @@ h2 {
   }
 
   .navbar-text.active {
-    font-size: 16px;
+    font-size: 20px;
     margin-right: 12px;
     margin-left: 48px;
   }
@@ -975,7 +974,7 @@ h2 {
     width: 200px;
     height: 40px;
     font-size: 14px;
-    margin-right: 10px;
+    margin-right: 8px;
   }
 
   .logout-btn {

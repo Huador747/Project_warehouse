@@ -948,6 +948,231 @@ select:focus,
   }
 }
 
+
+@media screen and (max-width: 1200px) and (min-width: 900px) {
+  /* Hamburger Button */
+  .hamburger {
+    display: flex !important;
+    position: fixed;
+    top: 20px;
+    left: 18px;
+    z-index: 4000;
+    width: 36px;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 5px;
+    padding: 0;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 3.5px;
+    background: #050505;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0;
+  }
+
+  .hamburger:hover span {
+    background: #ffa144;
+    width: 32px;
+    transition: all 0.4s ease;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+  }
+
+  /* Hover Effect Animation */
+  .hamburger span:nth-child(1) { transition-delay: 0s; }
+  .hamburger span:nth-child(2) { transition-delay: 0.05s; }
+  .hamburger span:nth-child(3) { transition-delay: 0.1s; }
+
+  .hamburger:hover span:nth-child(1) { transition-delay: 0.1s; }
+  .hamburger:hover span:nth-child(2) { transition-delay: 0.05s; }
+  .hamburger:hover span:nth-child(3) { transition-delay: 0s; }
+
+  /* Active State */
+  .hamburger:active { transform: scale(0.95); }
+
+  /* Focus Style for Accessibility */
+  .hamburger:focus {
+    outline: 2px solid #ffa144;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  /* Sidebar - ลดจาก 300px เหลือ 200px */
+  .sidebar {
+    width: 200px;
+    left: -201px;
+    padding: 10px 6px;
+    z-index: 5000;
+  }
+
+  .sidebar.sidebar-open {
+    left: 0;
+  }
+
+  /* User Profile - ลดขนาดลง 40% */
+  .user-profile-section {
+    margin-bottom: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+  }
+
+  /* Avatar - ลดจาก 85px เหลือ 45px */
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+    border-width: 2px;
+  }
+
+  /* Online Indicator - ลดจาก 16px เหลือ 8px */
+  .online-indicator {
+    width: 8px;
+    height: 8px;
+    border-width: 1.5px;
+    bottom: 2px;
+    right: 2px;
+  }
+
+  /* Username - ลดจาก 19px เหลือ 16px */
+  .user-name {
+    font-size: 16px;
+    letter-spacing: 0.2px;
+  }
+
+  /* Role Badge - ลดจาก 12px เหลือ 11px */
+  .role-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    letter-spacing: 0.6px;
+  }
+
+  /* Navigation Buttons */
+  .sidebar-nav-btn {
+    padding: 4px 6px;
+    gap: 3px;
+  }
+
+  /* Nav Button */
+  .sidebar-nav-btn .nav-btn {
+    padding: 7px 8px;
+    font-size: 14px;
+    margin-top: 3px;
+    gap: 5px;
+    border-radius: 6px;
+  }
+
+  /* Nav Icon */
+  .nav-icon {
+    font-size: 11px;
+    min-width: 14px;
+  }
+
+  /* Logo Container - ลดจาก 120px เหลือ 72px */
+  .logo-container {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 36px;
+    padding: 7px;
+  }
+
+  /* Logo - ลดจาก 210px เหลือ 90px */
+  .logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  /* Navbar */
+  .navbar {
+    height: 80px;
+    padding: 8px 14px;
+  }
+
+  /* Navbar text */
+  .navbar-text {
+    font-size: 24px;
+    padding: 4px 7px;
+    gap: 4px;
+  }
+
+  .navbar-text.active {
+    font-size: 20px;
+    margin-right: 12px;
+    margin-left: 48px;
+  }
+
+  /* Navbar form */
+  .navbar-form {
+    gap: 10px;
+    margin-left: 16px;
+  }
+
+  /* Main content */
+  .main-content {
+    margin-top: 80px;
+  }
+
+  /* Product Form */
+  .product-form {
+    padding: 24px 18px;
+    margin: 24px auto;
+    max-width: 1000px;
+  }
+
+  .product-form-row {
+    gap: 24px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .function-btn-add {
+    font-size: 16px;
+    padding: 8px 0;
+  }
+
+  .search-product-input {
+    width: 200px;
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .logout-btn {
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .search-logout-row {
+    gap: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar {
     min-height: 80px;

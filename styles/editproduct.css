@@ -402,6 +402,8 @@ body {
   justify-content: center;
 }
 
+
+
 /* ========== Dropdown Styles ========== */
 .dropdown-content {
   display: none;
@@ -465,7 +467,7 @@ body {
   width: 100vw;
   left: 0;
   top: 0;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   color: #fff;
@@ -528,10 +530,8 @@ body {
   text-align: center;
   animation: subtlePulse 3.2s ease-in-out infinite;
   will-change: transform, opacity;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
-
-
 
 @keyframes subtlePulse {
   0% {
@@ -567,7 +567,6 @@ body {
   vertical-align: middle;
   animation: bounceIn 0.7s;
 }
-
 
 @keyframes bounceIn {
   0% {
@@ -614,7 +613,7 @@ body {
   box-sizing: border-box;
   margin-left: auto; /* ดันให้ชิดขวา */
   margin-right: 0;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .logout-btn {
@@ -631,7 +630,7 @@ body {
   align-items: center;
   justify-content: center;
   white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 /* ========== Main Content ========== */
@@ -703,7 +702,6 @@ body {
   border: 2px solid #f65916dd;
   box-shadow: 0 2px 8px rgba(254, 179, 104, 0.15);
 }
-
 
 .function-btn-add:hover {
   background: #77e146;
@@ -1051,17 +1049,16 @@ body {
     position: fixed;
     top: 28px;
     left: 16px;
-    z-index: 6000;
     width: 34px;
     height: 34px;
     padding: 6px;
-    background: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     gap: 6px;
     cursor: pointer;
-    transition: box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+    transition: box-shadow 0.25s ease, transform 0.25s ease,
+      background 0.25s ease;
     backdrop-filter: blur(4px);
   }
 
@@ -1075,7 +1072,6 @@ body {
   }
 
   .hamburger:hover {
-    background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     transform: translateY(-1px);
   }
@@ -1123,15 +1119,12 @@ body {
     width: 250px;
     font-size: 14px;
   }
-  
-  .logout-btn{
+
+  .logout-btn {
     font-size: 12px;
     height: 40px;
     padding: 6px 14px;
   }
-
-
-
   .main-content {
     margin-top: 100px;
   }
@@ -1289,8 +1282,8 @@ body {
   }
 
   /* มือ1/มือ2 (Condition) height in 900–1200px */
-  
-  .condition-group{
+
+  .condition-group {
     height: 45px;
   }
 
@@ -1299,7 +1292,7 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 14px;
-}
+  }
 }
 /* ========== Tablet Small (768px - 900px) ========== */
 @media screen and (max-width: 900px) and (min-width: 768px) {

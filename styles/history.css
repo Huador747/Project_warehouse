@@ -893,11 +893,10 @@ body {
   .hamburger {
     display: flex !important;
     position: fixed;
-    top: 30px;
+    top: 20px;
     left: 18px;
     z-index: 4000;
     width: 36px;
-    height: 36px;
     background: transparent;
     border: none;
     flex-direction: column;
@@ -1042,23 +1041,25 @@ body {
   }
 
   /* Navbar */
+   /* Navbar */
   .navbar {
-    height: 90px;
-    padding: 10px 12px;
+    height: 80px;
+    padding: 8px 14px;
   }
 
   /* Navbar text */
   .navbar-text {
-    font-size: 16px;
-    min-width: 80px;
-    padding: 6px 10px;
+    font-size: 24px;
+    padding: 4px 7px;
+    gap: 4px;
   }
 
   .navbar-text.active {
-    font-size: 18px;
+    font-size: 20px;
     margin-right: 12px;
     margin-left: 48px;
   }
+
 
   /* Navbar form */
   .navbar-form {
@@ -1085,18 +1086,17 @@ body {
   }
 
   /* Search inputs */
-  .search-product-input,
-  #search-code {
-    width: 180px;
-    font-size: 10px;
-    height: 40px;
-    margin-right: 0px;
+  
+ .search-product-input {
+    width: 200px;
+    height: 42px;
+    font-size: 14px;
+    margin-right: 8px;
   }
 
   .logout-btn {
-    height: 40px;
-    font-size: 10px;
-    padding: 6px 12px;
+    height: 42px;
+    font-size: 13px;
   }
 
   .history-table-wrapper {
