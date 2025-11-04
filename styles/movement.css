@@ -941,7 +941,8 @@ h2 {
 
   /* Main content */
   .main-content {
-    margin-top: 80px;
+    margin: 80px auto 30px auto;
+    padding: 24px;;
   }
 
   /* Product Form */
@@ -985,6 +986,57 @@ h2 {
   .search-logout-row {
     gap: 12px;
   }
+
+  .controls{
+    margin-top: 50px;
+
+  }
+
+   .control-group {
+    margin-bottom: 2px;
+  }
+
+  .control-group label {
+    font-size: 12px;
+    padding: 15px;
+  }
+
+  .control-group select {
+    font-size: 12px;
+    padding: 15px;
+  }
+
+  .controls-checkbox-group {
+    gap: 12px;
+    font-size: 14px;
+    padding: 0%;
+  }
+
+  /* Reduce font size of product select on tablet */
+  #product-select.product-select-input {
+    font-size: 12px;
+  }
+
+  #product-select.product-select-input option {
+    font-size: 12px;
+  }
+
+  #period-type.period-type-select {
+    font-size: 12px;
+  }
+
+  #period-type.period-type-select option {
+    font-size: 12px;
+  }
+
+  #year-select.period-type-select {
+    font-size: 12px;
+  }
+
+  #year-select.period-type-select option {
+    font-size: 12px;
+  }
+
 }
 
 /* ========== Tablet Small (768px - 900px) ========== */

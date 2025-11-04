@@ -94,11 +94,11 @@
         <div class="control-group">
           <label style="display: block; margin-bottom: 8px;">กรองการควบคุม:</label>
           <div class="controls-checkbox-group">
-            <label style="margin-right: 16px;">
+            <label style="margin-right: 16px; height: 10px;">
               <input type="checkbox" id="cb-include-controlled" checked> 
               <span>ควบคุม</span>
             </label>
-            <label>
+            <label style="margin-right: 16px; height: 10px; margin-bottom: 10px;">
               <input type="checkbox" id="cb-include-uncontrolled"> 
               <span>ไม่ควบคุม</span>
             </label>
@@ -107,8 +107,8 @@
 
         <div class="control-group">
           <label for="period-type">เลือกช่วงเวลา:</label>
-          <select id="period-type">
-            <option value="month">รายเดือน</option>
+          <select id="period-type" class="period-type-select">
+            <option value="month" class="">รายเดือน</option>
             <option value="quarter">รายไตรมาส</option>
             <option value="year">รายปี</option>
           </select>
@@ -116,7 +116,7 @@
 
         <div class="control-group">
           <label for="year-select" id="year-label">เลือกปี:</label>
-          <select id="year-select"></select>
+          <select id="year-select" class="period-type-select"></select>
         </div>
       </div>
 

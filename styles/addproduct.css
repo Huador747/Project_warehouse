@@ -839,17 +839,67 @@ body {
     height: 90px;
   }
 
+  /* Apply hamburger styles for this breakpoint */
   .hamburger {
-    top: 24px;
-    left: 14px;
-    width: 24px;
-    height: 24px;
+    display: flex !important;
+    position: fixed;
+    top: 28px;
+    left: 16px;
+    z-index: 6000;
+    width: 34px;
+    height: 34px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    gap: 6px;
+    cursor: pointer;
+    transition: box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+    backdrop-filter: blur(4px);
   }
 
   .hamburger span {
-    width: 17px;
-    height: 2.4px;
-    gap: 4px;
+    width: 24px;
+    height: 3px;
+    background: #0f172a;
+    border-radius: 2px;
+    transition: 0.35s ease;
+    margin: 0;
+  }
+
+  .hamburger:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    transform: translateY(-1px);
+  }
+
+  .hamburger:hover span {
+    background: #ffa144;
+    width: 28px;
+  }
+
+  .hamburger:focus-visible {
+    outline: 3px solid #ffd336;
+    outline-offset: 2px;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Hover reveal keeps working on tablet */
+  .hamburger:hover + .sidebar,
+  .sidebar:hover {
+    left: 0;
   }
 
   .navbar {
@@ -858,7 +908,7 @@ body {
   }
 
   .navbar-text {
-    font-size: 24px;
+    font-size: 20px;
     padding: 5px 12px;
   }
 
@@ -886,6 +936,16 @@ body {
     font-size: 14px;
     padding: 6px 10px;
   }
+
+  .logout-btn {
+    font-size: 12px;
+    padding: 6px 14px;
+    height: 45px;
+  }
+
+
+
+  
 }
 
 /* ========== Tablet Small (768px - 900px) ========== */
@@ -959,7 +1019,11 @@ body {
   }
 
   .navbar-text {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .nav-btn.active{
+    font-size: 18px;
   }
 
   .main-content {

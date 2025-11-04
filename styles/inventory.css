@@ -609,11 +609,13 @@ body {
 
 .history-summary h2,
 .history-list h2 {
+  font-size: 18px;
   margin-top: 0;
   color: #000000;
 }
 .inventory-table{
   box-shadow: #000000 0px 4px 8px -2px;
+  font-size: 12px;
 }
 .controls-checkbox-group {
   display: flex;
@@ -781,7 +783,7 @@ tr:hover {
 }
 
 #page-info {
-  font-size: 1.1rem;
+  font-size: 16px;
   font-weight: bold;
   color: #e67e22;
   margin: 0 8px;
