@@ -355,15 +355,20 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 30px 60px rgba(2, 6, 23, 0.25);
   overflow: hidden;
-}
-.modal-small {
-  width: min(460px, 96vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
 }
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 1;
   border-bottom: 1px solid var(--border);
   background: #f8fafc;
 }
@@ -377,10 +382,13 @@ body {
   border-radius: 8px;
   padding: 2px 8px;
 }
-.close-btn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+
+form#userForm {
+  padding: 16px 18px;
+  flex: 1 1 auto;
+  overflow: auto;
 }
+
 
 /* Form */
 form#userForm {
@@ -406,12 +414,17 @@ select {
   height: 42px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  padding: 0 12px;
+.modal-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 12px 18px;
   background: #fff;
-  font-size: 14px;
+  border-top: 1px solid var(--border);
 }
-small#passwordHint {
-  color: var(--muted);
   margin-top: 4px;
 }
 .modal-actions {
@@ -563,10 +576,12 @@ input[type="file"]::file-selector-button {
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
-  cursor: pointer;
-  margin-right: 12px;
-  font-weight: 600;
-  transition: all 0.2s;
+.image-preview-container {
+  margin-top: 15px;
+  min-height: 50px;
+  max-height: 40vh;
+  overflow: auto;
+}
 }
 
 input[type="file"]::file-selector-button:hover {
