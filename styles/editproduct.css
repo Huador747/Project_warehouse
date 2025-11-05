@@ -498,7 +498,6 @@ body {
 .navbar-form {
   gap: 30px;
   margin: 0 0 0px 75px;
-  background-color: #ff8c1a;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -510,7 +509,6 @@ body {
 .navbar-form-delete {
   gap: 30px;
   margin: 0 0 0px 75px;
-  background-color: rgb(253, 49, 49);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -524,6 +522,7 @@ body {
   padding: 7px 16px;
   border-radius: 4px;
   color: #000000;
+  background-color: #ff8c1a;
   font-size: 31px;
   margin-right: 10px;
   min-width: 120px;

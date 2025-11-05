@@ -495,7 +495,6 @@ body {
 .navbar-form {
   gap: 30px;
   margin: 0 0 0px 75px;
-  background-color: rgb(71, 208, 64);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -505,7 +504,8 @@ body {
   display: inline-block;
   padding: 7px 16px;
   border-radius: 4px;
-  color: #000000;
+  color: rgb(0, 0, 0);
+  background-color: #4eb31f;
   font-size: 31px;
   margin-right: 10px;
   min-width: 120px;

@@ -302,8 +302,8 @@ function renderTable() {
             <tr data-sale-status="${product.sale_status || ''}">
                 <td>${startIndex + index + 1}</td>
                 <td>${product.product_code || '-'}</td>
-                <td>${product.model || '-'}</td>
-                <td>${product.product_name || '-'}</td>
+                <td style="text-align: left;">-${product.model || '-'}</td>
+                <td style="text-align: left;">-${product.product_name || '-'}</td>
                 <td>${product.maker || '-'}</td>
                 <td>${product.category || '-'}</td>
                 <td>${statusBadge}</td>

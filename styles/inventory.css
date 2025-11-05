@@ -614,7 +614,7 @@ body {
 }
 .inventory-table {
   box-shadow: #000000 0px 4px 8px -2px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .controls-checkbox-group {
   display: flex;

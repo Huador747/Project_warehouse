@@ -14,3 +14,80 @@ firewall วิธีเปิดพอร์ต 3000:
 ------ถ้าเว็บเปิดไม่ได้
 npm install multer
 pm2 list
+
+PM2 guid
+แยกเป็น 3 กลุ่ม:
+Setup ครั้งแรก:
+npm install -g pm2
+npm run pm2
+pm2 startup
+pm2 save
+
+ใช้งานประจำวัน:
+pm2 status
+pm2 logs project-warehouse
+pm2 restart project-warehouse
+pm2 monit
+
+ขั้นตอนตั้งค่า (ทำครั้งเดียว)
+ขั้นที่ 1: เริ่ม Server ด้วย PM2
+# เข้าไปในโฟลเดอร์โปรเจกต์
+cd C:\Users\acer\Project_warehouse
+
+# เริ่ม server
+npm run pm2
+# หรือ
+pm2 start server.js --name project-warehouse
+
+ขั้นที่ 2: ตั้งค่า Auto-Start
+# ตั้งค่าให้ PM2 รันเมื่อเปิดเครื่อง
+pm2 startup
+
+Output ที่ได้:
+[PM2] To setup the Startup Script, copy/paste the following command:
+pm2-startup install
+
+ขั้นที่ 3: รันคำสั่งที่ได้
+# Copy คำสั่งจาก output ข้างบน แล้ววาง
+pm2-startup install
+
+ขั้นที่ 4: บันทึก Process List
+# บันทึก process ที่รันอยู่ตอนนี้
+pm2 save
+
+Output:
+[PM2] Saving current process list...
+[PM2] Successfully saved in C:\Users\acer\.pm2\dump.pm2
+
+ ทดสอบการทำงาน//////////
+วิธีที่ 1: Restart เครื่อง
+┌────┬────────────────────────┬─────────┬─────────┬──────────┐
+│ id │ name                   │ status  │ cpu     │ memory   │
+├────┼────────────────────────┼─────────┼─────────┼──────────┤
+│ 0  │ project-warehouse      │ online  │ 0.1%    │ 45.2mb   │
+└────┴────────────────────────┴─────────┴─────────┴──────────┘
+วิธีที่ 2: ทดสอบด้วย Service
+# ดู PM2 service
+Get-Service | Where-Object {$_.Name -like "*pm2*"}
+
+# หยุด service (ทดสอบ)
+Stop-Service PM2
+
+# เริ่ม service
+Start-Service PM2
+
+# ตรวจสอบ
+pm2 list
+
+🔧 คำสั่งจัดการ Startup
+ดูสถานะ Startup
+pm2 startup
+# จะบอกว่าติดตั้งแล้วหรือยัง
+
+ยกเลิก Auto-Start
+# ถ้าต้องการปิดฟีเจอร์นี้
+pm2 unstartup
+
+อัปเดต Process List
+# หลังจากเพิ่ม/ลบ process
+pm2 save
