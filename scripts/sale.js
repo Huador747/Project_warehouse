@@ -469,6 +469,9 @@ document
     saleData.total_vat = Number(saleData.total_vat) || 0;
     saleData.profit = Number(saleData.profit) || 0;
     saleData.shipping = Number(saleData.shipping) || 0;
+    
+    // ✅ เพิ่ม: แปลงค่าขนส่งเป็น Int32 และเก็บใน shipping_cost
+    saleData.shipping_cost = Math.floor(Number(saleData.shipping) || 0);
 
     // แปลงวันที่
     if (saleData.saleoutdate) {
@@ -503,9 +506,9 @@ document
         throw new Error("Failed to save sale");
       }
 
-      alert("✅ บันทึกการขายสำเร็จ");
+      alert(`✅ บันทึกการขายสำเร็จ\n💰 ค่าขนส่ง: ${saleData.shipping_cost} บาท`);
       this.reset();
-      document.getElementById("shipping").value = 100;
+      document.getElementById("shipping").value = 100; // ✅ รีเซ็ตกลับเป็น 100
     } catch (error) {
       console.error("❌ Save error:", error);
       alert("เกิดข้อผิดพลาดในการบันทึก");

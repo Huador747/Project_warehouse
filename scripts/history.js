@@ -104,18 +104,17 @@ let currentTransactions = [];
 
 // ปรับความกว้างคอลัมน์เป็น % ได้ โดยตั้งค่า window.HISTORY_TABLE_COL_WIDTHS = [..10 ค่า..]
 // ถ้าผลรวม > 100% ตารางจะกว้างเกินหน้าจอและเลื่อนแนวนอนได้
-const DEFAULT_COL_WIDTHS = [5, 4, 10, 30, 30, 8, 10, 10, 15, 15]; // 10 คอลัมน์
+// ✅ แก้จาก 10 ค่า เป็น 11 ค่า (เพิ่มคอลัมน์ "หมายเหตุ")
+const DEFAULT_COL_WIDTHS = [7, 4, 10, 25, 25, 6, 8, 8, 12, 15, 15, 12, 12, 15]; // 11 คอลัมน์
 
 // ตั้งค่าสำหรับบังคับให้กว้างเกินหน้าจอ
-// สามารถตั้งค่าในหน้า HTML ก่อนโหลดสคริปต์นี้ได้ เช่น:
-// <script>window.HISTORY_TABLE_FORCE_OVERFLOW = true; window.HISTORY_TABLE_OVERFLOW_EXTRA_PERCENT = 40;</script>
 const FORCE_OVERFLOW =
   typeof window.HISTORY_TABLE_FORCE_OVERFLOW === "boolean"
     ? window.HISTORY_TABLE_FORCE_OVERFLOW
-    : true; // ค่าเริ่มต้น: บังคับให้กว้างเกินหน้าจอ
+    : true;
 const OVERFLOW_EXTRA_PERCENT = Number(
   window.HISTORY_TABLE_OVERFLOW_EXTRA_PERCENT ?? 40
-); // เพิ่มความกว้างจาก 100% อีกกี่ %
+);
 
 function ensureColumnLayout() {
   const table = document.getElementById("history-table");
@@ -123,7 +122,7 @@ function ensureColumnLayout() {
 
   const widths =
     Array.isArray(window.HISTORY_TABLE_COL_WIDTHS) &&
-    window.HISTORY_TABLE_COL_WIDTHS.length === 10
+      window.HISTORY_TABLE_COL_WIDTHS.length === 11 // ✅ แก้จาก 10 เป็น 11
       ? window.HISTORY_TABLE_COL_WIDTHS
       : DEFAULT_COL_WIDTHS;
 
@@ -162,7 +161,6 @@ function renderHistoryTablePaged(transactions, page = 1) {
   const tbody = document.querySelector("#history-table tbody");
   if (!tbody) return;
 
-  // กำหนดเลย์เอาต์คอลัมน์ตาม %
   ensureColumnLayout();
 
   tbody.innerHTML = "";
@@ -174,17 +172,33 @@ function renderHistoryTablePaged(transactions, page = 1) {
 
   pagedTransactions.forEach((item) => {
     const tr = document.createElement("tr");
+
+    // ✅ แสดงค่าขนส่งเฉพาะรายการขาย (null แสดง "-")
+    const shippingDisplay = item.shipping_cost !== null && item.shipping_cost !== undefined
+      ? formatNumber(item.shipping_cost)
+      : "-";
+
+    // ✅ แสดงภาษีเฉพาะรายการขาย (null แสดง "-")
+    const taxDisplay = item.tax !== null && item.tax !== undefined
+      ? formatNumber(item.tax)
+      : "-";
+
+    const grandTotalVal = (Number(item.total) || 0) + (Number(item.tax) || 0);
     tr.innerHTML = `
-        <td>${formatDateToAD(item.date)}</td>
-        <td>${item.type}</td>
-        <td>${item.product_code || "-"}</td>
-        <td style="text-align: left;">-${item.product_name}</td>
-        <td style="text-align: left;">-${item.model}</td>
-        <td>${formatNumber(item.quantity)}</td>
-        <td>${formatNumber(item.price)}</td>
-        <td>${formatNumber(item.total)}</td>
-        <td style="text-align: left;">-${item.partner}</td>
-        <td style="text-align: left;">${item.note}</td>
+      <td>${formatDateToAD(item.date)}</td>
+      <td>${item.type}</td>
+      <td>${item.product_code || "-"}</td>
+      <td style="text-align: left;">${item.product_name}</td>
+      <td style="text-align: left;">${item.model}</td>
+      <td>${item.unit || "-"}</td>
+      <td>${formatNumber(item.price)}</td>
+      <td>${formatNumber(item.quantity)}</td>
+      <td>${shippingDisplay}</td>
+      <td>${taxDisplay}</td>
+      <td>${formatNumber(item.total)}</td>
+      <td>${formatNumber(grandTotalVal)}</td>
+      <td style="text-align: left;">${item.partner}</td>
+      <td style="text-align: left;">${item.note}</td>
       `;
     tbody.appendChild(tr);
   });
@@ -193,7 +207,7 @@ function renderHistoryTablePaged(transactions, page = 1) {
   if (pagedTransactions.length === 0) {
     const tr = document.createElement("tr");
     tr.innerHTML =
-      '<td colspan="10" style="text-align: center;">ไม่พบข้อมูล</td>';
+      '<td colspan="13" style="text-align: center;">ไม่พบข้อมูล</td>'; // ✅ 13 คอลัมน์
     tbody.appendChild(tr);
   }
 
@@ -204,22 +218,13 @@ function renderHistoryTablePaged(transactions, page = 1) {
       const tr = document.createElement("tr");
       tr.className = "empty-row";
       tr.innerHTML = `
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      `;
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td> </td>
+      `; // ✅ 13 คอลัมน์
       tbody.appendChild(tr);
     }
   }
 
-  // เพิ่มบรรทัดนี้
   centerTableIfEmpty();
 }
 
@@ -249,8 +254,11 @@ function renderHistoryTable(
           product_code: item.product_code,
           product_name: product.product_name || item.product_name || "-",
           model: product.model || item.model || "-",
+          unit: product.unit || item.unit || "-",
           quantity: item.quantity || 0,
           price: item.price || 0,
+          shipping_cost: null, // ✅ ซื้อไม่มีค่าขนส่ง
+          tax: null, // ✅ ซื้อไม่มีภาษี
           total: item.total || item.quantity * item.price || 0,
           partner: item.supplier || "-",
           note: item.note || "-",
@@ -270,8 +278,11 @@ function renderHistoryTable(
           product_code: item.product_code,
           product_name: product.product_name || item.product_name || "-",
           model: product.model || item.model || "-",
+          unit: product.unit || item.unit || "-",
           quantity: item.salequantity || 0,
           price: item.sale_price || 0,
+          shipping_cost: item.shipping_cost || 0, // ✅ ดึงจาก sale_product.shipping_cost
+          tax: item.vat || 0, // ✅ ดึงภาษี 7% จาก sale_product
           total: item.total || item.salequantity * item.sale_price || 0,
           partner: item.customerName || "-",
           note: item.notesale || "-",
@@ -414,13 +425,11 @@ function renderPagination(transactions, page = 1) {
   }
   let html = "";
   if (totalPages > 1) {
-    html += `<button ${
-      page === 1 ? "disabled" : ""
-    } id="prev-page">ก่อนหน้า</button>`;
+    html += `<button ${page === 1 ? "disabled" : ""
+      } id="prev-page">ก่อนหน้า</button>`;
     html += `<span style="margin:0 8px;">หน้า ${page} / ${totalPages}</span>`;
-    html += `<button ${
-      page === totalPages ? "disabled" : ""
-    } id="next-page">ถัดไป</button>`;
+    html += `<button ${page === totalPages ? "disabled" : ""
+      } id="next-page">ถัดไป</button>`;
   }
   paginationDiv.innerHTML = html;
 

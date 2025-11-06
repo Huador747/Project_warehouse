@@ -139,7 +139,26 @@ function fillForm(product) {
     document.getElementById("product_code").value = product.product_code || "";
     document.getElementById("model").value = product.model || "";
     document.getElementById("price").value = product.price || 0;
-    document.getElementById("unit").value = product.unit || "";
+    
+    // ✅ แก้ส่วนนี้
+    const unitSelect = document.getElementById("unit");
+    const productUnit = product.unit || "";
+    
+    // ตรวจสอบว่า option มีอยู่แล้วหรือไม่
+    const existingOption = Array.from(unitSelect.options).find(
+        opt => opt.value === productUnit
+    );
+    
+    if (!existingOption && productUnit) {
+        // เพิ่ม option ใหม่ถ้ายังไม่มี
+        const newOption = document.createElement("option");
+        newOption.value = productUnit;
+        newOption.textContent = productUnit;
+        unitSelect.appendChild(newOption);
+    }
+    
+    unitSelect.value = productUnit;
+    
     document.getElementById("condition").value = product.condition || "";
     document.getElementById("quantity").value = product.quantity || 0;
     document.getElementById("total").value = product.total || 0;

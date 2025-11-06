@@ -95,24 +95,22 @@ const Product = mongoose.model('Product', ProductSchema);
 
 // สร้าง Schema และ Model สำหรับการขายสินค้า
 const SaleProductSchema = new mongoose.Schema({
-    product_code: String,
-    model: String,
-    product_name: String,
-    maker: String,
-    category: String,
-    condition: String,
-    price: Number,
-    sale_price: Number, 
-    unit: String,
-    saleoutdate: Date,
-    vat: Number,
-    total: Number,   
-    total_vat: Number,
-    profit: Number,
-    salequantity: Number,
-    notesale: String,
-    customerName: String
-    // เพิ่มฟิลด์อื่นๆ ตามต้องการ
+  saleoutdate: { type: Date, default: Date.now },
+  product_code: { type: String, required: true },
+  product_name: String,
+  unit: String,
+  condition: String,
+  price: Number,
+  sale_price: Number,
+  vat: Number,
+  salequantity: { type: Number, default: 0 },
+  shipping_cost: { type: Number, default: 0 }, // ✅ เพิ่ม field ใหม่ (Int32)
+  total: Number,
+  total_vat: Number,
+  profit: Number,
+  shipping: Number, // field เดิม (เก็บไว้เพื่อ backward compatibility)
+  customerName: String,
+  notesale: String
 });
 const SaleProduct = mongoose.model('SaleProduct', SaleProductSchema, 'sale_product');
 
