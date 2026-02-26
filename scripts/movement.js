@@ -46,36 +46,9 @@ async function fetchAll() {
   }
 }
 
-// ✅ ฟังก์ชันกรองสินค้าตาม checkbox
+// ฟังก์ชันกรองสินค้าทั้งหมด (ไม่กรองควบคุม/ไม่ควบคุม)
 function filterProductsByControls(products) {
-  const includeControlled = document.getElementById("cb-include-controlled")?.checked;
-  const includeUncontrolled = document.getElementById("cb-include-uncontrolled")?.checked;
-
-  return (products || []).filter((p) => {
-    const controls = (p.controls || "").trim();
-    
-    // ถ้าไม่เลือกอะไรเลย → ไม่แสดงอะไร
-    if (!includeControlled && !includeUncontrolled) {
-      return false;
-    }
-    
-    // ถ้าเลือกทั้งสองอัน → แสดงทั้งหมด
-    if (includeControlled && includeUncontrolled) {
-      return true;
-    }
-    
-    // ถ้าเลือกเฉพาะ "ควบคุม" → แสดงสินค้าที่ไม่ใช่ "ไม่ควบคุม"
-    if (includeControlled && !includeUncontrolled) {
-      return controls !== "ไม่ควบคุม";
-    }
-    
-    // ถ้าเลือกเฉพาะ "ไม่ควบคุม" → แสดงเฉพาะ "ไม่ควบคุม"
-    if (!includeControlled && includeUncontrolled) {
-      return controls === "ไม่ควบคุม";
-    }
-    
-    return true;
-  });
+  return products || [];
 }
 
 // ✅ กรอง buyin/sale ตาม product_code ที่ผ่านการกรอง
@@ -156,22 +129,8 @@ function computeInventory(products, buyin, sale) {
     map[code].qty -= q;
   });
 
-  const includeControlled = document.getElementById("cb-include-controlled")?.checked;
-  const includeUncontrolled = document.getElementById("cb-include-uncontrolled")?.checked;
-  
-  let filterText = "";
-  if (includeControlled && includeUncontrolled) {
-    filterText = "(รวมทั้งหมด)";
-  } else if (includeControlled) {
-    filterText = "(เฉพาะสินค้าควบคุม)";
-  } else if (includeUncontrolled) {
-    filterText = "(เฉพาะสินค้าไม่ควบคุม)";
-  } else {
-    filterText = "(ไม่มีข้อมูล)";
-  }
-
   console.log(
-    `📊 คำนวณสต็อกเสร็จ: ${Object.keys(map).length} สินค้า ${filterText}`
+    `📊 คำนวณสต็อกเสร็จ: ${Object.keys(map).length} สินค้า (ไม่กรองควบคุม)`
   );
 
   return map;
@@ -223,19 +182,8 @@ function renderInventorySummary(entries) {
     0
   );
 
-  const includeControlled = document.getElementById("cb-include-controlled")?.checked;
-  const includeUncontrolled = document.getElementById("cb-include-uncontrolled")?.checked;
-  
-  let noteText = "";
-  if (includeControlled && includeUncontrolled) {
-    noteText = "* รวมสินค้าทั้งหมด";
-  } else if (includeControlled) {
-    noteText = "* เฉพาะสินค้าควบคุม";
-  } else if (includeUncontrolled) {
-    noteText = "* เฉพาะสินค้าไม่ควบคุม";
-  } else {
-    noteText = "* ไม่มีข้อมูล";
-  }
+
+  let noteText = "* รวมสินค้าทั้งหมด";
 
   inventoryInfo.innerHTML = `
     <div style="color:orange;">ยอดขายรวม: ${totalSale.toLocaleString(
@@ -640,25 +588,8 @@ async function renderChart(
   });
 }
 
-// ✅ เพิ่ม event listeners สำหรับ checkbox
+// กดให้sidebarค้างไว้
 document.addEventListener("DOMContentLoaded", function () {
-  const cbControlled = document.getElementById("cb-include-controlled");
-  const cbUncontrolled = document.getElementById("cb-include-uncontrolled");
-
-  // เมื่อเปลี่ยนสถานะ checkbox → refresh ทั้งหมด
-  const handleCheckboxChange = async () => {
-    await populateProductSelect();
-    await populateYearSelect();
-    const periodType = document.getElementById("period-type")?.value || "month";
-    const selectedYear = yearSelect.value;
-    renderChart(periodType, productSelect.value, selectedYear);
-    showInventoryInfo(productSelect.value, selectedYear);
-  };
-
-  cbControlled?.addEventListener("change", handleCheckboxChange);
-  cbUncontrolled?.addEventListener("change", handleCheckboxChange);
-
-  // กดให้sidebarค้างไว้
   const hamburger = document.getElementById("hamburger-btn");
   const sidebar = document.getElementById("sidebar");
 
@@ -688,6 +619,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
 // init
 (async function init() {
   await populateProductSelect();
@@ -697,6 +629,38 @@ document.addEventListener("DOMContentLoaded", () => {
   renderChart(periodType, "", selectedYear);
   showInventoryInfo("", selectedYear);
 })();
+
+// เพิ่ม event listener ให้ product-select
+document.addEventListener("DOMContentLoaded", function () {
+  const productSelect = document.getElementById("product-select");
+  const yearSelect = document.getElementById("year-select");
+  const periodTypeSelect = document.getElementById("period-type");
+
+  productSelect?.addEventListener("change", function () {
+    const productCode = productSelect.value;
+    const selectedYear = yearSelect.value;
+    const periodType = periodTypeSelect?.value || "month";
+    renderChart(periodType, productCode, selectedYear);
+    showInventoryInfo(productCode, selectedYear);
+  });
+
+  // เพิ่ม event listener ให้ year-select และ period-type เพื่อให้เปลี่ยนกราฟตามปี/ช่วงเวลา
+  yearSelect?.addEventListener("change", function () {
+    const productCode = productSelect.value;
+    const selectedYear = yearSelect.value;
+    const periodType = periodTypeSelect?.value || "month";
+    renderChart(periodType, productCode, selectedYear);
+    showInventoryInfo(productCode, selectedYear);
+  });
+
+  periodTypeSelect?.addEventListener("change", function () {
+    const productCode = productSelect.value;
+    const selectedYear = yearSelect.value;
+    const periodType = periodTypeSelect?.value || "month";
+    renderChart(periodType, productCode, selectedYear);
+    showInventoryInfo(productCode, selectedYear);
+  });
+});
 
 async function renderProductsTablePage(products, page) {
   const perPage = 10;
