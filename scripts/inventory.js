@@ -115,10 +115,6 @@ async function loadProducts() {
 function applyFilters() {
     const statusFilter = document.getElementById('status-filter')?.value || '';
     const searchQuery = document.getElementById('search-input')?.value.toLowerCase().trim() || '';
-    
-    // ✅ ดึงค่าจาก checkbox controls
-    const controlsYes = document.getElementById('cb-controls-yes')?.checked;
-    const controlsNo = document.getElementById('cb-controls-no')?.checked;
 
     filteredProducts = allProducts.filter(p => {
         // กรองสถานะการขาย
@@ -134,33 +130,6 @@ function applyFilters() {
                 (p.model && p.model.toLowerCase().includes(searchQuery));
             
             if (!matches) return false;
-        }
-
-        // ✅ กรองการควบคุม
-        const controls = p.controls || ''; // ถ้าไม่มี controls ให้เป็น ''
-
-        // เงื่อนไข: 
-        // - ถ้าทั้ง 2 ช่อง checked → แสดงทั้งหมด
-        // - ถ้าเฉพาะ "ควบคุม" checked → แสดง controls === "ควบคุม" หรือ controls === ''
-        // - ถ้าเฉพาะ "ไม่ควบคุม" checked → แสดง controls === "ไม่ควบคุม"
-        // - ถ้าไม่มีช่องไหน checked → ไม่แสดงเลย
-
-        if (!controlsYes && !controlsNo) {
-            return false; // ไม่มีช่องไหน checked → ไม่แสดงอะไรเลย
-        }
-
-        if (controlsYes && controlsNo) {
-            return true; // แสดงทั้งหมด
-        }
-
-        if (controlsYes && !controlsNo) {
-            // แสดงเฉพาะ "ควบคุม" หรือไม่มีค่า
-            return controls === 'ควบคุม' || controls === '';
-        }
-
-        if (!controlsYes && controlsNo) {
-            // แสดงเฉพาะ "ไม่ควบคุม"
-            return controls === 'ไม่ควบคุม';
         }
 
         return true;
@@ -267,13 +236,12 @@ function renderTable() {
     }
 
     if (filteredProducts.length === 0) {
-        tbody.innerHTML = `
+        // สร้าง 10 แถวเปล่า
+        tbody.innerHTML = Array.from({length: 10}).map(() => `
             <tr>
-                <td colspan="11" style="text-align: center; padding: 40px; color: #999;">
-                    ไม่พบข้อมูลสินค้า
-                </td>
+                <td colspan="10" style="height:56px;"></td>
             </tr>
-        `;
+        `).join('');
         renderPagination();
         return;
     }
@@ -284,20 +252,12 @@ function renderTable() {
     const startIndex = (currentPage - 1) * PAGE_SIZE;
     const pageItems = filteredProducts.slice(startIndex, startIndex + PAGE_SIZE);
 
-    tbody.innerHTML = pageItems.map((product, index) => {
+    let rows = pageItems.map((product, index) => {
         const statusBadge = product.sale_status === 'ขายปกติ' 
             ? `<span class="status-badge status-active">ขายปกติ</span>`
             : `<span class="status-badge status-paused">พักการขาย</span>`;
 
         const quantityBadge = createQuantityBadge(product.quantity, product.unit);
-        
-        // (Optional) controls badge if you later add it to the table
-        const controlsBadge = product.controls === 'ควบคุม'
-            ? `<span class="controls-badge controls-yes">ควบคุม</span>`
-            : product.controls === 'ไม่ควบคุม'
-            ? `<span class="controls-badge controls-no">ไม่ควบคุม</span>`
-            : `<span class="controls-badge controls-default">-</span>`;
-
         return `
             <tr data-sale-status="${product.sale_status || ''}">
                 <td>${startIndex + index + 1}</td>
@@ -312,8 +272,14 @@ function renderTable() {
                 <td>${product.location || '-'}</td>
             </tr>
         `;
-    }).join('');
+    });
 
+    // เติมแถวเปล่าให้ครบ 10 แถว
+    for (let i = pageItems.length; i < PAGE_SIZE; i++) {
+        rows.push(`<tr><td colspan="10" style="height:56px;"></td></tr>`);
+    }
+
+    tbody.innerHTML = rows.join('');
     renderPagination();
 }
 
@@ -338,18 +304,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
         searchInput.addEventListener('input', applyFilters);
-    }
-
-    // ✅ Controls checkbox listeners
-    const cbControlsYes = document.getElementById('cb-controls-yes');
-    const cbControlsNo = document.getElementById('cb-controls-no');
-    
-    if (cbControlsYes) {
-        cbControlsYes.addEventListener('change', applyFilters);
-    }
-    
-    if (cbControlsNo) {
-        cbControlsNo.addEventListener('change', applyFilters);
     }
 
     // Logout

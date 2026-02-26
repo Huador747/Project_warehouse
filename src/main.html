@@ -197,7 +197,6 @@
         />
         <button class="function-btn-add active"></button>
         <button class="function-btn-edit active"></button>
-        <button class="function-btn-delete active"></button>
       </div>
       <!-- ส่วนแสดงตารางสินค้า -->
       <div id="product-list">
@@ -286,11 +285,6 @@
           window.location.href = "editproduct.html";
         });
 
-        const deleteProductBtn = document.querySelector(".function-btn-delete");
-        deleteProductBtn?.addEventListener("click", function (e) {
-          e.preventDefault();
-          window.location.href = "delete.html";
-        });
       });
 
       // ฟังก์ชันโหลดข้อมูล user profile จาก database
@@ -713,8 +707,7 @@
   }
 
   .function-btn-add,
-  .function-btn-edit,
-  .function-btn-delete {
+  .function-btn-edit {
     width: 100%;
     height: 42px;
     font-size: 14px;
@@ -903,8 +896,7 @@
   }
 
   .function-btn-add,
-  .function-btn-edit,
-  .function-btn-delete {
+  .function-btn-edit {
     height: 38px;
     font-size: 13px;
     padding: 6px 10px;

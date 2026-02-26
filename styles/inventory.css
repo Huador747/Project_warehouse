@@ -1,12 +1,15 @@
 /* ========== Global Styles ========== */
 body,
 html,
+th,
+td,
+tr,
 input,
-select,
 button,
+select,
 label,
 .navbar-text {
-  font-family: "Sarabun", sans-serif;
+  font-family: "Sarabun", sans-serif !important;
   font-weight: bold;
 }
 
@@ -653,6 +656,7 @@ td {
   padding: 10px 8px;
   border-bottom: 1px solid #f0c987;
   text-align: center;
+  height: 56px; /* กำหนดความสูงคงที่ของแต่ละแถว */
 }
 
 th {
@@ -664,6 +668,10 @@ th {
 
 td.negative {
   color: #e74c3c;
+}
+
+tr {
+  height: 56px; /* กำหนดความสูงคงที่ของแต่ละแถว */
 }
 
 tr:hover {

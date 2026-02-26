@@ -170,9 +170,6 @@ function renderUsers() {
                     <button class="btn-icon btn-edit" onclick="window.openEditUserModal('${user._id}')" title="แก้ไข">
                         ✏️
                     </button>
-                    <button class="btn-icon btn-delete" onclick="window.openDeleteModal('${user._id}', '${escapeHtml(user.username)}')" title="ลบ">
-                        🗑️
-                    </button>
                 </td>
             </tr>
         `;
@@ -383,28 +380,6 @@ async function handleUserSubmit(e) {
     } catch (error) {
         console.error('Save user error:', error);
         showError(error.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
-    }
-}
-
-async function confirmDelete() {
-    if (!deleteUserId) return;
-    
-    try {
-        const response = await fetch(`${api}/api/users/${deleteUserId}`, {
-            method: 'DELETE'
-        });
-        
-        if (!response.ok) {
-            const result = await response.json();
-            throw new Error(result.message || 'Delete failed');
-        }
-        
-        showSuccess('ลบผู้ใช้สำเร็จ');
-        closeDeleteModal();
-        await loadUsers();
-    } catch (error) {
-        console.error('Delete user error:', error);
-        showError(error.message || 'เกิดข้อผิดพลาดในการลบผู้ใช้');
     }
 }
 

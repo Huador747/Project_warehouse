@@ -1,12 +1,15 @@
 /* ========== Global Styles ========== */
 body,
 html,
+th,
+td,
+tr,
 input,
-select,
 button,
+select,
 label,
 .navbar-text {
-  font-family: "Sarabun", sans-serif;
+  font-family: "Sarabun", sans-serif !important;
   font-weight: bold;
 }
 
@@ -749,14 +752,25 @@ body {
   background: #fff;
 }
 
+
 #history-table tr,
 #history-table tr.empty-row {
   height: 48px;
 }
 
+#history-table th, #history-table td, #history-table tr.empty-row td {
+  padding: 8px 12px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  border-bottom: 1px solid #f0c987;
+  text-align: center;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 #history-table th,
 #history-table td {
-  height: 48px;
+  height: 56px;
   padding: 8px 12px;
   box-sizing: border-box;
   vertical-align: middle;

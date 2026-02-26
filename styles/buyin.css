@@ -1,12 +1,15 @@
 /* ========== Global Styles ========== */
 body,
 html,
+th,
+td,
+tr,
 input,
-select,
 button,
+select,
 label,
 .navbar-text {
-  font-family: "Sarabun", sans-serif;
+  font-family: "Sarabun", sans-serif !important;
   font-weight: bold;
 }
 
@@ -675,7 +678,8 @@ select,
   border: 1.5px solid #e0b97d;
   border-radius: 6px;
   font-size: 16px;
-  background: #fffbe9;
+  font-weight: bold;
+  background: #ffffff;
   color: #333;
   transition: border 0.3s, box-shadow 0.3s;
   box-sizing: border-box;
@@ -683,6 +687,11 @@ select,
   outline: none;
   cursor: pointer;
   height: 100%;
+}
+
+.product-form select option{
+  font-weight: bold;
+  font-family: "Sarabun", sans-serif;
 }
 
 select:focus,
@@ -696,7 +705,7 @@ select:hover,
 .form-group select:hover,
 .product-form select:hover {
   border: 2px solid #ffd336;
-  background: #fffde4;
+  background: #fdffe4;
 }
 
 select:disabled {
