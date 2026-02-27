@@ -259,7 +259,7 @@ form {
 
 .login-group input:focus + label,
 .login-group input:not(:placeholder-shown) + label {
-  top: -10px;
+  top: -20px;
   left: 12px;
   font-size: 0.8rem;
   color: var(--primary);

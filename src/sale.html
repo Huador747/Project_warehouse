@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
   <head>
     <meta charset="UTF-8" />
@@ -50,26 +50,42 @@
             </div>
           </div>
         </div>
-        <button class="nav-btn" onclick="window.location.href='main.html'">
+        <button class="nav-btn" onclick="window.location.href = 'main.html'">
           <span class="nav-icon">🏠</span> หน้าหลัก
         </button>
-        <button class="nav-btn" onclick="window.location.href='buyin.html'">
+        <button class="nav-btn" onclick="window.location.href = 'buyin.html'">
           <span class="nav-icon">🛒</span> รายการซื้อ
         </button>
         <button
           class="nav-btn active"
-          onclick="window.location.href='sale.html'"
+          onclick="window.location.href = 'sale.html'"
         >
           <span class="nav-icon">💸</span> รายการขาย
         </button>
-        <button class="nav-btn" onclick="window.location.href='history.html'">
+        <button class="nav-btn" onclick="window.location.href = 'history.html'">
           <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
         </button>
-        <button class="nav-btn" onclick="window.location.href='inventory.html'">
+        <button
+          class="nav-btn"
+          onclick="window.location.href = 'inventory.html'"
+        >
           <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
         </button>
-        <button class="nav-btn" onclick="window.location.href='movement.html'">
+        <button
+          class="nav-btn"
+          id="movement-btn"
+          onclick="window.location.href = 'movement.html'"
+          style="display: none"
+        >
           <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+        </button>
+        <button
+          class="nav-btn"
+          id="dashboard-btn"
+          onclick="window.location.href = '/../backend/src/dashboard.html'"
+          style="display: none"
+        >
+          <span class="nav-icon">📊</span> แดชบอร์ด
         </button>
       </div>
     </div>
@@ -230,12 +246,12 @@
             if (currentUser) {
               const avatarElement = document.getElementById("userAvatar");
               const avatarWrapper = document.querySelector(
-                ".user-avatar-wrapper"
+                ".user-avatar-wrapper",
               );
 
               // ลบ placeholder เดิม (ถ้ามี)
               const existingPlaceholder = avatarWrapper.querySelector(
-                ".user-avatar-placeholder"
+                ".user-avatar-placeholder",
               );
               if (existingPlaceholder) {
                 existingPlaceholder.remove();
@@ -257,14 +273,14 @@
             } else {
               createPlaceholder(
                 document.querySelector(".user-avatar-wrapper"),
-                username
+                username,
               );
             }
           } catch (error) {
             console.error("❌ Load user profile error:", error);
             createPlaceholder(
               document.querySelector(".user-avatar-wrapper"),
-              username
+              username,
             );
           }
         }
@@ -276,7 +292,7 @@
         if (avatar) avatar.style.display = "none";
 
         const existingPlaceholder = wrapper.querySelector(
-          ".user-avatar-placeholder"
+          ".user-avatar-placeholder",
         );
         if (existingPlaceholder) return;
 
@@ -293,6 +309,23 @@
       // โหลด user profile เมื่อหน้าโหลดเสร็จ
       document.addEventListener("DOMContentLoaded", function () {
         loadUserProfile();
+
+        // Show movement button only for admin
+        const role = localStorage.getItem("role");
+        const movementBtn = document.getElementById("movement-btn");
+        if (role === "admin" && movementBtn) {
+          movementBtn.style.display = "";
+        } else if (movementBtn) {
+          movementBtn.style.display = "none";
+        }
+
+        // show dashboard button only for admin
+        const dashboardBtn = document.getElementById("dashboard-btn");
+        if (role === "admin" && dashboardBtn) {
+          dashboardBtn.style.display = "";
+        } else if (dashboardBtn) {
+          dashboardBtn.style.display = "none";
+        }
 
         // Hamburger menu
         const hamburger = document.getElementById("hamburger-btn");

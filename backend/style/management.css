@@ -216,15 +216,30 @@ body {
   display: flex;
   gap: 10px;
   align-items: center;
+  font-size: 16px;
 }
 .filter-select {
+  font-size: 16px;
   height: 40px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: #fff;
+  background: #ffffff;
   padding: 0 12px;
   font-size: 14px;
   min-width: 160px;
+}
+.filter-select option {
+  background: linear-gradient(135deg, #fffbe9 80%, #e0e7ff 100%);
+  color: #1e293b;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+  transition: background 0.18s, color 0.18s;
+}
+.filter-select option:hover, .filter-select option:focus {
+  background: linear-gradient(135deg, #ffd336 0%, #a5b4fc 100%);
+  color: #0f172a;
 }
 
 /* Table */
@@ -402,8 +417,9 @@ form#userForm {
 }
 .form-group label {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
 }
+.us
 .required {
   color: var(--danger);
 }

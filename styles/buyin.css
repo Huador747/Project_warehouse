@@ -749,45 +749,28 @@ select:focus,
 .search-results-container {
   position: absolute;
   top: 100%;
-  /* วางใต้ parent (input) ทันที */
   left: 0;
-  /* ชิดซ้ายกับ parent */
   width: 100%;
-  /* กว้างเท่า parent (search input) */
   max-height: 400px;
-  /* เพิ่มความสูงเพื่อแสดงผลได้มากขึ้น */
   overflow-y: auto;
-  background: #faf2b9ff;
-  /* สีพื้นหลังตามเดิม */
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #fffbe9 80%, #ffd336 100%);
+  border: 2.5px solid;
+  border-image: linear-gradient(135deg, #ffd336 0%, #a97c50 100%) 1;
+  border-radius: 16px;
+  box-shadow:
+    0 8px 32px 0 rgba(30, 41, 59, 0.18),
+    0 1.5px 8px 0 rgba(255, 208, 128, 0.13),
+    0 0.5px 2px 0 rgba(255, 161, 68, 0.09),
+    0 0 0 1.5px rgba(255, 211, 54, 0.08);
+  backdrop-filter: blur(2.5px);
   z-index: 1000;
-  /* เพิ่ม z-index ให้สูงขึ้น */
-  margin-top: 4px;
-  /* เว้นระยะจาก input เล็กน้อย */
+  margin-top: 8px;
+  animation: searchResultPop 0.32s cubic-bezier(0.4,0.2,0.2,1);
 }
 
-/* ========== Search Results Container ========== */
-.search-results-container {
-  position: absolute;
-  top: 100%;
-  /* วางใต้ parent ทันที */
-  left: 0;
-  /* ชิดซ้ายกับ parent */
-  width: 100%;
-  /* กว้างเท่า parent */
-  max-height: 400px;
-  /* จำกัดความสูง */
-  overflow-y: auto;
-  background: white;
-  /* เปลี่ยนจาก #faf2b9ff เป็น white เหมือน sale */
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  margin-top: 4px;
-  /* เว้นระยะจาก input เล็กน้อย */
+@keyframes searchResultPop {
+  0% { opacity: 0; transform: translateY(-12px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .search-item {
@@ -798,7 +781,7 @@ select:focus,
 }
 
 .search-item:hover:not(.item-paused) {
-  background: #f8f9fa;
+  background: #fdf1bc;
   transform: translateX(4px);
 }
 
@@ -808,8 +791,8 @@ select:focus,
 
 .search-item .product_code {
   font-weight: 700;
-  color: #333;
-  font-size: 14px;
+  color: #d30303;
+  font-size: 15px;
   display: block;
   margin-bottom: 4px;
 }
@@ -833,7 +816,7 @@ select:focus,
 }
 
 .category {
-  color: #21f116;
+  color: #3716f1;
 }
 
 .no-results {

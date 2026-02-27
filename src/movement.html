@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
   <head>
     <meta charset="UTF-8" />
@@ -19,16 +19,9 @@
       <span></span>
     </button>
     <div class="sidebar" id="sidebar">
-      <!-- User Profile Section -->
       <div class="user-profile-section">
         <div class="user-avatar-wrapper">
-          <img
-            id="userAvatar"
-            src=""
-            alt="User Avatar"
-            class="user-avatar"
-            style="display: none"
-          />
+          <img id="userAvatar" src="" alt="User Avatar" class="user-avatar" style="display: none;" />
           <div class="online-indicator"></div>
         </div>
         <div class="user-info-text">
@@ -39,26 +32,37 @@
         </div>
       </div>
       <div class="sidebar-nav-btn">
-        <button class="nav-btn" onclick="window.location.href='main.html'">
+        <button class="nav-btn" onclick="window.location.href = 'main.html'">
           <span class="nav-icon">🏠</span> หน้าหลัก
         </button>
-        <button class="nav-btn" onclick="window.location.href='buyin.html'">
+        <button class="nav-btn" onclick="window.location.href = 'buyin.html'">
           <span class="nav-icon">🛒</span> รายการซื้อ
         </button>
-        <button class="nav-btn" onclick="window.location.href='sale.html'">
+        <button class="nav-btn" onclick="window.location.href = 'sale.html'">
           <span class="nav-icon">💸</span> รายการขาย
         </button>
-        <button class="nav-btn" onclick="window.location.href='history.html'">
+        <button class="nav-btn" onclick="window.location.href = 'history.html'">
           <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
         </button>
-        <button class="nav-btn" onclick="window.location.href='inventory.html'">
+        <button
+          class="nav-btn"
+          onclick="window.location.href = 'inventory.html'"
+        >
           <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
         </button>
         <button
           class="nav-btn active"
-          onclick="window.location.href='movement.html'"
+          onclick="window.location.href = 'movement.html'"
         >
           <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+        </button>
+        <button
+          class="nav-btn"
+          id="dashboard-btn"
+          onclick="window.location.href = '../backend/src/dashboard.html'"
+          style="display: none"
+        >
+          <span class="nav-icon">📊</span> แดชบอร์ด
         </button>
       </div>
     </div>
@@ -111,30 +115,33 @@
         id="inventory-info"
         style="margin-bottom: 24px; font-weight: bold; color: #d35400"
       ></div>
-      <canvas id="movementChart" width="900" height="400" class="movementChart"></canvas>
+      <canvas
+        id="movementChart"
+        width="900"
+        height="400"
+        class="movementChart"
+      ></canvas>
     </div>
     <script type="module" src="../scripts/movement.js"></script>
 
     <script>
-      // ฟังก์ชันโหลดข้อมูล user profile
+      // ฟังก์ชันโหลดข้อมูล user profile จาก database (main.html pattern)
       async function loadUserProfile() {
-        const userId = localStorage.getItem("userId");
-        const username = localStorage.getItem("username");
-        const role = localStorage.getItem("role");
+        const userId = localStorage.getItem('userId');
+        const username = localStorage.getItem('username');
+        const role = localStorage.getItem('role');
 
-        console.log("🔍 Loading user profile:", { userId, username, role });
+        console.log('🔍 Loading user profile:', { userId, username, role });
 
         // แสดงชื่อและ role จาก localStorage
         if (username) {
-          document.getElementById("userName").textContent = username;
+          document.getElementById('userName').textContent = username;
         }
 
         if (role) {
-          const roleBadge = document.querySelector(".role-badge");
-          roleBadge.textContent =
-            role === "admin" ? "ผู้ดูแลระบบ" : "ผู้ใช้งาน";
-          roleBadge.className =
-            role === "admin" ? "role-badge admin" : "role-badge user";
+          const roleBadge = document.querySelector('.role-badge');
+          roleBadge.textContent = role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้งาน';
+          roleBadge.className = role === 'admin' ? 'role-badge admin' : 'role-badge user';
         }
 
         // โหลดรูปโปรไฟล์จาก database
@@ -148,80 +155,86 @@
             }
 
             const users = await response.json();
-            const currentUser = users.find((u) => u._id === userId);
+            console.log('📥 Users loaded:', users.length);
+            const currentUser = users.find(u => u._id === userId);
 
             if (currentUser) {
-              const avatarElement = document.getElementById("userAvatar");
-              const avatarWrapper = document.querySelector(
-                ".user-avatar-wrapper"
-              );
+              console.log('✅ Current user found:', currentUser.username);
+              const avatarElement = document.getElementById('userAvatar');
+              const avatarWrapper = document.querySelector('.user-avatar-wrapper');
 
               // ลบ placeholder เดิม (ถ้ามี)
-              const existingPlaceholder = avatarWrapper.querySelector(
-                ".user-avatar-placeholder"
-              );
+              const existingPlaceholder = avatarWrapper.querySelector('.user-avatar-placeholder');
               if (existingPlaceholder) {
                 existingPlaceholder.remove();
               }
 
               if (currentUser.profileImage) {
+                // แสดงรูปจาก database (Base64)
+                console.log('🖼️ Profile image found, size:', (currentUser.profileImage.length / 1024).toFixed(2), 'KB');
                 avatarElement.src = currentUser.profileImage;
-                avatarElement.style.display = "block";
+                avatarElement.style.display = 'block';
 
-                avatarElement.onerror = function () {
-                  console.error("❌ Failed to load profile image");
-                  this.style.display = "none";
+                // Handle image load error
+                avatarElement.onerror = function() {
+                  console.error('❌ Failed to load profile image');
+                  this.style.display = 'none';
                   createPlaceholder(avatarWrapper, username);
                 };
               } else {
-                avatarElement.style.display = "none";
+                // ไม่มีรูป - ใช้ placeholder
+                console.log('ℹ️ No profile image, using placeholder');
+                avatarElement.style.display = 'none';
                 createPlaceholder(avatarWrapper, username);
               }
             } else {
-              createPlaceholder(
-                document.querySelector(".user-avatar-wrapper"),
-                username
-              );
+              console.warn('⚠️ User not found in database');
+              createPlaceholder(document.querySelector('.user-avatar-wrapper'), username);
             }
           } catch (error) {
-            console.error("❌ Load user profile error:", error);
-            createPlaceholder(
-              document.querySelector(".user-avatar-wrapper"),
-              username
-            );
+            console.error('❌ Load user profile error:', error);
+            // Fallback to placeholder on error
+            createPlaceholder(document.querySelector('.user-avatar-wrapper'), username);
           }
+        } else {
+          console.warn('⚠️ No userId in localStorage');
         }
+      }
+
+      // show dashboard button only for admin
+      const dashboardBtn = document.getElementById('dashboard-btn');
+      if (localStorage.getItem('role') === 'admin' && dashboardBtn) {
+        dashboardBtn.style.display = '';
+      } else if (dashboardBtn) {
+        dashboardBtn.style.display = 'none';
       }
 
       // ฟังก์ชันสร้าง placeholder
       function createPlaceholder(wrapper, username) {
-        const avatar = wrapper.querySelector("#userAvatar");
-        if (avatar) avatar.style.display = "none";
+        const avatar = wrapper.querySelector('#userAvatar');
+        if (avatar) avatar.style.display = 'none';
 
-        const existingPlaceholder = wrapper.querySelector(
-          ".user-avatar-placeholder"
-        );
-        if (existingPlaceholder) return;
+        const existingPlaceholder = wrapper.querySelector('.user-avatar-placeholder');
+        if (existingPlaceholder) return; // มีอยู่แล้ว
 
-        const placeholder = document.createElement("div");
-        placeholder.className = "user-avatar-placeholder";
-        placeholder.textContent = username
-          ? username.charAt(0).toUpperCase()
-          : "U";
+        const placeholder = document.createElement('div');
+        placeholder.className = 'user-avatar-placeholder';
+        placeholder.textContent = username ? username.charAt(0).toUpperCase() : 'U';
 
-        const indicator = wrapper.querySelector(".online-indicator");
+        // ใส่ก่อน online indicator
+        const indicator = wrapper.querySelector('.online-indicator');
         wrapper.insertBefore(placeholder, indicator);
       }
 
       // โหลด user profile เมื่อหน้าโหลดเสร็จ
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener('DOMContentLoaded', function() {
         loadUserProfile();
 
         // Hamburger menu
-        const hamburger = document.getElementById("hamburger-btn");
-        const sidebar = document.getElementById("sidebar");
-        hamburger?.addEventListener("click", () => {
-          sidebar.classList.toggle("sidebar-open");
+        const hamburger = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        hamburger?.addEventListener('click', () => {
+          sidebar.classList.toggle('sidebar-open');
         });
       });
     </script>

@@ -764,39 +764,52 @@ body {
   background: #ffb86c;
 }
 
+/* ========== Search Item Header ========== */
+.search-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
 /* ========== Search Results ========== */
-#search-result {
+#search-result-list,
+.search-results-container {
   position: absolute;
-  top: 70px;
-  right: auto;
+  top: 100%;
   left: 0;
-  width: auto;
-  min-width: 160px;
-  max-width: 100%;
-  box-sizing: border-box;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
   max-height: 400px;
   overflow-y: auto;
-  z-index: 3100;
-  border: 1px solid #e0b97d;
-  transition: opacity 0.15s ease-out;
+  background: linear-gradient(135deg, #fffbe9 80%, #ffd336 100%);
+  border: 2.5px solid;
+  border-image: linear-gradient(135deg, #ffd336 0%, #a97c50 100%) 1;
+  border-radius: 16px;
+  box-shadow:
+    0 8px 32px 0 rgba(30, 41, 59, 0.18),
+    0 1.5px 8px 0 rgba(255, 208, 128, 0.13),
+    0 0.5px 2px 0 rgba(255, 161, 68, 0.09),
+    0 0 0 1.5px rgba(255, 211, 54, 0.08);
+  backdrop-filter: blur(2.5px);
+  z-index: 1000;
+  margin-top: 8px;
+  animation: searchResultPop 0.32s cubic-bezier(0.4,0.2,0.2,1);
 }
 
-#search-result.hiding {
-  opacity: 0;
+@keyframes searchResultPop {
+  0% { opacity: 0; transform: translateY(-12px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .search-item {
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
-.search-item:hover {
-  background-color: #f5e0c0;
+.search-item:hover:not(.item-paused) {
+  background: #fdf1bc;
+  transform: translateX(4px);
 }
 
 .search-item:last-child {
@@ -804,18 +817,25 @@ body {
 }
 
 .search-item .product_code {
-  color: red;
-  font-size: 16px;
+  font-weight: 700;
+  color: #d30303;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .search-item .product_name {
-  color: rgb(0, 0, 0);
-  font-size: 16px;
+  color: #666;
+  font-size: 13px;
+  margin-top: 2px;
+  display: block;
 }
 
 .search-item .product_model {
-  color: rgb(255, 149, 28);
-  font-size: 16px;
+  color: #999;
+  font-size: 12px;
+  margin-top: 2px;
+  display: block;
 }
 
 .maker {
@@ -823,13 +843,14 @@ body {
 }
 
 .category {
-  color: #21f116;
+  color: #3716f1;
 }
 
 .no-results {
-  padding: 8px;
+  padding: 12px 16px;
   color: #ff1900;
-  font-size: 18px;
+  font-size: 16px;
+  text-align: center;
 }
 
 /* ========== Timestamp Container ========== */

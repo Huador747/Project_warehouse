@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
   <head>
     <meta charset="UTF-8" />
@@ -38,26 +38,39 @@
           </div>
         </div>
 
-        <button class="nav-btn" onclick="window.location.href='main.html'">
+        <button class="nav-btn" onclick="window.location.href = 'main.html'">
           <span class="nav-icon">🏠</span> หน้าหลัก
         </button>
-        <button class="nav-btn" onclick="window.location.href='buyin.html'">
+        <button class="nav-btn" onclick="window.location.href = 'buyin.html'">
           <span class="nav-icon">🛒</span> รายการซื้อ
         </button>
-        <button class="nav-btn" onclick="window.location.href='sale.html'">
+        <button class="nav-btn" onclick="window.location.href = 'sale.html'">
           <span class="nav-icon">💸</span> รายการขาย
         </button>
-        <button class="nav-btn" onclick="window.location.href='history.html'">
+        <button class="nav-btn" onclick="window.location.href = 'history.html'">
           <span class="nav-icon">📑</span> ประวัติการซื้อ-ขาย
         </button>
         <button
           class="nav-btn active"
-          onclick="window.location.href='inventory.html'"
+          onclick="window.location.href = 'inventory.html'"
         >
           <span class="nav-icon">📦</span> สรุปจำนวนคงเหลือสินค้า
         </button>
-        <button class="nav-btn" onclick="window.location.href='movement.html'">
+        <button
+          class="nav-btn"
+          id="movement-btn"
+          onclick="window.location.href = 'movement.html'"
+          style="display: none"
+        >
           <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+        </button>
+        <button
+          class="nav-btn"
+          id="dashboard-btn"
+          onclick="window.location.href = '../backend/src/dashboard.html'"
+          style="display: none"
+        >
+          <span class="nav-icon">📊</span> แดชบอร์ด
         </button>
       </div>
       <!--<div class="logo-container">
@@ -71,12 +84,12 @@
           <span class="navbar-text active">สรุปจำนวนคงเหลือสินค้า</span>
         </form>
         <select id="status-filter" class="status-filter-dropdown">
-            <option value="" selected>🌐 แสดงทุกสถานะ</option>
-            <optgroup label="สถานะการขาย">
-              <option value="ขายปกติ">✅ ขายปกติ • พร้อมขาย</option>
-              <option value="พักการขาย">⏸️ พักการขาย • ปิดชั่วคราว</option>
-            </optgroup>
-          </select>
+          <option value="" selected>🌐 แสดงทุกสถานะ</option>
+          <optgroup label="สถานะการขาย">
+            <option value="ขายปกติ">✅ ขายปกติ • พร้อมขาย</option>
+            <option value="พักการขาย">⏸️ พักการขาย • ปิดชั่วคราว</option>
+          </optgroup>
+        </select>
         <div class="search-logout-row">
           <input
             type="text"
@@ -89,59 +102,58 @@
         </div>
       </div>
       <div class="history-summary">
-        <h2>สรุปจำนวนคงเหลือสินค้า</h2>  
-        <!-- ✅ เพิ่มกรองการควบคุม -->
-        <div class="controls-checkbox-group" aria-label="กรองการควบคุม">
-          <label><input type="checkbox" id="cb-controls-yes" checked> ควบคุม</label>
-          <label><input type="checkbox" id="cb-controls-no" checked> ไม่ควบคุม</label>
-        </div>
+        <h2>สรุปจำนวนคงเหลือสินค้า</h2>
+        <!-- ลบกรองการควบคุมออก -->
 
         <script>
           (function () {
             function syncFromSelect() {
-              const select = document.getElementById('status-filter');
-              const normal = document.getElementById('cb-status-normal');
-              const paused = document.getElementById('cb-status-paused');
+              const select = document.getElementById("status-filter");
+              const normal = document.getElementById("cb-status-normal");
+              const paused = document.getElementById("cb-status-paused");
               if (!select || !normal || !paused) return;
 
-              if (select.value === 'ขายปกติ') {
-                normal.checked = true; paused.checked = false;
-              } else if (select.value === 'พักการขาย') {
-                normal.checked = false; paused.checked = true;
+              if (select.value === "ขายปกติ") {
+                normal.checked = true;
+                paused.checked = false;
+              } else if (select.value === "พักการขาย") {
+                normal.checked = false;
+                paused.checked = true;
               } else {
-                normal.checked = true; paused.checked = true;
+                normal.checked = true;
+                paused.checked = true;
               }
             }
 
             function syncToSelect() {
-              const select = document.getElementById('status-filter');
-              const normal = document.getElementById('cb-status-normal');
-              const paused = document.getElementById('cb-status-paused');
+              const select = document.getElementById("status-filter");
+              const normal = document.getElementById("cb-status-normal");
+              const paused = document.getElementById("cb-status-paused");
               if (!select || !normal || !paused) return;
 
-              let value = '';
-              if (normal.checked && !paused.checked) value = 'ขายปกติ';
-              else if (!normal.checked && paused.checked) value = 'พักการขาย';
-              else value = '';
+              let value = "";
+              if (normal.checked && !paused.checked) value = "ขายปกติ";
+              else if (!normal.checked && paused.checked) value = "พักการขาย";
+              else value = "";
 
               select.value = value;
-              select.dispatchEvent(new Event('change', { bubbles: true }));
+              select.dispatchEvent(new Event("change", { bubbles: true }));
             }
 
             function init() {
-              const normal = document.getElementById('cb-status-normal');
-              const paused = document.getElementById('cb-status-paused');
-              const select = document.getElementById('status-filter');
+              const normal = document.getElementById("cb-status-normal");
+              const paused = document.getElementById("cb-status-paused");
+              const select = document.getElementById("status-filter");
               if (!normal || !paused || !select) return;
 
-              normal.addEventListener('change', syncToSelect);
-              paused.addEventListener('change', syncToSelect);
-              select.addEventListener('change', syncFromSelect);
+              normal.addEventListener("change", syncToSelect);
+              paused.addEventListener("change", syncToSelect);
+              select.addEventListener("change", syncFromSelect);
               syncFromSelect();
             }
 
-            if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', init);
+            if (document.readyState === "loading") {
+              document.addEventListener("DOMContentLoaded", init);
             } else {
               init();
             }
@@ -214,12 +226,12 @@
             if (currentUser) {
               const avatarElement = document.getElementById("userAvatar");
               const avatarWrapper = document.querySelector(
-                ".user-avatar-wrapper"
+                ".user-avatar-wrapper",
               );
 
               // ลบ placeholder เดิม (ถ้ามี)
               const existingPlaceholder = avatarWrapper.querySelector(
-                ".user-avatar-placeholder"
+                ".user-avatar-placeholder",
               );
               if (existingPlaceholder) {
                 existingPlaceholder.remove();
@@ -241,18 +253,34 @@
             } else {
               createPlaceholder(
                 document.querySelector(".user-avatar-wrapper"),
-                username
+                username,
               );
             }
           } catch (error) {
             console.error("❌ Load user profile error:", error);
             createPlaceholder(
               document.querySelector(".user-avatar-wrapper"),
-              username
+              username,
             );
           }
         }
       }
+
+      // show movement button only for admin
+      const role = localStorage.getItem("role");
+      const movementBtn = document.getElementById("movement-btn");
+      if (role === "admin" && movementBtn) {
+        movementBtn.style.display = "";
+      } else if (movementBtn) {
+        movementBtn.style.display = "none";
+      }
+       // show dashboard button only for admin
+        const dashboardBtn = document.getElementById("dashboard-btn");
+        if (role === "admin" && dashboardBtn) {
+          dashboardBtn.style.display = "";
+        } else if (dashboardBtn) {
+          dashboardBtn.style.display = "none";
+        }
 
       // ฟังก์ชันสร้าง placeholder
       function createPlaceholder(wrapper, username) {
@@ -260,7 +288,7 @@
         if (avatar) avatar.style.display = "none";
 
         const existingPlaceholder = wrapper.querySelector(
-          ".user-avatar-placeholder"
+          ".user-avatar-placeholder",
         );
         if (existingPlaceholder) return;
 

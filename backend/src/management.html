@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จัดการผู้ใช้งาน - Project Warehouse</title>
-     <link
-      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/backend/style/management.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>จัดการผู้ใช้งาน - Project Warehouse</title>
+        <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/backend/style/management.css">
+        <style>
+            html, body, * {
+                font-family: 'Sarabun', sans-serif !important;
+            }
+        </style>
 </head>
 <body>
     <div class="container">
@@ -132,24 +132,26 @@
 
     <!-- Modals remain unchanged -->
     <!-- Add/Edit User Modal -->
+     
     <div id="userModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">เพิ่มผู้ใช้งานใหม่</h2>
-                <button class="close-btn" onclick="closeUserModal()">&times;</button>
+            <div class="modal-header" style="background:linear-gradient(135deg,#f8fafc 70%,#e0e7ff 100%);border-bottom:1.5px solid #e5e7eb;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span style="font-family: 'Sarabun', sans-serif; font-size:2.1rem;">👤</span>
+                  <h2 id="modalTitle" style="margin:0;font-size:1.35rem;font-weight:700;color:#1e293b;letter-spacing:0.2px;">เพิ่มผู้ใช้งานใหม่</h2>
+                </div>
+                <button class="close-btn" onclick="closeUserModal()" style="font-size:2rem;line-height:1;">&times;</button>
             </div>
-            <form id="userForm">
+            <form id="userForm" style="padding:18px 22px 0 22px;">
                 <input type="hidden" id="userId">
-                
                 <div class="form-group">
                     <label for="userName">ชื่อผู้ใช้งาน <span class="required">*</span></label>
-                    <input type="text" id="userName" required>
+                    <input type="text" id="userName" required style="font-size:1.1rem;">
                 </div>
-
                 <div class="form-group">
                     <label for="userPassword">รหัสผ่าน <span class="required" id="passwordRequired">*</span></label>
-                    <input type="password" id="userPassword">
-                    <small id="passwordHint">สำหรับแก้ไข: เว้นว่างหากไม่ต้องการเปลี่ยน</small>
+                    <input type="password" id="userPassword" style="font-size:1.1rem;">
+                    <small id="passwordHint" style="color:#64748b;">สำหรับแก้ไข: เว้นว่างหากไม่ต้องการเปลี่ยน</small>
                 </div>
                 <div class="form-group">
                     <label for="userProfileImage">รูปโปรไฟล์</label>
@@ -158,24 +160,24 @@
                 </div>
                 <div class="form-group">
                     <label for="userRole">บทบาท <span class="required">*</span></label>
-                    <select id="userRole" required>
+                    <select id="userRole" required style="font-size:1.1rem;">
                         <option value="">-- เลือกบทบาท --</option>
                         <option value="admin">ผู้ดูแลระบบ (Admin)</option>
                         <option value="user">ผู้ใช้งาน (User)</option>
                     </select>
                 </div>
-
+                
                 <div class="form-group">
                     <label for="userStatus">สถานะ</label>
-                    <select id="userStatus">
+                    <select id="userStatus" style="font-size:1.1rem;">
                         <option value="active">ใช้งาน</option>
                         <option value="inactive">ระงับการใช้งาน</option>
                     </select>
                 </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondary" onclick="closeUserModal()">ยกเลิก</button>
-                    <button type="submit" class="btn-primary">บันทึก</button>
+                <hr style="border:none;border-top:1.5px dashed #e5e7eb;margin:18px 0 10px 0;">
+                <div class="modal-actions" style="padding-bottom:18px;">
+                    <button type="button" class="btn-secondary" onclick="closeUserModal()" style="min-width:90px;">ยกเลิก</button>
+                    <button type="submit" class="btn-primary" style="min-width:90px;">บันทึก</button>
                 </div>
             </form>
         </div>

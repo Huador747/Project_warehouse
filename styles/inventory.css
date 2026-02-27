@@ -657,6 +657,7 @@ td {
   border-bottom: 1px solid #f0c987;
   text-align: center;
   height: 56px; /* กำหนดความสูงคงที่ของแต่ละแถว */
+  font-size: 16px;
 }
 
 th {
