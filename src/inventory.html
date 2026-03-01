@@ -63,7 +63,7 @@
           onclick="window.location.href = 'movement.html'"
           style="display: none"
         >
-          <span class="nav-icon">📈</span> กราฟการเคลื่อนไหวสินค้าและจำนวนเงิน
+          <span class="nav-icon">📈</span> การเคลื่อนไหวสินค้า
         </button>
         <button
           class="nav-btn"
@@ -82,7 +82,7 @@
     <div class="main-content">
       <div class="navbar">
         <form class="navbar-form">
-          <span class="navbar-text active">สรุปจำนวนคงเหลือสินค้า</span>
+          <span class="navbar-text active">จำนวนคงเหลือสินค้า</span>
           <button class="report-btn" id="report-btn" style="width: auto; margin-left: 14px;">
             <span class="btn-icon">📊</span>
             <span class="btn-text">Report</span>
@@ -272,6 +272,7 @@
         }
       }
 
+
       // show movement button only for admin
       const role = localStorage.getItem("role");
       const movementBtn = document.getElementById("movement-btn");
@@ -280,13 +281,20 @@
       } else if (movementBtn) {
         movementBtn.style.display = "none";
       }
-       // show dashboard button only for admin
-        const dashboardBtn = document.getElementById("dashboard-btn");
-        if (role === "admin" && dashboardBtn) {
-          dashboardBtn.style.display = "";
-        } else if (dashboardBtn) {
-          dashboardBtn.style.display = "none";
-        }
+
+      // show dashboard button only for admin
+      const dashboardBtn = document.getElementById("dashboard-btn");
+      if (role === "admin" && dashboardBtn) {
+        dashboardBtn.style.display = "";
+      } else if (dashboardBtn) {
+        dashboardBtn.style.display = "none";
+      }
+
+      // ซ่อนปุ่ม Report สำหรับ user
+      const reportBtn = document.getElementById("report-btn");
+      if (role !== "admin" && reportBtn) {
+        reportBtn.style.display = "none";
+      }
 
       // ฟังก์ชันสร้าง placeholder
       function createPlaceholder(wrapper, username) {

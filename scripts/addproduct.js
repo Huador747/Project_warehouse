@@ -58,6 +58,25 @@ function showCustomModal({ title = "", text = "", icon = "success", confirmText 
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Animation for navbar
+    const navbarTextEls = document.querySelectorAll('.navbar .navbar-text');
+    navbarTextEls.forEach((el, idx) => {
+        el.style.opacity = '0';
+        const delay = 100 + idx * 120;
+        el.style.animationDelay = `${delay}ms`;
+        requestAnimationFrame(() => el.classList.add('slide-in'));
+    });
+
+    // Animation for product form
+    const productForm = document.querySelector('.product-form');
+    if (productForm) {
+        productForm.classList.add('animate');
+        const groups = productForm.querySelectorAll('.form-group');
+        groups.forEach((g, idx) => {
+            g.classList.add('stagger');
+            g.style.animationDelay = 100 + idx * 70 + 'ms';
+        });
+    }
     // ฟังก์ชันเพิ่ม option ใหม่ให้ dropdown
     function addNewOption(inputId, selectId) {
         const input = document.getElementById(inputId);

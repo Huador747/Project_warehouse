@@ -359,3 +359,97 @@ document.addEventListener("click", function (e) {
     modal.style.display = "none";
   }
 });
+
+// เพิ่ม animation ให้แถวสินค้าในตาราง (tbody)
+function renderProductsTable(products, page = 1) {
+  const tbody = document.getElementById("product-table-body");
+  const start = (page - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const pageProducts = products.slice(start, end);
+
+  if (!pageProducts || pageProducts.length === 0) {
+    tbody.innerHTML =
+      '<tr><td colspan="16" class="no-data">ไม่พบข้อมูลสินค้า</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = pageProducts
+    .map(
+      (p, i) => `
+        <tr class="animate" style="animation-delay:${80 + i * 60}ms">
+          <td>${p.product_code || "-"}</td>
+          <td>${p.model || "-"}</td>
+          <td>${p.product_name || "-"}</td>
+          <td>${p.maker || "-"}</td>
+          <td>${p.category || "-"}</td>
+          <td>${p.qty ?? "-"}</td>
+          <td>${p.condition || "-"}</td>
+          <td>${p.price || "-"}</td>
+          <td>${p.sale_price || "-"}</td>
+          <td>${p.unit || "-"}</td>
+          <td>${p.location || "-"}</td>
+          <td>${p.createdDate || "-"}</td>
+          <td>${p.createdTime || "-"}</td>
+          <td>${p.updatedDate || "-"}</td>
+          <td>${p.updatedTime || "-"}</td>
+          <td>
+            ${
+              p.image
+                ? `<img src="${p.image}" class="product-img" alt="รูปสินค้า" />`
+                : "-"
+            }
+          </td>
+        </tr>
+      `
+    )
+    .join("");
+}
+
+// เพิ่ม animation ให้ search results
+function showSearchResults(products) {
+  const searchInput = document.querySelector(".search-product-input");
+  const oldResult = document.getElementById("search-result");
+  if (oldResult) oldResult.remove();
+  const resultDiv = document.createElement("div");
+  resultDiv.id = "search-result";
+  resultDiv.className = "search-results-container animate";
+  if (products.length === 0) {
+    resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
+  } else {
+    resultDiv.innerHTML = products
+      .map(
+        (p, i) => `
+          <div class="search-item" style="animation-delay:${40 + i * 40}ms" data-product='${JSON.stringify(
+          p
+        )}'>
+            <div class="product-code">${p.product_code || ""}</div>
+            <div class="product-name">${p.product_name || ""}</div>
+            <div class="product-details">
+              ${p.model || ""} - ${p.maker || ""} - ${p.category || ""}
+            </div>
+          </div>
+        `
+      )
+      .join("");
+  }
+  searchInput.parentNode.appendChild(resultDiv);
+
+  document.querySelectorAll(".search-item").forEach((item) => {
+    item.addEventListener("click", function () {
+      try {
+        const product = JSON.parse(this.dataset.product);
+        fillForm(product);
+      } catch (err) {
+        console.error("Error parsing product data:", err);
+      }
+    });
+  });
+}
+
+// ในส่วนฟอร์ม (ถ้ามี) ให้เพิ่ม .stagger ในแต่ละ form-group
+// ตัวอย่าง (ถ้ามีฟอร์มใน main.html):
+// <form class="product-form">
+//   <div class="form-group stagger">...</div>
+//   <div class="form-group stagger">...</div>
+//   ...
+// </form>

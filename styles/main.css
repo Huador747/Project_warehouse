@@ -2036,3 +2036,59 @@ td {
 }
 
 /* ========== END RESPONSIVE ========== */
+
+/* ===== Animation for card and staggered rows (from buyin.css) ===== */
+
+/* Card animation for product-card or any box */
+@keyframes cardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.product-card.animate {
+  animation: cardIn 520ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+/* Stagger animation for rows/fields */
+@keyframes staggerUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.form-group.stagger {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: staggerUp 360ms ease forwards;
+}
+
+/* Slide-in animation for search results (optional) */
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.search-results-container.animate .search-item {
+  opacity: 0;
+  animation: slideIn 220ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+.search-results-container.animate .search-item:nth-child(1) { animation-delay: 40ms; }
+.search-results-container.animate .search-item:nth-child(2) { animation-delay: 80ms; }
+.search-results-container.animate .search-item:nth-child(3) { animation-delay: 120ms; }
+.search-results-container.animate .search-item:nth-child(4) { animation-delay: 160ms; }
+
+/* ...existing code... */

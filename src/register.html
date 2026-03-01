@@ -22,9 +22,15 @@
 
         <div class="register-image-frame" id="imageFrame">
             <label for="profile-upload" class="register-upload-label" id="imageLabel">
-                <svg class="register-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" />
+                <svg class="register-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="48" height="48">
+                    <rect x="32" y="144" width="448" height="320" rx="40" fill="#cceeff" stroke="#222" stroke-width="16" />
+                    <rect x="32" y="144" width="448" height="160" fill="#ff6680" stroke="#222" stroke-width="16" />
+                    <circle cx="256" cy="304" r="96" fill="#fff" stroke="#222" stroke-width="16" />
+                    <circle cx="256" cy="304" r="56" fill="#fff" stroke="#222" stroke-width="16" />
+                    <rect x="160" y="64" width="192" height="80" rx="32" fill="#cceeff" stroke="#222" stroke-width="16" />
+                    <rect x="64" y="192" width="384" height="224" rx="32" fill="none" stroke="#222" stroke-width="8" />
+                    <circle cx="400" cy="192" r="12" fill="#222" />
+                    <circle cx="368" cy="192" r="12" fill="#222" />
                 </svg>
                 <input type="file" id="profile-upload" accept="image/*" style="display: none;">
             </label>
@@ -160,18 +166,21 @@
                             window.location.href = 'login.html';
                         }
                     });
-                    window.location.href = 'login.html';
-                } else response.status === 409 ? showCustomModal({
-                    icon: "error",
-                    title: "ลงทะเบียนไม่สำเร็จ",
-                    text: data.message || "ชื่อผู้ใช้นี้มีอยู่แล้วหรือข้อมูลไม่ถูกต้อง",
-                    confirmText: "ตกลง"
-                }) : showCustomModal({
-                    icon: "error",
-                    title: "ลงทะเบียนไม่สำเร็จ",
-                    text: data.message || "เกิดข้อผิดพลาดในการลงทะเบียน",
-                    confirmText: "ตกลง"
-                });
+                } else if (response.status === 409) {
+                    showCustomModal({
+                        icon: "error",
+                        title: "ลงทะเบียนไม่สำเร็จ",
+                        text: data.message || "ชื่อผู้ใช้นี้มีอยู่แล้วหรือข้อมูลไม่ถูกต้อง",
+                        confirmText: "ตกลง"
+                    });
+                } else {
+                    showCustomModal({
+                        icon: "error",
+                        title: "ลงทะเบียนไม่สำเร็จ",
+                        text: data.message || "เกิดข้อผิดพลาดในการลงทะเบียน",
+                        confirmText: "ตกลง"
+                    });
+                }
                 submitBtn.classList.remove('loading');
                 submitBtn.disabled = false;
             } catch (error) {

@@ -607,11 +607,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Navbar text animation
-  const navbarText = document.querySelector(".navbar-text");
-  if (navbarText) {
-    requestAnimationFrame(() => {
-      navbarText.classList.add("slide-in");
+  // Navbar text animation (slide-in)
+  const navbarTextEls = document.querySelectorAll('.navbar .navbar-text');
+  navbarTextEls.forEach((el, idx) => {
+    el.style.opacity = '0';
+    const delay = 100 + idx * 120;
+    el.style.animationDelay = `${delay}ms`;
+    requestAnimationFrame(() => el.classList.add('slide-in'));
+  });
+
+  // Animation for product form
+  const productForm = document.querySelector('.product-form');
+  if (productForm) {
+    productForm.classList.add('animate');
+    const groups = productForm.querySelectorAll('.form-group');
+    groups.forEach((g, idx) => {
+      g.classList.add('stagger');
+      g.style.animationDelay = 100 + idx * 70 + 'ms';
     });
   }
 });

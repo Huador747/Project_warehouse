@@ -314,4 +314,342 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.clear();
         window.location.replace('login.html');
     });
+
+    // Report button
+    document.getElementById("report-btn")?.addEventListener("click", async function (e) {
+        e.preventDefault();
+
+        // ดึงค่าตัวกรอง
+        const status = document.getElementById("status-filter")?.value || "";
+        const search = document.getElementById("search-input")?.value?.trim() || "";
+
+        // ดึงข้อมูลล่าสุด
+        const { products, buyin, sale } = await fetchAll();
+        const stockList = computeRealStock(products, buyin, sale);
+
+        // กรองข้อมูลตามสถานะและคำค้นหา
+        let filtered = stockList.filter(p => {
+            if (status && p.sale_status !== status) return false;
+            if (search) {
+                const q = search.toLowerCase();
+                return (
+                    (p.product_code && p.product_code.toLowerCase().includes(q)) ||
+                    (p.product_name && p.product_name.toLowerCase().includes(q)) ||
+                    (p.model && p.model.toLowerCase().includes(q))
+                );
+            }
+            return true;
+        });
+
+        // สรุปยอดรวม
+        const totalProducts = filtered.length;
+        const totalStock = filtered.reduce((sum, p) => sum + (Number(p.quantity) || 0), 0);
+
+        // สร้าง HTML สำหรับ Report
+        const reportHtml = `
+        <html>
+        <head>
+          <meta charset="utf-8" />
+          <style>
+            :root{
+              --bg: #ffffff;
+              --text: #111827;
+              --muted: #6b7280;
+              --border: #e5e7eb;
+              --brand: #fbbf24;
+              --brand-2: #f59e0b;
+              --card: #ffffff;
+              --tableHead: #fff7d6;
+              --rowAlt: #fafafa;
+              --shadow: 0 10px 25px rgba(17,24,39,.08);
+              --shadow-sm: 0 2px 10px rgba(17,24,39,.08);
+              --radius: 14px;
+            }
+            * { box-sizing: border-box; }
+            body {
+              font-family: "Sarabun", sans-serif;
+              margin: 0;
+              padding: 28px;
+              color: var(--text);
+              background: #f6f7fb;
+            }
+            .page {
+              background: var(--bg);
+              border: 1px solid var(--border);
+              border-radius: 18px;
+              box-shadow: var(--shadow);
+              padding: 26px;
+            }
+            .header {
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              gap: 16px;
+              padding: 18px 18px;
+              border-radius: var(--radius);
+              background: linear-gradient(135deg, #fff7d6 0%, #ffffff 60%);
+              border: 1px solid #fde68a;
+            }
+            .header h2{
+              margin: 0;
+              font-size: 1.35rem;
+              letter-spacing: .2px;
+            }
+            .header .sub {
+              margin-top: 6px;
+              color: var(--muted);
+              font-size: .95rem;
+              line-height: 1.35;
+            }
+            .badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 8px 12px;
+              border-radius: 999px;
+              background: #111827;
+              color: #fff;
+              font-size: .85rem;
+              white-space: nowrap;
+              box-shadow: var(--shadow-sm);
+            }
+            .dot{
+              width: 10px;
+              height: 10px;
+              border-radius: 999px;
+              background: var(--brand-2);
+              display: inline-block;
+            }
+            .filter-card{
+              margin-top: 18px;
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: var(--radius);
+              box-shadow: var(--shadow-sm);
+              padding: 18px 18px 14px;
+            }
+            .filter-title{
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 12px;
+              margin: 0 0 14px 0;
+              padding-bottom: 10px;
+              border-bottom: 2px solid #fde68a;
+            }
+            .filter-title h3{
+              margin: 0;
+              font-size: 1.05rem;
+              color: #1f2937;
+            }
+            .chip{
+              padding: 6px 10px;
+              border-radius: 999px;
+              background: #fff7d6;
+              border: 1px solid #fde68a;
+              color: #92400e;
+              font-size: .85rem;
+              white-space: nowrap;
+            }
+            .filter-grid{
+              display: grid;
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              gap: 10px 16px;
+              margin: 0;
+              padding: 0;
+              list-style: none;
+            }
+            .filter-grid li{
+              display: flex;
+              gap: 8px;
+              align-items: baseline;
+              color: #374151;
+              font-size: .95rem;
+              line-height: 1.4;
+            }
+            .filter-grid strong{
+              color: #111827;
+              font-weight: 700;
+            }
+            .summary-wrap{
+              display: grid;
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              gap: 14px;
+              margin-top: 16px;
+            }
+            .summary-card{
+              border: 1px solid var(--border);
+              border-radius: var(--radius);
+              background: var(--card);
+              box-shadow: var(--shadow-sm);
+              padding: 14px 16px;
+            }
+            .summary-label{
+              color: var(--muted);
+              font-size: .9rem;
+              margin: 0 0 8px 0;
+            }
+            .summary-value{
+              margin: 0;
+              font-size: 1.25rem;
+              font-weight: 800;
+              letter-spacing: .2px;
+            }
+            .summary-meta{
+              margin-top: 6px;
+              color: #374151;
+              font-size: .95rem;
+            }
+            .table-wrap{
+              margin-top: 18px;
+              border-radius: var(--radius);
+              overflow: hidden;
+              border: 1px solid var(--border);
+              box-shadow: var(--shadow-sm);
+              background: #fff;
+            }
+            table{
+              width: 100%;
+              border-collapse: separate;
+              border-spacing: 0;
+              table-layout: fixed;
+            }
+            thead th{
+              position: sticky;
+              top: 0;
+              z-index: 2;
+              background: var(--tableHead);
+              border-bottom: 1px solid var(--border);
+              color: #1f2937;
+              font-size: .9rem;
+              text-align: left;
+              padding: 10px 10px;
+              white-space: nowrap;
+            }
+            tbody td{
+              border-bottom: 1px solid var(--border);
+              padding: 9px 10px;
+              font-size: .9rem;
+              color: #111827;
+              vertical-align: top;
+              word-break: break-word;
+              overflow-wrap: anywhere;
+            }
+            tbody tr:nth-child(even){
+              background: var(--rowAlt);
+            }
+            tbody tr:hover{
+              background: #fff7d6;
+            }
+            .num { text-align: right; font-variant-numeric: tabular-nums; }
+            .center { text-align: center; }
+            .action-buttons{
+              display: flex;
+              gap: 12px;
+              margin-top: 18px;
+              justify-content: flex-end;
+            }
+            .btn{
+              appearance: none;
+              border: 1px solid #fcd34d;
+              background: linear-gradient(180deg, #ffd336 0%, #fbbf24 100%);
+              padding: 10px 18px;
+              border-radius: 10px;
+              cursor: pointer;
+              font-size: .95rem;
+              font-weight: 700;
+              color: #111827;
+              box-shadow: var(--shadow-sm);
+              transition: transform .12s ease, box-shadow .12s ease;
+              min-width: 150px;
+            }
+            .btn:hover{
+              transform: translateY(-1px);
+              box-shadow: 0 12px 24px rgba(17,24,39,.10);
+            }
+            @media print{
+              body{ background: #fff; padding: 0; }
+              .page{ box-shadow: none; border: none; padding: 0; }
+              .action-buttons{ display: none !important; }
+              thead th{ position: static; }
+              * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+              @page { margin: 0.6cm; size: A4; }
+            }
+            @media (max-width: 920px){
+              body{ padding: 14px; }
+              .summary-wrap{ grid-template-columns: 1fr; }
+              .filter-grid{ grid-template-columns: 1fr; }
+              thead th, tbody td{ font-size: .85rem; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="page">
+            <div class="header">
+              <div>
+                <h2>รายงานสรุปจำนวนคงเหลือสินค้า</h2>
+                <div class="sub">สรุปยอดและรายละเอียดสินค้าตามตัวกรองรายงาน</div>
+              </div>
+              <div class="badge"><span class="dot"></span> Report</div>
+            </div>
+            <div class="filter-card">
+              <div class="filter-title">
+                <h3>ตัวกรองรายงาน</h3>
+                <div class="chip">${status ? status : "ทุกสถานะ"}</div>
+              </div>
+              <ul class="filter-grid">
+                <li>สถานะ: <strong>${status ? status : "ทุกสถานะ"}</strong></li>
+                <li>คำค้นหา: <strong>${search ? search : "ไม่ระบุ"}</strong></li>
+                <li>จำนวนสินค้า: <strong>${totalProducts}</strong></li>
+                <li>จำนวนคงเหลือรวม: <strong>${totalStock.toLocaleString("th-TH")}</strong></li>
+              </ul>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:60px;">ลำดับ</th>
+                    <th style="width:90px;">รหัสสินค้า</th>
+                    <th style="width:120px;">โมเดล</th>
+                    <th style="width:160px;">ชื่อสินค้า</th>
+                    <th style="width:90px;">ผู้ผลิต</th>
+                    <th style="width:90px;">หมวดหมู่</th>
+                    <th style="width:90px;">สถานะขาย</th>
+                    <th style="width:90px;" class="num">จำนวนคงเหลือ</th>
+                    <th style="width:65px;">หน่วย</th>
+                    <th style="width:90px;">ที่เก็บ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${filtered.map((p, idx) => `
+                    <tr>
+                      <td>${idx + 1}</td>
+                      <td>${p.product_code || '-'}</td>
+                      <td>${p.model || '-'}</td>
+                      <td>${p.product_name || '-'}</td>
+                      <td>${p.maker || '-'}</td>
+                      <td>${p.category || '-'}</td>
+                      <td>${p.sale_status || '-'}</td>
+                      <td class="num">${Number(p.quantity).toLocaleString("th-TH")}</td>
+                      <td>${p.unit || '-'}</td>
+                      <td>${p.location || '-'}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+            <div class="action-buttons">
+              <button class="btn" onclick="window.print()">Print</button>
+            </div>
+          </div>
+        </body>
+        </html>
+        `;
+
+        // เปิดหน้าต่างใหม่แสดงรายงาน
+        const reportWin = window.open("", "_blank", "width=900,height=1200");
+        reportWin.document.write(reportHtml);
+        reportWin.document.title = "รายงานสรุปจำนวนคงเหลือสินค้า";
+        reportWin.document.close();
+    });
 });
