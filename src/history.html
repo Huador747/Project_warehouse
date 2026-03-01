@@ -64,33 +64,30 @@
     </div>
 
     <div class="main-content">
-        <div class="navbar">
-            <form class="navbar-form">
-                <span class="navbar-text active">ประวัติการซื้อ-ขาย</span>
-                <button class="report-btn" id="report-btn" style="width: auto">
-          <span class="btn-icon">📊</span>
-          <span class="btn-text">Report</span>
-          <span class="btn-glow"></span>
-        </button>
-                <select id="history-type" class="compact-select">
-                    <option value="all">ทั้งหมด</option>
-                    <option value="buyin">รายการซื้อ</option>
-                    <option value="sale">รายการขาย</option>
-                </select>
-                <!-- เพิ่มดรอปดาวน์แยกปีและเดือน -->
-                <select id="month-select">
-                    <option value="all" class="compact-select">ทุกเดือน</option>
-                </select>
-                <select id="year-select">
-                    <option value="all" class="compact-select">ทุกปี</option>
-                </select>
-            </form>
-            <div class="search-logout-row">
-                <input id="search-input" type="text" class="search-product-input"
-                    placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
-                <button class="logout-btn" id="logout-btn">ออกจากระบบ</button>
-            </div>
+      <div class="navbar">
+        <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap; width: 100%;">
+          <span class="navbar-text active" style="margin-right: 18px;">ประวัติการซื้อ-ขาย</span>
+          <button class="report-btn" id="report-btn" style="width: auto; min-width: 110px;">
+            <span class="btn-icon">📊</span>
+            <span class="btn-text">Report</span>
+            <span class="btn-glow"></span>
+          </button>
+          <select id="history-type" class="compact-select" style="min-width: 110px;">
+            <option value="all">ทั้งหมด</option>
+            <option value="buyin">รายการซื้อ</option>
+            <option value="sale">รายการขาย</option>
+          </select>
+          <select id="month-select" style="min-width: 110px;">
+            <option value="all" class="compact-select">ทุกเดือน</option>
+          </select>
+          <select id="year-select" style="min-width: 110px;">
+            <option value="all" class="compact-select">ทุกปี</option>
+          </select>
+          <div style="flex:1;"></div>
+          <input id="search-input" type="text" class="search-product-input" style="max-width: 260px;" placeholder="ค้นหาด้วยรหัส, ชื่อสินค้า หรือโมเดล...">
+          <button class="logout-btn" id="logout-btn" style="margin-left: 8px;">ออกจากระบบ</button>
         </div>
+      </div>
         <div class="history-list">
             <div class="history-table-wrapper">
                 <table id="history-table">
