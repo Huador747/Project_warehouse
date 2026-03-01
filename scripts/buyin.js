@@ -425,21 +425,97 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify(productData),
             });
             if (res.ok) {
-                alert("บันทึกข้อมูลสำเร็จ");
-                this.reset();
+                showCustomModal({
+                    icon: "success",
+                    title: "บันทึกข้อมูลสำเร็จ!",
+                    text: "รายการซื้อสินค้าถูกบันทึกเรียบร้อยแล้ว 🎉",
+                    confirmText: "ตกลง",
+                    onClose: () => { this.reset(); }
+                });
             } else {
                 const data = await res.json();
-                alert(data.message || "เกิดข้อผิดพลาด");
+                showCustomModal({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด",
+                    text: data.message || "เกิดข้อผิดพลาด",
+                    confirmText: "ตกลง"
+                });
             }
         } catch (err) {
-            alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
+            showCustomModal({
+                icon: "error",
+                title: "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้",
+                text: "เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
+                confirmText: "ตกลง"
+            });
         }
     });
 
     // คำนวณยอดรวมตามราคา/จำนวน
     document.getElementById("price")?.addEventListener("input", updateTotal);
     document.getElementById("quantity")?.addEventListener("input", updateTotal);
-});
+    });
+
+    // Custom Modal สำหรับแจ้งเตือน
+    function showCustomModal({ title = "", text = "", icon = "success", confirmText = "ตกลง", onClose = null }) {
+    // ลบ modal เดิมถ้ามี
+    document.getElementById("custom-modal")?.remove();
+
+    // สร้าง modal
+    const modal = document.createElement("div");
+    modal.id = "custom-modal";
+    modal.style.position = "fixed";
+    modal.style.top = "0";
+    modal.style.left = "0";
+    modal.style.width = "100vw";
+    modal.style.height = "100vh";
+    modal.style.background = "rgba(0,0,0,0.35)";
+    modal.style.zIndex = "99999";
+    modal.style.display = "flex";
+    modal.style.alignItems = "center";
+    modal.style.justifyContent = "center";
+    modal.innerHTML = `
+      <div style="
+        background: #fffbe9;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(30,41,59,0.18);
+        padding: 32px 28px 24px 28px;
+        min-width: 320px;
+        max-width: 90vw;
+        text-align: center;
+        position: relative;
+        font-family: 'Sarabun', sans-serif;
+      ">
+        <div style="font-size: 2.5rem; margin-bottom: 12px;">
+          ${icon === "success" ? "✅" : icon === "error" ? "❌" : "ℹ️"}
+        </div>
+        <div style="font-size: 1.35rem; font-weight: bold; color: #d35400; margin-bottom: 10px;">
+          ${title}
+        </div>
+        <div style="font-size: 1.1rem; color: #333; margin-bottom: 22px;">
+          ${text}
+        </div>
+        <button id="custom-modal-confirm" style="
+          padding: 10px 36px;
+          font-size: 1.1rem;
+          border-radius: 8px;
+          background: #ffd336;
+          border: none;
+          cursor: pointer;
+          color: #333;
+          font-weight: 600;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          transition: background 0.2s;
+        ">${confirmText}</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    document.getElementById("custom-modal-confirm").onclick = () => {
+        modal.remove();
+        if (typeof onClose === "function") onClose();
+    };
+}
 
 // หมายเหตุ: โค้ดตรวจสอบจำนวนขายไม่เกินจำนวนคงเหลือ (salequantity) ไม่ได้นำมาใช้ในหน้า Buy-in
 // เพราะการซื้อเข้าระบบไม่ต้องจำกัดจำนวนตามสต็อกคงเหลือ

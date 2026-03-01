@@ -1,112 +1,217 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../styles/login.css" />
     <title>เข้าสู่ระบบ - Project Warehouse</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="login-container">
-        <div class="login-left">
-            <div class="logo-container">
-                <img src="../assets/logo.png" alt="Project Warehouse Logo" class="logo" />
-            </div>
+      <div class="login-left">
+        <div class="logo-container">
+          <img
+            src="../assets/logo.png"
+            alt="Project Warehouse Logo"
+            class="logo"
+          />
         </div>
-        
-        <div class="login-right">
-            <h2>เข้าสู่ระบบ</h2>
-            
-            <form id="login-form">
-                <div class="login-group">
-                    <input type="text" id="username" name="username" required placeholder=" " autocomplete="username" />
-                    <label for="username">ชื่อผู้ใช้</label>
-                </div>
-                
-                <div class="login-group">
-                    <input type="password" id="password" name="password" required placeholder=" " autocomplete="current-password" />
-                    <label for="password">รหัสผ่าน</label>
-                </div>
-                
-                <input type="submit" value="เข้าสู่ระบบ" />
-                <button type="button" id="register-btn">ลงทะเบียน</button>
-            </form>
-            
-            <div class="login-links">
-                <a href="#">ลืมรหัสผ่าน?</a>
-            </div>
+      </div>
+
+      <div class="login-right">
+        <h2>เข้าสู่ระบบ</h2>
+
+        <form id="login-form">
+          <div class="login-group">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              placeholder=" "
+              autocomplete="username"
+            />
+            <label for="username">ชื่อผู้ใช้</label>
+          </div>
+
+          <div class="login-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder=" "
+              autocomplete="current-password"
+            />
+            <label for="password">รหัสผ่าน</label>
+          </div>
+
+          <input type="submit" value="เข้าสู่ระบบ" />
+          <button type="button" id="register-btn">ลงทะเบียน</button>
+        </form>
+
+        <div class="login-links">
+          <a href="#">ลืมรหัสผ่าน?</a>
         </div>
+      </div>
     </div>
 
     <script>
-        const BACKEND_URL = `http://${window.location.hostname}:3000`;
+      const BACKEND_URL = `http://${window.location.hostname}:3000`;
 
-        // Login Function
-        async function loginUser(username, password) {
-            const submitBtn = document.querySelector('input[type="submit"]');
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
+      // Login Function
+      async function loginUser(username, password) {
+        const submitBtn = document.querySelector('input[type="submit"]');
+        submitBtn.classList.add("loading");
+        submitBtn.disabled = true;
 
-            try {
-                const response = await fetch(`${BACKEND_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
+        try {
+          const response = await fetch(`${BACKEND_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
 
-                const data = await response.json();
+          const data = await response.json();
 
-                if (response.ok && data.message === 'เข้าสู่ระบบสำเร็จ') {
-                    // บันทึก userId ด้วย
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('username', username);
-                    localStorage.setItem('role', data.role);
-                    localStorage.setItem('userId', data.userId); // ++ เพิ่มบรรทัดนี้
-                    
-                    // Redirect based on role
-                    if (data.role === 'admin') {
-                        window.location.href = '/backend/src/dashboard.html';
-                    } else {
-                        window.location.href = '/main.html';
-                    }
+          if (response.ok) {
+            showCustomModal({
+              icon: "success",
+              title: "เข้าสู่ระบบสำเร็จ",
+              text: `ยินดีต้อนรับกลับมา, ${username}!`,
+              confirmText: "ตกลง",
+              onClose: () => {
+                // บันทึกข้อมูลหลังจากกดตกลง
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("username", username);
+                localStorage.setItem("role", data.role);
+                localStorage.setItem("userId", data.userId);
+
+                // Redirect หลังจากกดปุ่มตกลง
+                if (data.role === "admin") {
+                  window.location.href = "/backend/src/dashboard.html";
                 } else {
-                    alert('❌ ' + data.message);
-                    submitBtn.classList.remove('loading');
-                    submitBtn.disabled = false;
+                  window.location.href = "/main.html";
                 }
-            } catch (error) {
-                alert('❌ เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ' + error.message);
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
-            }
+              },
+            });
+          } else {
+            showCustomModal({
+              icon: "error",
+              title: "เข้าสู่ระบบไม่สำเร็จ",
+              text: data.message || "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+            });
+            submitBtn.classList.remove("loading");
+            submitBtn.disabled = false;
+          }
+        } catch (error) {
+          showCustomModal({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด",
+            text: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง",
+          });
+          submitBtn.classList.remove("loading");
+          submitBtn.disabled = false;
         }
+      }
 
-        // Form Submit
-        document.getElementById('login-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            await loginUser(username, password);
+      // Form Submit
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+          await loginUser(username, password);
         });
 
-        // Enter Key
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                if (username && password) {
-                    loginUser(username, password);
-                }
-            }
+      // Enter Key
+      document.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+          if (username && password) {
+            loginUser(username, password);
+          }
+        }
+      });
+
+      // Register Button
+      document
+        .getElementById("register-btn")
+        .addEventListener("click", function () {
+          window.location.href = "register.html";
         });
 
-        // Register Button
-        document.getElementById('register-btn').addEventListener('click', function() {
-            window.location.href = 'register.html';
-        });
+      // Custom Modal สำหรับแจ้งเตือน
+      function showCustomModal({
+        title = "",
+        text = "",
+        icon = "success",
+        confirmText = "ตกลง",
+        onClose = null,
+      }) {
+        document.getElementById("custom-modal")?.remove();
+
+        const modal = document.createElement("div");
+        modal.id = "custom-modal";
+        modal.style.position = "fixed";
+        modal.style.top = "0";
+        modal.style.left = "0";
+        modal.style.width = "100vw";
+        modal.style.height = "100vh";
+        modal.style.background = "rgba(0,0,0,0.35)";
+        modal.style.zIndex = "99999";
+        modal.style.display = "flex";
+        modal.style.alignItems = "center";
+        modal.style.justifyContent = "center";
+        modal.innerHTML = `
+          <div style="
+            background: #fffbe9;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(30,41,59,0.18);
+            padding: 32px 28px 24px 28px;
+            min-width: 320px;
+            max-width: 90vw;
+            text-align: center;
+            position: relative;
+            font-family: 'Sarabun', sans-serif;
+          ">
+            <div style="font-size: 2.5rem; margin-bottom: 12px;">
+              ${icon === "success" ? "✅" : icon === "error" ? "❌" : "ℹ️"}
+            </div>
+            <div style="font-size: 1.35rem; font-weight: bold; color: #d35400; margin-bottom: 10px;">
+              ${title}
+            </div>
+            <div style="font-size: 1.1rem; color: #333; margin-bottom: 22px;">
+              ${text}
+            </div>
+            <button id="custom-modal-confirm" style="
+              padding: 10px 36px;
+              font-size: 1.1rem;
+              border-radius: 8px;
+              background: #ffd336;
+              border: none;
+              cursor: pointer;
+              color: #333;
+              font-weight: 600;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            ">${confirmText}</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById("custom-modal-confirm").onclick = () => {
+          modal.remove();
+          if (typeof onClose === "function") onClose();
+        };
+      }
     </script>
-</body>
+  </body>
 </html>

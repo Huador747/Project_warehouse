@@ -97,7 +97,9 @@ body {
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   background: #fff;
 }
 
@@ -266,7 +268,8 @@ body {
   background: #ffd336;
   color: #222;
   border: 3px solid #e0b97d;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.2),
     inset 0 -6px 12px rgba(0, 0, 0, 0.06);
   transform: translateY(-4px) scale(1.02);
   position: relative;
@@ -276,7 +279,8 @@ body {
   background: #ffe0b2;
   color: #333;
   border: 3px solid #8b7f7f;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22),
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.22),
     inset 0 -6px 12px rgba(0, 0, 0, 0.09);
   transform: translateY(-2px) scale(1.04);
   cursor: pointer;
@@ -390,7 +394,8 @@ body {
 
 .sidebar-nav-btn .nav-btn.active {
   background: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12),
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.12),
     inset 0 -2px 6px rgba(0, 0, 0, 0.08);
   font-weight: 700;
   transform: translateX(6px);
@@ -426,6 +431,22 @@ body {
   position: fixed;
   z-index: 3000;
   transition: box-shadow 0.3s;
+}
+
+.report-btn {
+  background: #f15c22;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  height: 50px;
+  width: 7vw;
+  font-size: 16px;
+  box-sizing: border-box;
+  box-shadow: #000000 0px 4px 8px -2px;
+  margin-left: -200px;
 }
 
 @keyframes gradientShift {
@@ -489,7 +510,8 @@ body {
 }
 
 .navbar-text.slide-in {
-  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+  animation:
+    slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
     subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
@@ -637,7 +659,9 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(6px);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 /* ========== Table Styles ========== */
@@ -729,7 +753,11 @@ tr:hover {
   appearance: none;
   outline: none;
   cursor: pointer;
-  transition: border 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s,
+    background 0.3s,
+    color 0.3s;
   position: relative;
   margin-left: 10px;
   background-image: url("data:image/svg+xml;utf8,<svg fill='orange' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
@@ -1029,13 +1057,13 @@ tr:hover {
   }
 
   /* Navbar text */
-   .navbar-text {
+  .navbar-text {
     font-size: 24px;
     padding: 4px 7px;
     gap: 4px;
   }
 
- .navbar-text.active {
+  .navbar-text.active {
     font-size: 20px;
     margin-right: 12px;
     margin-left: 48px;

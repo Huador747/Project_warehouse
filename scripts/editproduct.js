@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('product_code').value = product.product_code || '';
         document.getElementById('model').value = product.model || '';
         document.getElementById('product_name').value = product.product_name || '';
+        document.getElementById('price').value = product.price || '';
+        document.getElementById('sale_price').value = product.sale_price || '';
+        document.getElementById('unit').value = product.unit || '';
+        document.getElementById('location').value = product.location || '';
 
         // --- เพิ่ม option ให้ <select> ถ้ายังไม่มี ---
         // สำหรับ maker
@@ -50,14 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         controlsSelect?.removeAttribute('required');
 
         // ตั้งค่าตามข้อมูลสินค้า ถ้าไม่ชัดเจนให้เว้นว่าง
-        const rawControls = (product.controls ?? product.co ?? '').toString().trim().toLowerCase();
-        let mapped = '';
-        if (['ควบคุม', 'control', 'controlled', 'yes', 'true', '1'].includes(rawControls)) {
-            mapped = 'ควบคุม';
-        } else if (['ไม่ควบคุม', 'no control', 'not controlled', 'no', 'false', '0'].includes(rawControls)) {
-            mapped = 'ไม่ควบคุม';
-        }
-        controlsSelect.value = mapped || '';
+        controlsSelect.value = product.controls ?? product.co ?? '';
         document.getElementById('price').value = product.price || '';
         document.getElementById('sale_price').value = product.sale_price || '';
        
@@ -195,11 +192,73 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    function showCustomModal({ title = "", text = "", icon = "success", confirmText = "ตกลง", onClose = null }) {
+        document.getElementById("custom-modal")?.remove();
+        const modal = document.createElement("div");
+        modal.id = "custom-modal";
+        modal.style.position = "fixed";
+        modal.style.top = "0";
+        modal.style.left = "0";
+        modal.style.width = "100vw";
+        modal.style.height = "100vh";
+        modal.style.background = "rgba(0,0,0,0.35)";
+        modal.style.zIndex = "99999";
+        modal.style.display = "flex";
+        modal.style.alignItems = "center";
+        modal.style.justifyContent = "center";
+        modal.innerHTML = `
+          <div style="
+            background: #fffbe9;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(30,41,59,0.18);
+            padding: 32px 28px 24px 28px;
+            min-width: 320px;
+            max-width: 90vw;
+            text-align: center;
+            position: relative;
+            font-family: 'Sarabun', sans-serif;
+          ">
+            <div style="font-size: 2.5rem; margin-bottom: 12px;">
+              ${icon === "success" ? "✅" : icon === "error" ? "❌" : "ℹ️"}
+            </div>
+            <div style="font-size: 1.35rem; font-weight: bold; color: #d35400; margin-bottom: 10px;">
+              ${title}
+            </div>
+            <div style="font-size: 1.1rem; color: #333; margin-bottom: 22px;">
+              ${text}
+            </div>
+            <button id="custom-modal-confirm" style="
+              padding: 10px 36px;
+              font-size: 1.1rem;
+              border-radius: 8px;
+              background: #ffd336;
+              border: none;
+              cursor: pointer;
+              color: #333;
+              font-weight: 600;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+              transition: background 0.2s;
+            ">${confirmText}</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById("custom-modal-confirm").onclick = () => {
+            modal.remove();
+            if (typeof onClose === "function") onClose();
+        };
+    }
+
     document.querySelector('.product-form').addEventListener('submit', async function(e) {
         e.preventDefault();
 
         if (!currentProductId) {
-            alert('กรุณาค้นหาและเลือกสินค้าที่ต้องการแก้ไขก่อน');
+            showCustomModal({
+                icon: "error",
+                title: "กรุณาเลือกสินค้า",
+                text: "กรุณาค้นหาและเลือกสินค้าที่ต้องการแก้ไขก่อน",
+                confirmText: "ตกลง"
+            });
             return;
         }
 
@@ -241,12 +300,27 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const result = await res.json();
             if (res.ok) {
-                alert('อัพเดทข้อมูลสินค้าสำเร็จ');
+                showCustomModal({
+                    icon: "success",
+                    title: "อัพเดทข้อมูลสินค้าสำเร็จ",
+                    text: "ข้อมูลสินค้าถูกแก้ไขเรียบร้อยแล้ว",
+                    confirmText: "ตกลง"
+                });
             } else {
-                alert(result.message || 'เกิดข้อผิดพลาด');
+                showCustomModal({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด",
+                    text: result.message || "เกิดข้อผิดพลาด",
+                    confirmText: "ตกลง"
+                });
             }
         } catch (err) {
-            alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+            showCustomModal({
+                icon: "error",
+                title: "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้",
+                text: "เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
+                confirmText: "ตกลง"
+            });
         }
     }
 

@@ -36,7 +36,7 @@ function computeRealStock(products, buyin, sale) {
             sale_status: p.sale_status || 'ขายปกติ',
             unit: p.unit || '',
             location: p.location || '',
-            controls: p.controls || '', // ✅ เก็บค่า controls
+            // controls: p.controls || '', // ❌ ลบออก
             totalBuyin: 0,
             totalSale: 0,
             quantity: 0
@@ -57,7 +57,7 @@ function computeRealStock(products, buyin, sale) {
                 sale_status: 'ขายปกติ',
                 unit: b.unit || '',
                 location: '',
-                controls: '',
+                // controls: '', // ❌ ลบออก
                 totalBuyin: 0,
                 totalSale: 0,
                 quantity: 0
@@ -82,7 +82,7 @@ function computeRealStock(products, buyin, sale) {
                 sale_status: 'ขายปกติ',
                 unit: s.unit || '',
                 location: '',
-                controls: '',
+                // controls: '', // ❌ ลบออก
                 totalBuyin: 0,
                 totalSale: 0,
                 quantity: 0

@@ -1,5 +1,62 @@
 import { BACKEND_URL } from './config.js';
 
+function showCustomModal({ title = "", text = "", icon = "success", confirmText = "ตกลง", onClose = null }) {
+    document.getElementById("custom-modal")?.remove();
+    const modal = document.createElement("div");
+    modal.id = "custom-modal";
+    modal.style.position = "fixed";
+    modal.style.top = "0";
+    modal.style.left = "0";
+    modal.style.width = "100vw";
+    modal.style.height = "100vh";
+    modal.style.background = "rgba(0,0,0,0.35)";
+    modal.style.zIndex = "99999";
+    modal.style.display = "flex";
+    modal.style.alignItems = "center";
+    modal.style.justifyContent = "center";
+    modal.innerHTML = `
+      <div style="
+        background: #fffbe9;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(30,41,59,0.18);
+        padding: 32px 28px 24px 28px;
+        min-width: 320px;
+        max-width: 90vw;
+        text-align: center;
+        position: relative;
+        font-family: 'Sarabun', sans-serif;
+      ">
+        <div style="font-size: 2.5rem; margin-bottom: 12px;">
+          ${icon === "success" ? "✅" : icon === "error" ? "❌" : "ℹ️"}
+        </div>
+        <div style="font-size: 1.35rem; font-weight: bold; color: #d35400; margin-bottom: 10px;">
+          ${title}
+        </div>
+        <div style="font-size: 1.1rem; color: #333; margin-bottom: 22px;">
+          ${text}
+        </div>
+        <button id="custom-modal-confirm" style="
+          padding: 10px 36px;
+          font-size: 1.1rem;
+          border-radius: 8px;
+          background: #ffd336;
+          border: none;
+          cursor: pointer;
+          color: #333;
+          font-weight: 600;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          transition: background 0.2s;
+        ">${confirmText}</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    document.getElementById("custom-modal-confirm").onclick = () => {
+        modal.remove();
+        if (typeof onClose === "function") onClose();
+    };
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // ฟังก์ชันเพิ่ม option ใหม่ให้ dropdown
     function addNewOption(inputId, selectId) {
@@ -8,16 +65,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const value = input.value.trim();
         
         if (!value) {
-            alert('กรุณากรอกข้อมูล');
+            showCustomModal({
+                icon: "error",
+                title: "ข้อมูลไม่ครบ",
+                text: "กรุณากรอกข้อมูล",
+                confirmText: "ตกลง"
+            });
             return;
         }
 
         const exists = Array.from(select.options).some(opt => opt.value === value);
         
         if (exists) {
-            alert('มีข้อมูลนี้อยู่แล้ว');
-            select.value = value;
-            input.value = '';
+            showCustomModal({
+                icon: "info",
+                title: "ข้อมูลซ้ำ",
+                text: "มีข้อมูลนี้อยู่แล้ว",
+                confirmText: "ตกลง",
+                onClose: () => {
+                    select.value = value;
+                    input.value = '';
+                }
+            });
             return;
         }
 
@@ -59,13 +128,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (!file.type.startsWith('image/')) {
-            alert('กรุณาเลือกไฟล์รูปภาพเท่านั้น');
+            showCustomModal({
+                icon: "error",
+                title: "ไฟล์ไม่ถูกต้อง",
+                text: "กรุณาเลือกไฟล์รูปภาพเท่านั้น",
+                confirmText: "ตกลง"
+            });
             this.value = '';
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            alert('ขนาดไฟล์ใหญ่เกินไป (ไม่เกิน 5MB)');
+            showCustomModal({
+                icon: "error",
+                title: "ขนาดไฟล์ใหญ่เกินไป",
+                text: "ขนาดไฟล์ใหญ่เกินไป (ไม่เกิน 5MB)",
+                confirmText: "ตกลง"
+            });
             this.value = '';
             return;
         }
@@ -125,7 +204,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 productData.image = base64;
             } catch (err) {
                 console.error('❌ Error converting image:', err);
-                alert('เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ');
+                showCustomModal({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด",
+                    text: "เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ",
+                    confirmText: "ตกลง"
+                });
                 return;
             }
         }
@@ -151,20 +235,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             console.log('✅ บันทึกสำเร็จ:', result);
             
-            alert(`✅ บันทึกสินค้าสำเร็จ!\n\nรหัสสินค้า: ${productData.product_code}\nการควบคุม: ${productData.controls}`);
-            
-            // รีเซ็ตฟอร์ม
-            this.reset();
-            document.getElementById('image-preview').innerHTML = '';
-            
-            // ถามว่าต้องการเพิ่มสินค้าใหม่หรือไปหน้า Inventory
-            const goToInventory = confirm('ต้องการไปดูสินค้าทั้งหมดหรือไม่?');
-            if (goToInventory) {
-                window.location.href = 'inventory.html';
-            }
+            showCustomModal({
+                icon: "success",
+                title: "บันทึกสินค้าสำเร็จ!",
+                text: `ชื่อสินค้า: ${productData.product_name}\n รหัสสินค้า: ${productData.product_code}`,
+                confirmText: "ตกลง",
+                onClose: () => {
+                    this.reset();
+                    document.getElementById('image-preview').innerHTML = '';
+                    showCustomModal({
+                        icon: "info",
+                        title: "ไปดูสินค้าทั้งหมด?",
+                        text: "ต้องการไปดูสินค้าในสต๊อกหรือไม่?",
+                        confirmText: "ไปดู",
+                        onClose: () => window.location.href = 'inventory.html',
+
+                    });
+                }
+            });
         } catch (error) {
             console.error('❌ Error saving product:', error);
-            alert(`❌ เกิดข้อผิดพลาด: ${error.message}`);
+            showCustomModal({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด",
+                text: error.message,
+                confirmText: "ตกลง"
+            });
         }
     });
 
