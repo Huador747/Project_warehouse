@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/sale_report.css" />
+
+    <title>รายงานยอดขาย</title>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h2>📦 แผงผู้ดูแลระบบ</h2>
+        </div>
+
+        <nav class="nav-menu">
+          <a href="dashboard.html" class="nav-item">
+            <span class="icon">🏠</span>
+            <span>แอดมินแดชบอร์ด</span>
+          </a>
+
+          <a href="management.html" class="nav-item">
+            <span class="icon">👤</span>
+            <span>จัดการผู้ใช้งาน</span>
+          </a>
+
+          <a href="../../src/inventory.html" class="nav-item">
+            <span class="icon">📦</span>
+            <span>จำนวนคงเหลือสินค้า</span>
+          </a>
+
+          <a href="../../src/buyin.html" class="nav-item">
+            <span class="icon">📥</span>
+            <span>ซื้อสินค้า</span>
+          </a>
+
+          <a href="../../src/sale.html" class="nav-item">
+            <span class="icon">💰</span>
+            <span>ขายสินค้า</span>
+          </a>
+
+          <a href="sale_report.html" class="nav-item active">
+            <span class="icon">📈</span>
+            <span>รายงานยอดขาย</span>
+          </a>
+
+          <a href="../../src/history.html" class="nav-item">
+            <span class="icon">📜</span>
+            <span>ประวัติการซื้อ-ขาย</span>
+          </a>
+
+          <a href="../../src/movement.html" class="nav-item">
+            <span class="icon">🔄</span>
+            <span>การเคลื่อนไหวสินค้า</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="main-content sales-report-page">
+        <header class="header no-print">
+          <div class="header-left">
+            <h1>รายงานยอดขาย</h1>
+            <p class="breadcrumb">หน้าหลัก / รายงานยอดขาย</p>
+          </div>
+
+          <div class="header-right">
+            <div class="user-info">
+              <div class="user-profile">
+                <img
+                  id="currentUserAvatar"
+                  src="../images/default-avatar.png"
+                  alt="รูปผู้ใช้งาน"
+                  class="user-avatar"
+                  onerror="this.onerror=null;this.src='../images/default-avatar.png';"
+                />
+                <div class="user-details">
+                  <span id="currentUserName" class="user-name">ผู้ใช้งาน</span>
+                  <span class="user-status">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">ออนไลน์</span>
+                  </span>
+                </div>
+              </div>
+
+              <button type="button" class="btn-logout" onclick="logout()">
+                ออกจากระบบ
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <section class="report-toolbar no-print">
+          <div class="toolbar-left">
+            <h3>จัดการรายงาน</h3>
+            <p>กรองข้อมูล ดูตัวอย่าง พิมพ์ และส่งออกรายงาน</p>
+          </div>
+
+          <div class="toolbar-right">
+            <div class="filter-group inline">
+              <label for="startDate">วันที่เริ่มต้น</label>
+              <input type="date" id="startDate" />
+            </div>
+
+            <div class="filter-group inline">
+              <label for="endDate">วันที่สิ้นสุด</label>
+              <input type="date" id="endDate" />
+            </div>
+
+            <div class="filter-group inline">
+              <label for="productFilter">สินค้า</label>
+              <select id="productFilter">
+                <option value="all">ทั้งหมด</option>
+              </select>
+            </div>
+
+            <div class="toolbar-actions">
+              <button type="button" class="btn-primary" id="btnLoadReport">
+                โหลดรายงาน
+              </button>
+              <button type="button" class="btn-secondary" id="btnPrintReport">
+                พิมพ์
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="document-paper" id="reportDocument">
+          <div class="doc-header">
+            <div class="doc-header-left">
+              <h2 id="reportTitle">รายงานยอดขาย</h2>
+              <p class="doc-subtitle" id="reportSubtitle">
+                รายงานสรุปรายการขายสินค้าและมูลค่ารวม
+              </p>
+            </div>
+
+            <div class="doc-header-right">
+              <div class="doc-no-row">
+                <span class="doc-label">รหัสรายงาน</span>
+                <span class="doc-value-box" id="docNo">SR-001</span>
+              </div>
+
+              <div class="doc-date-row">
+                <div>
+                  <span class="doc-label">วันที่ออกรายงาน</span>
+                  <span class="doc-value-box" id="docDate">01/01/2569</span>
+                </div>
+                <div>
+                  <span class="doc-label">ช่วงข้อมูล</span>
+                  <span class="doc-value-box" id="docRange">01/01/2569 - 31/01/2569</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="customer-section">
+            <div class="customer-line">
+              <span class="line-label">ประเภทรายงาน</span>
+              <span class="line-value" id="reportType">สรุปรายการขายสินค้า</span>
+            </div>
+
+            <div class="customer-line">
+              <span class="line-label">ตัวกรองสินค้า</span>
+              <span class="line-value" id="documentReference">สินค้าทั้งหมด</span>
+            </div>
+
+            <div class="customer-line">
+              <span class="line-label">ผู้จัดทำ</span>
+              <span class="line-value" id="preparedBy">ระบบจัดการคลังสินค้า</span>
+            </div>
+          </div>
+
+          <div class="doc-intro">
+            <p id="documentNote">
+              เอกสารฉบับนี้จัดทำขึ้นเพื่อสรุปรายการขายสินค้า จำนวนที่ขาย
+              ราคาต่อหน่วย และยอดรวมสุทธิ ตามข้อมูลที่บันทึกไว้ในระบบ
+              เพื่อใช้ในการตรวจสอบและประกอบการวิเคราะห์ยอดขาย
+            </p>
+          </div>
+
+          <div class="report-table-wrapper">
+            <table class="report-table sales-document-table">
+              <thead>
+                <tr>
+                  <th class="text-center col-no">ลำดับ</th>
+                  <th class="col-name">ชื่อสินค้า</th>
+                  <th class="col-desc">รายละเอียด</th>
+                  <th class="text-center col-qty">จำนวน</th>
+                  <th class="text-right col-price">ราคา/หน่วย</th>
+                  <th class="text-right col-total">รวม</th>
+                </tr>
+              </thead>
+
+              <tbody id="salesReportTable"></tbody>
+
+              <tfoot>
+                <tr>
+                  <td colspan="5" class="text-right footer-label">รวมทั้งสิ้น</td>
+                  <td class="text-right footer-total" id="grandTotal">฿0.00</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="summary-boxes">
+            <div class="summary-item">
+              <span class="summary-label">จำนวนรายการ</span>
+              <strong id="summaryItems">0 รายการ</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">จำนวนชิ้นรวม</span>
+              <strong id="summaryQty">0 ชิ้น</strong>
+            </div>
+
+            <div class="summary-item">
+              <span class="summary-label">ยอดรวมสุทธิ</span>
+              <strong id="summaryNet">฿0.00</strong>
+            </div>
+          </div>
+
+          <div class="signature-section">
+            <div class="signature-box">
+              <div class="signature-line"></div>
+              <p>ผู้จัดทำรายงาน</p>
+            </div>
+
+            <div class="signature-box">
+              <div class="signature-line"></div>
+              <p>ผู้ตรวจสอบ/ผู้อนุมัติ</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/scripts/config.js"></script>
+    <script src="../script/sales-report.js"></script>
+  </body>
+</html>
