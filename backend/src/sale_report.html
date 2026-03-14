@@ -9,8 +9,35 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../style/sale_report.css" />
-
-    <title>รายงานยอดขาย</title>
+    <style>
+      @media print {
+        body, html {
+          background: #fff !important;
+        }
+        .sidebar, .header, .report-toolbar, .toolbar-actions, .breadcrumb, .btn-logout, .summary-boxes, .signature-section, .no-print {
+          display: none !important;
+        }
+        .main-content, .document-paper {
+          margin: 0 !important;
+          padding: 0 !important;
+          box-shadow: none !important;
+          width: 100% !important;
+        }
+        .document-paper {
+          background: #fff !important;
+          box-shadow: none !important;
+        }
+        .report-table-wrapper {
+          overflow: visible !important;
+        }
+        .report-table {
+          font-size: 14pt !important;
+        }
+        .hide-on-print, .hide-on-print * {
+          display: none !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="dashboard-container">
@@ -45,11 +72,6 @@
             <span>ขายสินค้า</span>
           </a>
 
-          <a href="sale_report.html" class="nav-item active">
-            <span class="icon">📈</span>
-            <span>รายงานยอดขาย</span>
-          </a>
-
           <a href="../../src/history.html" class="nav-item">
             <span class="icon">📜</span>
             <span>ประวัติการซื้อ-ขาย</span>
@@ -59,48 +81,23 @@
             <span class="icon">🔄</span>
             <span>การเคลื่อนไหวสินค้า</span>
           </a>
+          <a href="sale_report.html" class="nav-item active">
+            <span class="icon">📈</span>
+            <span>รายงานยอดขาย</span>
+          </a>
         </nav>
       </aside>
 
       <main class="main-content sales-report-page">
         <header class="header no-print">
           <div class="header-left">
-            <h1>รายงานยอดขาย</h1>
-            <p class="breadcrumb">หน้าหลัก / รายงานยอดขาย</p>
-          </div>
-
-          <div class="header-right">
-            <div class="user-info">
-              <div class="user-profile">
-                <img
-                  id="currentUserAvatar"
-                  src="../images/default-avatar.png"
-                  alt="รูปผู้ใช้งาน"
-                  class="user-avatar"
-                  onerror="this.onerror=null;this.src='../images/default-avatar.png';"
-                />
-                <div class="user-details">
-                  <span id="currentUserName" class="user-name">ผู้ใช้งาน</span>
-                  <span class="user-status">
-                    <span class="status-dot online"></span>
-                    <span class="status-text">ออนไลน์</span>
-                  </span>
-                </div>
-              </div>
-
-              <button type="button" class="btn-logout" onclick="logout()">
-                ออกจากระบบ
-              </button>
-            </div>
           </div>
         </header>
 
         <section class="report-toolbar no-print">
+          <h1 class="report-title">รายงานยอดขาย</h1>
           <div class="toolbar-left">
-            <h3>จัดการรายงาน</h3>
-            <p>กรองข้อมูล ดูตัวอย่าง พิมพ์ และส่งออกรายงาน</p>
           </div>
-
           <div class="toolbar-right">
             <div class="filter-group inline">
               <label for="startDate">วันที่เริ่มต้น</label>
@@ -111,20 +108,9 @@
               <label for="endDate">วันที่สิ้นสุด</label>
               <input type="date" id="endDate" />
             </div>
-
-            <div class="filter-group inline">
-              <label for="productFilter">สินค้า</label>
-              <select id="productFilter">
-                <option value="all">ทั้งหมด</option>
-              </select>
-            </div>
-
             <div class="toolbar-actions">
-              <button type="button" class="btn-primary" id="btnLoadReport">
-                โหลดรายงาน
-              </button>
               <button type="button" class="btn-secondary" id="btnPrintReport">
-                พิมพ์
+                report
               </button>
             </div>
           </div>
@@ -134,53 +120,29 @@
           <div class="doc-header">
             <div class="doc-header-left">
               <h2 id="reportTitle">รายงานยอดขาย</h2>
-              <p class="doc-subtitle" id="reportSubtitle">
-                รายงานสรุปรายการขายสินค้าและมูลค่ารวม
+              <p class="doc-subtitle" id="reportSubtitle" style="font-size: 20px; font-weight: bold; color: #000;">
+                บริษัท เอส พี อินสไปเรชั่น จำกัด
+              </p>
+              <p class="doc-address" id="reportAddress" style="font-size: 12px;">
+                ที่อยู่: 23/10 หมู่ 12 ตำบลเชียงรากน้อย อำเภอบางปะอิน จังหวัดพระนครศรีอยุธยา 13180
               </p>
             </div>
 
             <div class="doc-header-right">
               <div class="doc-no-row">
-                <span class="doc-label">รหัสรายงาน</span>
-                <span class="doc-value-box" id="docNo">SR-001</span>
               </div>
 
               <div class="doc-date-row">
                 <div>
                   <span class="doc-label">วันที่ออกรายงาน</span>
-                  <span class="doc-value-box" id="docDate">01/01/2569</span>
+                  <span class="doc-value-box" id="docDateAD">01/01/2026</span>
                 </div>
-                <div>
+                <div class="hide-on-print">
                   <span class="doc-label">ช่วงข้อมูล</span>
                   <span class="doc-value-box" id="docRange">01/01/2569 - 31/01/2569</span>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="customer-section">
-            <div class="customer-line">
-              <span class="line-label">ประเภทรายงาน</span>
-              <span class="line-value" id="reportType">สรุปรายการขายสินค้า</span>
-            </div>
-
-            <div class="customer-line">
-              <span class="line-label">ตัวกรองสินค้า</span>
-              <span class="line-value" id="documentReference">สินค้าทั้งหมด</span>
-            </div>
-
-            <div class="customer-line">
-              <span class="line-label">ผู้จัดทำ</span>
-              <span class="line-value" id="preparedBy">ระบบจัดการคลังสินค้า</span>
-            </div>
-          </div>
-
-          <div class="doc-intro">
-            <p id="documentNote">
-              เอกสารฉบับนี้จัดทำขึ้นเพื่อสรุปรายการขายสินค้า จำนวนที่ขาย
-              ราคาต่อหน่วย และยอดรวมสุทธิ ตามข้อมูลที่บันทึกไว้ในระบบ
-              เพื่อใช้ในการตรวจสอบและประกอบการวิเคราะห์ยอดขาย
-            </p>
           </div>
 
           <div class="report-table-wrapper">
@@ -200,28 +162,11 @@
 
               <tfoot>
                 <tr>
-                  <td colspan="5" class="text-right footer-label">รวมทั้งสิ้น</td>
+                  <td colspan="5" class="text-right footer-label" style="text-align: right;">รวมทั้งสิ้น</td>
                   <td class="text-right footer-total" id="grandTotal">฿0.00</td>
                 </tr>
               </tfoot>
             </table>
-          </div>
-
-          <div class="summary-boxes">
-            <div class="summary-item">
-              <span class="summary-label">จำนวนรายการ</span>
-              <strong id="summaryItems">0 รายการ</strong>
-            </div>
-
-            <div class="summary-item">
-              <span class="summary-label">จำนวนชิ้นรวม</span>
-              <strong id="summaryQty">0 ชิ้น</strong>
-            </div>
-
-            <div class="summary-item">
-              <span class="summary-label">ยอดรวมสุทธิ</span>
-              <strong id="summaryNet">฿0.00</strong>
-            </div>
           </div>
 
           <div class="signature-section">
@@ -240,6 +185,6 @@
     </div>
 
     <script src="/scripts/config.js"></script>
-    <script src="../script/sales-report.js"></script>
+    <script type="module" src="../script/sale_report.js"></script>
   </body>
 </html>

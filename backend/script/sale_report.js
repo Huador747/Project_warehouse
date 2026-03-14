@@ -1,97 +1,87 @@
-const API_URL = "/api/sales-report";
-const AUTO_REFRESH_MS = 30000;
-
-let allSalesData = [];
-let refreshTimer = null;
+import { BACKEND_URL } from "/scripts/config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const btnLoadReport = document.getElementById("btnLoadReport");
-  const btnPrintReport = document.getElementById("btnPrintReport");
+    // ฟังก์ชันแสดงวันที่ พ.ศ. ข้าง input date
+    function showThaiDateLabel(inputId, labelId) {
+      const input = document.getElementById(inputId);
+      const label = document.getElementById(labelId);
+      if (!input || !label) return;
+      if (!input.value) {
+        label.textContent = "";
+        return;
+      }
+      const d = new Date(input.value);
+      if (Number.isNaN(d.getTime())) {
+        label.textContent = "";
+        return;
+      }
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const year = d.getFullYear() + 543;
+      label.textContent = `(${day}/${month}/${year} พ.ศ.)`;
+    }
+
   const startDate = document.getElementById("startDate");
   const endDate = document.getElementById("endDate");
+  const btnLoadReport = document.getElementById("btnLoadReport");
+  const btnPrintReport = document.getElementById("btnPrintReport");
+  const productFilter = document.getElementById("productFilter");
 
   setDefaultDates();
   syncDateConstraints();
 
-  if (btnLoadReport) {
-    btnLoadReport.addEventListener("click", loadReportRealtime);
-  }
+  // แสดง label พ.ศ. ตอนโหลดหน้า
+  showThaiDateLabel("startDate", "startDateThai");
+  showThaiDateLabel("endDate", "endDateThai");
 
-  if (btnPrintReport) {
-    btnPrintReport.addEventListener("click", () => window.print());
-  }
+  loadProductsToFilter().then(() => {
+    updateDocumentFields();
+  });
 
   if (startDate) {
-    startDate.addEventListener("change", () => {
+    startDate.addEventListener("change", async () => {
       syncDateConstraints("start");
+      showThaiDateLabel("startDate", "startDateThai");
+      await updateDocumentFields();
     });
   }
 
   if (endDate) {
-    endDate.addEventListener("change", () => {
+    endDate.addEventListener("change", async () => {
       syncDateConstraints("end");
+      showThaiDateLabel("endDate", "endDateThai");
+      await updateDocumentFields();
     });
   }
 
-  loadReportRealtime();
-  startAutoRefresh();
+  if (productFilter) {
+    productFilter.addEventListener("change", async () => {
+      await updateDocumentFields();
+    });
+  }
+
+  if (btnLoadReport) {
+    btnLoadReport.addEventListener("click", async () => {
+      await createReport();
+    });
+  }
+
+  if (btnPrintReport) {
+    btnPrintReport.addEventListener("click", async () => {
+      await createReportAndPrint();
+    });
+  }
 });
 
-function startAutoRefresh() {
-  if (refreshTimer) clearInterval(refreshTimer);
-  refreshTimer = setInterval(() => {
-    loadReportRealtime(false);
-  }, AUTO_REFRESH_MS);
+async function createReport() {
+  await updateDocumentFields();
 }
 
-async function loadReportRealtime(showLoading = true) {
-  try {
-    if (showLoading) {
-      renderLoadingState();
-    }
-
-    const rawData = await fetchSalesDataFromAPI();
-    allSalesData = Array.isArray(rawData) ? rawData : [];
-
-    initializeProductFilter(allSalesData);
-
-    const filteredItems = filterReportItems(allSalesData);
-    const documentData = buildDocumentData(filteredItems);
-
-    renderSalesReport({
-      document: documentData,
-      items: filteredItems
-    });
-  } catch (error) {
-    console.error("โหลดรายงานไม่สำเร็จ", error);
-    renderErrorState("ไม่สามารถโหลดข้อมูลรายงานยอดขายได้");
-  }
-}
-
-async function fetchSalesDataFromAPI() {
-  const response = await fetch(API_URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    cache: "no-store"
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
-
-  const result = await response.json();
-
-  if (Array.isArray(result)) {
-    return result;
-  }
-
-  if (Array.isArray(result.data)) {
-    return result.data;
-  }
-
-  return [];
+async function createReportAndPrint() {
+  await updateDocumentFields();
+  setTimeout(() => {
+    window.print();
+  }, 150);
 }
 
 function setDefaultDates() {
@@ -105,8 +95,6 @@ function setDefaultDates() {
 
   startDate.value = formatInputDate(firstDay);
   endDate.value = formatInputDate(today);
-
-  syncDateConstraints();
 }
 
 function syncDateConstraints(changedField = "") {
@@ -130,132 +118,57 @@ function syncDateConstraints(changedField = "") {
     startDate.removeAttribute("max");
   }
 
-  if (startValue && endValue) {
-    if (new Date(startValue) > new Date(endValue)) {
-      if (changedField === "start") {
-        endDate.value = startValue;
-      } else if (changedField === "end") {
-        startDate.value = endValue;
-      } else {
-        endDate.value = startValue;
-      }
+  if (startValue && endValue && startValue > endValue) {
+    if (changedField === "start") {
+      endDate.value = startValue;
+    } else if (changedField === "end") {
+      startDate.value = endValue;
+    } else {
+      endDate.value = startValue;
     }
   }
-
-  updateDocumentDateRange();
 }
 
-function formatInputDate(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+async function updateDocumentFields() {
+  const now = new Date();
 
-function formatThaiDate(dateString) {
-  if (!dateString) return "-";
-
-  const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) return "-";
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear() + 543;
-
+  setText("docNo", generateReportNo(now));
+  setText("docDate", formatThaiDate(now)); // พ.ศ.
+  setText("docDateAD", formatADDate(now)); // ค.ศ.
+// แปลงวันที่เป็น ค.ศ. (AD) dd/mm/yyyy
+function formatADDate(value) {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "-";
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
   return `${day}/${month}/${year}`;
 }
 
-function initializeProductFilter(items) {
-  const productFilter = document.getElementById("productFilter");
-  if (!productFilter) return;
+  const startValue = document.getElementById("startDate")?.value || "";
+  const endValue = document.getElementById("endDate")?.value || "";
 
-  const currentValue = productFilter.value || "all";
-  productFilter.innerHTML = `<option value="all">ทั้งหมด</option>`;
-
-  const uniqueProducts = [...new Set(items.map((item) => item.product_name).filter(Boolean))];
-
-  uniqueProducts.sort((a, b) => a.localeCompare(b, "th"));
-
-  uniqueProducts.forEach((product) => {
-    const option = document.createElement("option");
-    option.value = product;
-    option.textContent = product;
-    productFilter.appendChild(option);
-  });
-
-  const exists = [...productFilter.options].some((option) => option.value === currentValue);
-  productFilter.value = exists ? currentValue : "all";
-}
-
-function filterReportItems(items) {
-  const productFilter = document.getElementById("productFilter");
-  const startDate = document.getElementById("startDate");
-  const endDate = document.getElementById("endDate");
-
-  const selectedProduct = productFilter ? productFilter.value : "all";
-  const startValue = startDate ? startDate.value : "";
-  const endValue = endDate ? endDate.value : "";
-
-  let filtered = [...items];
-
-  if (selectedProduct !== "all") {
-    filtered = filtered.filter((item) => item.product_name === selectedProduct);
+  let rangeText = "-";
+  if (startValue && endValue) {
+    rangeText = `${formatThaiDate(startValue)} - ${formatThaiDate(endValue)}`;
+  } else if (startValue) {
+    rangeText = formatThaiDate(startValue);
+  } else if (endValue) {
+    rangeText = formatThaiDate(endValue);
   }
 
-  if (startValue) {
-    const start = new Date(`${startValue}T00:00:00`);
-    filtered = filtered.filter((item) => {
-      const saleDate = new Date(item.saleoutdate);
-      return !Number.isNaN(saleDate.getTime()) && saleDate >= start;
-    });
+  setText("docRange", rangeText);
+  setText("documentReference", getSelectedProductLabel());
+
+  try {
+    const { items } = await fetchSalesReportData();
+    renderSalesReportTable(items);
+    renderSummary(items);
+  } catch (error) {
+    console.error("โหลดข้อมูลรายงานไม่สำเร็จ:", error);
+    renderSalesReportTable([]);
+    renderSummary([]);
   }
-
-  if (endValue) {
-    const end = new Date(`${endValue}T23:59:59.999`);
-    filtered = filtered.filter((item) => {
-      const saleDate = new Date(item.saleoutdate);
-      return !Number.isNaN(saleDate.getTime()) && saleDate <= end;
-    });
-  }
-
-  return filtered;
-}
-
-function buildDocumentData(items) {
-  const now = new Date();
-
-  return {
-    title: "รายงานยอดขาย",
-    subtitle: "รายงานสรุปรายการขายสินค้าแบบเรียลไทม์",
-    docNo: generateReportNo(now),
-    date: formatThaiDate(now.toISOString()),
-    range: getSelectedDateRangeText(),
-    reportType: "สรุปรายการขายสินค้า",
-    reference: getSelectedProductLabel(),
-    preparedBy: "ระบบจัดการคลังสินค้า",
-    note: buildReportNote(items)
-  };
-}
-
-function generateReportNo(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hour = String(date.getHours()).padStart(2, "0");
-  const minute = String(date.getMinutes()).padStart(2, "0");
-  return `SR-${year}${month}${day}-${hour}${minute}`;
-}
-
-function buildReportNote(items) {
-  const customerSet = new Set(
-    items.map((item) => item.customerName).filter((name) => typeof name === "string" && name.trim())
-  );
-
-  const channels = new Set(
-    items.map((item) => item.notesale).filter((note) => typeof note === "string" && note.trim())
-  );
-
-  return `เอกสารฉบับนี้จัดทำขึ้นเพื่อสรุปรายการขายสินค้าแบบเรียลไทม์ตามข้อมูลในระบบ โดยแสดงจำนวนที่ขาย ราคาขาย ยอดรวม ภาษี และกำไรเบื้องต้น ปัจจุบันมีลูกค้า ${customerSet.size} ราย และช่องทาง/หมายเหตุการขาย ${channels.size} รายการ`;
 }
 
 function getSelectedProductLabel() {
@@ -264,92 +177,105 @@ function getSelectedProductLabel() {
 
   return productFilter.value === "all"
     ? "สินค้าทั้งหมด"
-    : `เฉพาะสินค้า: ${productFilter.value}`;
+    : `เฉพาะสินค้า: ${productFilter.options[productFilter.selectedIndex].text}`;
 }
 
-function getSelectedDateRangeText() {
-  const startDate = document.getElementById("startDate");
-  const endDate = document.getElementById("endDate");
+async function loadProductsToFilter() {
+  const productFilter = document.getElementById("productFilter");
+  if (!productFilter) return;
 
-  if (!startDate || !endDate) return "-";
+  try {
+    const res = await fetch(`${BACKEND_URL}/products`);
+    const products = await res.json();
 
-  const startText = formatThaiDate(startDate.value);
-  const endText = formatThaiDate(endDate.value);
+    productFilter.innerHTML = '<option value="all">ทั้งหมด</option>';
 
-  return `${startText} - ${endText}`;
-}
-
-function updateDocumentDateRange() {
-  setText("docRange", getSelectedDateRangeText());
-}
-
-function renderSalesReport(reportData) {
-  renderDocumentInfo(reportData.document);
-  renderTable(reportData.items);
-  renderSummary(reportData.items);
-}
-
-function renderDocumentInfo(documentData) {
-  setText("reportTitle", documentData.title);
-  setText("reportSubtitle", documentData.subtitle);
-  setText("docNo", documentData.docNo);
-  setText("docDate", documentData.date);
-  setText("docRange", documentData.range);
-  setText("reportType", documentData.reportType);
-  setText("documentReference", documentData.reference);
-  setText("preparedBy", documentData.preparedBy);
-  setText("documentNote", documentData.note);
-}
-
-function renderLoadingState() {
-  const tbody = document.getElementById("salesReportTable");
-  const grandTotal = document.getElementById("grandTotal");
-
-  if (tbody) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="text-center">กำลังโหลดข้อมูล...</td>
-      </tr>
-    `;
+    products.forEach((p) => {
+      const option = document.createElement("option");
+      option.value = p.product_code || p._id || p.product_name;
+      option.textContent = p.product_name;
+      productFilter.appendChild(option);
+    });
+  } catch (error) {
+    console.error("โหลดรายการสินค้าไม่สำเร็จ:", error);
   }
-
-  if (grandTotal) {
-    grandTotal.textContent = formatCurrency(0);
-  }
-
-  setText("summaryItems", "0 รายการ");
-  setText("summaryQty", "0 ชิ้น");
-  setText("summaryNet", formatCurrency(0));
 }
 
-function renderErrorState(message) {
-  const tbody = document.getElementById("salesReportTable");
-  const grandTotal = document.getElementById("grandTotal");
+async function fetchSalesReportData() {
+  const [products, sale] = await Promise.all([
+    fetch(`${BACKEND_URL}/products`).then((r) => r.json()),
+    fetch(`${BACKEND_URL}/sale_product`).then((r) => r.json())
+  ]);
 
-  if (tbody) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" class="text-center">${escapeHtml(message)}</td>
-      </tr>
-    `;
-  }
+  const productsMap = {};
+  products.forEach((p) => {
+    productsMap[p.product_code] = p;
+  });
 
-  if (grandTotal) {
-    grandTotal.textContent = formatCurrency(0);
-  }
+  const startValue = document.getElementById("startDate")?.value || "";
+  const endValue = document.getElementById("endDate")?.value || "";
+  const selectedProduct = document.getElementById("productFilter")?.value || "all";
 
-  setText("summaryItems", "0 รายการ");
-  setText("summaryQty", "0 ชิ้น");
-  setText("summaryNet", formatCurrency(0));
+  const start = startValue ? toStartOfDay(startValue) : null;
+  const end = endValue ? toEndOfDay(endValue) : null;
+
+  const filteredSale = sale.filter((item) => {
+    const rawDate = item.saleoutdate || item.date;
+    if (!rawDate) return false;
+
+    const saleDate = new Date(rawDate);
+    if (Number.isNaN(saleDate.getTime())) return false;
+
+    if (start && saleDate < start) return false;
+    if (end && saleDate > end) return false;
+    if (selectedProduct !== "all" && item.product_code !== selectedProduct) return false;
+
+    return true;
+  });
+
+  const items = filteredSale.map((item, idx) => {
+    const p = productsMap[item.product_code] || {};
+    const qty = Number(item.salequantity || item.quantity || 0);
+    const unitPrice = Number(item.sale_price || item.price || 0);
+
+    return {
+      id: idx + 1,
+      productName: p.product_name || item.product_name || "-",
+      description: [
+        item.product_code ? `รหัส: ${item.product_code}` : "",
+        item.customerName ? `ลูกค้า: ${item.customerName}` : "",
+        item.notesale ? `หมายเหตุ: ${item.notesale}` : "",
+        item.saleoutdate ? `วันที่ขาย: ${formatThaiDate(item.saleoutdate)}` : ""
+      ]
+        .filter(Boolean)
+        .join(" | "),
+      qty,
+      unitPrice,
+      total: Number(item.total) || qty * unitPrice
+    };
+  });
+
+  return { items };
 }
 
-function renderTable(items) {
+function toStartOfDay(dateString) {
+  const [year, month, day] = dateString.split("-").map(Number);
+  return new Date(year, month - 1, day, 0, 0, 0, 0);
+}
+
+function toEndOfDay(dateString) {
+  const [year, month, day] = dateString.split("-").map(Number);
+  return new Date(year, month - 1, day, 23, 59, 59, 999);
+}
+
+function renderSalesReportTable(items) {
   const tbody = document.getElementById("salesReportTable");
   const grandTotal = document.getElementById("grandTotal");
 
   if (!tbody || !grandTotal) return;
 
   tbody.innerHTML = "";
+  let total = 0;
 
   if (!items.length) {
     tbody.innerHTML = `
@@ -361,30 +287,17 @@ function renderTable(items) {
     return;
   }
 
-  let total = 0;
-
   items.forEach((item, index) => {
-    const qty = Number(item.salequantity) || 0;
-    const unitPrice = Number(item.sale_price) || 0;
-    const rowTotal = Number(item.total) || qty * unitPrice;
-
+    const rowTotal = Number(item.total) || Number(item.qty) * Number(item.unitPrice);
     total += rowTotal;
-
-    const descriptionParts = [
-      item.product_code ? `รหัส: ${item.product_code}` : "",
-      item.condition ? `สภาพ: ${item.condition}` : "",
-      item.customerName ? `ลูกค้า: ${item.customerName}` : "",
-      item.notesale ? `หมายเหตุ: ${item.notesale}` : "",
-      item.saleoutdate ? `วันที่ขาย: ${formatThaiDate(item.saleoutdate)}` : ""
-    ].filter(Boolean);
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td class="text-center">${index + 1}</td>
-      <td>${escapeHtml(item.product_name || "-")}</td>
-      <td>${escapeHtml(descriptionParts.join(" | "))}</td>
-      <td class="text-center">${qty}</td>
-      <td class="text-right">${formatCurrency(unitPrice)}</td>
+      <td>${escapeHtml(item.productName)}</td>
+      <td>${escapeHtml(item.description)}</td>
+      <td class="text-center">${item.qty}</td>
+      <td class="text-right">${formatCurrency(item.unitPrice)}</td>
       <td class="text-right">${formatCurrency(rowTotal)}</td>
     `;
     tbody.appendChild(tr);
@@ -395,19 +308,40 @@ function renderTable(items) {
 
 function renderSummary(items) {
   const totalItems = items.length;
-  const totalQty = items.reduce((sum, item) => sum + (Number(item.salequantity) || 0), 0);
-  const netTotal = items.reduce((sum, item) => sum + (Number(item.total) || 0), 0);
+  const totalQty = items.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+  const netTotal = items.reduce((sum, item) => sum + Number(item.total || 0), 0);
 
   setText("summaryItems", `${totalItems} รายการ`);
   setText("summaryQty", `${totalQty} ชิ้น`);
   setText("summaryNet", formatCurrency(netTotal));
 }
 
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) {
-    el.textContent = value ?? "";
-  }
+function generateReportNo(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hour = String(date.getHours()).padStart(2, "0");
+  const minute = String(date.getMinutes()).padStart(2, "0");
+  return `SR-${year}${month}${day}-${hour}${minute}`;
+}
+
+function formatInputDate(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function formatThaiDate(value) {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "-";
+
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear() + 543;
+
+  return `${day}/${month}/${year}`;
 }
 
 function formatCurrency(value) {
@@ -418,6 +352,11 @@ function formatCurrency(value) {
   }).format(Number(value) || 0);
 }
 
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value ?? "";
+}
+
 function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text ?? "";
@@ -426,4 +365,4 @@ function escapeHtml(text) {
 
 function logout() {
   alert("ออกจากระบบสำเร็จ");
-}
+} 

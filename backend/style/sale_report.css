@@ -31,8 +31,8 @@ body {
 
 /* Sidebar */
 .sidebar {
-  width: 280px;
-  min-width: 280px;
+  width: 260px;
+  min-width: 260px;
   flex-shrink: 0;
   position: sticky;
   top: 0;
@@ -73,7 +73,10 @@ body {
   border-radius: 12px;
   color: #dbe7ff;
   text-decoration: none;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.05s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.05s ease;
 }
 
 .nav-item .icon {
@@ -99,6 +102,7 @@ body {
 }
 
 .main-content {
+    margin-top: -40px;
   flex: 1;
   min-width: 0;
   padding: 24px;
@@ -201,7 +205,9 @@ body {
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn-logout:hover {
@@ -267,7 +273,9 @@ body {
   font-family: "Sarabun", sans-serif;
   color: var(--text-main);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .filter-group.inline input:focus,
@@ -292,7 +300,10 @@ body {
   cursor: pointer;
   font-family: "Sarabun", sans-serif;
   min-height: 42px;
-  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn-primary:hover,
@@ -437,6 +448,44 @@ body {
 
 .report-table-wrapper {
   overflow-x: auto;
+}
+
+.report-table th.col-no {
+  width: 7%;
+  min-width: 50px;
+  text-align: center;
+}
+.report-table th.col-name {
+  width: 22%;
+  min-width: 130px;
+  text-align: center;
+}
+.report-table th.col-desc {
+  width: 32%;
+  min-width: 180px;
+  text-align: center;
+}
+.report-table th.col-qty {
+  width: 10%;
+  min-width: 60px;
+  text-align: center;
+}
+.report-table th.col-price {
+  width: 14%;
+  min-width: 80px;
+  text-align: center;
+}
+.report-table th.col-total {
+  width: 15%;
+  min-width: 90px;
+  text-align: center;
+}
+
+/* จัดตัวอักษรให้อยู่ตรงกลางทุกช่องใน tbody/tfoot */
+.report-table td,
+.report-table th {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .sales-document-table {
