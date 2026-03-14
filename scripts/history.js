@@ -804,51 +804,51 @@ document
 
     /* Filter card */
     .filter-card{
-      margin-top: 18px;
+      margin-top: 8px;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow-sm);
-      padding: 18px 18px 14px;
+      padding: 10px 10px 8px;
     }
     .filter-title{
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin: 0 0 14px 0;
-      padding-bottom: 10px;
+      margin: 0 0 8px 0;
+      padding-bottom: 6px;
       border-bottom: 2px solid #fde68a;
     }
     .filter-title h3{
       margin: 0;
-      font-size: 1.05rem;
+      font-size: .95rem;
       color: #1f2937;
     }
     .chip{
-      padding: 6px 10px;
+      padding: 3px 7px;
       border-radius: 999px;
       background: #fff7d6;
       border: 1px solid #fde68a;
       color: #92400e;
-      font-size: .85rem;
+      font-size: .75rem;
       white-space: nowrap;
     }
     .filter-grid{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px 16px;
+      gap: 6px 10px;
       margin: 0;
       padding: 0;
       list-style: none;
     }
     .filter-grid li{
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: baseline;
       color: #374151;
-      font-size: .95rem;
-      line-height: 1.4;
+      font-size: .85rem;
+      line-height: 1.2;
     }
     .filter-grid strong{
       color: #111827;
@@ -859,31 +859,31 @@ document
     .summary-wrap{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 16px;
+      gap: 8px;
+      margin-top: 10px;
     }
     .summary-card{
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--card);
       box-shadow: var(--shadow-sm);
-      padding: 14px 16px;
+      padding: 8px 10px;
     }
     .summary-label{
       color: var(--muted);
-      font-size: .9rem;
-      margin: 0 0 8px 0;
+      font-size: .8rem;
+      margin: 0 0 4px 0;
     }
     .summary-value{
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 800;
       letter-spacing: .2px;
     }
     .summary-meta{
-      margin-top: 6px;
+      margin-top: 3px;
       color: #374151;
-      font-size: .95rem;
+      font-size: .8rem;
     }
     .buy{ color: var(--buy); }
     .sale{ color: var(--sale); }
@@ -971,7 +971,7 @@ document
       .action-buttons{ display: none !important; }
       thead th{ position: static; } /* sticky not needed in print */
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      @page { margin: 0.6cm; size: A4; }
+      @page { margin: 0.6cm; size: A4 landscape; }
     }
 
     /* Responsive for small width */
@@ -1027,16 +1027,14 @@ document
     <th style="width:90px;">วันที่</th>
     <th style="width:75px;">ประเภท</th>
     <th style="width:90px;">รหัสสินค้า</th>
-    <th style="width:160px;">ชื่อสินค้า</th>
-    <th style="width:90px;">โมเดล</th>
-    <th style="width:65px;">หน่วย</th>
-    <th style="width:95px;" class="num">ราคาต่อหน่วย</th>
+    <th style="width:180px; text-align: center;">ชื่อสินค้า</th>
+    <th style="width:50px;">หน่วย</th>
+    <th style="width:95px;" class="num">ราคา<br>ต่อหน่วย</th>
     <th style="width:65px;" class="num">จำนวน</th>
     <th style="width:85px;" class="num">ค่าขนส่ง</th>
     <th style="width:75px;" class="num">ภาษี 7%</th>
     <th style="width:95px;" class="num">รวม</th>
     <th style="width:120px;">ลูกค้า/ผู้ขาย</th>
-    <th style="width:140px;">หมายเหตุ</th>
   </tr>
 </thead>
         <tbody>
@@ -1048,7 +1046,6 @@ document
               <td>${item.type}</td>
               <td>${item.product_code || "-"}</td>
               <td class="product-name">${item.product_name}</td>
-              <td>${item.model}</td>
               <td>${item.unit || "-"}</td>
               <td class="num">${Number(item.price).toLocaleString("th-TH")}</td>
               <td class="num">${Number(item.quantity).toLocaleString("th-TH")}</td>
@@ -1056,7 +1053,6 @@ document
               <td class="num">${item.tax !== null && item.tax !== undefined ? Number(item.tax).toLocaleString("th-TH") : "-"}</td>
               <td class="num"><b>${Number(item.total).toLocaleString("th-TH")}</b></td>
               <td class="partner">${item.partner}</td>
-              <td class="note">${item.note}</td>
             </tr>
           `,
             )

@@ -608,31 +608,25 @@ document.addEventListener('DOMContentLoaded', function() {
               <table>
                 <thead>
                   <tr>
-                    <th style="width:60px;">ลำดับ</th>
-                    <th style="width:90px;">รหัสสินค้า</th>
-                    <th style="width:120px;">โมเดล</th>
-                    <th style="width:160px;">ชื่อสินค้า</th>
-                    <th style="width:90px;">ผู้ผลิต</th>
-                    <th style="width:90px;">หมวดหมู่</th>
-                    <th style="width:90px;">สถานะขาย</th>
-                    <th style="width:90px;" class="num">จำนวนคงเหลือ</th>
-                    <th style="width:65px;">หน่วย</th>
-                    <th style="width:90px;">ที่เก็บ</th>
+                    <th style="width:45px;">ลำดับ</th>
+                    <th style="width:75px;">รหัสสินค้า</th>
+                    <th style="width:260px; text-align: center;">ชื่อสินค้า</th>
+                    <th style="width:50px; text-align: right;">ผู้ผลิต</th>
+                    <th style="width:50px;">หมวดหมู่</th>
+                    <th style="width:60px; text-align: center;">จำนวนคง<br>เหลือ</th>
+                    <th style="width:50px;" class="num">หน่วย</th>
                   </tr>
                 </thead>
                 <tbody>
                   ${filtered.map((p, idx) => `
                     <tr>
-                      <td>${idx + 1}</td>
-                      <td>${p.product_code || '-'}</td>
-                      <td>${p.model || '-'}</td>
-                      <td>${p.product_name || '-'}</td>
-                      <td>${p.maker || '-'}</td>
-                      <td>${p.category || '-'}</td>
-                      <td>${p.sale_status || '-'}</td>
-                      <td class="num">${Number(p.quantity).toLocaleString("th-TH")}</td>
-                      <td>${p.unit || '-'}</td>
-                      <td>${p.location || '-'}</td>
+                      <td style="text-align: center;">${idx + 1}</td>
+                      <td style="text-align: left;">${p.product_code || '-'}</td>
+                      <td style="text-align: left;">${p.product_name || '-'}</td>
+                      <td style="text-align: center;">${p.maker || '-'}</td>
+                      <td style="text-align: center;">${p.category || '-'}</td>
+                      <td class="num" style="text-align: center;">${Number(p.quantity).toLocaleString("th-TH")}</td>
+                      <td style="text-align: center;">${p.unit || '-'}</td>
                     </tr>
                   `).join("")}
                 </tbody>
