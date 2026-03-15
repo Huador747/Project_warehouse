@@ -718,6 +718,7 @@ document
 <html>
 <head>
   <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg: #ffffff;
@@ -966,12 +967,16 @@ document
 
     /* Print */
     @media print{
-      body{ background: #fff; padding: 0; }
-      .page{ box-shadow: none; border: none; padding: 0; }
+      body{ background: #fff; padding: 0; margin: 0; font-size: 12px; }
+      .page{ box-shadow: none; border: none; padding: 10px; }
       .action-buttons{ display: none !important; }
-      thead th{ position: static; } /* sticky not needed in print */
+      thead th{ position: static; font-size: 11px; }
+      tbody td{ font-size: 11px; padding: 6px 8px; }
+      .header h2{ font-size: 1.2rem; }
+      .summary-value{ font-size: 1rem; }
+      table{ table-layout: auto; width: 100%; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      @page { margin: 0.6cm; size: A4 landscape; }
+      @page { margin: 0; size: A4 landscape; }
     }
 
     /* Responsive for small width */
@@ -1024,17 +1029,17 @@ document
       <table>
         <thead>
   <tr>
-    <th style="width:90px;">วันที่</th>
-    <th style="width:75px;">ประเภท</th>
+    <th style="width:95px; text-align: center;">วันที่</th>
+    <th style="width:55px; text-align: center;">ประเภท</th>
     <th style="width:90px;">รหัสสินค้า</th>
-    <th style="width:180px; text-align: center;">ชื่อสินค้า</th>
+    <th style="width:220px; text-align: center;">ชื่อสินค้า</th>
     <th style="width:50px;">หน่วย</th>
     <th style="width:95px;" class="num">ราคา<br>ต่อหน่วย</th>
     <th style="width:65px;" class="num">จำนวน</th>
     <th style="width:85px;" class="num">ค่าขนส่ง</th>
     <th style="width:75px;" class="num">ภาษี 7%</th>
     <th style="width:95px;" class="num">รวม</th>
-    <th style="width:120px;">ลูกค้า/ผู้ขาย</th>
+    <th style="width:95px;" class="num">รวมทั้งหมด</th>
   </tr>
 </thead>
         <tbody>
@@ -1042,8 +1047,8 @@ document
             .map(
               (item) => `
             <tr>
-              <td>${item.date ? new Date(item.date).getDate() + "/" + (new Date(item.date).getMonth() + 1) + "/" + (new Date(item.date).getFullYear() + 543) : "-"}</td>
-              <td>${item.type}</td>
+              <td style="text-align: center;">${item.date ? new Date(item.date).getDate() + "/" + (new Date(item.date).getMonth() + 1) + "/" + (new Date(item.date).getFullYear() + 543) : "-"}</td>
+              <td style="text-align: center;">${item.type}</td>
               <td>${item.product_code || "-"}</td>
               <td class="product-name">${item.product_name}</td>
               <td>${item.unit || "-"}</td>
@@ -1052,7 +1057,7 @@ document
               <td class="num">${item.shipping_cost !== null && item.shipping_cost !== undefined ? Number(item.shipping_cost).toLocaleString("th-TH") : "-"}</td>
               <td class="num">${item.tax !== null && item.tax !== undefined ? Number(item.tax).toLocaleString("th-TH") : "-"}</td>
               <td class="num"><b>${Number(item.total).toLocaleString("th-TH")}</b></td>
-              <td class="partner">${item.partner}</td>
+              <td class="num"><b>${Number(item.total + (item.tax || 0)).toLocaleString("th-TH")}</b></td>
             </tr>
           `,
             )

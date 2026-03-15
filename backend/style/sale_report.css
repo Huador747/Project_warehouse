@@ -69,7 +69,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
+  padding: 10px 12px;
   border-radius: 12px;
   color: #dbe7ff;
   text-decoration: none;
@@ -264,7 +264,7 @@ body {
 .filter-group.inline input,
 .filter-group.inline select {
   width: 100%;
-  border: 1px solid var(--line);
+  border: none;
   border-radius: 10px;
   padding: 10px 12px;
   font-size: 14px;
@@ -273,15 +273,15 @@ body {
   font-family: "Sarabun", sans-serif;
   color: var(--text-main);
   outline: none;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .filter-group.inline input:focus,
 .filter-group.inline select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.6);
 }
 
 .toolbar-actions {
@@ -766,6 +766,13 @@ body {
     margin: 0 !important;
     max-width: 100% !important;
     background: #fff !important;
+  }
+
+  /* Remove boxed border around date/range values in print output */
+  .doc-value-box {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
 
   .doc-header {
