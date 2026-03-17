@@ -1,130 +1,131 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/backend/style/dashboard.css" />
-    <title>แผงผู้ดูแลระบบ</title>
-  </head>
-  <body>
-    <div class="dashboard-container">
-      <aside class="sidebar">
-        <div class="logo">
-          <h2>📦 แผงผู้ดูแลระบบ</h2>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/backend/style/dashboard.css" />
+  <title>ส่วนของเจ้าของกิจการ</title>
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">
+         <h2 style="align-items: center;">ส่วนของเจ้าของกิจการ</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-item active">
+          <span class="icon">👥</span>
+          <span>แดชบอร์ด</span>
+        </a>
+        <a href="management.html" class="nav-item">
+          <span class="icon">👥</span>
+          <span>จัดการผู้ใช้งาน</span>
+        </a>
+        <a href="../../src/inventory.html" class="nav-item">
+          <span class="icon">📊</span>
+          <span>จำนวนคงเหลือสินค้า</span>
+        </a>
+        <a href="../../src/buyin.html" class="nav-item">
+          <span class="icon">📥</span>
+          <span>ซื้อสินค้า</span>
+        </a>
+        <a href="../../src/sale.html" class="nav-item">
+          <span class="icon">💰</span>
+          <span>ขายสินค้า</span>
+        </a>
+        <a href="../../src/history.html" class="nav-item">
+          <span class="icon">📜</span>
+          <span>ประวัติการซื้อ-ขาย</span>
+        </a>
+        <a href="../../src/movement.html" class="nav-item">
+          <span class="icon">📋</span>
+          <span>การเคลื่อนไหวสินค้า</span>
+        </a>
+        <a href="sale_report.html" class="nav-item">
+          <span class="icon">📋</span>
+          <span>รายงานยอดขาย</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <!-- Header with User Profile -->
+      <header class="header">
+        <div class="header-left">
+          <h1>แดชบอร์ด</h1>
+          <p class="breadcrumb">หน้าหลัก / Dashboard</p>
         </div>
-        <nav class="nav-menu">
-          <a href="dashboard.html" class="nav-item active">
-            <span class="icon">👥</span>
-            <span>แอดมินแดชบอร์ด</span>
-          </a>
-          <a href="management.html" class="nav-item">
-            <span class="icon">👥</span>
-            <span>จัดการผู้ใช้งาน</span>
-          </a>
-          <a href="../../src/inventory.html" class="nav-item">
-            <span class="icon">📊</span>
-            <span>จำนวนคงเหลือสินค้า</span>
-          </a>
-          <a href="../../src/buyin.html" class="nav-item">
-            <span class="icon">📥</span>
-            <span>ซื้อสินค้า</span>
-          </a>
-          <a href="../../src/sale.html" class="nav-item">
-            <span class="icon">💰</span>
-            <span>ขายสินค้า</span>
-          </a>
-          <a href="../../src/history.html" class="nav-item">
-            <span class="icon">📜</span>
-            <span>ประวัติการซื้อ-ขาย</span>
-          </a>
-          <a href="../../src/movement.html" class="nav-item">
-            <span class="icon">📋</span>
-            <span>การเคลื่อนไหวสินค้า</span>
-          </a>
-          <a href="sale_report.html" class="nav-item">
-            <span class="icon">📋</span>
-            <span>รายงานยอดขาย</span>
-          </a>
-        </nav>
-      </aside>
-
-      <main class="main-content">
-        <!-- Header with User Profile -->
-        <header class="header">
-          <div class="header-left">
-            <h1>แอดมินแดชบอร์ด</h1>
-            <p class="breadcrumb">หน้าหลัก / Dashboard</p>
-          </div>
-          <div class="header-right">
-            <div class="user-info">
-              <div class="user-profile">
-                <img id="currentUserAvatar" src="" alt="User Avatar" class="user-avatar">
-                <div class="user-details">
-                  <span id="currentUserName" class="user-name">ผู้ใช้งาน</span>
-                  <span class="user-status">
-                    <span class="status-dot online"></span>
-                    <span class="status-text">ออนไลน์</span>
-                  </span>
-                </div>
-              </div>
-              <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
-            </div>
-          </div>
-        </header>
-
-        <section class="overview">
-          <h3>Overview</h3>
-          <div class="stats">
-            <div class="stat-card">
-              <div class="stat-title">Total Users</div>
-              <div class="stat-value" id="total-users" style="color: #25a106">
-                -
+        <div class="header-right">
+          <div class="user-info">
+            <div class="user-profile">
+              <img id="currentUserAvatar" src="" alt="User Avatar" class="user-avatar">
+              <div class="user-details">
+                <span id="currentUserName" class="user-name">ผู้ใช้งาน</span>
+                <span class="user-status">
+                  <span class="status-dot online"></span>
+                  <span class="status-text">ออนไลน์</span>
+                </span>
               </div>
             </div>
-            <div class="stat-card">
-              <div class="stat-title">Admin Users</div>
-              <div class="stat-value" id="admin-users" style="color: #e74c3c">
-                -
-              </div>
+            <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="overview">
+        <h3>Overview</h3>
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-title">Total Users</div>
+            <div class="stat-value" id="total-users" style="color: #25a106">
+              -
             </div>
           </div>
-        </section>
+          <div class="stat-card">
+            <div class="stat-title">Admin Users</div>
+            <div class="stat-value" id="admin-users" style="color: #e74c3c">
+              -
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <section class="user-list-section">
-          <h3>User Management</h3>
-          <div class="table-container">
-            <table class="user-table">
-              <thead>
-                <tr>
-                  <th>Profile</th>
-                  <th>Username</th>
-                  <th>Role</th>
-                  <th>สร้างบัญชีเมื่อ</th>
-                  <th>การใช้งาน</th>
-                  <th>สถานะ</th>
-                  <th>เข้าสู่ระบบล่าสุด</th>
-                </tr>
-              </thead>
-              <tbody id="user-list">
-                <!-- User rows will be rendered here -->
-              </tbody>
-            </table>
-          </div>
-          
-          <!-- Pagination -->
-          <div class="pagination">
-            <button id="prevPage" class="btn-page" disabled>‹ ก่อนหน้า</button>
-            <span id="pageInfo">หน้า 1 จาก 1</span>
-            <button id="nextPage" class="btn-page" disabled>ถัดไป ›</button>
-          </div>
-        </section>
-      </main>
-    </div>
-    <script src="/scripts/config.js"></script>
-    <script src="/backend/script/dashboard.js"></script>
-  </body>
+      <section class="user-list-section">
+        <h3>User Management</h3>
+        <div class="table-container">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Profile</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>สร้างบัญชีเมื่อ</th>
+                <th>การใช้งาน</th>
+                <th>สถานะ</th>
+                <th>เข้าสู่ระบบล่าสุด</th>
+              </tr>
+            </thead>
+            <tbody id="user-list">
+              <!-- User rows will be rendered here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button id="prevPage" class="btn-page" disabled>‹ ก่อนหน้า</button>
+          <span id="pageInfo">หน้า 1 จาก 1</span>
+          <button id="nextPage" class="btn-page" disabled>ถัดไป ›</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/scripts/config.js"></script>
+  <script src="/backend/script/dashboard.js"></script>
+</body>
+
 </html>
