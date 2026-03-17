@@ -237,14 +237,14 @@ body {
   padding: 10px 14px;
   font-weight: 600;
   font-size: 14px;
-  background: #0f172a;
+  background: #e74c3c;
   color: #e5edff;
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.15s ease;
 }
 
 .btn-logout:hover {
-  background: #111a33;
+  background: #ff3300;
   transform: translateY(-1px);
 }
 

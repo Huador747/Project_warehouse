@@ -223,7 +223,7 @@ function renderInventorySummary(entries, selectedYear, periodType = "year") {
   inventoryInfo.innerHTML = `
     <div class="kpi-cards" style="display: flex; gap: 18px; margin-bottom: 24px; flex-wrap: wrap;">
       <div class="kpi-card" style="flex:1; min-width:180px; background:#eaf6ff; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(54,162,235,0.08); border:1px solid #b3e0ff;">
-        <div style="color:#2563eb; font-size:1.05rem; font-weight:700;">ยอดซื้อรวม (${selectedYear || "ทุกปี"})</div>
+        <div style="color:#2563eb; font-size:1.05rem; font-weight:700;">ยอดซื้อรวม (${selectedYear === "all" || !selectedYear ? "ทุกปี" : selectedYear})</div>
         <div style="font-size:1.35rem; font-weight:800; color:#2563eb;">${totalBuyin.toLocaleString("th-TH")} บาท</div>
         <div style="color:#2563eb; font-size:1rem; margin-top:8px;">ซื้อทั้งหมด <b>${totalBuyinQty.toLocaleString("th-TH")}</b> ชิ้น</div>
       </div>
@@ -237,11 +237,11 @@ function renderInventorySummary(entries, selectedYear, periodType = "year") {
         <div style="font-size:1.35rem; font-weight:800; color:#27ae60;">${totalProfit.toLocaleString("th-TH")} บาท</div>
       </div>
       <div class="kpi-card" style="flex:1; min-width:180px; background:#ffeaea; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(220,53,69,0.08); border:1px solid #ffb3b3;">
-        <div style="color:#dc3545; font-size:1.05rem; font-weight:700;">เงินจมรวม</div>
+        <div style="color:#dc3545; font-size:1.05rem; font-weight:700;">เงินทุนรวม</div>
         <div style="font-size:1.35rem; font-weight:800; color:#dc3545;">${totalSunk.toLocaleString("th-TH")} บาท</div>
       </div>
       <div class="kpi-card" style="flex:1; min-width:180px; background:#f8fafc; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(107,114,128,0.08); border:1px solid #e5e7eb;">
-        <div style="color:#374151; font-size:1.05rem; font-weight:700;">คงเหลือรวม (qty)</div>
+        <div style="color:#374151; font-size:1.05rem; font-weight:700;">สินค้าคงเหลือทั้งหมด (qty)</div>
         <div style="font-size:1.35rem; font-weight:800; color:#374151;">${totalQty.toLocaleString("th-TH")}</div>
       </div>
     </div>
@@ -266,8 +266,8 @@ async function showInventoryInfo(
   let filteredSale = filterTransactionsByProducts(sale, productCodes);
 
   if (periodType === "month" || periodType === "quarter") {
-    // กรองตามปี
-    if (selectedYear) {
+    // กรองตามปี (ถ้าไม่ใช่ "all")
+    if (selectedYear && selectedYear !== "all") {
       filteredBuyin = filteredBuyin.filter((b) => {
         const dt = new Date(b.buyindate ?? b.date);
         return dt.getFullYear() === Number(selectedYear);
@@ -277,7 +277,7 @@ async function showInventoryInfo(
         return dt.getFullYear() === Number(selectedYear);
       });
     }
-  } else if (selectedYear) {
+  } else if (selectedYear && selectedYear !== "all") {
     filteredBuyin = filteredBuyin.filter((b) => {
       const dt = new Date(b.buyindate ?? b.date);
       return dt.getFullYear() === Number(selectedYear);
@@ -1314,7 +1314,7 @@ document
         <div class="kpi-value">${totalProfit.toLocaleString("th-TH")} บาท</div>
       </div>
       <div class="kpi-card kpi-sunk">
-        <div class="kpi-label">เงินจมรวม</div>
+        <div class="kpi-label">เงินทุนรวม</div>
         <div class="kpi-value">${totalSunk.toLocaleString("th-TH")} บาท</div>
       </div>
       <div class="kpi-card kpi-qty">
@@ -1343,7 +1343,7 @@ document
     <div class="summary-totals" style="margin-bottom:24px;padding:16px;background:#f8fafc;border:1px solid #ffd336;box-shadow:0 2px 4px rgba(0,0,0,0.08);border-radius:8px;">
       <div style="color:#e67e22;font-size:1.1rem;margin-bottom:12px;"><b>ยอดขายรวม:</b> ${totalSale.toLocaleString("th-TH")} บาท</div>
       <div style="color:green;font-size:1.1rem;margin-bottom:12px;"><b>กำไรรวม:</b> ${totalProfit.toLocaleString("th-TH")} บาท</div>
-      <div style="color:#dc3545;font-size:1.1rem;"><b>เงินจมรวม:</b> ${totalSunk.toLocaleString("th-TH")} บาท</div>
+      <div style="color:#dc3545;font-size:1.1rem;"><b>เงินทุนรวม:</b> ${totalSunk.toLocaleString("th-TH")} บาท</div>
     </div>
     <!-- ตารางรายเดือน/รายไตรมาส/รายปี -->
     ${(() => {

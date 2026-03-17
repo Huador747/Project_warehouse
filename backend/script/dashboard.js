@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usersToDisplay.length === 0) {
       tbody.innerHTML =
-        '<tr><td colspan="7" style="text-align:center;color:#999">ไม่พบข้อมูลผู้ใช้</td></tr>';
+        '<tr style="height: 70px;"><td colspan="7" style="text-align:center;color:#999">ไม่พบข้อมูลผู้ใช้</td></tr>';
       return;
     }
 
@@ -121,6 +121,14 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       tbody.appendChild(tr);
     });
+
+    // เพิ่มแถวเปล่าให้ครบ 10 แถว
+    const emptyRows = usersPerPage - usersToDisplay.length;
+    for (let i = 0; i < emptyRows; i++) {
+      const emptyTr = document.createElement("tr");
+      emptyTr.innerHTML = '<td colspan="7" style="height: 70px;">&nbsp;</td>';
+      tbody.appendChild(emptyTr);
+    }
 
     updatePaginationUI();
   }

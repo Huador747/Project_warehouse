@@ -92,7 +92,9 @@ body {
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   background: #fff;
 }
 
@@ -133,7 +135,6 @@ body {
 }
 
 @keyframes pulse-indicator {
-
   0%,
   100% {
     opacity: 1;
@@ -262,7 +263,8 @@ body {
   background: #ffd336;
   color: #222;
   border: 3px solid #e0b97d;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.2),
     inset 0 -6px 12px rgba(0, 0, 0, 0.06);
   transform: translateY(-4px) scale(1.02);
   position: relative;
@@ -272,13 +274,14 @@ body {
   background: #ffe0b2;
   color: #333;
   border: 3px solid #8b7f7f;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22),
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.22),
     inset 0 -6px 12px rgba(0, 0, 0, 0.09);
   transform: translateY(-2px) scale(1.04);
   cursor: pointer;
 }
 
-.hamburger:hover+.sidebar,
+.hamburger:hover + .sidebar,
 .sidebar:hover {
   left: 0;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.18);
@@ -386,7 +389,8 @@ body {
 
 .sidebar-nav-btn .nav-btn.active {
   background: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12),
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.12),
     inset 0 -2px 6px rgba(0, 0, 0, 0.08);
   font-weight: 700;
   transform: translateX(6px);
@@ -407,7 +411,7 @@ body {
 /* ========== Navbar ========== */
 .navbar {
   width: 100%;
-   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   color: #fff;
@@ -450,7 +454,7 @@ body {
   text-align: center;
   animation: subtlePulse 3.2s ease-in-out infinite;
   will-change: transform, opacity;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 @keyframes subtlePulse {
@@ -485,7 +489,8 @@ body {
 }
 
 .navbar-text.slide-in {
-  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+  animation:
+    slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
     subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
@@ -532,7 +537,7 @@ body {
   font-size: 16px;
   box-sizing: border-box;
   margin-right: 0px;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-shadow: #000000 0px 4px 8px -2px;
 }
 
 .logout-btn {
@@ -547,9 +552,17 @@ body {
   font-size: 14px;
   align-items: center;
   justify-content: center;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-sizing: border-box;
+  box-shadow: #000000 0px 4px 8px -2px;
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.logout-btn:hover {
+  background: #ff3300;
+  transform: translateY(-3px);
+  box-shadow: #000000 0px 6px 12px -3px;
+  color: #ffffff;
+}
 .search-logout-row {
   display: flex;
   align-items: center;
@@ -681,7 +694,9 @@ select,
   font-weight: bold;
   background: #ffffff;
   color: #333;
-  transition: border 0.3s, box-shadow 0.3s;
+  transition:
+    border 0.3s,
+    box-shadow 0.3s;
   box-sizing: border-box;
   appearance: none;
   outline: none;
@@ -689,7 +704,7 @@ select,
   height: 100%;
 }
 
-.product-form select option{
+.product-form select option {
   font-weight: bold;
   font-family: "Sarabun", sans-serif;
 }
@@ -718,10 +733,13 @@ input:focus,
 select:focus,
 .search-product-input:focus {
   outline: none;
-  box-shadow: 0 6px 20px rgba(255, 161, 68, 0.12),
+  box-shadow:
+    0 6px 20px rgba(255, 161, 68, 0.12),
     0 0 0 3px rgba(255, 208, 128, 0.12);
   border-color: #ffa144;
-  transition: box-shadow 0.22s, border-color 0.22s;
+  transition:
+    box-shadow 0.22s,
+    border-color 0.22s;
 }
 
 .function-btn-add {
@@ -734,7 +752,10 @@ select:focus,
   font-weight: bold;
   cursor: pointer;
   margin-top: 16px;
-  transition: transform 0.14s ease, box-shadow 0.14s, background 0.2s;
+  transition:
+    transform 0.14s ease,
+    box-shadow 0.14s,
+    background 0.2s;
   box-shadow: #000000 0px 4px 8px -2px;
 }
 
@@ -765,12 +786,18 @@ select:focus,
   backdrop-filter: blur(2.5px);
   z-index: 1000;
   margin-top: 8px;
-  animation: searchResultPop 0.32s cubic-bezier(0.4,0.2,0.2,1);
+  animation: searchResultPop 0.32s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
 
 @keyframes searchResultPop {
-  0% { opacity: 0; transform: translateY(-12px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .search-item {
@@ -798,7 +825,7 @@ select:focus,
 }
 
 .search-item .product_name {
-  color: #666;
+  color: #000000;
   font-size: 13px;
   margin-top: 2px;
   display: block;
@@ -850,8 +877,9 @@ select:focus,
 }
 
 .status-badge.status-paused {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid #dc2626;
+  color: #dc2626;
 }
 
 /* ========== Search Results - Paused Item Style ========== */
@@ -927,7 +955,6 @@ select:focus,
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;
@@ -939,7 +966,6 @@ select:focus,
     transform: scale(1.05);
   }
 }
-
 
 @media screen and (max-width: 1200px) and (min-width: 900px) {
   /* Hamburger Button */
@@ -990,16 +1016,30 @@ select:focus,
   }
 
   /* Hover Effect Animation */
-  .hamburger span:nth-child(1) { transition-delay: 0s; }
-  .hamburger span:nth-child(2) { transition-delay: 0.05s; }
-  .hamburger span:nth-child(3) { transition-delay: 0.1s; }
+  .hamburger span:nth-child(1) {
+    transition-delay: 0s;
+  }
+  .hamburger span:nth-child(2) {
+    transition-delay: 0.05s;
+  }
+  .hamburger span:nth-child(3) {
+    transition-delay: 0.1s;
+  }
 
-  .hamburger:hover span:nth-child(1) { transition-delay: 0.1s; }
-  .hamburger:hover span:nth-child(2) { transition-delay: 0.05s; }
-  .hamburger:hover span:nth-child(3) { transition-delay: 0s; }
+  .hamburger:hover span:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  .hamburger:hover span:nth-child(2) {
+    transition-delay: 0.05s;
+  }
+  .hamburger:hover span:nth-child(3) {
+    transition-delay: 0s;
+  }
 
   /* Active State */
-  .hamburger:active { transform: scale(0.95); }
+  .hamburger:active {
+    transform: scale(0.95);
+  }
 
   /* Focus Style for Accessibility */
   .hamburger:focus {

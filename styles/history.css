@@ -576,7 +576,19 @@ body {
   font-size: 14px;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   box-shadow: #000000 0px 4px 8px -2px;
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #ff3300;
+  transform: translateY(-3px);
+  box-shadow: #000000 0px 6px 12px -3px;
+  color: #ffffff;
 }
 
 /* ========== Main Content ========== */

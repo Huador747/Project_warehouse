@@ -89,7 +89,7 @@ async function checkProductStatus(productCode) {
     if (product.sale_status === "พักการขาย") {
       return {
         valid: false,
-        message: `⚠️ ไม่สามารถขายสินค้านี้ได้\nสินค้ารหัส "${productCode}" อยู่ในสถานะ "พักการขาย"`,
+        message: `⚠️ สินค้ารหัส "${productCode}" อยู่ในสถานะ "พักการขาย"`,
         product: product,
       };
     }
@@ -267,7 +267,12 @@ searchInput.addEventListener("input", async function () {
         const statusCheck = await checkProductStatus(product.product_code);
 
         if (!statusCheck.valid) {
-          alert(statusCheck.message);
+          showCustomModal({
+            icon: "error",
+            title: "ไม่สามารถขายสินค้าได้",
+            text: statusCheck.message,
+            confirmText: "ตกลง",
+          });
           return;
         }
 
@@ -446,7 +451,12 @@ document
     const productCode = document.getElementById("product_code")?.value.trim();
 
     if (!productCode) {
-      alert("กรุณาระบุรหัสสินค้า");
+      showCustomModal({
+        icon: "error",
+        title: "ข้อมูลไม่ครบ",
+        text: "กรุณาระบุรหัสสินค้า",
+        confirmText: "ตกลง",
+      });
       return;
     }
 
@@ -454,7 +464,12 @@ document
     const statusCheck = await checkProductStatus(productCode);
 
     if (!statusCheck.valid) {
-      alert(statusCheck.message);
+      showCustomModal({
+        icon: "error",
+        title: "ไม่สามารถขายสินค้าได้",
+        text: statusCheck.message,
+        confirmText: "ตกลง",
+      });
       return;
     }
 
@@ -485,12 +500,22 @@ document
           saleData.saleoutdate = isoDate.toISOString();
         } else {
           delete saleData.saleoutdate;
-          alert("รูปแบบวันที่ไม่ถูกต้อง");
+          showCustomModal({
+            icon: "error",
+            title: "วันที่ไม่ถูกต้อง",
+            text: "รูปแบบวันที่ไม่ถูกต้อง",
+            confirmText: "ตกลง",
+          });
           return;
         }
       } else {
         delete saleData.saleoutdate;
-        alert("กรุณากรอกวันที่ให้ถูกต้อง");
+        showCustomModal({
+          icon: "error",
+          title: "วันที่ไม่ถูกต้อง",
+          text: "กรุณากรอกวันที่ให้ถูกต้อง",
+          confirmText: "ตกลง",
+        });
         return;
       }
     }
@@ -510,7 +535,7 @@ document
       showCustomModal({
         icon: "success",
         title: "บันทึกการขายสำเร็จ",
-        text: `💰 ค่าขนส่ง: ${saleData.shipping_cost} บาท`,
+        //text: `💰 ค่าขนส่ง: ${saleData.shipping_cost} บาท`,
         confirmText: "ตกลง",
         onClose: () => {
           // รีเซ็ตฟอร์มหลังปิด modal
@@ -544,6 +569,9 @@ function showCustomModal({ title = "", text = "", icon = "success", confirmText 
     modal.style.display = "flex";
     modal.style.alignItems = "center";
     modal.style.justifyContent = "center";
+
+    const formattedText = String(text || "").replace(/\n/g, "<br />");
+
     modal.innerHTML = `
       <div style="
         background: #fffbe9;
@@ -562,8 +590,8 @@ function showCustomModal({ title = "", text = "", icon = "success", confirmText 
         <div style="font-size: 1.35rem; font-weight: bold; color: #d35400; margin-bottom: 10px;">
           ${title}
         </div>
-        <div style="font-size: 1.1rem; color: #333; margin-bottom: 22px;">
-          ${text}
+        <div style="font-size: 1.1rem; color: #333; margin-bottom: 22px; line-height: 1.5;">
+          ${formattedText}
         </div>
         <button id="custom-modal-confirm" style="
           padding: 10px 36px;

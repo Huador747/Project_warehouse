@@ -141,7 +141,7 @@ function renderUsers() {
     const usersToShow = filteredUsers.slice(start, end);
     
     if (usersToShow.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="loading">ไม่พบข้อมูลผู้ใช้</td></tr>';
+        tbody.innerHTML = '<tr style="height: 67px;"><td colspan="7" class="loading">ไม่พบข้อมูลผู้ใช้</td></tr>';
         updatePagination(0, 0);
         return;
     }
@@ -155,7 +155,7 @@ function renderUsers() {
             : '<span class="badge danger">ระงับการใช้งาน</span>';
         
         const profileHtml = user.profileImage
-            ? `<img src="${escapeHtml(user.profileImage)}" alt="${escapeHtml(user.username)}" class="profile-img" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2245%22 height=%2245%22%3E%3Ccircle cx=%2222.5%22 cy=%2222.5%22 r=%2222.5%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23fff%22 font-size=%2220%22 font-weight=%22700%22%3E${escapeHtml(user.username).charAt(0).toUpperCase()}%3C/text%3E%3C/svg%3E'">`
+            ? `<img src="${escapeHtml(user.profileImage)}" alt="${escapeHtml(user.username)}" class="profile-img" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2245%22 height=%2245%22%3E%3Ccircle cx=%2222.5%22 cy=%2222.5%22 r=%2222.5%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23fff%22 font-size=%2220%22 font-weight=%22700%22%3E${escapeHtml(user.username).charAt(0).toUpperCase()}%3C/text%3E%3C/svg%3E'"/>`
             : `<div class="profile-placeholder">${escapeHtml(user.username).charAt(0).toUpperCase()}</div>`;
         
         return `
@@ -174,6 +174,12 @@ function renderUsers() {
             </tr>
         `;
     }).join('');
+    
+    // เพิ่มแถวเปล่าให้ครบ 10 แถว
+    const emptyRows = usersPerPage - usersToShow.length;
+    for (let i = 0; i < emptyRows; i++) {
+        tbody.innerHTML += '<tr><td colspan="7" style="height: 67px;">&nbsp;</td></tr>';
+    }
     
     updatePagination(currentPage, totalPages);
 }

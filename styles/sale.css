@@ -544,9 +544,17 @@ body {
   font-size: 14px;
   align-items: center;
   justify-content: center;
-   box-shadow: #000000 0px 4px 8px -2px;
+  box-sizing: border-box;
+  box-shadow: #000000 0px 4px 8px -2px;
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.logout-btn:hover {
+  background: #ff3300;
+  transform: translateY(-3px);
+  box-shadow: #000000 0px 6px 12px -3px;
+  color: #ffffff;
+}
 .search-logout-row {
   display: flex;
   align-items: center;
@@ -880,7 +888,7 @@ select:focus,
 }
 
 .search-item .product_name {
-  color: #666;
+  color: #000000;
   font-size: 13px;
   margin-top: 2px;
   display: block;
