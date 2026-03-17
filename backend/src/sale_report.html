@@ -10,11 +10,54 @@
     />
     <link rel="stylesheet" href="../style/sale_report.css" />
     <style>
+            .signature-section {
+              display: flex;
+              justify-content: space-between;
+              margin-top: 40px;
+              padding: 0 40px;
+            }
+            .signature-box {
+              width: 40%;
+              text-align: center;
+            }
+            .signature-line {
+              border-top: 0.5px solid #333;
+              margin-bottom: 8px;
+              margin-top: 32px;
+              height: 0;
+            }
+            .signature-box p {
+              font-size: 18px;
+              font-weight: 500;
+              margin-top: 0;
+              color: #222;
+            }
+            @media print {
+              .signature-section {
+                display: flex !important;
+                margin-top: 60px !important;
+                padding: 0 60px !important;
+              }
+              .signature-box {
+                width: 40% !important;
+                text-align: center !important;
+              }
+              .signature-line {
+                border-top: 0.05px solid #000 !important;
+                margin-bottom: 12px !important;
+                margin-top: 48px !important;
+              }
+              .signature-box p {
+                font-size: 20px !important;
+                color: #000 !important;
+                padding: 20px !important;
+              }
+            }
       @media print {
         body, html {
           background: #fff !important;
         }
-        .sidebar, .header, .report-toolbar, .toolbar-actions, .breadcrumb, .btn-logout, .summary-boxes, .signature-section, .no-print {
+        .sidebar, .header, .report-toolbar, .toolbar-actions, .breadcrumb, .btn-logout, .summary-boxes, .no-print {
           display: none !important;
         }
         .main-content, .document-paper {

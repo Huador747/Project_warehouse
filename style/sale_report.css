@@ -1,0 +1,43 @@
+/* sale_report.css */
+.signature-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding: 0 40px;
+}
+.signature-box {
+  width: 40%;
+  text-align: center;
+}
+.signature-line {
+  border-top: 1px solid #333;
+  margin-bottom: 8px;
+  margin-top: 32px;
+  height: 0;
+}
+.signature-box p {
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 0;
+  color: #222;
+}
+@media print {
+  .signature-section {
+    display: flex !important;
+    margin-top: 60px !important;
+    padding: 0 60px !important;
+  }
+  .signature-box {
+    width: 40% !important;
+    text-align: center !important;
+  }
+  .signature-line {
+    border-top: 2px solid #000 !important;
+    margin-bottom: 12px !important;
+    margin-top: 48px !important;
+  }
+  .signature-box p {
+    font-size: 20px !important;
+    color: #000 !important;
+  }
+}
