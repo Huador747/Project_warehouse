@@ -72,7 +72,9 @@ body {
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   background: #fff;
 }
 
@@ -110,6 +112,60 @@ body {
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
   animation: pulse-indicator 2s ease-in-out infinite;
   z-index: 1;
+}
+
+.image-modal {
+  display: none; /* ซ่อนตอนเริ่มต้น */
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.image-modal.show {
+  display: flex; /* แสดงเมื่อมี class show */
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 3rem;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10001;
+}
+
+.modal-toolbar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10001;
+}
+
+.modal-toolbar button {
+  padding: 8px 12px;
+  margin-right: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#modal-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+  transform: scale(1);
+  cursor: zoom-in;
 }
 
 @keyframes pulse-indicator {
@@ -241,7 +297,8 @@ body {
   background: #ffd336;
   color: #222;
   border: 3px solid #e0b97d;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2),
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.2),
     inset 0 -6px 12px rgba(0, 0, 0, 0.06);
   transform: translateY(-4px) scale(1.02);
   position: relative;
@@ -251,7 +308,8 @@ body {
   background: #ffe0b2;
   color: #333;
   border: 3px solid #8b7f7f;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22),
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.22),
     inset 0 -6px 12px rgba(0, 0, 0, 0.09);
   transform: translateY(-2px) scale(1.04);
   cursor: pointer;
@@ -365,7 +423,8 @@ body {
 
 .sidebar-nav-btn .nav-btn.active {
   background: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12),
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.12),
     inset 0 -2px 6px rgba(0, 0, 0, 0.08);
   font-weight: 700;
   transform: translateX(6px);
@@ -888,7 +947,8 @@ tr:hover {
 }
 
 .navbar-text.slide-in {
-  animation: slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
+  animation:
+    slideFromLeft 640ms cubic-bezier(0.2, 0.9, 0.2, 1) both,
     subtlePulse 3.2s ease-in-out 640ms infinite;
 }
 
@@ -928,7 +988,9 @@ tr:hover {
 
 /* ปรับ transition เล็กน้อยเมื่อ hover บน .search-item */
 .search-item {
-  transition: background-color 0.18s, transform 0.14s;
+  transition:
+    background-color 0.18s,
+    transform 0.14s;
 }
 
 .search-item:hover {
@@ -976,7 +1038,10 @@ tr:hover {
   justify-content: center;
   box-sizing: border-box;
   box-shadow: #000000 0px 4px 8px -2px;
-  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .logout-btn:hover {
@@ -2094,9 +2159,17 @@ td {
   opacity: 0;
   animation: slideIn 220ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
 }
-.search-results-container.animate .search-item:nth-child(1) { animation-delay: 40ms; }
-.search-results-container.animate .search-item:nth-child(2) { animation-delay: 80ms; }
-.search-results-container.animate .search-item:nth-child(3) { animation-delay: 120ms; }
-.search-results-container.animate .search-item:nth-child(4) { animation-delay: 160ms; }
+.search-results-container.animate .search-item:nth-child(1) {
+  animation-delay: 40ms;
+}
+.search-results-container.animate .search-item:nth-child(2) {
+  animation-delay: 80ms;
+}
+.search-results-container.animate .search-item:nth-child(3) {
+  animation-delay: 120ms;
+}
+.search-results-container.animate .search-item:nth-child(4) {
+  animation-delay: 160ms;
+}
 
 /* ...existing code... */

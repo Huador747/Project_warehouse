@@ -87,7 +87,7 @@ function renderProductsTable(products, page = 1) {
             <td>${p.unit || "-"}</td>
             <td>${p.location || "-"}</td>
         </tr>
-    `
+    `,
     )
     .join("");
   productList.innerHTML = productsHTML;
@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .map(
               (p) => `
                         <div class="search-item" data-product='${JSON.stringify(
-                          p
+                          p,
                         )}'>
                             <div class="product-code">${
                               p.product_code || ""
@@ -334,11 +334,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             }</div>
                             <div class="product-details">
                                 ${p.model || ""} - ${p.maker || ""} - ${
-                p.category || ""
-              }
+                                  p.category || ""
+                                }
                             </div>
                         </div>
-                    `
+                    `,
             )
             .join("");
         }
@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", function () {
           alert(
             currentProductId
               ? "อัปเดตสินค้าเรียบร้อย!"
-              : "บันทึกสินค้าเรียบร้อย!"
+              : "บันทึกสินค้าเรียบร้อย!",
           );
           this.reset();
           currentProductId = null;
@@ -437,7 +437,7 @@ document.addEventListener("DOMContentLoaded", function () {
           tableBox.scrollLeft += e.deltaY;
         }
       },
-      { passive: false }
+      { passive: false },
     );
   }
 
@@ -468,7 +468,65 @@ document.addEventListener("DOMContentLoaded", function () {
           tableBox.scrollLeft += e.deltaY;
         }
       },
-      { passive: false }
+      { passive: false },
     );
+  }
+});
+let currentScale = 1;
+
+function openImageModal(imgSrc) {
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-img");
+
+  modalImg.src = imgSrc;
+  currentScale = 1;
+  modalImg.style.transform = `scale(${currentScale})`;
+
+  modal.classList.add("show");
+}
+
+function closeImageModal() {
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-img");
+
+  modal.classList.remove("show");
+  modalImg.src = "";
+  currentScale = 1;
+  modalImg.style.transform = `scale(${currentScale})`;
+}
+
+function zoomIn() {
+  const modalImg = document.getElementById("modal-img");
+  currentScale += 0.2;
+  modalImg.style.transform = `scale(${currentScale})`;
+}
+
+function zoomOut() {
+  const modalImg = document.getElementById("modal-img");
+  currentScale = Math.max(0.2, currentScale - 0.2);
+  modalImg.style.transform = `scale(${currentScale})`;
+}
+
+function resetZoom() {
+  const modalImg = document.getElementById("modal-img");
+  currentScale = 1;
+  modalImg.style.transform = `scale(${currentScale})`;
+}
+
+// คลิกพื้นหลังเพื่อปิด modal
+document.getElementById("image-modal").addEventListener("click", function (e) {
+  if (e.target.id === "image-modal") {
+    closeImageModal();
+  }
+});
+
+// ใช้ล้อเมาส์ซูม
+document.getElementById("modal-img").addEventListener("wheel", function (e) {
+  e.preventDefault();
+
+  if (e.deltaY < 0) {
+    zoomIn();
+  } else {
+    zoomOut();
   }
 });

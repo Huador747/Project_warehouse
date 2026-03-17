@@ -241,9 +241,9 @@
         </div>
       </div>
     </div>
-    <div id="image-modal" class="image-modal" style="display: none">
-      <span class="close-modal" onclick="closeImageModal()">&times;</span>
-      <img id="modal-img" src="" alt="รูปสินค้า" />
+    <div id="image-modal" class="image-modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); align-items: center; justify-content: center;">
+      <span class="close-modal" onclick="closeImageModal()" style="position: absolute; top: 32px; right: 48px; font-size: 3rem; color: #fff; cursor: pointer; z-index: 10001;">&times;</span>
+      <img id="modal-img" src="" alt="รูปสินค้า" style="max-width: 90vw; max-height: 80vh; object-fit: contain; box-shadow: 0 4px 32px rgba(0,0,0,0.4); background: #fff; border-radius: 12px; display: block; margin: 0 auto;" />
     </div>
 
     <!--- ใช้งาน scripts ภายใน --->
@@ -1096,5 +1096,4 @@
     border: 2px solid #000;
   }
 }
-
 /* ========== END RESPONSIVE ========== */

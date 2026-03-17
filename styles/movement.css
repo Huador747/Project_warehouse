@@ -406,7 +406,7 @@ body {
   width: 100vw;
   left: 0;
   top: 0;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
   background-size: 300% 300%;
   animation: gradientShift 8s ease-in-out infinite;
   color: #fff;
@@ -486,6 +486,17 @@ body {
   font-size: 1.3em;
   vertical-align: middle;
   animation: bounceIn 0.7s;
+}
+
+.navbar-text.active {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e67e22;
+  letter-spacing: 1px;
+  margin-right: 12px;
+  margin-left: -20px;
+  text-shadow: 0 2px 8px #ffe0b2;
+  position: relative;
 }
 
 @keyframes bounceIn {

@@ -502,6 +502,17 @@ body {
   animation: bounceIn 0.7s;
 }
 
+.navbar-text.active {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e67e22;
+  letter-spacing: 1px;
+  margin-right: 12px;
+  margin-left: -20px;
+  text-shadow: 0 2px 8px #ffe0b2;
+  position: relative;
+}
+
 .navbar-form {
   gap: 30px;
   margin: 0 0 0px 75px;
@@ -554,7 +565,10 @@ body {
   justify-content: center;
   box-sizing: border-box;
   box-shadow: #000000 0px 4px 8px -2px;
-  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .logout-btn:hover {
