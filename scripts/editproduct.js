@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ฟังก์ชันเติมข้อมูลในฟอร์ม (ตัวอย่าง)
     function fillForm(product) {
+        console.log('fillForm() called with product:', product);
         currentProductId = product._id; // เก็บ id ไว้ใช้ตอนอัพเดท
         document.getElementById('product_code').value = product.product_code || '';
         document.getElementById('model').value = product.model || '';
@@ -61,20 +62,25 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('condition').value = product.condition || '';
         // เพิ่มเติม
         document.getElementById('sale_status').value = product.sale_status || '';
-        // ตั้งค่าฟิลด์ "การควบคุม"
+        // ตั้งค่าฟิลด์ "การควบคุม" (ถ้ามี)
         const controlsSelect = document.getElementById('controls');
 
-        // ให้เลือกเป็นค่าว่างได้ (ไม่บังคับ)
-        if (controlsSelect && ![...controlsSelect.options].some(o => o.value === '')) {
-            const placeholder = document.createElement('option');
-            placeholder.value = '';
-            placeholder.textContent = '— ไม่ระบุ —';
-            controlsSelect.insertBefore(placeholder, controlsSelect.firstChild);
-        }
-        controlsSelect?.removeAttribute('required');
+        if (controlsSelect) {
+            // ให้เลือกเป็นค่าว่างได้ (ไม่บังคับ)
+            if (![...controlsSelect.options].some(o => o.value === '')) {
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = '— ไม่ระบุ —';
+                controlsSelect.insertBefore(placeholder, controlsSelect.firstChild);
+            }
+            controlsSelect.removeAttribute('required');
 
-        // ตั้งค่าตามข้อมูลสินค้า ถ้าไม่ชัดเจนให้เว้นว่าง
-        controlsSelect.value = product.controls ?? product.co ?? '';
+            // ตั้งค่าตามข้อมูลสินค้า ถ้าไม่ชัดเจนให้เว้นว่าง
+            controlsSelect.value = product.controls ?? product.co ?? '';
+        } else {
+            console.warn('controls select element not found in DOM (id="controls")');
+        }
+
         document.getElementById('price').value = product.price || '';
         document.getElementById('sale_price').value = product.sale_price || '';
        
@@ -99,17 +105,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // เติมรูปภาพสินค้าเดิม
         const previewBox = document.querySelector('.image-preview-box');
+        if (!previewBox) {
+            console.error('image preview box not found in DOM');
+            return;
+        }
+
         previewBox.innerHTML = ''; // เคลียร์ของเดิมก่อน
+        previewBox.classList.remove('enlarged');
+        hideCloseButton();
 
         if (product.image) {
             const img = document.createElement('img');
             img.id = 'preview-image';
             img.src = product.image;
             img.alt = 'รูปสินค้าเดิม';
-            img.style.maxWidth = '220x';
-            img.style.maxHeight = '220px';
             img.style.display = 'block';
-            img.style.margin = '0 auto';
+            img.style.cursor = 'zoom-in';
+
+            // Debug: ดูว่าโหลดรูปสำเร็จหรือไม่
+            img.onload = () => console.log('preview image loaded successfully');
+            img.onerror = (err) => console.error('preview image failed to load', err, img.src);
+
+            // คลิกที่รูปเพื่อขยาย / ย่อ
+            img.style.cursor = 'zoom-in';
+            img.addEventListener('click', () => {
+                const isEnlarged = previewBox.classList.toggle('enlarged');
+                if (isEnlarged) {
+                    showCloseButton();
+                } else {
+                    hideCloseButton();
+                }
+            });
+
             previewBox.appendChild(img);
         } else {
             // ถ้าไม่มีรูป ให้แสดงข้อความ placeholder
@@ -117,6 +144,29 @@ document.addEventListener("DOMContentLoaded", function () {
             label.className = 'label-image-preview';
             label.textContent = 'รูปภาพสินค้าเดิม';
             previewBox.appendChild(label);
+        }
+
+        // ปุ่มปิดสำหรับโหมดขยาย
+        function showCloseButton() {
+            if (previewBox.querySelector('.image-close-btn')) return;
+
+            const closeBtn = document.createElement('button');
+            closeBtn.type = 'button';
+            closeBtn.className = 'image-close-btn';
+            closeBtn.textContent = '✕';
+            closeBtn.addEventListener('click', () => {
+                previewBox.classList.remove('enlarged');
+                hideCloseButton();
+            });
+
+            previewBox.appendChild(closeBtn);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideCloseButton() {
+            const btn = previewBox.querySelector('.image-close-btn');
+            if (btn) btn.remove();
+            document.body.style.overflow = '';
         }
 
         // ลบผลลัพธ์การค้นหา
@@ -158,8 +208,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (products.length === 0) {
                     resultDiv.innerHTML = '<div class="no-results">ไม่พบสินค้า</div>';
                 } else {
-                    resultDiv.innerHTML = products.map(p => `
-                        <div class="search-item" style="padding:8px;cursor:pointer;" data-product='${JSON.stringify(p)}'>
+                    // สร้างแต่ละผลลัพธ์ด้วย DOM เพื่อหลีกเลี่ยงปัญหา JSON ขนาดใหญ่ที่อาจทำให้ attribute แตก
+                    resultDiv.innerHTML = '';
+                    products.forEach(p => {
+                        const item = document.createElement('div');
+                        item.className = 'search-item';
+                        item.style.padding = '8px';
+                        item.style.cursor = 'pointer';
+                        item.innerHTML = `
                             <b class="product_code">${p.product_code || ''}</b>
                             <span class="product_name">${p.product_name || ''}</span>
                             <small class="product_model">
@@ -167,8 +223,34 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <span class="maker">${p.maker || ''}</span> | 
                                 <span class="category">${p.category || ''}</span>
                             </small>
-                        </div>
-                    `).join('');
+                        `;
+
+                        item.addEventListener('click', async () => {
+                            // ถ้าในผลลัพธ์มี image อยู่แล้ว ให้ใช้เลย
+                            if (p.image) {
+                                fillForm(p);
+                                return;
+                            }
+
+                            // ป้องกันกรณี backend ตัด field รูปออกจาก search API
+                            try {
+                                const res = await fetch(`${BACKEND_URL}/products/${p._id}`);
+                                const text = await res.text();
+                                console.log('fetch /products/:id response:', res.status, text);
+                                if (res.ok) {
+                                    const fullProduct = JSON.parse(text);
+                                    fillForm(fullProduct);
+                                } else {
+                                    fillForm(p);
+                                }
+                            } catch (err) {
+                                console.error('ไม่สามารถดึงข้อมูลสินค้าเพิ่มเติมได้', err);
+                                fillForm(p);
+                            }
+                        });
+
+                        resultDiv.appendChild(item);
+                    });
                 }
 
                 // แทรกผลลัพธ์ใต้ input
@@ -179,13 +261,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     resultDiv.classList.add('animate');
                 });
 
-                // Event เลือกสินค้า
-                resultDiv.querySelectorAll('.search-item').forEach(item => {
-                    item.addEventListener('click', function () {
-                        const product = JSON.parse(this.dataset.product);
-                        fillForm(product);
-                    });
-                });
             })
             .catch(err => {
                 console.error('เกิดข้อผิดพลาดในการค้นหา:', err);
@@ -201,8 +276,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('image').addEventListener('change', function(e) {
         const file = e.target.files[0];
-        const previewImg = document.getElementById('preview-image');
-        if (file) {
+        let previewImg = document.getElementById('preview-image');
+        const previewBox = document.querySelector('.image-preview-box');
+
+        // If the preview image element isn't present (e.g. on first load), create it
+        if (!previewImg && previewBox) {
+            previewImg = document.createElement('img');
+            previewImg.id = 'preview-image';
+            previewImg.alt = 'รูปสินค้า';
+            previewImg.style.display = 'none';
+            previewImg.style.cursor = 'zoom-in';
+            previewBox.appendChild(previewImg);
+        }
+
+        if (file && previewImg) {
             const reader = new FileReader();
             reader.onload = function(evt) {
                 previewImg.src = evt.target.result;

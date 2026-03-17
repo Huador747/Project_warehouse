@@ -803,8 +803,8 @@ async function renderChart(
       datasets = [
         {
           label: productCode
-            ? `ยอดซื้อสินค้ารหัส ${productCode} (จำนวน)`
-            : "ยอดซื้อ (จำนวน)",
+            ? `ยอดซื้อสินค้ารหัส ${productCode} (บาท)`
+            : "ยอดซื้อ (บาท)",
           data: buyinSummary,
           backgroundColor: "rgba(54, 162, 235, 0.5)",
           borderColor: "rgba(54, 162, 235, 1)",
@@ -813,8 +813,8 @@ async function renderChart(
         },
         {
           label: productCode
-            ? `ยอดขายสินค้ารหัส ${productCode} (จำนวน)`
-            : "ยอดขาย (จำนวน)",
+            ? `ยอดขายสินค้ารหัส ${productCode} (บาท)`
+            : "ยอดขาย (บาท)",
           data: saleSummary,
           backgroundColor: "rgba(255, 99, 132, 0.5)",
           borderColor: "rgba(255, 99, 132, 1)",

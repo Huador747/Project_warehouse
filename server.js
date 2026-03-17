@@ -247,6 +247,17 @@ app.get('/products', async (req, res) => {
     }
 });
 
+// เพิ่ม route สำหรับดึงข้อมูลสินค้าตาม id
+app.get('/products/:id', async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ message: 'ไม่พบสินค้า' });
+        res.json(product);
+    } catch (err) {
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า' });
+    }
+});
+
 // เพิ่ม route สำหรับแก้ไขสินค้า
 app.put('/products/:id', async (req, res) => {
     try {
