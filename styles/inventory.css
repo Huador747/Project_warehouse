@@ -521,7 +521,7 @@ body {
   color: #e67e22;
   letter-spacing: 1px;
   margin-right: 12px;
-  margin-left: 48px;
+  margin-left: -20px;
   text-shadow: 0 2px 8px #ffe0b2;
   position: relative;
 }
@@ -554,7 +554,7 @@ body {
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 18px 0 8px 0;
+  padding: 0;
   margin-left: 70px;
 }
 
