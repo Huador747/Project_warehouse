@@ -1,5 +1,3 @@
-import { BACKEND_URL } from "./config.js";
-
 const rowsPerPage = 5;
 let currentPage = 1;
 let currentProductId = null;
@@ -473,16 +471,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 let currentScale = 1;
+let currentMouseX = 0;
+let currentMouseY = 0;
+
+// Wrapper function สำหรับเรียก modal จากตาราง
+window.showImageModal = function(imgSrc) {
+  openImageModal(imgSrc);
+}
 
 function openImageModal(imgSrc) {
   const modal = document.getElementById("image-modal");
   const modalImg = document.getElementById("modal-img");
 
+  if (!modal || !modalImg) {
+    console.error("❌ Modal not found");
+    return;
+  }
+
   modalImg.src = imgSrc;
   currentScale = 1;
+  currentMouseX = 0;
+  currentMouseY = 0;
   modalImg.style.transform = `scale(${currentScale})`;
+  modalImg.style.transformOrigin = "center center";
 
   modal.classList.add("show");
+  console.log("📸 Modal opened");
 }
 
 function closeImageModal() {
@@ -492,41 +506,92 @@ function closeImageModal() {
   modal.classList.remove("show");
   modalImg.src = "";
   currentScale = 1;
+  currentMouseX = 0;
+  currentMouseY = 0;
+  modalImg.style.transform = `scale(${currentScale})`;
+  modalImg.style.transformOrigin = "center center";
+}
+
+function updateZoom(modalImg) {
+  const rect = modalImg.getBoundingClientRect();
+  
+  // คำนวณตำแหน่ง relative ของเมาส์ (0-100%)
+  let percentX = ((currentMouseX - rect.left) / rect.width) * 100;
+  let percentY = ((currentMouseY - rect.top) / rect.height) * 100;
+  
+  // จำกัดให้อยู่ในช่วง 0-100%
+  percentX = Math.max(0, Math.min(100, percentX));
+  percentY = Math.max(0, Math.min(100, percentY));
+  
+  console.log(`🎯 Zoom: ${currentScale.toFixed(1)}x at ${percentX.toFixed(0)}% x ${percentY.toFixed(0)}%`);
+  
+  // ตั้ง transform origin ตามตำแหน่งเมาส์
+  modalImg.style.transformOrigin = `${percentX}% ${percentY}%`;
   modalImg.style.transform = `scale(${currentScale})`;
 }
 
 function zoomIn() {
   const modalImg = document.getElementById("modal-img");
   currentScale += 0.2;
-  modalImg.style.transform = `scale(${currentScale})`;
+  updateZoom(modalImg);
 }
 
 function zoomOut() {
   const modalImg = document.getElementById("modal-img");
   currentScale = Math.max(0.2, currentScale - 0.2);
-  modalImg.style.transform = `scale(${currentScale})`;
+  updateZoom(modalImg);
 }
 
 function resetZoom() {
   const modalImg = document.getElementById("modal-img");
   currentScale = 1;
+  currentMouseX = 0;
+  currentMouseY = 0;
+  modalImg.style.transformOrigin = "center center";
   modalImg.style.transform = `scale(${currentScale})`;
 }
 
-// คลิกพื้นหลังเพื่อปิด modal
-document.getElementById("image-modal").addEventListener("click", function (e) {
-  if (e.target.id === "image-modal") {
-    closeImageModal();
-  }
-});
+// ตั้งค่า event listeners สำหรับ modal หลังจาก DOMContentLoaded
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupModalZoom);
+} else {
+  setupModalZoom();
+}
 
-// ใช้ล้อเมาส์ซูม
-document.getElementById("modal-img").addEventListener("wheel", function (e) {
-  e.preventDefault();
+function setupModalZoom() {
+  const modal = document.getElementById("image-modal");
+  const modalImg = document.getElementById("modal-img");
 
-  if (e.deltaY < 0) {
-    zoomIn();
-  } else {
-    zoomOut();
+  if (!modal || !modalImg) {
+    console.error("❌ Modal elements not found");
+    return;
   }
-});
+
+  // ติดตามตำแหน่งเมาส์เหนือรูป
+  modalImg.addEventListener("mousemove", function (e) {
+    console.log("🖱️ Mouse move:", e.clientX, e.clientY);
+    currentMouseX = e.clientX;
+    currentMouseY = e.clientY;
+  });
+
+  // คลิกพื้นหลังเพื่อปิด modal
+  modal.addEventListener("click", function (e) {
+    if (e.target.id === "image-modal") {
+      closeImageModal();
+    }
+  });
+
+  // ใช้ล้อเมาส์ซูม
+  modalImg.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    console.log("🔄 Wheel event:", e.deltaY);
+
+    if (e.deltaY < 0) {
+      console.log("⬆️ Zoom in");
+      zoomIn();
+    } else {
+      console.log("⬇️ Zoom out");
+      zoomOut();
+    }
+  });
+}
