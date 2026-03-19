@@ -526,9 +526,9 @@ body {
   display: inline-block;
   padding: 7px 16px;
   border-radius: 4px;
-  background: #ffd336;
-  color: #333;
-  font-size: 30px;
+  color: #000000;
+  background-color: #ff8c1a;
+  font-size: 31px;
   margin-right: 10px;
   min-width: 120px;
   text-align: center;
