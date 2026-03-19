@@ -457,6 +457,17 @@ body {
   box-shadow: #000000 0px 4px 8px -2px;
 }
 
+.navbar-text.active {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e67e22;
+  letter-spacing: 1px;
+  margin-right: 12px;
+  margin-left: -20px;
+  text-shadow: 0 2px 8px #ffe0b2;
+  position: relative;
+}
+
 @keyframes subtlePulse {
   0% {
     transform: scale(1);

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Animation for navbar
     const navbarTextEls = document.querySelectorAll('.navbar .navbar-text');
     navbarTextEls.forEach((el, idx) => {
-        el.style.opacity = '0';
+        // Don't force opacity via inline styles (prevents CSS animation from showing)
         const delay = 100 + idx * 120;
         el.style.animationDelay = `${delay}ms`;
         requestAnimationFrame(() => el.classList.add('slide-in'));
