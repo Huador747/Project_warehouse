@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-result")?.remove();
 
         if (!query) return;
-
+        
         try {
             const response = await fetch(
                 `${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`
