@@ -128,19 +128,21 @@
           e.preventDefault();
           const username = document.getElementById("username").value.trim();
           const password = document.getElementById("password").value.trim();
+
+          if (!username || !password) {
+            showCustomModal({
+              icon: "error",
+              title: "ข้อมูลไม่ครบ",
+              text: "กรุณากรอกชื่อผู้ใช้และรหัสผ่าน",
+            });
+            return;
+          }
+
           await loginUser(username, password);
         });
 
-      // Enter Key
-      document.addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-          const username = document.getElementById("username").value.trim();
-          const password = document.getElementById("password").value.trim();
-          if (username && password) {
-            loginUser(username, password);
-          }
-        }
-      });
+      // Enter กดภายในฟอร์มจะถูกจัดการโดย submit event แล้ว
+      // เพื่อป้องกันการเรียกซ้ำ หลีกเลี่ยงการสมัคร event global ที่ไม่จำเป็น
 
       // Register Button
       document

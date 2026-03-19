@@ -247,6 +247,28 @@ app.get('/products', async (req, res) => {
     }
 });
 
+// เพิ่ม route สำหรับค้นหาสินค้า
+app.get('/products/search', async (req, res) => {
+    try {
+        const q = (req.query.q || '').toString();
+        const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = escaped ? new RegExp(escaped, 'i') : /./;
+
+        const products = await Product.find({
+            $or: [
+                { product_code: { $regex: regex } },
+                { product_name: { $regex: regex } },
+                { model: { $regex: regex } }
+            ]
+        });
+
+        res.json(products);
+    } catch (err) {
+        console.error('Search /products/search error:', err);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการค้นหา', error: err.message });
+    }
+});
+
 // เพิ่ม route สำหรับดึงข้อมูลสินค้าตาม id
 app.get('/products/:id', async (req, res) => {
     try {
@@ -290,18 +312,23 @@ app.post('/products', async (req, res) => {
 // เพิ่ม route สำหรับค้นหาสินค้า
 app.get('/products/search', async (req, res) => {
     try {
-        const q = req.query.q || '';
+        const q = (req.query.q || '').toString();
+        const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = escaped ? new RegExp(escaped, 'i') : /./;
+
         // ค้นหาด้วย product_code, product_name หรือ model (ไม่สนตัวพิมพ์เล็กใหญ่)
         const products = await Product.find({
             $or: [
-                { product_code: { $regex: q, $options: 'i' } },
-                { product_name: { $regex: q, $options: 'i' } },
-                { model: { $regex: q, $options: 'i' } }
+                { product_code: { $regex: regex } },
+                { product_name: { $regex: regex } },
+                { model: { $regex: regex } }
             ]
         });
+
         res.json(products);
     } catch (err) {
-        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการค้นหา' });
+        console.error('Search /products/search error:', err);
+        res.status(500).json({ message: 'เกิดข้อผิดพลาดในการค้นหา', error: err.message });
     }
 });
 

@@ -308,8 +308,19 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("search-result")?.remove();
     if (!query) return;
     fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          console.warn("products/search returned non-OK status", res.status);
+          return [];
+        }
+        return res.json();
+      })
       .then((products) => {
+        if (!Array.isArray(products)) {
+          console.warn("Expected products array but got", products);
+          products = [];
+        }
+
         const oldResult = document.getElementById("search-result");
         if (oldResult) oldResult.remove();
         const resultDiv = document.createElement("div");

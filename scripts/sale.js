@@ -196,7 +196,16 @@ searchInput.addEventListener("input", async function () {
     const response = await fetch(
       `${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`
     );
-    const products = await response.json();
+    if (!response.ok) {
+      console.warn("products/search returned non-OK status", response.status);
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    let products = await response.json();
+    if (!Array.isArray(products)) {
+      console.warn("Expected products array but got", products);
+      products = [];
+    }
 
     // คำนวณจำนวนคงเหลือจริงสำหรับทุกสินค้า
     const productsWithStock = await Promise.all(

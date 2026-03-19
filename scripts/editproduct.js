@@ -182,8 +182,19 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!query) return;
 
         fetch(`${BACKEND_URL}/products/search?q=${encodeURIComponent(query)}`) // ใช้ BACKEND_URL
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    console.warn('products/search returned non-OK status', res.status);
+                    return [];
+                }
+                return res.json();
+            })
             .then(products => {
+                if (!Array.isArray(products)) {
+                    console.warn('Expected products array but got', products);
+                    products = [];
+                }
+
                 const resultDiv = document.createElement('div');
                 resultDiv.id = 'search-result';
                 resultDiv.className = 'search-results-container';
